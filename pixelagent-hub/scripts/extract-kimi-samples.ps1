@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $zips = @(Get-ChildItem -LiteralPath 'D:\Downloads' -Filter 'Kimi_Agent*.zip' -File | Sort-Object Length -Descending)
 $zipPath = $zips[0].FullName
-$dest = 'D:\PycharmProjects\multi-agent-framework\multi-agent-framework\_ref_kimi_extracted'
+$dest = 'D:\PycharmProjects\PIXELAGENT-HUB\pixelagent-hub\_ref_kimi_extracted'
 New-Item -ItemType Directory -Force -Path $dest | Out-Null
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip = [IO.Compression.ZipFile]::OpenRead($zipPath)

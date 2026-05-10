@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![node](https://img.shields.io/node/v/multi-agent-framework)](https://nodejs.org/)
+[![node](https://img.shields.io/node/v/pixelagent-hub)](https://nodejs.org/)
 
 可观测、可恢复、可控成本的 TypeScript 多 Agent 编排框架。  
 面向内容与代码工作流，内置 **6 种协作模式**，支持 **6 大 LLM 提供商**。
@@ -110,7 +110,7 @@ cp .env.example .env
 ## 项目结构
 
 ```text
-multi-agent-framework/
+pixelagent-hub/
 ├── src/
 │   ├── core/           # Orchestrator / Router / Bus / LLM 抽象层
 │   ├── agents/         # 8 个预置 Agent

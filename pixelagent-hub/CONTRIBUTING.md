@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for improving **multi-agent-framework** (PIXELAGENT-HUB). This document is the short path from clone to merge.
+Thanks for improving **PIXELAGENT-HUB**. This document is the short path from clone to merge.
 
 ## 开发环境
 

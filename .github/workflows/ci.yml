@@ -15,7 +15,7 @@ jobs:
         node-version: [18, 20, 22]
     defaults:
       run:
-        working-directory: ./multi-agent-framework
+        working-directory: ./pixelagent-hub
 
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: multi-agent-framework/package-lock.json
+          cache-dependency-path: pixelagent-hub/package-lock.json
 
       - run: npm ci
       - run: npm run build
