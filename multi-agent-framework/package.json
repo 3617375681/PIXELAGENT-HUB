@@ -1,0 +1,73 @@
+{
+  "name": "multi-agent-framework",
+  "version": "1.1.0",
+  "description": "A lightweight, observable multi-agent orchestration framework in TypeScript with multi-provider LLM support",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "pixelagent": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "config",
+    "examples",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    ".env.example"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3617375681/PIXELAGENT-HUB.git"
+  },
+  "bugs": {
+    "url": "https://github.com/3617375681/PIXELAGENT-HUB/issues"
+  },
+  "homepage": "https://github.com/3617375681/PIXELAGENT-HUB#readme",
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx --test src/**/*.test.ts",
+    "dev": "tsx examples/content-pipeline.ts",
+    "example:pipeline": "tsx examples/content-pipeline.ts",
+    "example:code-review": "tsx examples/code-review.ts",
+    "example:debate": "tsx examples/debate.ts",
+    "example:vote": "tsx examples/vote.ts",
+    "example:company": "tsx examples/company-mode.ts",
+    "records:api": "tsx src/web/server.ts",
+    "load:test": "node scripts/load-test.js",
+    "ui:dev": "npm --prefix _template_frontend/app run dev",
+    "ui:build": "npm --prefix _template_frontend/app run build",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "agent",
+    "multi-agent",
+    "orchestration",
+    "ai",
+    "llm",
+    "typescript",
+    "pipeline",
+    "debate",
+    "openai",
+    "anthropic",
+    "claude"
+  ],
+  "author": "Kclaw",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.6.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "js-yaml": "^4.1.1",
+    "zod": "^4.4.1"
+  }
+}

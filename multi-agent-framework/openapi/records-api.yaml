@@ -1,0 +1,343 @@
+openapi: 3.0.3
+info:
+  title: Multi-Agent Records API
+  version: 1.0.0
+  description: |
+    HTTP API for multi-agent runs, sessions, and runtime.
+    Use header `X-API-Key` or `Authorization: Bearer <key>` when auth is enabled.
+servers:
+  - url: http://127.0.0.1:3100
+paths:
+  /health:
+    get:
+      summary: Liveness
+      responses:
+        '200':
+          description: OK
+  /health/readiness:
+    get:
+      summary: Readiness (writable records + runtime snapshot)
+      responses:
+        '200':
+          description: OK
+        '503':
+          description: Not ready
+  /api/run/{mode}:
+    post:
+      summary: Execute orchestration mode
+      parameters:
+        - name: mode
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [pipeline, parallel, debate, vote, roundtable, company]
+        - name: stream
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ['1']
+          description: When `stream=1`, response is `text/event-stream` (meta, progress, done or error events)
+        - name: async
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ['1']
+          description: When `async=1`, returns 202 immediately with jobId; poll GET /api/runtime/jobs/{jobId} until runResult is set (mutually exclusive with stream=1)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                description:
+                  type: string
+                sessionId:
+                  type: string
+                agentIds:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: JSON result or SSE stream
+        '202':
+          description: Accepted when async=1 (body includes jobId and jobUrl)
+        '400':
+          description: Bad request / unsupported mode
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict or cancelled
+        '429':
+          description: Rate limit or queue full
+        '504':
+          description: Timeout
+  /api/runtime/metrics:
+    get:
+      summary: Runtime queue snapshot
+      responses:
+        '200':
+          description: Metrics
+  /api/runtime/jobs:
+    get:
+      summary: List recent jobs
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Job list
+  /api/runtime/jobs/{jobId}:
+    get:
+      summary: Get one job by id (includes runResult when async job finished)
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job record
+        '404':
+          description: Not found
+  /api/runtime/jobs/{jobId}/cancel:
+    post:
+      summary: Request cancellation of a queued or running job
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cancel accepted
+        '404':
+          description: Job not found
+        '409':
+          description: Job not cancellable
+  /api/knowledge/stats:
+    get:
+      summary: Knowledge retriever status and vector index stats
+      responses:
+        '200':
+          description: stats or disabled flag
+  /api/knowledge/index:
+    post:
+      summary: Rebuild local embedding index from provided documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                documents:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      title: { type: string }
+                      text: { type: string }
+                      sourceUrl: { type: string }
+      responses:
+        '200':
+          description: Rebuild summary
+        '400':
+          description: Invalid payload or embedding retriever disabled
+  /api/intelligence/workflows:
+    get:
+      summary: List intelligence workflows from YAML config
+      responses:
+        '200':
+          description: Workflow list
+  /api/intelligence/workflows/validate:
+    post:
+      summary: Validate workflow config payload
+      responses:
+        '200':
+          description: Validation ok
+        '400':
+          description: Validation failed
+  /api/intelligence/workflows/reload:
+    post:
+      summary: Reload workflow config (or replace via body)
+      responses:
+        '200':
+          description: Reloaded
+  /api/intelligence/trigger:
+    post:
+      summary: Trigger one workflow run manually
+      responses:
+        '200':
+          description: Run created
+  /api/intelligence/events:
+    post:
+      summary: Trigger event-based workflows by eventType
+      responses:
+        '200':
+          description: Matched runs
+  /api/intelligence/runs:
+    get:
+      summary: List intelligence runs
+      responses:
+        '200':
+          description: Run list
+  /api/intelligence/runs/{runId}:
+    get:
+      summary: Get run details
+      parameters:
+        - name: runId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Run detail
+        '404':
+          description: Not found
+  /api/intelligence/approvals:
+    get:
+      summary: List approvals
+      responses:
+        '200':
+          description: Approval list
+  /api/intelligence/approvals/{approvalId}/resolve:
+    post:
+      summary: Resolve approval by approve/reject
+      parameters:
+        - name: approvalId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resolved approval
+        '400':
+          description: Invalid payload
+  /api/intelligence/metrics:
+    get:
+      summary: Intelligence pipeline metrics
+      responses:
+        '200':
+          description: Metrics
+  /api/intelligence/self-improve:
+    post:
+      summary: Run knowledge QA eval for N rounds and tune retrieval scorer weights
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rounds:
+                  type: integer
+                  minimum: 1
+                  maximum: 20
+      responses:
+        '200':
+          description: Per-round metrics and artifact paths
+        '400':
+          description: Empty or invalid dataset
+        '500':
+          description: Eval failure
+  /api/intelligence/self-improve/history:
+    get:
+      summary: List on-disk self-improve round summaries (round-*.json)
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: History rows sorted by round
+  /api/intelligence/retrieval-scorer:
+    get:
+      summary: Current embedding retrieval linear scorer weights (JSON path when configured)
+      responses:
+        '200':
+          description: Weights and optional file path
+  /api/sessions:
+    get:
+      summary: List session summaries
+      responses:
+        '200':
+          description: Sessions
+        '401':
+          description: Unauthorized when auth is enabled
+  /api/sessions/{sessionId}:
+    get:
+      summary: Load session.json and output.md for one session
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session payload and markdown
+        '401':
+          description: Unauthorized when auth is enabled
+        '404':
+          description: Session not found
+    delete:
+      summary: Delete a session directory
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted
+        '401':
+          description: Unauthorized when auth is enabled
+  /api/memory:
+    get:
+      summary: Read memory slice from session.json
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Memory blob
+        '400':
+          description: Missing sessionId
+        '401':
+          description: Unauthorized when auth is enabled
+  /api/export:
+    get:
+      summary: Write session index JSON under records root
+      parameters:
+        - name: sessionId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: When set, writes `exports/{sessionId}.json` with a single-session snapshot instead of the global index
+      responses:
+        '200':
+          description: Path to written JSON file
+        '401':
+          description: Unauthorized when auth is enabled
+        '404':
+          description: Session not found (scoped export only)

@@ -1,0 +1,31 @@
+version: 1
+workflows:
+  - id: competitor-monitor
+    name: Competitor Monitor
+    enabled: true
+    trigger:
+      type: cron
+      cron: "0 9 * * *"
+    sources:
+      - kind: search
+        query: "竞品A 产品更新"
+        maxItems: 5
+      - kind: search
+        query: "竞品B 融资动态"
+        maxItems: 5
+    analysis:
+      maxItems: 10
+      riskThreshold: medium
+    decision:
+      autoExecuteBelow: medium
+    actions:
+      - type: create_task
+        target: product-manager
+        params:
+          title: "评估竞品变化"
+          assignee: "pm"
+      - type: send_message
+        target: product-group
+        params:
+          text: "竞品动态预警，请查看今日摘要"
+
