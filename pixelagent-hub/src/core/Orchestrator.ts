@@ -1,17 +1,33 @@
 import { Agent, AgentConfig, OrchestratorConfig, Task, TaskResult, PipelineStep, VoteResult, VoteCandidate, TaskRunControl } from './types.js';
 import { MessageBusImpl } from './MessageBus.js';
 import { TaskRouter } from './TaskRouter.js';
+import { RunQueue } from './RunQueue.js';
 
 export class Orchestrator {
   private bus: MessageBusImpl;
   private router: TaskRouter;
   private agents: Map<string, Agent> = new Map();
   private config: OrchestratorConfig;
+  private runQueue: RunQueue | null = null;
 
   constructor(config: OrchestratorConfig, bus?: MessageBusImpl) {
     this.config = config;
     this.bus = bus || new MessageBusImpl();
     this.router = new TaskRouter(this.bus);
+  }
+
+  /** Enable concurrency control for parallel operations. */
+  enableQueue(maxConcurrency: number = 5, maxQueueSize: number = 50): this {
+    this.runQueue = new RunQueue(maxConcurrency, maxQueueSize);
+    return this;
+  }
+
+  getQueueSnapshot(): { running: number; queued: number } {
+    if (!this.runQueue) return { running: 0, queued: 0 };
+    return {
+      running: this.runQueue.getRunningCount(),
+      queued: this.runQueue.getQueuedCount(),
+    };
   }
 
   getBus(): MessageBusImpl {
@@ -74,12 +90,15 @@ export class Orchestrator {
   // 并行模式：多 Agent 同时执行同一任务
   async runParallel(task: Task, agentIds: string[], control?: TaskRunControl): Promise<TaskResult[]> {
     const merged = this.mergeExec(task, control);
-    const promises = agentIds.map(async (id) => {
+    const runner = async (id: string) => {
       const r = await this.runTask(merged, id, control);
       control?.emit?.({ type: 'parallel_agent_done', agentId: id, status: r.status });
       return r;
-    });
-    return Promise.all(promises);
+    };
+    if (this.runQueue) {
+      return Promise.all(agentIds.map((id) => this.runQueue!.push(() => runner(id))));
+    }
+    return Promise.all(agentIds.map(runner));
   }
 
   // 辩论模式：多 Agent 互相挑战
@@ -95,16 +114,17 @@ export class Orchestrator {
     for (let i = 1; i <= rounds; i++) {
       if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
       control?.emit?.({ type: 'debate_round_start', round: i });
-      const promises = agentIds.map(id =>
+      const runner = (id: string) =>
         this.runTask({
           id: `debate-${i}-${id}`,
           type: 'debate',
           description: topic,
           context: currentContext,
-        }, id, control)
-      );
+        }, id, control);
 
-      const results = await Promise.all(promises);
+      const results = this.runQueue
+        ? await Promise.all(agentIds.map((id) => this.runQueue!.push(() => runner(id))))
+        : await Promise.all(agentIds.map(runner));
       control?.emit?.({ type: 'debate_round_done', round: i });
       history.push({ round: i, results });
       currentContext.previousRound = results;
@@ -128,22 +148,23 @@ export class Orchestrator {
     const tieBreakBy = options?.tieBreakBy ?? 'highest_score';
     const weights = options?.weights || {};
     const control = options?.control;
-    const results = await Promise.all(
-      agentIds.map(async (id) => {
-        const r = await this.runTask(
-          {
-            id: `vote-${Date.now()}-${id}`,
-            type: 'vote',
-            description: topic,
-            context: { topic },
-          },
-          id,
-          control
-        );
-        control?.emit?.({ type: 'vote_agent_done', agentId: id, status: r.status });
-        return r;
-      })
-    );
+    const runner = async (id: string) => {
+      const r = await this.runTask(
+        {
+          id: `vote-${Date.now()}-${id}`,
+          type: 'vote',
+          description: topic,
+          context: { topic },
+        },
+        id,
+        control
+      );
+      control?.emit?.({ type: 'vote_agent_done', agentId: id, status: r.status });
+      return r;
+    };
+    const results = this.runQueue
+      ? await Promise.all(agentIds.map((id) => this.runQueue!.push(() => runner(id))))
+      : await Promise.all(agentIds.map(runner));
     const candidates: VoteCandidate[] = results.map((result, index) => {
       const base = this.scoreResult(result);
       const weight = weights[result.agentId] ?? 1;

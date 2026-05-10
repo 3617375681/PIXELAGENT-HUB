@@ -179,7 +179,26 @@ async function main() {
 
       case 'roundtable': {
         const RoundtableRunner = (await import('./core/RoundtableRunner.js')).RoundtableRunner;
-        const retriever = new (await import('./core/retriever.js')).LocalKeywordRetriever();
+        // Prefer embedding-based retriever when Ollama is available, fall back to keyword
+        let retriever: any;
+        try {
+          const { LocalEmbeddingRetriever } = await import('./core/embeddingRetriever.js');
+          const storePath = process.env.EMBEDDING_STORE_PATH || './records/embedding-store.json';
+          retriever = new LocalEmbeddingRetriever({
+            storePath,
+            model: process.env.EMBEDDING_MODEL || 'nomic-embed-text',
+            defaultDocuments: (await import('./core/retriever.js')).DEFAULT_KNOWLEDGE_BASE,
+          });
+          // Build index if store doesn't exist yet
+          try {
+            await retriever.buildIndex();
+          } catch {
+            // Ollama not running — fall back to keyword retriever
+            retriever = new (await import('./core/retriever.js')).LocalKeywordRetriever();
+          }
+        } catch {
+          retriever = new (await import('./core/retriever.js')).LocalKeywordRetriever();
+        }
         const participants = typeof options.agents === 'string'
           ? options.agents.split(',')
           : ['researcher', 'writer', 'reviewer'];

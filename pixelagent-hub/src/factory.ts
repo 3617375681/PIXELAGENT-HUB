@@ -66,6 +66,9 @@ export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvide
     defaultPipeline: 'content-creation',
   }, bus);
 
+  // Enable concurrency control for parallel operations (debate, vote, parallel modes)
+  orchestrator.enableQueue(5, 50);
+
   // Register all preset agents with shared bus and LLM provider
   orchestrator.registerAgent(new ResearchAgent(bus, provider));
   orchestrator.registerAgent(new WriterAgent(bus, provider));
