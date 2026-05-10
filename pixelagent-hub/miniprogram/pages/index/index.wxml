@@ -1,0 +1,114 @@
+<!-- PixelAgent Hub — Dashboard Page -->
+<view class="page-dashboard">
+  <!-- Header -->
+  <view class="header">
+    <view class="header-left">
+      <text class="logo-text text-green pixel-font">PIXELAGENT HUB</text>
+      <text class="sub-text text-muted pixel-font">Multi-Agent Console</text>
+    </view>
+    <view class="header-right">
+      <view class="status-dot {{backendOk ? 'status-ok' : 'status-err'}}" />
+      <text class="status-label {{backendOk ? 'text-green' : 'text-red'}} pixel-font">
+        {{backendOk ? 'ONLINE' : 'OFFLINE'}}
+      </text>
+      <text class="settings-btn" bindtap="onSettingsTap">⚙</text>
+    </view>
+  </view>
+
+  <!-- Health status -->
+  <view wx:if="{{!backendOk}}" class="offline-banner">
+    <text class="text-amber">Backend offline — tap ⚙ to set API URL</text>
+  </view>
+
+  <!-- Agent Grid -->
+  <view class="section">
+    <text class="section-title pixel-font text-green">◆ AGENTS</text>
+    <view class="agent-grid">
+      <view wx:for="{{agents}}" wx:key="id"
+        class="agent-card pixel-card"
+        data-id="{{item.id}}"
+        bindtap="onAgentTap"
+      >
+        <text class="agent-icon">{{item.icon}}</text>
+        <text class="agent-name pixel-font">{{item.name}}</text>
+        <text class="agent-role text-muted">{{item.role}}</text>
+        <view class="agent-status {{item.status}}" />
+      </view>
+    </view>
+  </view>
+
+  <!-- Orchestration Modes -->
+  <view class="section">
+    <text class="section-title pixel-font text-green">◆ ORCHESTRATION MODES</text>
+    <view class="mode-grid">
+      <view wx:for="{{modes}}" wx:key="id"
+        class="mode-card pixel-card"
+        data-mode="{{item.id}}"
+        bindtap="onSelectMode"
+      >
+        <text class="mode-icon">{{item.icon}}</text>
+        <view class="mode-info">
+          <text class="mode-name pixel-font">{{item.label}}</text>
+          <text class="mode-desc text-muted">{{item.desc}}</text>
+        </view>
+        <text class="mode-arrow">→</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Recent Sessions -->
+  <view class="section">
+    <text class="section-title pixel-font text-green">◆ RECENT SESSIONS</text>
+    <view wx:if="{{sessionLoading}}" class="loading-row">
+      <text class="text-muted">Loading...</text>
+    </view>
+    <view wx:elif="{{sessions.length === 0}}" class="empty-row">
+      <text class="text-muted">No sessions yet — run a mode above</text>
+    </view>
+    <view wx:else class="session-list">
+      <view wx:for="{{sessions}}" wx:key="id"
+        class="session-item pixel-card"
+        data-id="{{item.id}}"
+        bindtap="onSessionTap"
+      >
+        <text class="session-name pixel-font">{{item.name || item.id}}</text>
+        <view class="session-meta">
+          <text class="badge badge-mode">{{item.mode || '—'}}</text>
+          <text class="badge" wx:if="{{item.status}}">{{item.status}}</text>
+        </view>
+        <text class="session-time text-muted">{{item.updated || item.created || ''}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Task Input Modal -->
+  <view wx:if="{{showTaskInput}}" class="modal-mask" bindtap="onCancelTask">
+    <view class="modal-card" catchtap="">
+      <text class="modal-title pixel-font text-green">New {{selectedMode}} Task</text>
+      <textarea
+        class="task-input pixel-input"
+        placeholder="Describe your task..."
+        value="{{taskInput}}"
+        bindinput="onTaskInput"
+        auto-focus
+        maxlength="2000"
+      />
+      <view class="modal-actions">
+        <button class="pixel-btn pixel-btn-sm" bindtap="onCancelTask">Cancel</button>
+        <button
+          class="pixel-btn pixel-btn-primary pixel-btn-sm"
+          bindtap="onSubmitTask"
+          disabled="{{running}}"
+          loading="{{running}}"
+        >
+          {{running ? 'Running...' : 'Run ' + selectedMode}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Bottom Tab Bar -->
+  <view class="bottom-bar">
+    <button class="pixel-btn" bindtap="onSettingsTap">Settings</button>
+  </view>
+</view>

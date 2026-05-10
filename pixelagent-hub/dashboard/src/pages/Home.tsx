@@ -29,7 +29,7 @@ export default function Home() {
   const [showExport, setShowExport] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showCodePanel, setShowCodePanel] = useState(false);
-  const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(true);
   const [mobileTab, setMobileTab] = useState<'flow' | 'chat'>('flow');
   const [flowScale, setFlowScale] = useState(0.8);
   const [themeName, setThemeName] = useState<ThemeName>('hacker-green');
@@ -50,7 +50,7 @@ export default function Home() {
   const handleRunWorkflow = useCallback(() => {
     soundEngine.statusChange('thinking');
     triggerClickFlash('#f59e0b');
-    runWorkflow();
+    void runWorkflow();
     addToast('Workflow started', 'success');
   }, [runWorkflow, addToast, triggerClickFlash]);
 
@@ -198,7 +198,7 @@ export default function Home() {
           <div className="h-4 w-px bg-white/10 hidden sm:block mx-0.5" />
           {/* ARCHIVE + START + RESET */}
           <div className="hidden sm:flex items-center gap-1">
-            <Link to="/live" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-2 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#22d3ee', backgroundColor: '#22d3ee' }} title="Live 控制台（Records API 会话）">
+            <Link to="/live" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-2 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#22d3ee', backgroundColor: '#22d3ee' }} title="Live Console (Records API Sessions)">
               <Terminal size={12} style={{ color: '#12121a' }} />
               <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>LIVE</span>
             </Link>
@@ -255,7 +255,7 @@ export default function Home() {
               className="shrink-0 flex flex-col border-l border-white/10 overflow-hidden"
               style={{ backgroundColor: theme.card }}
             >
-              <ChatPanel messages={allMessages} theme={theme} activeAgentId={null} isRunning={isRunning} />
+              <ChatPanel theme={theme} activeAgentId={null} isRunning={isRunning} onRunMode={() => { handleRunWorkflow(); }} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -283,7 +283,7 @@ export default function Home() {
                 </button>
               </div>
               <div className="flex-1 overflow-hidden">
-                <ChatPanel messages={allMessages} theme={theme} activeAgentId={null} isRunning={isRunning} />
+                <ChatPanel theme={theme} activeAgentId={null} isRunning={isRunning} onRunMode={() => { handleRunWorkflow(); }} />
               </div>
             </motion.div>
           )}

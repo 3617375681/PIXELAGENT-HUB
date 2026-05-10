@@ -1402,6 +1402,102 @@ async function handleRequest(req: any, res: any): Promise<void> {
     return;
   }
 
+  if (req.method === 'POST' && pathname === '/api/chat') {
+    statusCode = 200;
+    mode = 'chat';
+    const input = await readBody(req);
+    const messages: Array<{ role: string; content: any }> = Array.isArray(input?.messages) ? input.messages : [];
+    const stream = input?.stream !== false;
+
+    const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
+    const userText = typeof lastUserMsg?.content === 'string'
+      ? lastUserMsg.content
+      : Array.isArray(lastUserMsg?.content)
+        ? lastUserMsg.content.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('\n')
+        : '';
+
+    if (!userText && messages.length === 0) {
+      statusCode = 400;
+      sendError(res, 400, 'BAD_REQUEST', 'messages is required', requestId);
+      finishLog();
+      return;
+    }
+
+    const task = buildTask({
+      id: `chat-${Date.now()}`,
+      description: userText || 'chat',
+      type: 'chat',
+      context: { messages, systemPrompt: input?.systemPrompt || '' },
+    });
+
+    const chatId = `chat-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const writeSse = (event: string, data: unknown) => {
+      const line = typeof data === 'string' ? data : JSON.stringify(data);
+      res.write(`event: ${event}\ndata: ${line}\n\n`);
+    };
+
+    try {
+      const orchestrator = createOrchestrator('ChatAPI');
+
+      if (stream) {
+        res.writeHead(200, {
+          'Content-Type': 'text/event-stream; charset=utf-8',
+          'Cache-Control': 'no-cache, no-transform',
+          Connection: 'keep-alive',
+          'Access-Control-Allow-Origin': '*',
+        });
+        writeSse('meta', { chatId, stream: true });
+
+        const emitProgress = (e: RunProgressEvent) => { writeSse('progress', e); };
+
+        const result = await withTimeout(
+          orchestrator.runTask(task, 'writer', { signal: new AbortController().signal, emit: emitProgress }),
+          resolveRunTimeoutMs(config, 'chat'),
+          'CHAT_RUN',
+        );
+
+        const content = typeof result.output === 'string'
+          ? result.output
+          : result.output?.content || result.output?.summary || JSON.stringify(result.output || {});
+
+        writeSse('done', { chatId, content, reasoning: result.reasoning, llmUsage: result.metadata?.llmUsage });
+        res.end();
+      } else {
+        const result = await withTimeout(
+          orchestrator.runTask(task, 'writer'),
+          resolveRunTimeoutMs(config, 'chat'),
+          'CHAT_RUN',
+        );
+
+        const content = typeof result.output === 'string'
+          ? result.output
+          : result.output?.content || result.output?.summary || JSON.stringify(result.output || {});
+
+        sendJson(res, 200, { chatId, content, reasoning: result.reasoning, llmUsage: result.metadata?.llmUsage });
+      }
+    } catch (err) {
+      logError('chat.failed', { requestId, error: String(err) });
+      const errorMessage = String(err);
+      if (errorMessage.includes('_TIMEOUT_')) {
+        if (stream && res.headersSent) {
+          writeSse('error', { message: 'Chat request timed out' });
+          res.end();
+        } else {
+          sendError(res, 504, 'TIMEOUT', 'Chat request timed out', requestId);
+        }
+      } else {
+        if (stream && res.headersSent) {
+          writeSse('error', { message: errorMessage });
+          res.end();
+        } else {
+          sendError(res, 500, 'INTERNAL_ERROR', errorMessage, requestId);
+        }
+      }
+    }
+    finishLog();
+    return;
+  }
+
   statusCode = 404;
   sendError(res, 404, 'NOT_FOUND', 'Not found', requestId);
   finishLog();

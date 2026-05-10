@@ -101,7 +101,7 @@ export default function LiveArchivePage() {
         <div className="flex-1 overflow-auto pixel-scrollbar p-4">
           {!currentRound ? (
             <div className="flex items-center justify-center h-full text-white/20">
-              <span className="pixel-font text-sm">{workflow ? 'No rounds' : '加载中…'}</span>
+              <span className="pixel-font text-sm">{workflow ? 'No rounds' : 'Loading...'}</span>
             </div>
           ) : (
             <div className="space-y-4 max-w-3xl mx-auto">

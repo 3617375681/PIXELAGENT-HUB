@@ -1,0 +1,123 @@
+<!-- PixelAgent Hub — Chat Page -->
+<view class="chat-page">
+
+  <!-- Header -->
+  <view class="chat-header">
+    <text class="chat-title pixel-font text-green">AGENT CHAT</text>
+    <view class="header-actions">
+      <text wx:if="{{streaming}}" class="text-amber animate-blink">STREAMING</text>
+      <text wx:else class="text-muted">{{messages.length}} msgs</text>
+    </view>
+  </view>
+
+  <!-- Message List -->
+  <scroll-view
+    scroll-y
+    class="msg-list"
+    scroll-into-view="{{scrollToView}}"
+    scroll-with-animation
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- Empty State -->
+    <view wx:if="{{messages.length === 0}}" class="empty-state">
+      <text class="empty-icon">⚡</text>
+      <text class="empty-title pixel-font text-green">PIXELAGENT CHAT</text>
+      <text class="empty-desc text-muted">
+        Start a conversation with AI agents. Type / for commands.
+      </text>
+      <view class="empty-hints">
+        <view wx:for="{{['clear','help','run','code','export','tokens']}}" wx:key="*this"
+          class="hint-chip"
+          bindtap="onHintTap"
+          data-cmd="{{item}}"
+        >
+          <text class="text-muted">/{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Messages -->
+    <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="msg-wrapper">
+      <!-- System Message -->
+      <view wx:if="{{item.role === 'system'}}" class="system-msg">
+        <text class="system-label text-blue pixel-font">SYSTEM</text>
+        <view class="system-body">
+          <text class="system-text">{{item.content}}</text>
+        </view>
+      </view>
+
+      <!-- User / Assistant Message -->
+      <message-card
+        wx:else
+        msg="{{item}}"
+        bindretry="onRetryLast"
+        data-index="{{index}}"
+      />
+    </view>
+  </scroll-view>
+
+  <!-- Attached Files Preview -->
+  <view wx:if="{{pickedFiles.length}}" class="attachments-bar">
+    <view wx:for="{{pickedFiles}}" wx:key="path" class="file-chip"
+      data-index="{{index}}"
+      bindtap="onPreviewFile"
+    >
+      <text class="file-icon">📎</text>
+      <text class="file-name">{{item.name}}</text>
+      <text class="file-remove" bindtap="onRemoveFile" data-index="{{index}}">✕</text>
+    </view>
+  </view>
+
+  <!-- Slash Command Menu -->
+  <view wx:if="{{showSlashMenu && slashMatches.length}}" class="slash-menu">
+    <view wx:for="{{slashMatches}}" wx:key="cmd" class="slash-item"
+      data-index="{{index}}"
+      bindtap="onSlashSelect"
+    >
+      <text class="slash-cmd text-green">/{{item.cmd}}</text>
+      <text class="slash-desc text-muted">{{item.desc}}</text>
+      <text class="slash-usage text-muted">{{item.usage}}</text>
+    </view>
+  </view>
+
+  <!-- Composer -->
+  <view class="composer">
+    <view class="composer-actions">
+      <text class="composer-btn" bindtap="onPickFile">📎</text>
+      <text class="composer-btn" bindtap="onPickImage">📷</text>
+    </view>
+    <view class="input-wrapper">
+      <input
+        class="composer-input pixel-input"
+        value="{{draft}}"
+        bindinput="onDraftInput"
+        bindconfirm="onConfirm"
+        placeholder="Type a message... (Type / for commands)"
+        confirm-type="send"
+        adjust-position="{{true}}"
+        focus="{{true}}"
+      />
+    </view>
+    <button
+      wx:if="{{!streaming}}"
+      class="composer-send pixel-btn pixel-btn-primary"
+      bindtap="onSend"
+      disabled="{{!draft.trim() && !pickedFiles.length}}"
+    >
+      ↑
+    </button>
+    <button
+      wx:else
+      class="composer-stop pixel-btn"
+      bindtap="onCancelStream"
+    >
+      ■
+    </button>
+  </view>
+
+  <!-- Debug Footer -->
+  <view wx:if="{{debugMode}}" class="debug-bar">
+    <text class="text-muted">Debug mode ON | Stream: {{streaming}} | Tokens: {{tokensTotal}}</text>
+  </view>
+</view>

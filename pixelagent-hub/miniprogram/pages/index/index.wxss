@@ -1,0 +1,276 @@
+/* PixelAgent Hub — Dashboard Styles */
+
+.page-dashboard {
+  min-height: 100vh;
+  padding-bottom: 80rpx;
+}
+
+/* ===== Header ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: #0a0a14;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.logo-text {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.sub-text {
+  font-size: 18rpx;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.status-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+}
+
+.status-ok {
+  background: #00ff88;
+  box-shadow: 0 0 8rpx #00ff8888;
+}
+
+.status-err {
+  background: #ef4444;
+}
+
+.status-label {
+  font-size: 18rpx;
+}
+
+.settings-btn {
+  font-size: 32rpx;
+  padding: 8rpx;
+}
+
+/* ===== Offline Banner ===== */
+.offline-banner {
+  margin: 16rpx 32rpx;
+  padding: 16rpx;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  font-size: 22rpx;
+  text-align: center;
+}
+
+/* ===== Section ===== */
+.section {
+  padding: 24rpx 32rpx;
+}
+
+.section-title {
+  font-size: 22rpx;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+/* ===== Agent Grid ===== */
+.agent-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.agent-card {
+  width: 150rpx;
+  padding: 20rpx 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  position: relative;
+}
+
+.agent-icon {
+  font-size: 36rpx;
+}
+
+.agent-name {
+  font-size: 18rpx;
+  text-align: center;
+}
+
+.agent-role {
+  font-size: 16rpx;
+  text-align: center;
+}
+
+.agent-status {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: #666;
+}
+
+.agent-status.idle { background: #666; }
+.agent-status.working { background: #f59e0b; animation: pulse-border 1s infinite; }
+.agent-status.done { background: #00ff88; }
+
+/* ===== Mode Grid ===== */
+.mode-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.mode-card {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 20rpx;
+}
+
+.mode-card:active {
+  background: rgba(0, 255, 136, 0.05);
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
+.mode-icon {
+  font-size: 40rpx;
+  width: 60rpx;
+  text-align: center;
+}
+
+.mode-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.mode-name {
+  font-size: 26rpx;
+}
+
+.mode-desc {
+  font-size: 20rpx;
+}
+
+.mode-arrow {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Sessions ===== */
+.loading-row, .empty-row {
+  padding: 24rpx;
+  text-align: center;
+  font-size: 22rpx;
+}
+
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 20rpx;
+}
+
+.session-item:active {
+  background: rgba(0, 180, 255, 0.05);
+}
+
+.session-name {
+  font-size: 22rpx;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-meta {
+  display: flex;
+  gap: 6rpx;
+}
+
+.badge {
+  font-size: 16rpx;
+  padding: 2rpx 10rpx;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.badge-mode {
+  color: #00d4ff;
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.session-time {
+  font-size: 18rpx;
+}
+
+/* ===== Modal ===== */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-card {
+  width: 600rpx;
+  background: #111122;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 32rpx;
+}
+
+.modal-title {
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.task-input {
+  width: 100%;
+  min-height: 160rpx;
+  box-sizing: border-box;
+  margin-bottom: 20rpx;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12rpx;
+}
+
+/* ===== Bottom Bar ===== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16rpx 32rpx;
+  background: #0a0a14;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}

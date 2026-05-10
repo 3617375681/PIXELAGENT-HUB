@@ -102,7 +102,7 @@ export default function OpsConsole() {
       <header className="flex flex-wrap items-end justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
         <div>
           <h1 className="text-lg font-semibold tracking-tight text-slate-100">NanoClaw</h1>
-          <p className="text-[11px] text-slate-500 mt-0.5">轻量控制台 · 与 Records API 一一对应</p>
+          <p className="text-[11px] text-slate-500 mt-0.5">Lightweight console · Maps 1:1 to Records API</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link to="/" className={btn}>
@@ -121,7 +121,7 @@ export default function OpsConsole() {
 
       <details open className={details}>
         <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-slate-400 hover:text-slate-200">
-          API 状态
+          API Status
         </summary>
         <div className="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
           <div>
@@ -299,7 +299,7 @@ export default function OpsConsole() {
             <JsonBlock value={scorer} />
             {!knowledgeEmbedReady && (
               <p className="text-[11px] text-amber-300/90 mt-2">
-                Index 需要 embedding：ENABLE_EMBEDDING_RETRIEVER + Ollama（见服务端 .env.example）。
+                Index requires embedding: ENABLE_EMBEDDING_RETRIEVER + Ollama (see server .env.example).
               </p>
             )}
             <textarea
@@ -330,7 +330,7 @@ export default function OpsConsole() {
 
       <details open className={details}>
         <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-slate-400 hover:text-slate-200">
-          POST /api/run/:mode — 经典编排（pipeline / parallel / debate / vote / roundtable / company）
+          POST /api/run/:mode — Classic orchestration (pipeline / parallel / debate / vote / roundtable / company)
         </summary>
         <div className="px-3 pb-3 space-y-2">
           <div className="flex flex-wrap gap-2 items-center">

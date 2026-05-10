@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Agent, Round } from '@/types/agent';
@@ -61,11 +61,6 @@ export default function LiveHome() {
 
   const currentRound = workflow?.rounds?.[roundIndex];
   const currentAgents: Agent[] = currentRound?.agents || [];
-  const chatMessages = useMemo(() => {
-    const fromWorkflow = workflow?.rounds?.flatMap((r: Round) => r.messages || []) || [];
-    return [...fromWorkflow, ...live.pendingUserOutputs];
-  }, [workflow, live.pendingUserOutputs]);
-
   const triggerClickFlash = useCallback(
     (color?: string) => {
       setClickFlash({ color: color || theme.primary, key: Date.now() });
@@ -74,22 +69,11 @@ export default function LiveHome() {
     [theme.primary]
   );
 
-  const handleChatSend = useCallback(
-    async (text: string, files: File[]) => {
-      soundEngine.message();
-      triggerClickFlash('#a855f7');
-      const out = await live.submitCompanyFollowUp(text, files);
-      if (out.ok) addToast('已提交补充需求（company 异步），可稍后刷新会话列表', 'success');
-      else if (out.message) addToast(out.message, 'error');
-    },
-    [live, addToast, triggerClickFlash],
-  );
-
   const handleRunCompany = useCallback(async () => {
     soundEngine.statusChange('thinking');
     triggerClickFlash('#f59e0b');
     const out = await live.triggerCompanyRun();
-    if (out.ok) addToast('已提交 company 异步任务，可稍后刷新查看新会话', 'success');
+    if (out.ok) addToast('Company async task submitted, refresh to see new sessions', 'success');
     else if (out.message) addToast(out.message, 'error');
     await live.refresh();
   }, [live, addToast, triggerClickFlash]);
@@ -98,7 +82,7 @@ export default function LiveHome() {
     soundEngine.click();
     triggerClickFlash('#38bdf8');
     await live.refresh();
-    addToast('已刷新', 'info');
+    addToast('Refreshed', 'info');
   }, [live, addToast, triggerClickFlash]);
 
   const nextRound = useCallback(() => {
@@ -196,7 +180,7 @@ export default function LiveHome() {
             <span className="pixel-font text-[11px] glow-text leading-none" style={{ color: theme.primary }}>
               LIVE · RECORDS
             </span>
-            <span className="pixel-font text-[7px] text-white/30 leading-none mt-0.5">API 会话映射</span>
+            <span className="pixel-font text-[7px] text-white/30 leading-none mt-0.5">API Session Mapping</span>
           </div>
         </div>
 
@@ -212,7 +196,7 @@ export default function LiveHome() {
               else navigate(`/live/session/${encodeURIComponent(v)}`);
             }}
           >
-            <option value="">— 选择会话 —</option>
+            <option value="">-- Select Session --</option>
             {live.sessions.map((s) => (
               <option key={s.sessionId} value={s.sessionId}>
                 {s.sessionId.slice(0, 48)} · {s.status}
@@ -222,7 +206,7 @@ export default function LiveHome() {
           <button
             type="button"
             className="pixel-btn-secondary p-1.5 shrink-0"
-            title="刷新列表与会话"
+            title="Refresh list and session"
             onClick={() => void handleRefresh()}
             disabled={live.isLoading}
           >
@@ -231,7 +215,7 @@ export default function LiveHome() {
         </div>
 
         <div className="hidden md:flex items-center gap-2 mx-auto">
-          <span className="pixel-font text-[10px] text-white/70 truncate max-w-[14rem]">{workflow?.name || '未选择'}</span>
+          <span className="pixel-font text-[10px] text-white/70 truncate max-w-[14rem]">{workflow?.name || 'None selected'}</span>
           <div className="flex items-center gap-0.5">
             <button type="button" onClick={prevRound} disabled={roundIndex <= 0} className="pixel-btn-secondary p-1 disabled:opacity-30">
               <ChevronLeft size={12} />
@@ -345,7 +329,7 @@ export default function LiveHome() {
           <div className="flex-1 overflow-hidden relative flex items-center justify-center">
             {!workflow || live.isLoading ? (
               <div className="text-center pixel-font text-xs text-white/40 px-4">
-                {live.isLoading ? '加载 session…' : '请从上方选择一条会话，或在 Ops 运行任务后刷新。'}
+                {live.isLoading ? 'Loading session...' : 'Select a session above, or run a task in Ops then refresh.'}
               </div>
             ) : (
               <AgentFlow
@@ -374,13 +358,11 @@ export default function LiveHome() {
               style={{ backgroundColor: theme.card }}
             >
               <ChatPanel
-                messages={chatMessages}
                 theme={theme}
                 activeAgentId={null}
                 isRunning={live.isSubmitting}
-                sessionId={sessionId}
-                onSend={handleChatSend}
                 enableSeedance
+                onRunMode={() => { void handleRunCompany(); }}
               />
             </motion.div>
           )}
@@ -482,16 +464,16 @@ export default function LiveHome() {
             </h2>
             <div className="space-y-2 pixel-font-body text-xs text-white/60">
               <div>
-                <span className="text-white/90">R</span> — 再次提交 company（async）
+                <span className="text-white/90">R</span> — Re-submit company (async)
               </div>
               <div>
-                <span className="text-white/90">E</span> — 导出
+                <span className="text-white/90">E</span> — Export
               </div>
               <div>
-                <span className="text-white/90">C</span> — 聊天侧栏
+                <span className="text-white/90">C</span> — Chat sidebar
               </div>
               <div>
-                <span className="text-white/90">Esc</span> — 关闭面板
+                <span className="text-white/90">Esc</span> — Close panels
               </div>
             </div>
           </div>

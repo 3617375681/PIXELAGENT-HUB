@@ -63,7 +63,7 @@ export OPENAI_API_KEY=sk-...
 
 ## 可视化监控面板
 
-`_template_frontend/` 提供完整的 React 可视化控制台：
+`dashboard/` 提供完整的 React 可视化控制台：
 
 - **Agent 拓扑图**：d3-force 力导向布局，可拖拽、缩放、折叠
 - **实时状态**：idle → thinking → done/error 状态流转
@@ -73,7 +73,7 @@ export OPENAI_API_KEY=sk-...
 - **快捷键**：R=运行 E=导出 C=聊天 M=静音 +/-缩放
 
 ```bash
-cd _template_frontend/app
+cd dashboard
 npm install
 npm run dev
 ```
@@ -88,7 +88,7 @@ pixelagent-hub/
 │   ├── web/               # REST API（鉴权、限流、健康检查、运行时管理）
 │   ├── intelligence/      # 情报流水线（采集→分析→决策→执行→监控）
 │   └── factory.ts         # 一键组装 Orchestrator
-├── _template_frontend/    # React 可视化监控面板
+├── dashboard/             # React 可视化监控面板
 ├── examples/              # 可直接运行的演示脚本
 ├── config/                # 工作流配置与 eval 数据
 └── records/               # 执行记录落盘

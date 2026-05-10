@@ -1,0 +1,38 @@
+<!-- PixelAgent Hub — Message Card Component -->
+<view class="msg-card {{msg.role === 'user' ? 'msg-user' : 'msg-assistant'}} animate-slide-up">
+  <!-- Header -->
+  <view class="msg-header">
+    <text class="msg-role {{msg.role === 'user' ? 'text-green' : 'text-blue'}}">
+      {{msg.role === 'user' ? 'YOU' : 'ASSISTANT'}}
+    </text>
+    <text class="msg-type-badge {{msg.type === 'error' ? 'badge-error' : msg.type === 'streaming' ? 'badge-streaming' : 'badge-info'}}">
+      {{msg.role === 'user' ? 'INPUT' : msg.type === 'error' ? 'ERROR' : msg.type === 'streaming' ? 'STREAMING' : 'OUTPUT'}}
+    </text>
+    <text class="msg-time text-muted">{{msg.time}}</text>
+    <block wx:if="{{msg.type === 'error'}}">
+      <text class="msg-retry text-red" bindtap="onRetry">RETRY</text>
+    </block>
+  </view>
+
+  <!-- Content -->
+  <view class="msg-body">
+    <text class="msg-content" wx:if="{{!msg.streaming}}">{{msg.content || '...'}}</text>
+    <view wx:if="{{msg.streaming}}" class="msg-streaming">
+      <text>{{msg.content}}</text>
+      <text class="cursor-blink">|</text>
+    </view>
+  </view>
+
+  <!-- Attachments -->
+  <view wx:if="{{msg.attachments && msg.attachments.length}}" class="msg-attachments">
+    <image wx:for="{{msg.attachments}}" wx:key="id"
+      wx:if="{{item.mime.indexOf('image/') === 0}}"
+      src="{{item.url}}"
+      mode="widthFix"
+      class="msg-img"
+      bindtap="onPreviewImage"
+      data-url="{{item.url}}"
+    />
+    <text wx:else class="msg-file text-muted">{{item.name}}</text>
+  </view>
+</view>

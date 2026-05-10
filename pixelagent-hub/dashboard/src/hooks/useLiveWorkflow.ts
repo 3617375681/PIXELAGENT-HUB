@@ -84,7 +84,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
 
   const triggerCompanyRun = useCallback(async (): Promise<{ ok: boolean; message?: string }> => {
     if (!runPayload) {
-      const message = '当前会话缺少 task 字段，无法从 UI 重跑 company 模式';
+      const message = 'Session missing task field, cannot re-run company mode from UI';
       setError(message);
       return { ok: false, message };
     }
@@ -106,19 +106,19 @@ export function useLiveWorkflow(sessionId: string | undefined) {
   const submitCompanyFollowUp = useCallback(
     async (text: string, files: File[]): Promise<{ ok: boolean; message?: string }> => {
       if (!sessionId) {
-        const message = '请先选择一条会话';
+        const message = 'Please select a session first';
         setError(message);
         return { ok: false, message };
       }
       const base = baselinePayloadRef.current || runPayload;
       if (!base) {
-        const message = '当前会话缺少 task，无法提交补充需求';
+        const message = 'Session missing task, cannot submit follow-up request';
         setError(message);
         return { ok: false, message };
       }
       const trimmed = text.trim();
       if (!trimmed && files.length === 0) {
-        const message = '请输入文字或选择附件';
+        const message = 'Please enter text or select files';
         setError(message);
         return { ok: false, message };
       }
@@ -138,11 +138,11 @@ export function useLiveWorkflow(sessionId: string | undefined) {
         );
         const appendix =
           trimmed && uploaded.length
-            ? `\n\n【用户补充】\n${trimmed}\n\n附件（可引用 URL）：\n${fileLines.join('\n')}\n`
+            ? `\n\n[User Supplement]\n${trimmed}\n\nAttachments (referenceable URLs):\n${fileLines.join('\n')}\n`
             : trimmed
-              ? `\n\n【用户补充】\n${trimmed}\n`
+              ? `\n\n[User Supplement]\n${trimmed}\n`
               : uploaded.length
-                ? `\n\n【用户补充 — 附件】\n${fileLines.join('\n')}\n`
+                ? `\n\n[User Supplement — Attachments]\n${fileLines.join('\n')}\n`
                 : '';
 
         const payload = {
@@ -169,7 +169,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
           id: `user-${Date.now()}`,
           agentId: 'user',
           role: 'user',
-          content: trimmed || '（已上传附件）',
+          content: trimmed || '(Files uploaded)',
           timestamp: Date.now(),
           type: 'info',
           attachments: uploaded.map((a) => ({

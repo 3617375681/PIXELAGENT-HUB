@@ -3,14 +3,14 @@ import type { Agent, AgentOutput, AgentStep, AgentThinking, Round, Workflow } fr
 type Json = Record<string, unknown>;
 
 const AGENT_META: Record<string, { name: string; role: string; icon: string; color: string }> = {
-  manager: { name: '项目经理', role: '规划与拆解', icon: '📋', color: '#38bdf8' },
-  researcher: { name: '研究员', role: '资料与事实', icon: '🔍', color: '#a78bfa' },
-  writer: { name: '写手', role: '撰稿', icon: '✍️', color: '#34d399' },
-  senior_editor: { name: '资深编辑', role: '审核', icon: '📝', color: '#fbbf24' },
-  director: { name: '内容总监', role: '终审', icon: '🎬', color: '#f472b6' },
-  reviewer: { name: '审核员', role: '质检', icon: '✅', color: '#fb923c' },
-  coder: { name: '工程师', role: '实现', icon: '💻', color: '#22d3ee' },
-  moderator: { name: '主持', role: '控场', icon: '🎤', color: '#94a3b8' },
+  manager: { name: 'Manager', role: 'Planning & Decomposition', icon: '📋', color: '#38bdf8' },
+  researcher: { name: 'Researcher', role: 'Research & Facts', icon: '🔍', color: '#a78bfa' },
+  writer: { name: 'Writer', role: 'Drafting', icon: '✍️', color: '#34d399' },
+  senior_editor: { name: 'Senior Editor', role: 'Review', icon: '📝', color: '#fbbf24' },
+  director: { name: 'Director', role: 'Final Review', icon: '🎬', color: '#f472b6' },
+  reviewer: { name: 'Reviewer', role: 'QA', icon: '✅', color: '#fb923c' },
+  coder: { name: 'Engineer', role: 'Implementation', icon: '💻', color: '#22d3ee' },
+  moderator: { name: 'Moderator', role: 'Facilitation', icon: '🎤', color: '#94a3b8' },
 };
 
 function metaFor(id: string) {
@@ -25,7 +25,7 @@ function parseTime(iso?: string): number {
 
 function truncate(s: string, max = 4000): string {
   if (s.length <= max) return s;
-  return `${s.slice(0, max)}\n\n… (已截断)`;
+  return `${s.slice(0, max)}\n\n... (truncated)`;
 }
 
 function stepsFromReasoning(agentId: string, reasoning?: string): AgentStep[] {
@@ -34,8 +34,8 @@ function stepsFromReasoning(agentId: string, reasoning?: string): AgentStep[] {
     return [
       {
         id: `${agentId}-s1`,
-        title: '完成',
-        description: '已写入会话记录',
+        title: 'Complete',
+        description: 'Written to session record',
         status: 'completed',
         timestamp: Date.now(),
       },
@@ -43,7 +43,7 @@ function stepsFromReasoning(agentId: string, reasoning?: string): AgentStep[] {
   }
   return raw.split('\n').slice(0, 12).map((line, i) => ({
     id: `${agentId}-s${i}`,
-    title: `步骤 ${i + 1}`,
+    title: `Step ${i + 1}`,
     description: line.slice(0, 240),
     status: 'completed' as const,
     timestamp: Date.now() - (12 - i) * 1000,
@@ -72,7 +72,7 @@ function makeAgent(
     icon: m.icon,
     color: m.color,
     status: 'done',
-    statusMessage: '已从 Records 恢复',
+    statusMessage: 'Restored from Records',
     progress: 100,
     outputs,
     thinking: thinkingFor(id, reasoning),
@@ -92,7 +92,7 @@ function asObj(v: unknown): Json | null {
 function companySessionToWorkflow(session: Json): Workflow {
   const sessionId = String(session.sessionId || 'session');
   const task = asObj(session.task);
-  const desc = typeof task?.description === 'string' ? task.description : 'Records 会话';
+  const desc = typeof task?.description === 'string' ? task.description : 'Records session';
   const startedAt = parseTime(typeof session.startedAt === 'string' ? session.startedAt : undefined);
   const rounds: Round[] = [];
 
@@ -102,11 +102,11 @@ function companySessionToWorkflow(session: Json): Workflow {
   const researchOut = research ? asObj(research.output) : null;
   const planText =
     planOut && typeof planOut.project === 'string'
-      ? `项目：${planOut.project}\n\n${JSON.stringify(planOut.plan ?? planOut, null, 2)}`
+      ? `Project: ${planOut.project}\n\n${JSON.stringify(planOut.plan ?? planOut, null, 2)}`
       : JSON.stringify(plan?.output ?? plan ?? {}, null, 2);
   const researchText =
     researchOut && typeof researchOut.summary === 'string'
-      ? `${researchOut.summary}\n\n要点：\n${(Array.isArray(researchOut.keyPoints) ? researchOut.keyPoints : [])
+      ? `${researchOut.summary}\n\nKey Points:\n${(Array.isArray(researchOut.keyPoints) ? researchOut.keyPoints : [])
           .map((x) => `- ${String(x)}`)
           .join('\n')}`
       : JSON.stringify(research?.output ?? research ?? {}, null, 2);
@@ -154,7 +154,7 @@ function companySessionToWorkflow(session: Json): Workflow {
     const dOut = dObj ? asObj(dObj.output) : null;
     const draftContent =
       dOut && typeof dOut.content === 'string'
-        ? String(dOut.title || '草稿') + '\n\n' + dOut.content
+        ? String(dOut.title || 'Draft') + '\n\n' + dOut.content
         : JSON.stringify(dObj?.output ?? dObj ?? {}, null, 2);
     const reviewContent = rObj
       ? typeof rObj.reasoning === 'string'
@@ -221,7 +221,7 @@ function companySessionToWorkflow(session: Json): Workflow {
       id: 'round-fallback',
       roundNumber: 1,
       agents: [
-        makeAgent('researcher', [], [msg('fb', 'researcher', desc, startedAt)], '无结构化阶段数据，仅展示任务描述'),
+        makeAgent('researcher', [], [msg('fb', 'researcher', desc, startedAt)], 'No structured phase data, showing task description only'),
       ],
       messages: [msg('fb', 'researcher', desc, startedAt)],
       timestamp: startedAt,
@@ -242,7 +242,7 @@ function companySessionToWorkflow(session: Json): Workflow {
 function roundtableSessionToWorkflow(session: Json): Workflow {
   const sessionId = String(session.sessionId || 'session');
   const task = asObj(session.task);
-  const desc = typeof task?.description === 'string' ? task.description : 'Roundtable 会话';
+  const desc = typeof task?.description === 'string' ? task.description : 'Roundtable session';
   const trace = asObj(session.trace);
   const conv = trace && Array.isArray(trace.conversation) ? (trace.conversation as unknown[]) : [];
   const byRound = new Map<number, Json[]>();

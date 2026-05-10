@@ -81,6 +81,7 @@ export function loadWebServerConfig(env: NodeJS.ProcessEnv = process.env): WebSe
     ['vote', 'RUN_TIMEOUT_MS_VOTE'],
     ['roundtable', 'RUN_TIMEOUT_MS_ROUNDTABLE'],
     ['company', 'RUN_TIMEOUT_MS_COMPANY'],
+    ['chat', 'RUN_TIMEOUT_MS_CHAT'],
   ];
   for (const [mode, envKey] of modeEnvPairs) {
     const v = parseOptionalPositiveInt(env[envKey], envKey);
