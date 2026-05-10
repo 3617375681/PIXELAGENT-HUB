@@ -105,8 +105,9 @@ describe('BaseAgent', () => {
     });
 
     assert.ok(result);
-    assert.equal(result!.status, 'failed');
-    assert.equal(result!.metadata?.cancelReason, 'abort');
+    const r = result as TaskResult;
+    assert.equal(r.status, 'failed');
+    assert.equal(r.metadata?.cancelReason, 'abort');
   });
 
   it('should create result with metadata', () => {
