@@ -117,10 +117,12 @@ export const recordsApi = {
   getLiveness: () => request<HealthOk>('/health/liveness'),
   getReadiness: () => request<HealthOk>('/health/readiness'),
 
-  listSessions: () => request<{ sessions: SessionSummary[] }>('/api/sessions'),
-  getSession: (sessionId: string) =>
+  listSessions: (opts?: { signal?: AbortSignal }) =>
+    request<{ sessions: SessionSummary[] }>('/api/sessions', { signal: opts?.signal }),
+  getSession: (sessionId: string, opts?: { signal?: AbortSignal }) =>
     request<{ session: Record<string, unknown>; markdown: string }>(
-      `/api/sessions/${encodeURIComponent(sessionId)}`
+      `/api/sessions/${encodeURIComponent(sessionId)}`,
+      { signal: opts?.signal },
     ),
   deleteSession: (sessionId: string) =>
     request<{ ok: boolean; sessionId: string }>(`/api/sessions/${encodeURIComponent(sessionId)}`, {

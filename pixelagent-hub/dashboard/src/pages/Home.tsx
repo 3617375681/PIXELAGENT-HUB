@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Agent, AgentOutput, Round } from '../types/agent';
 import { useWorkflowData } from '../hooks/useWorkflow';
 import { useIsMobile } from '../hooks/useMediaQuery';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { ToastNotification, useToasts } from '../components/ToastNotification';
 import { ChatPanel } from '../components/ChatPanel';
 import { ThinkingDrawer } from '../components/ThinkingDrawer';
@@ -31,15 +32,20 @@ export default function Home() {
   const [showCodePanel, setShowCodePanel] = useState(false);
   const [showChat, setShowChat] = useState(true);
   const [mobileTab, setMobileTab] = useState<'flow' | 'chat'>('flow');
-  const [flowScale, setFlowScale] = useState(0.8);
-  const [themeName, setThemeName] = useState<ThemeName>('hacker-green');
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [flowScale, setFlowScale] = useLocalStorage<number>('pa.home.flowScale', 0.8);
+  const [themeName, setThemeName] = useLocalStorage<ThemeName>('pa.home.theme', 'hacker-green');
+  const [soundEnabled, setSoundEnabled] = useLocalStorage<boolean>('pa.sound', true);
   const [clickFlash, setClickFlash] = useState<{ color: string; key: number } | null>(null);
   const theme = themes[themeName];
 
   const currentRound = workflow?.rounds?.[currentRoundIndex];
   const currentAgents: Agent[] = currentRound?.agents || [];
   const allMessages: AgentOutput[] = workflow?.rounds?.flatMap((r: Round) => r.messages || []) || [];
+
+  // Sync sound engine with persisted preference on mount + cross-tab updates
+  useEffect(() => {
+    soundEngine.setEnabled(soundEnabled);
+  }, [soundEnabled]);
 
   // Click flash trigger — must be defined BEFORE functions that use it
   const triggerClickFlash = useCallback((color?: string) => {
@@ -48,11 +54,12 @@ export default function Home() {
   }, [theme.primary]);
 
   const handleRunWorkflow = useCallback(() => {
+    if (isRunning) return;
     soundEngine.statusChange('thinking');
     triggerClickFlash('#f59e0b');
     void runWorkflow();
     addToast('Workflow started', 'success');
-  }, [runWorkflow, addToast, triggerClickFlash]);
+  }, [runWorkflow, addToast, triggerClickFlash, isRunning]);
 
   const handleResetWorkflow = useCallback(() => {
     soundEngine.click();
@@ -63,16 +70,18 @@ export default function Home() {
 
   // Sound-enabled toggle wrapper
   const toggleSound = useCallback(() => {
-    const next = !soundEnabled;
-    setSoundEnabled(next);
-    soundEngine.toggle();
-    if (next) {
-      soundEngine.success();
-      triggerClickFlash('#22c55e');
-    } else {
-      triggerClickFlash('#6b7280');
-    }
-  }, [soundEnabled, triggerClickFlash]);
+    setSoundEnabled((prev) => {
+      const next = !prev;
+      if (next) {
+        soundEngine.setEnabled(true);
+        soundEngine.success();
+        triggerClickFlash('#22c55e');
+      } else {
+        triggerClickFlash('#6b7280');
+      }
+      return next;
+    });
+  }, [setSoundEnabled, triggerClickFlash]);
 
   const toggleChat = useCallback(() => {
     setShowChat(v => {
@@ -86,7 +95,8 @@ export default function Home() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      if (e.key === 'r' || e.key === 'R') handleRunWorkflow();
+      if (e.repeat) return;
+      if (e.key === 'r' || e.key === 'R') { if (!isRunning) handleRunWorkflow(); }
       if (e.key === 'e' || e.key === 'E') { soundEngine.openPanel(); setShowExport(true); }
       if (e.key === 'c' || e.key === 'C') toggleChat();
       if (e.key === 'm' || e.key === 'M') toggleSound();
@@ -98,7 +108,7 @@ export default function Home() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleRunWorkflow, handleResetWorkflow, toggleChat, toggleSound]);
+  }, [handleRunWorkflow, handleResetWorkflow, toggleChat, toggleSound, isRunning, setFlowScale]);
 
   const showFlowPanel = !isMobile || mobileTab === 'flow';
   const showMobileChat = isMobile && mobileTab === 'chat';
@@ -119,7 +129,7 @@ export default function Home() {
       )}
 
       {/* Header - V27+ 融合版 */}
-      <header className="shrink-0 border-b border-white/10 px-3 py-2 flex items-center gap-4" style={{ backgroundColor: theme.background }}>
+      <header className="shrink-0 border-b border-white/10 px-3 py-2 flex flex-wrap items-center gap-x-4 gap-y-2" style={{ backgroundColor: theme.background }}>
         {/* LEFT: Brand */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="w-7 h-7 flex items-center justify-center border" style={{ borderColor: theme.primary, backgroundColor: theme.primary + '15' }}>
@@ -337,9 +347,15 @@ export default function Home() {
 
       {/* Shortcuts Modal */}
       {showShortcuts && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={() => setShowShortcuts(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setShowShortcuts(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="home-shortcuts-title"
+        >
           <div className="pixel-card p-6 max-w-sm" onClick={e => e.stopPropagation()}>
-            <h2 className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>KEYBOARD SHORTCUTS</h2>
+            <h2 id="home-shortcuts-title" className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>KEYBOARD SHORTCUTS</h2>
             <div className="space-y-2">
               {[{ key: 'R', desc: 'Run workflow' }, { key: 'E', desc: 'Export' }, { key: 'C', desc: 'Toggle chat' }, { key: 'M', desc: 'Toggle sound' }, { key: '+', desc: 'Zoom in' }, { key: '-', desc: 'Zoom out' }, { key: '0', desc: 'Reset zoom' }, { key: 'Esc', desc: 'Close panels' }, { key: '?', desc: 'Shortcuts' }].map(s => (
                 <div key={s.key} className="flex items-center gap-3">
@@ -354,9 +370,15 @@ export default function Home() {
 
       {/* Agent Detail Modal */}
       {selectedAgent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={() => setSelectedAgent(null)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setSelectedAgent(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="home-agent-detail-title"
+        >
           <div className="pixel-card p-6 max-w-lg w-full max-h-[80vh] overflow-auto" onClick={e => e.stopPropagation()}>
-            <h2 className="pixel-font text-sm" style={{ color: selectedAgent.color }}>{selectedAgent.name}</h2>
+            <h2 id="home-agent-detail-title" className="pixel-font text-sm" style={{ color: selectedAgent.color }}>{selectedAgent.name}</h2>
             <p className="pixel-font-body text-xs">{selectedAgent.role}</p>
             <p className="pixel-font-body text-xs text-white/60 mt-2">{selectedAgent.statusMessage}</p>
           </div>
@@ -368,9 +390,15 @@ export default function Home() {
 
       {/* Code Panel */}
       {showCodePanel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={() => setShowCodePanel(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setShowCodePanel(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="home-code-panel-title"
+        >
           <div className="pixel-card p-6 max-w-lg" onClick={e => e.stopPropagation()}>
-            <h2 className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>CODE SNIPPETS</h2>
+            <h2 id="home-code-panel-title" className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>CODE SNIPPETS</h2>
             <CodeBlock code="// Code snippets placeholder" language="typescript" />
           </div>
         </div>

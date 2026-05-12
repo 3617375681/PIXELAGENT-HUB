@@ -19,6 +19,10 @@ class SoundEngine {
     return this.enabled;
   }
 
+  setEnabled(value: boolean) {
+    this.enabled = value;
+  }
+
   isEnabled() {
     return this.enabled;
   }

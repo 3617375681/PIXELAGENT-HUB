@@ -4,6 +4,7 @@ import type { Agent } from '../types/agent';
 import { AgentCard } from './AgentCard';
 import { DataPacketAnimation } from './effects/DataPacket';
 import { useForceLayout } from '../hooks/useForceLayout';
+import { usePrefersReducedMotion } from '../hooks/useMediaQuery';
 import { Zap, ArrowRight, Search, X, ChevronDown, ChevronRight } from 'lucide-react';
 
 interface ThemeConfig {
@@ -39,6 +40,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState({ w: 1200, h: 800 });
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [collapsedNodes, setCollapsedNodes] = useState<Set<string>>(new Set());
@@ -236,7 +238,8 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
   // Data packets
   const prevAgentsRef = useRef<Record<string, { status: string; progress: number }>>({});
   useEffect(() => {
-    if (isMobile) { setDataPackets([]); return; }
+    if (isMobile || prefersReducedMotion) { setDataPackets([]); return; }
+    const timers: number[] = [];
     agents.forEach((agent) => {
       const prev = prevAgentsRef.current[agent.id];
       if (!prev) return;
@@ -246,7 +249,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
         agent.connections.forEach((targetId, i) => {
           const end = positions[targetId];
           if (end) {
-            setTimeout(() => {
+            const t = window.setTimeout(() => {
               setDataPackets((prevPkts) => [...prevPkts.slice(-20), {
                 id: `pkt-${Date.now()}-${agent.id}-${targetId}-${i}`,
                 from: { x: start.x + PADDING + CARD_W / 2, y: start.y + PADDING + CARD_H / 2 },
@@ -255,6 +258,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
                 icon: agent.icon,
               }]);
             }, i * 200);
+            timers.push(t);
           }
         });
       }
@@ -275,7 +279,8 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
       }
     });
     prevAgentsRef.current = Object.fromEntries(agents.map((a) => [a.id, { status: a.status, progress: a.progress }]));
-  }, [agents, isMobile, positions]);
+    return () => { timers.forEach((t) => window.clearTimeout(t)); };
+  }, [agents, isMobile, positions, prefersReducedMotion]);
 
   const handlePacketComplete = (id: string) => setDataPackets((prev) => prev.filter((p) => p.id !== id));
 
@@ -373,7 +378,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
           <div className="flex items-center gap-2 mb-1">
             <Zap size={12} style={{ color: theme.primary }} />
             <span className="pixel-font text-[9px] glow-text" style={{ color: theme.primary }}>{agents.length} AGENTS</span>
-            {isRunning && <motion.span className="pixel-font text-[7px] px-1.5 py-0.5" style={{ backgroundColor: theme.primary + '30', color: theme.primary }} animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 0.5, repeat: Infinity }}>LIVE</motion.span>}
+            {isRunning && <motion.span className="pixel-font text-[7px] px-1.5 py-0.5" style={{ backgroundColor: theme.primary + '30', color: theme.primary }} animate={prefersReducedMotion ? undefined : { opacity: [1, 0.3, 1] }} transition={prefersReducedMotion ? undefined : { duration: 0.5, repeat: Infinity }}>LIVE</motion.span>}
           </div>
           {agents.map((agent, index) => {
             const depth = treeNodes[agent.id]?.depth ?? 0;
@@ -451,7 +456,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
             const isHighlighted = highlightPath.has(line.id.split('-')[0]) && highlightPath.has(line.id.split('-')[1]);
             return (
               <g key={`${effectSig}-${line.id}`}>
-                {isHighlighted && (
+                {isHighlighted && !prefersReducedMotion && (
                   <motion.path
                     d={`M ${line.x1} ${line.y1} C ${line.cx1} ${line.cy1}, ${line.cx2} ${line.cy2}, ${line.x2} ${line.y2}`}
                     fill="none" stroke={line.color} strokeWidth={6} filter="url(#glow-pulse)"
@@ -465,9 +470,9 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
                   strokeDasharray={line.dashed ? '4,4' : '0'}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: line.active || isHighlighted ? 0.9 : 0.35 }}
-                  transition={{ duration: 1, delay: i * 0.06 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 1, delay: prefersReducedMotion ? 0 : i * 0.06 }}
                 />
-                {line.active && !line.dashed && (
+                {line.active && !line.dashed && !prefersReducedMotion && (
                   <circle r={3} fill={line.color}>
                     <animateMotion dur="2.2s" repeatCount="indefinite" path={`M ${line.x1} ${line.y1} C ${line.cx1} ${line.cy1}, ${line.cx2} ${line.cy2}, ${line.x2} ${line.y2}`} />
                   </circle>
@@ -515,8 +520,8 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
                   className="absolute -inset-1 rounded pointer-events-none"
                   style={{ border: `2px solid ${agent.color}`, boxShadow: `0 0 12px ${agent.color}40` }}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: [0.4, 0.8, 0.4] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+                  animate={prefersReducedMotion ? { opacity: 0.6 } : { opacity: [0.4, 0.8, 0.4] }}
+                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.5, repeat: Infinity }}
                 />
               )}
               {hasChildren && (
@@ -542,7 +547,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
         <span className="pixel-font text-[10px] glow-text" style={{ color: theme.primary }}>
           {agents.length} AGENTS
         </span>
-        {isRunning && <motion.span className="pixel-font text-[8px] px-1.5 py-0.5" style={{ backgroundColor: theme.primary + '30', color: theme.primary }} animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 0.5, repeat: Infinity }}>LIVE</motion.span>}
+        {isRunning && <motion.span className="pixel-font text-[8px] px-1.5 py-0.5" style={{ backgroundColor: theme.primary + '30', color: theme.primary }} animate={prefersReducedMotion ? undefined : { opacity: [1, 0.3, 1] }} transition={prefersReducedMotion ? undefined : { duration: 0.5, repeat: Infinity }}>LIVE</motion.span>}
         {collapsedNodes.size > 0 && (
           <button onClick={() => setCollapsedNodes(new Set())} className="pixel-font text-[7px] px-1.5 py-0.5 border border-white/20 hover:border-white/50 transition-colors" style={{ color: theme.primary }}>
             EXPAND ALL

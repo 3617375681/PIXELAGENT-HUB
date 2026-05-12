@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { Agent, Round } from '@/types/agent';
 import { useLiveWorkflow } from '@/hooks/useLiveWorkflow';
 import { useIsMobile } from '@/hooks/useMediaQuery';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { ToastNotification, useToasts } from '@/components/ToastNotification';
 import { ChatPanel } from '@/components/ChatPanel';
 import { ThinkingDrawer } from '@/components/ThinkingDrawer';
@@ -46,14 +47,19 @@ export default function LiveHome() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [mobileTab, setMobileTab] = useState<'flow' | 'chat'>('flow');
-  const [flowScale, setFlowScale] = useState(0.8);
-  const [themeName, setThemeName] = useState<ThemeName>('hacker-green');
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [flowScale, setFlowScale] = useLocalStorage<number>('pa.live.flowScale', 0.8);
+  const [themeName, setThemeName] = useLocalStorage<ThemeName>('pa.live.theme', 'hacker-green');
+  const [soundEnabled, setSoundEnabled] = useLocalStorage<boolean>('pa.sound', true);
   const [roundIndex, setRoundIndex] = useState(0);
   const [clickFlash, setClickFlash] = useState<{ color: string; key: number } | null>(null);
 
   const theme = themes[themeName];
   const workflow = live.workflow;
+
+  // Sync sound engine with persisted preference on mount and when toggled in another tab
+  useEffect(() => {
+    soundEngine.setEnabled(soundEnabled);
+  }, [soundEnabled]);
 
   useEffect(() => {
     setRoundIndex(0);
@@ -94,11 +100,12 @@ export default function LiveHome() {
   }, [roundIndex]);
 
   const toggleSound = useCallback(() => {
-    const next = !soundEnabled;
-    setSoundEnabled(next);
-    soundEngine.toggle();
-    triggerClickFlash(next ? '#22c55e' : '#6b7280');
-  }, [soundEnabled, triggerClickFlash]);
+    setSoundEnabled((prev) => {
+      const next = !prev;
+      triggerClickFlash(next ? '#22c55e' : '#6b7280');
+      return next;
+    });
+  }, [setSoundEnabled, triggerClickFlash]);
 
   const toggleChat = useCallback(() => {
     setShowChat((v) => {
@@ -116,7 +123,11 @@ export default function LiveHome() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      if (e.key === 'r' || e.key === 'R') void handleRunCompany();
+      if (e.repeat) return;
+      if (e.key === 'r' || e.key === 'R') {
+        if (live.isSubmitting || !sessionId || !live.runPayload) return;
+        void handleRunCompany();
+      }
       if (e.key === 'e' || e.key === 'E') {
         soundEngine.openPanel();
         setShowExport(true);
@@ -149,7 +160,7 @@ export default function LiveHome() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleRunCompany, toggleChat, toggleSound]);
+  }, [handleRunCompany, toggleChat, toggleSound, live.isSubmitting, sessionId, live.runPayload, setFlowScale]);
 
   const showFlowPanel = !isMobile || mobileTab === 'flow';
   const showMobileChat = isMobile && mobileTab === 'chat';
@@ -321,7 +332,28 @@ export default function LiveHome() {
       </header>
 
       {live.error && (
-        <div className="shrink-0 px-3 py-1.5 text-amber-300 pixel-font text-[9px] border-b border-amber-900/40 bg-amber-950/30">{live.error}</div>
+        <div
+          className="shrink-0 px-3 py-1.5 border-b border-amber-900/40 bg-amber-950/30 flex items-center gap-2"
+          role="alert"
+        >
+          <span className="text-amber-300 pixel-font text-[9px] flex-1 truncate" title={live.error}>{live.error}</span>
+          <button
+            type="button"
+            onClick={() => void handleRefresh()}
+            className="pixel-btn-secondary px-2 py-0.5 pixel-font text-[8px] shrink-0"
+            aria-label="Retry refresh"
+          >
+            RETRY
+          </button>
+          <button
+            type="button"
+            onClick={() => live.setError(null)}
+            className="pixel-btn-secondary p-1 shrink-0"
+            aria-label="Dismiss error"
+          >
+            <X size={10} />
+          </button>
+        </div>
       )}
 
       <div className="flex-1 flex overflow-hidden relative">
@@ -455,33 +487,50 @@ export default function LiveHome() {
       )}
 
       {showShortcuts && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={() => setShowShortcuts(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setShowShortcuts(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="live-shortcuts-title"
+        >
           <div className="pixel-card p-6 max-w-sm" onClick={(e) => e.stopPropagation()}>
-            <h2 className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>
+            <h2 id="live-shortcuts-title" className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>
               LIVE SHORTCUTS
             </h2>
             <div className="space-y-2 pixel-font-body text-xs text-white/60">
-              <div>
-                <span className="text-white/90">R</span> — Re-submit company (async)
-              </div>
-              <div>
-                <span className="text-white/90">E</span> — Export
-              </div>
-              <div>
-                <span className="text-white/90">C</span> — Chat sidebar
-              </div>
-              <div>
-                <span className="text-white/90">Esc</span> — Close panels
-              </div>
+              {[
+                ['R', 'Re-submit company (async)'],
+                ['E', 'Export'],
+                ['C', 'Chat sidebar'],
+                ['M', 'Toggle sound'],
+                ['+ / -', 'Zoom in / out'],
+                ['0', 'Reset zoom'],
+                ['?', 'This panel'],
+                ['Esc', 'Close panels'],
+              ].map(([k, d]) => (
+                <div key={k} className="flex items-center gap-3">
+                  <span className="pixel-font text-[10px] px-2 py-1 border min-w-[40px] text-center" style={{ borderColor: theme.primary, color: theme.primary }}>
+                    {k}
+                  </span>
+                  <span>{d}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       )}
 
       {selectedAgent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80" onClick={() => setSelectedAgent(null)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setSelectedAgent(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="live-agent-detail-title"
+        >
           <div className="pixel-card p-6 max-w-lg w-full max-h-[80vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
-            <h2 className="pixel-font text-sm" style={{ color: selectedAgent.color }}>
+            <h2 id="live-agent-detail-title" className="pixel-font text-sm" style={{ color: selectedAgent.color }}>
               {selectedAgent.name}
             </h2>
             <p className="pixel-font-body text-xs">{selectedAgent.role}</p>

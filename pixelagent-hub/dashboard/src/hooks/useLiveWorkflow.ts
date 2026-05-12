@@ -20,22 +20,26 @@ export function useLiveWorkflow(sessionId: string | undefined) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const reloadSessions = useCallback(async () => {
+  const reloadSessions = useCallback(async (signal?: AbortSignal) => {
     try {
-      const r = await recordsApi.listSessions();
+      const r = await recordsApi.listSessions({ signal });
+      if (signal?.aborted) return;
       setSessions(r.sessions || []);
     } catch (e) {
+      if (signal?.aborted) return;
+      if (e instanceof Error && e.name === 'AbortError') return;
       setSessions([]);
       setError(String(e));
     }
   }, []);
 
-  const loadSession = useCallback(async (id: string) => {
+  const loadSession = useCallback(async (id: string, signal?: AbortSignal) => {
     setIsLoading(true);
     setError(null);
     setPendingUserOutputs([]);
     try {
-      const r = await recordsApi.getSession(id);
+      const r = await recordsApi.getSession(id, { signal });
+      if (signal?.aborted) return;
       const session = (r.session || {}) as Record<string, unknown>;
       setWorkflow(sessionJsonToWorkflow(session));
       const task = session.task as Record<string, unknown> | undefined;
@@ -53,17 +57,21 @@ export function useLiveWorkflow(sessionId: string | undefined) {
         baselinePayloadRef.current = null;
       }
     } catch (e) {
+      if (signal?.aborted) return;
+      if (e instanceof Error && e.name === 'AbortError') return;
       setError(String(e));
       setWorkflow(null);
       setRunPayload(null);
       baselinePayloadRef.current = null;
     } finally {
-      setIsLoading(false);
+      if (!signal?.aborted) setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    void reloadSessions();
+    const ctrl = new AbortController();
+    void reloadSessions(ctrl.signal);
+    return () => ctrl.abort();
   }, [reloadSessions]);
 
   useEffect(() => {
@@ -74,7 +82,9 @@ export function useLiveWorkflow(sessionId: string | undefined) {
       setPendingUserOutputs([]);
       return;
     }
-    void loadSession(sessionId);
+    const ctrl = new AbortController();
+    void loadSession(sessionId, ctrl.signal);
+    return () => ctrl.abort();
   }, [sessionId, loadSession]);
 
   const refresh = useCallback(async () => {
