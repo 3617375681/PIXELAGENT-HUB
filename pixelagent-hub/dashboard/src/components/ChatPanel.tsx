@@ -1,11 +1,31 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { AgentOutput, AgentOutputAttachment } from '../types/agent';
 import { mockAgents } from '../data/mockData';
-import { TypewriterText } from './effects/TypewriterText';
 import { useChat } from '../hooks/useChat';
 import { recordsApi, fetchRecordsBinary, getRecordsApiBaseUrl } from '@/lib/recordsApi';
-import { MessageSquare, Clock, User, Radio, Paperclip, Send, Film, ChevronDown, ChevronUp, X, Zap, CornerDownLeft } from 'lucide-react';
+import {
+  MessageSquare,
+  Clock,
+  User,
+  Radio,
+  Paperclip,
+  Send,
+  Film,
+  ChevronDown,
+  ChevronUp,
+  X,
+  Zap,
+  CornerDownLeft,
+  Copy,
+  Check,
+  RefreshCw,
+  ChevronsDown,
+} from 'lucide-react';
 
 interface ThemeConfig {
   primary: string;
@@ -119,10 +139,93 @@ function AttachmentGrid({ items, theme }: { items: AgentOutputAttachment[]; them
   );
 }
 
+// ---- Markdown renderer with syntax-highlighted code blocks ----
+const MarkdownCodeBlock: React.FC<{ language: string; value: string }> = ({ language, value }) => {
+  const [copied, setCopied] = useState(false);
+  const onCopy = () => {
+    void navigator.clipboard.writeText(value);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1200);
+  };
+  return (
+    <div className="relative my-2 group">
+      <button
+        type="button"
+        onClick={onCopy}
+        className="absolute top-1 right-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity pixel-font text-[8px] px-1.5 py-0.5 rounded bg-black/70 text-white/70 hover:text-white border border-white/15"
+      >
+        {copied ? 'COPIED' : 'COPY'}
+      </button>
+      <SyntaxHighlighter
+        language={language || 'text'}
+        style={vscDarkPlus}
+        customStyle={{ margin: 0, fontSize: '12px', borderRadius: 4, padding: '8px 12px' }}
+        codeTagProps={{ style: { fontSize: '12px', fontFamily: 'ui-monospace, monospace' } }}
+      >
+        {value}
+      </SyntaxHighlighter>
+    </div>
+  );
+};
+
+const MarkdownContent: React.FC<{ content: string }> = React.memo(({ content }) => {
+  return (
+    <div className="pixel-font-body text-sm leading-relaxed prose-invert">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          code({ className, children, ...props }) {
+            const text = String(children).replace(/\n$/, '');
+            const match = /language-(\w+)/.exec(className || '');
+            // Treat as block if it contains a newline OR has a language tag
+            const isBlock = match || text.includes('\n');
+            if (isBlock) {
+              return <MarkdownCodeBlock language={match?.[1] || ''} value={text} />;
+            }
+            return (
+              <code className="bg-white/10 px-1 py-0.5 rounded text-[12px] font-mono" {...props}>
+                {children}
+              </code>
+            );
+          },
+          p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+          ul: ({ children }) => <ul className="list-disc ml-4 mb-2 space-y-1">{children}</ul>,
+          ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 space-y-1">{children}</ol>,
+          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+          a: ({ children, href }) => (
+            <a href={href} target="_blank" rel="noreferrer" className="text-cyan-400 underline hover:text-cyan-300">
+              {children}
+            </a>
+          ),
+          h1: ({ children }) => <h1 className="text-base font-bold mb-2 mt-1">{children}</h1>,
+          h2: ({ children }) => <h2 className="text-sm font-bold mb-2 mt-1">{children}</h2>,
+          h3: ({ children }) => <h3 className="text-sm font-semibold mb-1">{children}</h3>,
+          h4: ({ children }) => <h4 className="text-sm font-semibold mb-1">{children}</h4>,
+          blockquote: ({ children }) => (
+            <blockquote className="border-l-2 border-white/30 pl-3 my-2 italic text-white/60">{children}</blockquote>
+          ),
+          table: ({ children }) => (
+            <div className="overflow-x-auto my-2">
+              <table className="text-[12px] border-collapse">{children}</table>
+            </div>
+          ),
+          th: ({ children }) => (
+            <th className="border border-white/20 px-2 py-1 text-left bg-white/5 font-semibold">{children}</th>
+          ),
+          td: ({ children }) => <td className="border border-white/15 px-2 py-1">{children}</td>,
+          hr: () => <hr className="my-3 border-white/15" />,
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+});
+MarkdownContent.displayName = 'MarkdownContent';
+
 export const ChatPanel: React.FC<ChatPanelProps> = ({
   theme,
   activeAgentId,
-  isRunning = false,
   enableSeedance = false,
   onRunMode,
 }) => {
@@ -130,11 +233,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+  const fileUrlsRef = useRef<Map<File, string>>(new Map());
 
-  const [typedMessages, setTypedMessages] = useState<Set<string>>(new Set());
   const [draft, setDraft] = useState('');
   const [picked, setPicked] = useState<File[]>([]);
   const [dragOver, setDragOver] = useState(false);
+  const [atBottom, setAtBottom] = useState(true);
+  const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
   // Slash menu state
   const [slashOpen, setSlashOpen] = useState(false);
@@ -157,25 +262,66 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     isStreaming,
     sendMessage,
     cancelStream,
-    clearMessages,
     retryLast,
+    regenerateLast,
     slashCommands,
   } = useChat({ onRunMode });
 
-  // Auto-scroll to bottom
+  // ---- Manage object URLs for image previews (avoid memory leak) ----
   useEffect(() => {
-    if (scrollRef.current) {
+    const cache = fileUrlsRef.current;
+    const currentSet = new Set(picked);
+    // Revoke URLs for files no longer attached
+    for (const [file, url] of cache) {
+      if (!currentSet.has(file)) {
+        URL.revokeObjectURL(url);
+        cache.delete(file);
+      }
+    }
+    // Create URLs for new image files
+    for (const f of picked) {
+      if (f.type.startsWith('image/') && !cache.has(f)) {
+        cache.set(f, URL.createObjectURL(f));
+      }
+    }
+  }, [picked]);
+
+  // Cleanup all blob URLs on unmount
+  useEffect(() => {
+    const cache = fileUrlsRef.current;
+    return () => {
+      for (const url of cache.values()) URL.revokeObjectURL(url);
+      cache.clear();
+    };
+  }, []);
+
+  // ---- Auto-scroll only when user is near the bottom ----
+  useEffect(() => {
+    if (atBottom && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, atBottom]);
 
-  // Track which messages have been "typed"
-  useEffect(() => {
-    const lastMsg = messages[messages.length - 1];
-    if (lastMsg && !typedMessages.has(lastMsg.id)) {
-      setTypedMessages((prev) => new Set([...prev, lastMsg.id]));
+  const handleScroll = useCallback(() => {
+    if (!scrollRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+    setAtBottom(scrollHeight - scrollTop - clientHeight < 80);
+  }, []);
+
+  const jumpToBottom = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      setAtBottom(true);
     }
-  }, [messages, typedMessages]);
+  }, []);
+
+  // ---- Auto-grow textarea ----
+  useEffect(() => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = Math.min(ta.scrollHeight, 200) + 'px';
+  }, [draft]);
 
   // Seedance polling
   useEffect(() => {
@@ -310,9 +456,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
   // ---- Slash command detection ----
   const updateSlashMenu = useCallback(
-    (value: string) => {
-      // Detect slash: cursor is at a "/" starting a word
-      const cursorPos = value.length; // simplified: use end of text
+    (value: string, cursorPos: number) => {
+      // Use the real cursor position so the slash menu also triggers mid-text
       const textBeforeCursor = value.slice(0, cursorPos);
       const slashMatch = textBeforeCursor.match(/(?:^|\s)\/(\S*)$/);
       if (slashMatch) {
@@ -330,23 +475,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       setSlashOpen(false);
       setSlashMatches([]);
       setSlashIdx(0);
-    },
-    [slashCommands],
-  );
-
-  const executeSlashCommand = useCallback(
-    (cmd: string, args: string) => {
-      setSlashOpen(false);
-      // Clear the slash text from draft
-      setDraft((prev) => {
-        const replaced = prev.replace(/(?:^|\s)\/\S*\s*$/, '').trimEnd();
-        return replaced;
-      });
-      // Execute
-      const command = slashCommands.find((c) => c.cmd === cmd);
-      if (command) {
-        void command.action(args);
-      }
     },
     [slashCommands],
   );
@@ -408,7 +536,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setDraft(value);
-    updateSlashMenu(value);
+    const cursorPos = e.target.selectionStart ?? value.length;
+    updateSlashMenu(value, cursorPos);
   };
 
   return (
@@ -428,143 +557,183 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         </div>
       </div>
 
-      {/* Messages area */}
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-auto pixel-scrollbar p-3 space-y-3"
-        onDragOver={handleDragOver}
-      >
-        <AnimatePresence>
-          {agentOutputs.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center justify-center h-full text-white/20 gap-3"
-            >
-              <Zap size={32} style={{ color: theme.primary + '40' }} />
-              <p className="pixel-font text-[10px] text-center leading-relaxed">
-                Start a conversation with the AI agents.<br />
-                Type <span style={{ color: theme.primary }}>/</span> for commands, or attach files/images.
-              </p>
-              <div className="flex flex-wrap gap-1 justify-center max-w-[280px]">
-                {slashCommands.slice(0, 6).map((cmd) => (
-                  <button
-                    key={cmd.cmd}
-                    type="button"
-                    onClick={() => {
-                      setDraft(`/${cmd.cmd} `);
-                      textareaRef.current?.focus();
-                    }}
-                    className="pixel-font text-[7px] px-1.5 py-0.5 rounded border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
-                  >
-                    /{cmd.cmd}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {agentOutputs.map((msg, index) => {
-            const agent = getAgentInfo(msg);
-            const isLast = index === agentOutputs.length - 1;
-            const isActive = activeAgentId === msg.agentId;
-            const shouldType = isLast && typedMessages.has(msg.id) && msg.role !== 'user';
-            const isStreamingMsg = isLast && msg.type === 'info' && isStreaming;
-
-            return (
+      {/* Messages area (wrapped in relative container so drag overlay + jump button position correctly) */}
+      <div className="relative flex-1 overflow-hidden">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="absolute inset-0 overflow-auto pixel-scrollbar p-3 space-y-3"
+          onDragOver={handleDragOver}
+        >
+          <AnimatePresence>
+            {agentOutputs.length === 0 && (
               <motion.div
-                key={msg.id}
-                initial={{ opacity: 0, x: 20, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ delay: Math.min(index * 0.03, 0.3), duration: 0.3 }}
-                className={`flex gap-2 ${isLast ? 'mb-2' : ''}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center justify-center h-full text-white/20 gap-3"
               >
-                <motion.div
-                  className="w-7 h-7 flex items-center justify-center flex-shrink-0 pixel-border-solid"
-                  style={{
-                    borderColor: isActive ? agent.color : agent.color + '40',
-                    backgroundColor: agent.color + '20',
-                    fontSize: 14,
-                  }}
-                  animate={isActive ? { scale: [1, 1.1, 1] } : {}}
-                  transition={{ duration: 0.5 }}
-                >
-                  {msg.role === 'user' || msg.agentId === 'user' ? (
-                    <User size={14} color={agent.color} />
-                  ) : (
-                    <span>{agent.icon}</span>
-                  )}
-                </motion.div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="pixel-font text-[8px]" style={{ color: agent.color }}>
-                      {agent.name}
-                    </span>
-                    <span
-                      className="pixel-font text-[7px] px-1"
-                      style={{
-                        backgroundColor: typeColors[msg.type] + '20',
-                        color: typeColors[msg.type],
-                        border: `1px solid ${typeColors[msg.type]}`,
+                <Zap size={32} style={{ color: theme.primary + '40' }} />
+                <p className="pixel-font text-[10px] text-center leading-relaxed">
+                  Start a conversation with the AI agents.<br />
+                  Type <span style={{ color: theme.primary }}>/</span> for commands, or attach files/images.
+                </p>
+                <div className="flex flex-wrap gap-1 justify-center max-w-[280px]">
+                  {slashCommands.slice(0, 6).map((cmd) => (
+                    <button
+                      key={cmd.cmd}
+                      type="button"
+                      onClick={() => {
+                        setDraft(`/${cmd.cmd} `);
+                        textareaRef.current?.focus();
                       }}
+                      className="pixel-font text-[7px] px-1.5 py-0.5 rounded border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
                     >
-                      {msg.role === 'user' ? 'INPUT' : isStreamingMsg ? 'STREAMING' : typeLabels[msg.type]}
-                    </span>
-                    {msg.type === 'error' && (
-                      <button
-                        type="button"
-                        onClick={() => retryLast()}
-                        className="pixel-font text-[7px] px-1 text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/60 rounded ml-auto"
-                      >
-                        RETRY
-                      </button>
-                    )}
-                    <span className="pixel-font text-[7px] text-white/20 flex items-center gap-0.5 ml-auto">
-                      <Clock size={8} />
-                      {new Date(msg.timestamp).toLocaleTimeString('en-US', {
-                        hour12: false,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                      })}
-                    </span>
-                  </div>
-                  <div
-                    className="pixel-card p-2"
-                    style={{
-                      borderLeftWidth: 3,
-                      borderLeftColor: isActive ? agent.color : agent.color + '60',
-                      backgroundColor: isActive ? agent.color + '12' : agent.color + '05',
-                    }}
-                  >
-                    {shouldType ? (
-                      <TypewriterText text={msg.content} speed={20} className="pixel-font-body text-sm leading-relaxed" />
-                    ) : (
-                      <p className="pixel-font-body text-sm leading-relaxed whitespace-pre-wrap">{msg.content || (isStreamingMsg ? '...' : '')}</p>
-                    )}
-                    {isStreamingMsg && (
-                      <span className="inline-block w-2 h-4 bg-white/50 animate-pulse ml-0.5 align-middle" />
-                    )}
-                    {msg.attachments && msg.attachments.length > 0 ? (
-                      <AttachmentGrid items={msg.attachments} theme={theme} />
-                    ) : null}
-                  </div>
+                      /{cmd.cmd}
+                    </button>
+                  ))}
                 </div>
               </motion.div>
-            );
-          })}
-        </AnimatePresence>
+            )}
 
-        {/* Drag overlay */}
+            {agentOutputs.map((msg, index) => {
+              const agent = getAgentInfo(msg);
+              const isLast = index === agentOutputs.length - 1;
+              const isActive = activeAgentId === msg.agentId;
+              const isUser = msg.role === 'user' || msg.agentId === 'user';
+              const isStreamingMsg = isLast && msg.type === 'info' && isStreaming;
+              const canRegenerate = !isUser && isLast && !isStreaming && msg.type !== 'error';
+
+              const copyContent = () => {
+                void navigator.clipboard.writeText(msg.content);
+                setCopiedMsgId(msg.id);
+                window.setTimeout(() => setCopiedMsgId((cur) => (cur === msg.id ? null : cur)), 1200);
+              };
+
+              return (
+                <motion.div
+                  key={msg.id}
+                  initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ delay: Math.min(index * 0.03, 0.3), duration: 0.3 }}
+                  className={`group flex gap-2 ${isLast ? 'mb-2' : ''}`}
+                >
+                  <motion.div
+                    className="w-7 h-7 flex items-center justify-center flex-shrink-0 pixel-border-solid"
+                    style={{
+                      borderColor: isActive ? agent.color : agent.color + '40',
+                      backgroundColor: agent.color + '20',
+                      fontSize: 14,
+                    }}
+                    animate={isActive ? { scale: [1, 1.1, 1] } : {}}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {isUser ? (
+                      <User size={14} color={agent.color} />
+                    ) : (
+                      <span>{agent.icon}</span>
+                    )}
+                  </motion.div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="pixel-font text-[8px]" style={{ color: agent.color }}>
+                        {agent.name}
+                      </span>
+                      <span
+                        className="pixel-font text-[7px] px-1"
+                        style={{
+                          backgroundColor: typeColors[msg.type] + '20',
+                          color: typeColors[msg.type],
+                          border: `1px solid ${typeColors[msg.type]}`,
+                        }}
+                      >
+                        {isUser ? 'INPUT' : isStreamingMsg ? 'STREAMING' : typeLabels[msg.type]}
+                      </span>
+                      {msg.type === 'error' && (
+                        <button
+                          type="button"
+                          onClick={() => retryLast()}
+                          className="pixel-font text-[7px] px-1 text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/60 rounded"
+                        >
+                          RETRY
+                        </button>
+                      )}
+                      <span className="pixel-font text-[7px] text-white/20 flex items-center gap-0.5 ml-auto">
+                        <Clock size={8} />
+                        {new Date(msg.timestamp).toLocaleTimeString('en-US', {
+                          hour12: false,
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                        })}
+                      </span>
+                    </div>
+                    <div
+                      className="pixel-card p-2 relative"
+                      style={{
+                        borderLeftWidth: 3,
+                        borderLeftColor: isActive ? agent.color : agent.color + '60',
+                        backgroundColor: isActive ? agent.color + '12' : agent.color + '05',
+                      }}
+                    >
+                      {isUser ? (
+                        <p className="pixel-font-body text-sm leading-relaxed whitespace-pre-wrap break-words">
+                          {msg.content || (isStreamingMsg ? '...' : '')}
+                        </p>
+                      ) : msg.content ? (
+                        <MarkdownContent content={msg.content} />
+                      ) : (
+                        <p className="pixel-font-body text-sm text-white/30">{isStreamingMsg ? '...' : ''}</p>
+                      )}
+                      {isStreamingMsg && (
+                        <span className="inline-block w-2 h-4 bg-white/50 animate-pulse ml-0.5 align-middle" />
+                      )}
+                      {msg.attachments && msg.attachments.length > 0 ? (
+                        <AttachmentGrid items={msg.attachments} theme={theme} />
+                      ) : null}
+
+                      {/* Hover actions for assistant messages */}
+                      {!isUser && msg.content && (
+                        <div className="absolute -bottom-2 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                          <button
+                            type="button"
+                            onClick={copyContent}
+                            title={copiedMsgId === msg.id ? 'Copied!' : 'Copy message'}
+                            className="pixel-font text-[8px] px-1.5 py-0.5 rounded bg-black/70 text-white/60 hover:text-white border border-white/15 flex items-center gap-1"
+                          >
+                            {copiedMsgId === msg.id ? <Check size={9} /> : <Copy size={9} />}
+                            {copiedMsgId === msg.id ? 'COPIED' : 'COPY'}
+                          </button>
+                          {canRegenerate && (
+                            <button
+                              type="button"
+                              onClick={() => regenerateLast()}
+                              title="Regenerate response"
+                              className="pixel-font text-[8px] px-1.5 py-0.5 rounded bg-black/70 text-white/60 hover:text-white border border-white/15 flex items-center gap-1"
+                            >
+                              <RefreshCw size={9} />
+                              REGEN
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+
+        {/* Drag overlay — positioned relative to outer container so it doesn't scroll with content */}
         <AnimatePresence>
           {dragOver && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+              className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none"
               style={{ backgroundColor: theme.primary + '15', border: `2px dashed ${theme.primary}40` }}
             >
               <div className="text-center">
@@ -572,6 +741,25 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 <p className="pixel-font text-[10px]" style={{ color: theme.primary }}>Drop files to attach</p>
               </div>
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Jump-to-bottom button when user has scrolled up */}
+        <AnimatePresence>
+          {!atBottom && agentOutputs.length > 0 && (
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 4 }}
+              onClick={jumpToBottom}
+              className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 pixel-font text-[9px] px-2.5 py-1 rounded-full bg-black/70 hover:bg-black/85 text-white/80 border border-white/20 flex items-center gap-1 shadow-lg"
+              style={{ color: theme.primary }}
+              title="Jump to latest"
+            >
+              <ChevronsDown size={12} />
+              {isStreaming ? 'New messages' : 'Jump to latest'}
+            </motion.button>
           )}
         </AnimatePresence>
       </div>
@@ -589,14 +777,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           <div className="flex flex-wrap gap-1">
             {picked.map((f, i) => {
               const isImg = f.type.startsWith('image/');
+              const previewUrl = isImg ? fileUrlsRef.current.get(f) : undefined;
               return (
                 <span
                   key={`${f.name}-${i}`}
                   className="inline-flex items-center gap-1 pixel-font text-[8px] px-1.5 py-0.5 rounded bg-white/10 text-white/70 max-w-full"
                 >
-                  {isImg && (
+                  {isImg && previewUrl && (
                     <img
-                      src={URL.createObjectURL(f)}
+                      src={previewUrl}
                       alt={f.name}
                       className="w-4 h-4 object-cover rounded"
                     />
@@ -657,9 +846,9 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
-            placeholder="Type a message... (Type / for commands)"
-            rows={2}
-            className="pixel-font-body text-sm w-full bg-transparent outline-none placeholder:text-white/15 text-white/70 resize-none"
+            placeholder="Type a message... (Type / for commands, Ctrl/⌘+Enter to send)"
+            rows={1}
+            className="pixel-font-body text-sm w-full bg-transparent outline-none placeholder:text-white/15 text-white/70 resize-none overflow-y-auto min-h-[40px] max-h-[200px]"
           />
           <div className="flex items-center gap-2">
             <input ref={fileInputRef} type="file" multiple className="hidden" onChange={onPickFiles} accept="image/*,.pdf,.txt,.md,.json,.csv,.js,.ts,.py" />

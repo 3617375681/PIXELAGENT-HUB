@@ -60,7 +60,7 @@ export function useChat(opts: UseChatOptions = {}) {
   const sendMessage = useCallback(async (
     text: string,
     files?: File[],
-    opts?: { systemPrompt?: string },
+    opts?: { systemPrompt?: string; historyOverride?: ChatMessage[] },
   ) => {
     const trimmed = text.trim();
     if (!trimmed && (!files || files.length === 0)) return;
@@ -69,7 +69,7 @@ export function useChat(opts: UseChatOptions = {}) {
     abortRef.current = controller;
 
     // Build user message
-    let content = trimmed || 'Analyze these files';
+    const content = trimmed || 'Analyze these files';
     let userAttachments: AgentOutputAttachment[] | undefined;
 
     if (files && files.length > 0) {
@@ -101,8 +101,9 @@ export function useChat(opts: UseChatOptions = {}) {
     };
     addMessage(userMsg);
 
-    // Build payload
-    const apiMessages = messages.map((m) => ({
+    // Build payload — allow caller to override history (used by regenerateLast)
+    const historyForApi = opts?.historyOverride ?? messages;
+    const apiMessages = historyForApi.map((m) => ({
       role: m.role,
       content: m.content,
     }));
@@ -182,7 +183,6 @@ export function useChat(opts: UseChatOptions = {}) {
               const raw = line.slice(6);
               try {
                 const event = JSON.parse(raw) as Record<string, unknown>;
-                const eventType = (event as any).event || '';
 
                 if (line.includes('event: done') || (event as any)._done) {
                   updateLastMessage((msg) => ({
@@ -256,6 +256,25 @@ export function useChat(opts: UseChatOptions = {}) {
         void sendMessage(userMsg.content);
       }
     }
+  }, [messages, sendMessage]);
+
+  /**
+   * Re-run the last user prompt. Removes the latest assistant response (if any)
+   * and re-sends the most recent user message with the same conversation context.
+   */
+  const regenerateLast = useCallback(() => {
+    let userIdx = -1;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === 'user') {
+        userIdx = i;
+        break;
+      }
+    }
+    if (userIdx === -1) return;
+    const userMsg = messages[userIdx];
+    const truncated = messages.slice(0, userIdx);
+    setMessages(truncated);
+    void sendMessage(userMsg.content, undefined, { historyOverride: truncated });
   }, [messages, sendMessage]);
 
   // Slash commands registry
@@ -433,7 +452,7 @@ export function useChat(opts: UseChatOptions = {}) {
       cmd: '/image',
       desc: '分析图片（请先上传图片文件）',
       usage: '/image <optional question>',
-      action: (args) => {
+      action: () => {
         addMessage({
           id: `sys-${Date.now()}`,
           role: 'system',
@@ -469,6 +488,7 @@ export function useChat(opts: UseChatOptions = {}) {
     cancelStream,
     clearMessages,
     retryLast,
+    regenerateLast,
     addMessage,
     slashCommands,
     slashQuery,

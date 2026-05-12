@@ -391,13 +391,11 @@ export default function LiveHome() {
               </div>
               <div className="flex-1 overflow-hidden">
                 <ChatPanel
-                  messages={chatMessages}
                   theme={theme}
                   activeAgentId={null}
                   isRunning={live.isSubmitting}
-                  sessionId={sessionId}
-                  onSend={handleChatSend}
                   enableSeedance
+                  onRunMode={() => { void handleRunCompany(); }}
                 />
               </div>
             </motion.div>
