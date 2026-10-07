@@ -1,6 +1,14 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { MessageBus, Task, TaskResult } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const moderationSchema = z.object({
+  nextSpeaker: z.string().min(1),
+  guidance: z.string(),
+  converged: z.boolean(),
+  summary: z.string(),
+});
 
 export class ModeratorAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -37,27 +45,9 @@ export class ModeratorAgent extends BaseAgent {
         ].join('\n'),
       }),
       (content) => {
-        const parsed = this.extractJson(content);
-        return {
-          nextSpeaker: parsed.nextSpeaker || participants[(round - 1) % participants.length],
-          guidance: parsed.guidance || `Round ${round}: please speak and cite evidence.`,
-          converged: parsed.converged === true || round >= maxRounds,
-          summary: parsed.summary || '',
-        };
-      },
-      (reason) => {
-        const idx = (round - 1) % participants.length;
-        return this.createResult(
-          task.id,
-          'success',
-          {
-            nextSpeaker: participants[idx],
-            guidance: `Round ${round}: ${participants[idx]}, please speak and cite evidence.`,
-            converged: round >= maxRounds,
-            generatedBy: 'mock',
-          },
-          `mock (${reason}): next speaker = ${participants[idx]}`
-        );
+        const parsed = moderationSchema.parse(this.extractJson(content));
+        if (!participants.includes(parsed.nextSpeaker)) throw new Error('Moderator selected a speaker outside the participants list');
+        return parsed;
       }
     );
   }

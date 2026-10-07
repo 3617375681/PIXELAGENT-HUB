@@ -1,6 +1,14 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const decisionSchema = z.object({
+  verdict: z.enum(['approved_for_delivery', 'rejected']),
+  qualityScore: z.number().min(0).max(100),
+  finalAssessment: z.string(),
+  mustFixBeforeDelivery: z.array(z.string()),
+});
 
 export class DirectorAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -43,50 +51,22 @@ export class DirectorAgent extends BaseAgent {
         ].join('\n'),
       }),
       (content) => {
-        const parsed = this.extractJson(content);
+        const parsed = decisionSchema.parse(this.extractJson(content));
         const approved = parsed.verdict === 'approved_for_delivery';
         return {
           verdict: approved ? 'approved_for_delivery' : 'rejected',
-          qualityScore: Number(parsed.qualityScore) || (approved ? 88 : 55),
+          qualityScore: parsed.qualityScore,
           finalAssessment: parsed.finalAssessment || (approved ? 'Ready for delivery' : 'Not ready'),
           totalRounds,
           deliveryPackage: approved ? {
             content: finalDraft,
-            qualityReport: { rounds: totalRounds, score: parsed.qualityScore || 88 },
+            qualityReport: { rounds: totalRounds, score: parsed.qualityScore },
             recommendedAction: 'Deliver to user',
           } : undefined,
           mustFixBeforeDelivery: parsed.mustFixBeforeDelivery || [],
         };
       },
-      (reason) => {
-        const contentLength = String(finalDraft?.content || '').length;
-        const meetsStandard = totalRounds >= 2 && contentLength >= 1200;
-        return this.createResult(
-          task.id,
-          meetsStandard ? 'success' : 'failed',
-          meetsStandard
-            ? {
-                verdict: 'approved_for_delivery',
-                qualityScore: 90,
-                totalRounds,
-                finalAssessment: 'Content is solid, logical, and ready for delivery',
-                deliveryPackage: {
-                  content: finalDraft,
-                  qualityReport: { rounds: totalRounds, score: 90 },
-                  recommendedAction: 'Deliver to user',
-                },
-                generatedBy: 'mock',
-              }
-            : {
-                verdict: 'rejected',
-                reason: 'Content does not meet delivery standards',
-                decision: 'Send back to team',
-                totalRounds,
-                generatedBy: 'mock',
-              },
-          `mock: ${reason}`
-        );
-      }
+      (output) => output.verdict === 'approved_for_delivery' ? 'success' : 'partial'
     );
   }
 
@@ -100,7 +80,7 @@ export class DirectorAgent extends BaseAgent {
       if (start >= 0 && end > start) {
         try { return JSON.parse(trimmed.slice(start, end + 1)); } catch { /* fall through */ }
       }
-      return {};
+      throw new Error('Invalid director JSON response');
     }
   }
 }

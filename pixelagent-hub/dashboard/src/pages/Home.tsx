@@ -12,25 +12,24 @@ import { AgentFlow } from '../components/AgentFlow';
 import { themes } from '../components/panels/ThemeSwitcher';
 import type { ThemeName } from '../components/panels/ThemeSwitcher';
 import { ExportPanel } from '../components/panels/ExportPanel';
-import { CodeBlock } from '../components/panels/CodeBlock';
 import { ScreenFlash } from '../components/ScreenFlash';
 import { soundEngine } from '../lib/soundEngine';
 import {
-  Zap, ChevronLeft, ChevronRight, Play, RotateCcw, Keyboard, Code2,
-  LayoutGrid, MessageSquare, BookOpen, X, ZoomIn, ZoomOut, Smile, Home as HomeIcon,
-  Volume2, VolumeX, Radio, Terminal, Download
+  Zap, ChevronLeft, ChevronRight, Play, RotateCcw, Keyboard,
+  LayoutGrid, MessageSquare, BookOpen, X, ZoomIn, ZoomOut, Home as HomeIcon,
+  Volume2, VolumeX, Radio, Terminal, Download, MoreHorizontal
 } from 'lucide-react';
 
 export default function Home() {
   const isMobile = useIsMobile();
-  const { workflow, currentRoundIndex, isRunning, runWorkflow, resetWorkflow, nextRound, prevRound, activeAgentId } = useWorkflowData();
+  const { workflow, currentRoundIndex, isRunning, isLoading, runStatus, demoMode, setDemoMode, runWorkflow, resetWorkflow, nextRound, prevRound, activeAgentId } = useWorkflowData();
   const { toasts, addToast, removeToast } = useToasts();
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [thinkingAgent, setThinkingAgent] = useState<Agent | null>(null);
   const [showExport, setShowExport] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
-  const [showCodePanel, setShowCodePanel] = useState(false);
   const [showChat, setShowChat] = useState(true);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [mobileTab, setMobileTab] = useState<'flow' | 'chat'>('flow');
   const [flowScale, setFlowScale] = useLocalStorage<number>('pa.home.flowScale', 0.8);
   const [themeName, setThemeName] = useLocalStorage<ThemeName>('pa.home.theme', 'hacker-green');
@@ -53,13 +52,29 @@ export default function Home() {
     setTimeout(() => setClickFlash(null), 550);
   }, [theme.primary]);
 
-  const handleRunWorkflow = useCallback(() => {
+  const handleRunWorkflow = useCallback(async (prompt?: string) => {
     if (isRunning) return;
     soundEngine.statusChange('thinking');
     triggerClickFlash('#f59e0b');
-    void runWorkflow();
-    addToast('Workflow started', 'success');
+    try {
+      await runWorkflow(prompt);
+      addToast('Session loaded onto canvas', 'success');
+      return true;
+    } catch (error) {
+      addToast(error instanceof Error ? error.message : 'Run failed', 'error');
+      return false;
+    }
   }, [runWorkflow, addToast, triggerClickFlash, isRunning]);
+
+  const handleChatSubmit = useCallback(async (text: string): Promise<{ content: string; error?: boolean }> => {
+    if (isRunning) {
+      return { content: 'Workflow already running, please wait or RESET first.', error: true };
+    }
+    const succeeded = await handleRunWorkflow(text);
+    return succeeded
+      ? { content: `Canvas updated for: "${text.slice(0, 80)}${text.length > 80 ? '...' : ''}".` }
+      : { content: 'Run failed. Check the status message and review the recorded session.', error: true };
+  }, [handleRunWorkflow, isRunning]);
 
   const handleResetWorkflow = useCallback(() => {
     soundEngine.click();
@@ -96,19 +111,19 @@ export default function Home() {
     const handler = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       if (e.repeat) return;
-      if (e.key === 'r' || e.key === 'R') { if (!isRunning) handleRunWorkflow(); }
+      if (e.key === 'r' || e.key === 'R') { if (!isRunning && !isLoading) void handleRunWorkflow(); }
       if (e.key === 'e' || e.key === 'E') { soundEngine.openPanel(); setShowExport(true); }
       if (e.key === 'c' || e.key === 'C') toggleChat();
       if (e.key === 'm' || e.key === 'M') toggleSound();
       if (e.key === '+' || e.key === '=') { soundEngine.click(); setFlowScale(s => Math.min(2.5, s + 0.1)); }
       if (e.key === '-' || e.key === '_') { soundEngine.click(); setFlowScale(s => Math.max(0.3, s - 0.1)); }
       if (e.key === '0') { soundEngine.click(); setFlowScale(1); }
-      if (e.key === 'Escape') { soundEngine.closePanel(); setShowChat(false); setShowExport(false); setShowShortcuts(false); setShowCodePanel(false); setSelectedAgent(null); }
+      if (e.key === 'Escape') { soundEngine.closePanel(); setShowChat(false); setShowExport(false); setShowShortcuts(false); setShowMoreMenu(false); setSelectedAgent(null); }
       if (e.key === '?') { soundEngine.openPanel(); setShowShortcuts(true); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleRunWorkflow, handleResetWorkflow, toggleChat, toggleSound, isRunning, setFlowScale]);
+  }, [handleRunWorkflow, handleResetWorkflow, toggleChat, toggleSound, isRunning, isLoading, setFlowScale]);
 
   const showFlowPanel = !isMobile || mobileTab === 'flow';
   const showMobileChat = isMobile && mobileTab === 'chat';
@@ -143,15 +158,19 @@ export default function Home() {
 
         {/* CENTER: Workflow Name + Round Nav + Radio + Agent Count + Zoom */}
         <div className="hidden md:flex items-center gap-3 mx-auto">
-          <span className="pixel-font text-[10px] text-white/70">{workflow?.name || 'Pixel Weather App'}</span>
-          <div className="flex items-center gap-0.5">
-            <button onClick={() => prevRound()} disabled={currentRoundIndex <= 0} className="pixel-btn-secondary p-1 disabled:opacity-30"><ChevronLeft size={12} /></button>
-            <span className="pixel-font text-[8px] w-10 text-center border border-white/10 px-1 py-0.5">R {currentRoundIndex + 1}/{workflow?.rounds?.length ?? 1}</span>
-            <button onClick={() => nextRound()} disabled={currentRoundIndex >= (workflow?.rounds?.length ?? 1) - 1} className="pixel-btn-secondary p-1 disabled:opacity-30"><ChevronRight size={12} /></button>
-          </div>
+          <span className="pixel-font text-[10px] text-white/70">{workflow?.name || 'Company console'}</span>
+          {(workflow?.rounds?.length ?? 1) > 1 && (
+            <div className="flex items-center gap-0.5">
+              <button onClick={() => prevRound()} disabled={currentRoundIndex <= 0} className="pixel-btn-secondary p-1 disabled:opacity-30"><ChevronLeft size={12} /></button>
+              <span className="pixel-font text-[8px] w-10 text-center border border-white/10 px-1 py-0.5">R {currentRoundIndex + 1}/{workflow.rounds.length}</span>
+              <button onClick={() => nextRound()} disabled={currentRoundIndex >= (workflow?.rounds?.length ?? 1) - 1} className="pixel-btn-secondary p-1 disabled:opacity-30"><ChevronRight size={12} /></button>
+            </div>
+          )}
           <div className="flex items-center gap-1.5">
-            <Radio size={10} className={isRunning ? 'animate-pulse' : ''} style={{ color: isRunning ? '#f59e0b' : theme.primary }} />
-            <span className="pixel-font text-[8px]">{isRunning ? 'RUNNING' : 'READY'}</span>
+            <Radio size={10} className={isRunning || isLoading ? 'animate-pulse' : ''} style={{ color: isLoading ? '#38bdf8' : isRunning ? '#f59e0b' : theme.primary }} />
+            <span className="pixel-font text-[8px]">
+              {isLoading ? 'SYNCING' : isRunning ? 'RUNNING' : 'READY'}
+            </span>
           </div>
           <div className="flex items-center gap-1.5">
             <Terminal size={10} style={{ color: theme.accent }} />
@@ -168,10 +187,8 @@ export default function Home() {
         {/* RIGHT: Tools + Theme + ARCHIVE + START + RESET + CHAT */}
         <div className="flex items-center gap-1 ml-auto">
           <div className="hidden sm:flex items-center gap-1">
-            <button onClick={() => { soundEngine.openPanel(); setShowCodePanel(true); }} className="pixel-btn-secondary p-1.5" title="Code Snippets"><Code2 size={12} /></button>
             <button onClick={() => { soundEngine.openPanel(); setShowExport(true); }} className="pixel-btn-secondary p-1.5" title="Export Report (E)"><Download size={12} /></button>
             <button onClick={() => { soundEngine.openPanel(); setShowShortcuts(true); }} className="pixel-btn-secondary p-1.5" title="Keyboard Shortcuts (?)"><Keyboard size={12} /></button>
-            <button onClick={() => soundEngine.click()} className="pixel-btn-secondary p-1.5" title="Emoji"><Smile size={12} /></button>
             {/* Volume Toggle */}
             <button
               onClick={toggleSound}
@@ -206,34 +223,79 @@ export default function Home() {
             </div>
           </div>
           <div className="h-4 w-px bg-white/10 hidden sm:block mx-0.5" />
-          {/* ARCHIVE + START + RESET */}
+          {/* Navigation Links */}
           <div className="hidden sm:flex items-center gap-1">
             <Link to="/live" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-2 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#22d3ee', backgroundColor: '#22d3ee' }} title="Live Console (Records API Sessions)">
               <Terminal size={12} style={{ color: '#12121a' }} />
               <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>LIVE</span>
             </Link>
-            <Link to="/ops" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-3 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#00d4ff', backgroundColor: '#00d4ff' }} title="NanoClaw console (records API)">
-              <Terminal size={12} style={{ color: '#12121a' }} />
-              <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>NCL</span>
-            </Link>
             <Link to="/archive" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-3 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#a855f7', backgroundColor: '#a855f7' }} title="Archive">
               <BookOpen size={12} style={{ color: '#12121a' }} />
               <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>ARCHIVE</span>
             </Link>
-            <button onClick={handleRunWorkflow} disabled={isRunning} className="flex items-center gap-1.5 px-3 py-1.5 border transition-all disabled:opacity-40" style={{ borderRadius: 4, borderColor: isRunning ? '#f59e0b' : '#22c55e', backgroundColor: isRunning ? '#f59e0b' : '#22c55e' }} title="Start">
-              <Play size={12} style={{ color: isRunning ? '#12121a' : '#12121a' }} />
-              <span className="pixel-font text-[8px] font-bold" style={{ color: isRunning ? '#12121a' : '#12121a' }}>{isRunning ? 'RUNNING' : 'START'}</span>
-            </button>
-            <button onClick={handleResetWorkflow} disabled={isRunning} className="pixel-btn-secondary p-1.5" title="Reset"><RotateCcw size={12} /></button>
+            <div className="relative">
+              <button
+                onClick={() => setShowMoreMenu((v) => !v)}
+                className="pixel-btn-secondary px-2 py-1.5 flex items-center gap-1"
+                title="More tools"
+              >
+                <MoreHorizontal size={12} />
+                <span className="pixel-font text-[8px]">MORE</span>
+              </button>
+              {showMoreMenu && (
+                <div className="absolute right-0 mt-1 w-28 border border-white/15 bg-black/90 p-1 z-30">
+                  <Link
+                    to="/ops"
+                    onClick={() => { soundEngine.click(); setShowMoreMenu(false); }}
+                    className="flex items-center gap-1.5 px-2 py-1.5 hover:bg-white/10"
+                    title="NanoClaw console"
+                  >
+                    <Terminal size={11} className="text-cyan-300" />
+                    <span className="pixel-font text-[8px] text-cyan-200">NCL</span>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-          {/* CHAT */}
-          <button onClick={toggleChat} className="pixel-btn-secondary px-2 py-1.5 flex items-center gap-1" title="Chat (C)">
-            <MessageSquare size={10} />
-            <span className="pixel-font text-[7px]">{showChat ? 'CLOSE' : 'CHAT'}</span>
-            {!showChat && allMessages.length > 0 && <span className="ml-0.5 px-1 rounded-full pixel-font text-[6px] bg-green-500">{allMessages.length}</span>}
-          </button>
+          {/* Primary Actions */}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={handleResetWorkflow}
+              className="flex items-center gap-1.5 px-3 py-1.5 border transition-all disabled:opacity-40"
+              style={{ borderRadius: 4, borderColor: '#f59e0b', backgroundColor: '#f59e0b' }}
+              title={isRunning || isLoading ? "Cancel run and reset workflow" : "Reset workflow"}
+            >
+              <RotateCcw size={12} style={{ color: '#12121a' }} />
+              <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>{isRunning || isLoading ? 'CANCEL' : 'RESET'}</span>
+            </button>
+            <button
+              onClick={toggleChat}
+              className="flex items-center gap-1.5 px-3 py-1.5 border transition-all"
+              style={{
+                borderRadius: 4,
+                borderColor: showChat ? '#ef4444' : '#22c55e',
+                backgroundColor: showChat ? '#ef4444' : '#22c55e',
+              }}
+              title="Toggle chat panel (C)"
+            >
+              <MessageSquare size={12} style={{ color: '#12121a' }} />
+              <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>{showChat ? 'CLOSE' : 'CHAT'}</span>
+              {!showChat && allMessages.length > 0 && (
+                <span className="px-1 rounded-full pixel-font text-[6px] bg-black/60 text-white">{allMessages.length}</span>
+              )}
+            </button>
+          </div>
         </div>
       </header>
+      <div className="shrink-0 px-3 py-1 border-b border-white/5 bg-black/20 flex flex-wrap items-center justify-between gap-2">
+        <span className="pixel-font text-[8px] text-white/55">
+          STATUS: <span style={{ color: isLoading ? "#38bdf8" : isRunning ? "#f59e0b" : theme.primary }}>{runStatus}</span>
+        </span>
+        <label className="flex items-center gap-2 pixel-font text-[8px] text-white/70">
+          <input type="checkbox" checked={demoMode} onChange={(event) => setDemoMode(event.target.checked)} disabled={isRunning || isLoading} />
+          DEMO (synthetic output)
+        </label>
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden relative">
@@ -246,7 +308,7 @@ export default function Home() {
               onSelectAgent={setSelectedAgent}
               onShowThinking={setThinkingAgent}
               theme={theme}
-              isRunning={isRunning}
+              isRunning={isRunning || isLoading}
               isMobile={isMobile}
               scale={flowScale}
               onScaleChange={setFlowScale}
@@ -265,7 +327,7 @@ export default function Home() {
               className="shrink-0 flex flex-col border-l border-white/10 overflow-hidden"
               style={{ backgroundColor: theme.card }}
             >
-              <ChatPanel theme={theme} activeAgentId={null} isRunning={isRunning} onRunMode={() => { handleRunWorkflow(); }} />
+              <ChatPanel theme={theme} activeAgentId={null} isRunning={isRunning} isLoading={isLoading} onSubmit={handleChatSubmit} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -293,7 +355,7 @@ export default function Home() {
                 </button>
               </div>
               <div className="flex-1 overflow-hidden">
-                <ChatPanel theme={theme} activeAgentId={null} isRunning={isRunning} onRunMode={() => { handleRunWorkflow(); }} />
+                <ChatPanel theme={theme} activeAgentId={null} isRunning={isRunning} isLoading={isLoading} onSubmit={handleChatSubmit} />
               </div>
             </motion.div>
           )}
@@ -307,7 +369,7 @@ export default function Home() {
             <LayoutGrid size={18} />
             <span className="pixel-font text-[7px]">FLOW</span>
           </button>
-          <button onClick={handleRunWorkflow} disabled={isRunning}>
+          <button onClick={() => void handleRunWorkflow()} disabled={isRunning || isLoading} title="Run example task">
             <Play size={20} className={isRunning ? 'text-yellow-400 animate-pulse' : 'text-green-400'} />
           </button>
           <button onClick={() => { soundEngine.message(); setMobileTab('chat'); }} className={`flex flex-col items-center gap-0.5 relative ${mobileTab === 'chat' ? 'text-green-400' : 'text-white/30'}`}>
@@ -357,7 +419,7 @@ export default function Home() {
           <div className="pixel-card p-6 max-w-sm" onClick={e => e.stopPropagation()}>
             <h2 id="home-shortcuts-title" className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>KEYBOARD SHORTCUTS</h2>
             <div className="space-y-2">
-              {[{ key: 'R', desc: 'Run workflow' }, { key: 'E', desc: 'Export' }, { key: 'C', desc: 'Toggle chat' }, { key: 'M', desc: 'Toggle sound' }, { key: '+', desc: 'Zoom in' }, { key: '-', desc: 'Zoom out' }, { key: '0', desc: 'Reset zoom' }, { key: 'Esc', desc: 'Close panels' }, { key: '?', desc: 'Shortcuts' }].map(s => (
+              {[{ key: 'R', desc: 'Run example task using the selected mode' }, { key: 'E', desc: 'Export' }, { key: 'C', desc: 'Toggle chat' }, { key: 'M', desc: 'Toggle sound' }, { key: '+', desc: 'Zoom in' }, { key: '-', desc: 'Zoom out' }, { key: '0', desc: 'Reset zoom' }, { key: 'Esc', desc: 'Close panels' }, { key: '?', desc: 'Shortcuts' }].map(s => (
                 <div key={s.key} className="flex items-center gap-3">
                   <span className="pixel-font text-[10px] px-2 py-1 border" style={{ borderColor: theme.primary, color: theme.primary }}>{s.key}</span>
                   <span className="pixel-font-body text-xs text-white/60">{s.desc}</span>
@@ -387,22 +449,6 @@ export default function Home() {
 
       {/* Thinking Drawer */}
       {thinkingAgent && <ThinkingDrawer agent={thinkingAgent} onClose={() => setThinkingAgent(null)} theme={theme} />}
-
-      {/* Code Panel */}
-      {showCodePanel && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
-          onClick={() => setShowCodePanel(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="home-code-panel-title"
-        >
-          <div className="pixel-card p-6 max-w-lg" onClick={e => e.stopPropagation()}>
-            <h2 id="home-code-panel-title" className="pixel-font text-sm mb-4" style={{ color: theme.primary }}>CODE SNIPPETS</h2>
-            <CodeBlock code="// Code snippets placeholder" language="typescript" />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

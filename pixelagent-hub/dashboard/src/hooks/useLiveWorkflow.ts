@@ -19,22 +19,27 @@ export function useLiveWorkflow(sessionId: string | undefined) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [liveStatus, setLiveStatus] = useState('Ready');
 
   const reloadSessions = useCallback(async (signal?: AbortSignal) => {
     try {
+      setLiveStatus('Refreshing session index...');
       const r = await recordsApi.listSessions({ signal });
       if (signal?.aborted) return;
       setSessions(r.sessions || []);
+      setLiveStatus('Session index updated.');
     } catch (e) {
       if (signal?.aborted) return;
       if (e instanceof Error && e.name === 'AbortError') return;
       setSessions([]);
       setError(String(e));
+      setLiveStatus('Failed to refresh session index.');
     }
   }, []);
 
   const loadSession = useCallback(async (id: string, signal?: AbortSignal) => {
     setIsLoading(true);
+    setLiveStatus(`Loading session ${id.slice(0, 16)}...`);
     setError(null);
     setPendingUserOutputs([]);
     try {
@@ -56,6 +61,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
         setRunPayload(null);
         baselinePayloadRef.current = null;
       }
+      setLiveStatus('Session loaded.');
     } catch (e) {
       if (signal?.aborted) return;
       if (e instanceof Error && e.name === 'AbortError') return;
@@ -63,6 +69,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
       setWorkflow(null);
       setRunPayload(null);
       baselinePayloadRef.current = null;
+      setLiveStatus('Failed to load session.');
     } finally {
       if (!signal?.aborted) setIsLoading(false);
     }
@@ -80,6 +87,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
       setRunPayload(null);
       baselinePayloadRef.current = null;
       setPendingUserOutputs([]);
+      setLiveStatus('Pick a session to continue.');
       return;
     }
     const ctrl = new AbortController();
@@ -88,8 +96,10 @@ export function useLiveWorkflow(sessionId: string | undefined) {
   }, [sessionId, loadSession]);
 
   const refresh = useCallback(async () => {
+    setLiveStatus('Refreshing live view...');
     await reloadSessions();
     if (sessionId) await loadSession(sessionId);
+    setLiveStatus('Live view refreshed.');
   }, [reloadSessions, loadSession, sessionId]);
 
   const triggerCompanyRun = useCallback(async (): Promise<{ ok: boolean; message?: string }> => {
@@ -99,14 +109,17 @@ export function useLiveWorkflow(sessionId: string | undefined) {
       return { ok: false, message };
     }
     setIsSubmitting(true);
+    setLiveStatus('Submitting async company rerun...');
     setError(null);
     try {
       await recordsApi.postRun('company', runPayload, { async: true });
       await reloadSessions();
+      setLiveStatus('Rerun submitted. Session list refreshed.');
       return { ok: true };
     } catch (e) {
       const message = String(e);
       setError(message);
+      setLiveStatus('Rerun submission failed.');
       return { ok: false, message };
     } finally {
       setIsSubmitting(false);
@@ -134,6 +147,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
       }
 
       setIsSubmitting(true);
+      setLiveStatus('Submitting follow-up...');
       setError(null);
       try {
         let uploaded: SessionAttachment[] = [];
@@ -191,10 +205,12 @@ export function useLiveWorkflow(sessionId: string | undefined) {
         };
         setPendingUserOutputs((prev) => [...prev, userMsg]);
         await reloadSessions();
+        setLiveStatus('Follow-up submitted.');
         return { ok: true };
       } catch (e) {
         const message = String(e);
         setError(message);
+        setLiveStatus('Follow-up failed.');
         return { ok: false, message };
       } finally {
         setIsSubmitting(false);
@@ -210,6 +226,7 @@ export function useLiveWorkflow(sessionId: string | undefined) {
     pendingUserOutputs,
     isLoading,
     isSubmitting,
+    liveStatus,
     error,
     setError,
     reloadSessions,

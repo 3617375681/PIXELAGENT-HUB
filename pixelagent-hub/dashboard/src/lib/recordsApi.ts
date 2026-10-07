@@ -80,7 +80,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       ...(init?.headers || {}),
     },
   });
-  const body = await res.json().catch(() => ({}));
+  const body = await res.json();
   if (!res.ok) throw new Error(normalizeError(body, res.status));
   return body as T;
 }
@@ -89,7 +89,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 async function postAgentRun(
   mode: AgentRunMode,
   body: Record<string, unknown>,
-  opts?: { async?: boolean; stream?: boolean },
+  opts?: { async?: boolean; stream?: boolean; signal?: AbortSignal },
 ): Promise<unknown> {
   const q = new URLSearchParams();
   if (opts?.async) q.set('async', '1');
@@ -98,6 +98,7 @@ async function postAgentRun(
   const path = `/api/run/${encodeURIComponent(mode)}${qs ? `?${qs}` : ''}`;
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
+    signal: opts?.signal,
     headers: jsonHeaders(),
     body: JSON.stringify(body),
   });
@@ -107,7 +108,7 @@ async function postAgentRun(
     if (!res.ok) throw new Error(`HTTP ${res.status} (stream)`);
     return { _stream: true as const, text };
   }
-  const json = await res.json().catch(() => ({}));
+  const json = await res.json();
   if (!res.ok) throw new Error(normalizeError(json, res.status));
   return json;
 }
@@ -137,8 +138,8 @@ export const recordsApi = {
     ),
   getRuntimeMetrics: () => request<{ runtime: Record<string, unknown> }>('/api/runtime/metrics'),
   listRuntimeJobs: (limit: number = 50) => request<{ jobs: RuntimeJob[] }>(`/api/runtime/jobs?limit=${limit}`),
-  getRuntimeJob: (jobId: string) =>
-    request<RuntimeJobEnvelope>(`/api/runtime/jobs/${encodeURIComponent(jobId)}`),
+  getRuntimeJob: (jobId: string, opts?: { signal?: AbortSignal }) =>
+    request<RuntimeJobEnvelope>(`/api/runtime/jobs/${encodeURIComponent(jobId)}`, { signal: opts?.signal }),
   cancelRuntimeJob: (jobId: string) =>
     request<{ ok: true; jobId: string }>(`/api/runtime/jobs/${encodeURIComponent(jobId)}/cancel`, {
       method: 'POST',

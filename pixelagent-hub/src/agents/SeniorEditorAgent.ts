@@ -1,6 +1,15 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const reviewSchema = z.object({
+  verdict: z.enum(['approved', 'rejected']),
+  score: z.number().min(0).max(100),
+  issues: z.array(z.object({ type: z.string(), severity: z.string(), detail: z.string() })),
+  requiredChanges: z.array(z.string()),
+  suggestions: z.array(z.string()),
+});
 
 export class SeniorEditorAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -11,6 +20,7 @@ export class SeniorEditorAgent extends BaseAgent {
         role: 'quality_gatekeeper',
         capabilities: ['review', 'reject', 'request_changes', 'enforce_standards'],
         systemPrompt: 'You are a senior editor with high standards. If content is not ready, reject it with specific required changes. Output only valid JSON.',
+        timeout: 180_000,
       },
       bus,
       llmProvider
@@ -46,46 +56,17 @@ export class SeniorEditorAgent extends BaseAgent {
         ].join('\n'),
       }),
       (content) => {
-        const parsed = this.extractJson(content);
+        const parsed = reviewSchema.parse(this.extractJson(content));
         return {
           verdict: parsed.verdict || 'rejected',
-          score: Number(parsed.score) || 65,
+          score: parsed.score,
           issues: parsed.issues || [],
           requiredChanges: parsed.requiredChanges || [],
           suggestions: parsed.suggestions || [],
-          nextAction: parsed.nextAction || (parsed.verdict === 'approved' ? 'forward_to_director' : 'revise'),
+          nextAction: parsed.verdict === 'approved' ? 'forward_to_director' : 'revise',
         };
       },
-      (reason) => {
-        const text: string = String(draft?.content || '');
-        const score = Math.max(30, Math.min(92, Math.floor(text.length / 45)));
-        const isPass = round >= 2 && score >= 72;
-        return this.createResult(
-          task.id,
-          isPass ? 'success' : 'partial',
-          isPass
-            ? {
-                verdict: 'approved',
-                score: 88,
-                issues: [{ type: 'polish', severity: 'low', detail: 'Ending could be stronger' }],
-                suggestions: ['Consider adding a future outlook section'],
-                nextAction: 'forward_to_director',
-                generatedBy: 'mock',
-              }
-            : {
-                verdict: 'rejected',
-                score,
-                issues: [
-                  { type: 'content', severity: 'high', detail: 'Mock: insufficient evidence' },
-                  { type: 'structure', severity: 'medium', detail: 'Mock: logical flow needs work' },
-                ],
-                requiredChanges: ['Add at least 3 authoritative data points', 'Rewrite section 2 with better transitions'],
-                nextAction: 'revise',
-                generatedBy: 'mock',
-              },
-          `mock: ${reason}`
-        );
-      }
+      (output) => output.verdict === 'approved' ? 'success' : 'partial'
     );
   }
 
@@ -99,7 +80,7 @@ export class SeniorEditorAgent extends BaseAgent {
       if (start >= 0 && end > start) {
         try { return JSON.parse(trimmed.slice(start, end + 1)); } catch { /* fall through */ }
       }
-      return {};
+      throw new Error('Invalid editor JSON response');
     }
   }
 }

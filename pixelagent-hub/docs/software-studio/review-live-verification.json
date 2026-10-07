@@ -1,0 +1,164 @@
+{
+  "startedAt": "2026-10-07T16:56:21.740Z",
+  "provider": "deepseek",
+  "model": "deepseek-v4-pro",
+  "sourceRecord": "docs/software-studio/search-authoritative-verification.json",
+  "drafts": [
+    {
+      "taskId": "live-review",
+      "agentId": "writer",
+      "status": "success",
+      "output": {
+        "title": "Keyboard Focus in Browser Games: WCAG 2.1/2.2 and Practical Checks",
+        "content": "## Introduction\nBrowser games often default to pointer or touch input, but keyboard access is required by WCAG 2.1/2.2 Success Criterion 2.1.1 Keyboard (Level A): all functionality must be operable through a keyboard interface unless the underlying function requires path-dependent input, such as freehand drawing. That includes game menus, inventory slots, dialogue choices, pause controls, map panning, and core game actions. This does not mean removing mouse support or treating accessibility as unnecessary; it means adding keyboard equivalents.\n\n## Key Requirements\n- **Keyboard interface:** SC 2.1.1 requires a keyboard equivalent for pointer actions. The keyboard interface also includes speech input, on-screen keyboards, and assistive technologies that produce simulated keystrokes. See https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html and https://www.w3.org/WAI/WCAG21/Understanding/keyboard-accessible.\n- **Visible focus indicators:** WCAG 2.4.7 Focus Visible (Level AA) requires a visible focus indicator for keyboard-operated elements. Use `:focus-visible`, never remove the outline, and ensure contrast for game buttons, sliders, tabs, inventory slots, and custom UI. See https://accessibility.build/wcag/2-4-7.\n- **No keyboard traps:** SC 2.1.2 No Keyboard Trap requires that if focus can be moved into a component with the keyboard, it can be moved away with the keyboard alone. In browser games, test modals, pause screens, tutorials, and loading overlays. Provide Esc or another keyboard exit, and return focus to the trigger.\n- **Focus order and management:** Tab order should follow visual and logical order. Move focus programmatically after closing a modal, changing game screens, or opening win/loss dialogs. Use roving tabindex for complex widgets such as inventory grids. See https://accessibility.build/guides/focus-management.\n- **Draft WCAG 3 note:** The W3C draft support material on “focus user-controlled” discusses automatically moving focus after some user actions. This is informative draft material, not a WCAG 2.x requirement. Do not rely on it for conformance. See https://w3c.github.io/wcag3/informative/input-operation/keyboard-interface-input/focus-user-controlled/.\n\n## Analysis: Testable Checks\n1. **Keyboard-only playthrough:** Disable pointer and touch. Can you start the game, complete the core loop, pause, adjust volume, and quit using only Tab, arrow keys, Enter, Space, and Esc? Note any failed action.\n2. **Focus visible audit:** Tab through every interactive element in menus and gameplay. Confirm each shows a visible focus indicator with at least 3:1 contrast against adjacent colors.\n3. **Keyboard trap test:** Tab into every modal, tutorial overlay, pause menu, and loading screen. Can you leave with keyboard alone? If Esc closes it, does focus return to the element that opened it?\n4. **Focus order test:** Move focus through the game and after state changes. Does focus follow logical reading order? Does it disappear behind overlays or stay on hidden elements?\n5. **Pointer-only audit:** List every action that currently requires click, drag, or hover. Add a keyboard equivalent unless it clearly falls under the path-dependent exception.\n\n## Conclusion\nKeyboard focus in browser games is not about forcing mouse-only control or dismissing accessibility. It is about ensuring keyboard users have a complete, visible, and predictable focus path through all interactive game elements. Use the W3C Understanding documents as normative references and accessibility.build guides for implementation patterns. Manual keyboard testing remains essential. This article is educational and not a legal compliance guarantee for any specific game or jurisdiction.",
+        "wordCount": 496,
+        "style": "Practical, accurate guidance with source URLs and actionable checks. Distinguish published WCAG 2.x from draft WCAG 3 guidance; do not imply compliance guarantees.",
+        "targetAudience": "browser game developers",
+        "appliedRevisionNotes": [
+          "Remove the statements that games must use only mouse control and that accessibility is unnecessary.",
+          "Include WCAG 2.1/2.2 keyboard accessibility requirements such as all functionality operable through a keyboard interface.",
+          "Require visible keyboard focus indicators for interactive game elements.",
+          "Address keyboard traps, focus order, and focus management in browser games.",
+          "Provide testable criteria for keyboard focus and non-mouse input."
+        ],
+        "llmUsage": {
+          "prompt_tokens": 970,
+          "completion_tokens": 8216,
+          "total_tokens": 9186
+        },
+        "llmModel": "deepseek-v4-pro",
+        "llmProvider": "deepseek"
+      },
+      "reasoning": "Generated by deepseek/deepseek-v4-pro",
+      "metadata": {
+        "executedAt": "2026-10-07T16:57:41.663Z",
+        "agentName": "Writer"
+      }
+    },
+    {
+      "taskId": "live-review",
+      "agentId": "writer",
+      "status": "failed",
+      "output": null,
+      "reasoning": "LLM error: fetch failed",
+      "metadata": {
+        "executedAt": "2026-10-07T16:59:26.018Z",
+        "agentName": "Writer"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "taskId": "live-review",
+      "agentId": "senior_editor",
+      "status": "partial",
+      "output": {
+        "verdict": "rejected",
+        "score": 0,
+        "issues": [
+          {
+            "type": "accuracy",
+            "severity": "critical",
+            "detail": "States that browser games must use only mouse control, which is false and directly contradicts WCAG keyboard accessibility requirements."
+          },
+          {
+            "type": "accessibility",
+            "severity": "critical",
+            "detail": "Declares accessibility is unnecessary, excluding users with motor, vision, and cognitive disabilities who rely on keyboard or assistive technology."
+          },
+          {
+            "type": "completeness",
+            "severity": "critical",
+            "detail": "Claims there is nothing to test, but keyboard focus, focus visibility, keyboard traps, and alternative input are essential test areas for accessible browser games."
+          }
+        ],
+        "requiredChanges": [
+          "Remove the statements that games must use only mouse control and that accessibility is unnecessary.",
+          "Include WCAG 2.1/2.2 keyboard accessibility requirements such as all functionality operable through a keyboard interface.",
+          "Require visible keyboard focus indicators for interactive game elements.",
+          "Address keyboard traps, focus order, and focus management in browser games.",
+          "Provide testable criteria for keyboard focus and non-mouse input."
+        ],
+        "suggestions": [
+          "Reference WCAG Success Criterion 2.1.1 Keyboard and 2.4.7 Focus Visible.",
+          "Consult the W3C Game Accessibility Guidelines for browser and web game input requirements.",
+          "Add guidance on supporting multiple input modalities, including keyboard-only and assistive technology.",
+          "Include examples of accessible keyboard navigation patterns in game menus and gameplay."
+        ],
+        "nextAction": "revise",
+        "llmUsage": {
+          "prompt_tokens": 213,
+          "completion_tokens": 594,
+          "total_tokens": 807
+        },
+        "llmModel": "deepseek-v4-pro",
+        "llmProvider": "deepseek"
+      },
+      "reasoning": "Generated by deepseek/deepseek-v4-pro",
+      "metadata": {
+        "executedAt": "2026-10-07T16:56:28.403Z",
+        "agentName": "Senior Editor"
+      }
+    },
+    {
+      "taskId": "live-review",
+      "agentId": "senior_editor",
+      "status": "partial",
+      "output": {
+        "verdict": "rejected",
+        "score": 65,
+        "issues": [
+          {
+            "type": "broken_link",
+            "severity": "high",
+            "detail": "The second URL for SC 2.1.1 Understanding (https://www.w3.org/WAI/WCAG21/Understanding/keyboard-accessible) appears invalid or not the official page; the canonical URL is https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html."
+          },
+          {
+            "type": "conformance_error",
+            "severity": "medium",
+            "detail": "The article presents 3:1 focus indicator contrast as a testable check under SC 2.4.7 Focus Visible (Level AA), but 3:1 contrast is actually WCAG 2.2 SC 2.4.11 Focus Appearance (Level AAA). This conflates AA and AAA requirements."
+          },
+          {
+            "type": "completeness",
+            "severity": "medium",
+            "detail": "The draft omits WCAG 2.2 SC 2.4.12 Focus Not Obscured (Level AA), which is directly relevant to game overlays, modals, and sticky HUD elements. The article claims WCAG 2.1/2.2 coverage but does not address this criterion."
+          },
+          {
+            "type": "clarity",
+            "severity": "low",
+            "detail": "Conclusion sentence 'not about forcing mouse-only control' is contradictory; likely intended to say 'not about forcing keyboard-only control' or 'not about forcing mouse users to switch.'"
+          }
+        ],
+        "requiredChanges": [
+          "Correct the broken link for SC 2.1.1 Understanding: use https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html and remove or replace the 'keyboard-accessible' URL.",
+          "Clarify that 3:1 focus indicator contrast is WCAG 2.2 SC 2.4.11 Focus Appearance (Level AAA), not SC 2.4.7 (Level AA). Revise the Focus visible audit accordingly.",
+          "Add WCAG 2.2 SC 2.4.12 Focus Not Obscured (Level AA) to the requirements or analysis, especially for game overlays, modals, and sticky HUD elements.",
+          "Rephrase the conclusion sentence to say 'not about forcing keyboard-only control' or similar."
+        ],
+        "suggestions": [
+          "Soften 'never remove the outline' to 'never remove focus indicators unless replaced by a custom visible indicator of sufficient contrast' to avoid contradicting custom :focus-visible styles.",
+          "Include game-relevant examples of the path-dependent exception, such as drawing a spell gesture or freehand map annotation.",
+          "Clarify the difference between WCAG 2.1 and WCAG 2.2 focus criteria, and note that WCAG 2.2 conformance includes Focus Not Obscured.",
+          "Add a note that 'Esc to close' should be documented and not conflict with existing game controls.",
+          "Mention browser support and fallbacks for :focus-visible."
+        ],
+        "nextAction": "revise",
+        "llmUsage": {
+          "prompt_tokens": 975,
+          "completion_tokens": 5735,
+          "total_tokens": 6710
+        },
+        "llmModel": "deepseek-v4-pro",
+        "llmProvider": "deepseek"
+      },
+      "reasoning": "Generated by deepseek/deepseek-v4-pro",
+      "metadata": {
+        "executedAt": "2026-10-07T16:58:33.961Z",
+        "agentName": "Senior Editor"
+      }
+    }
+  ],
+  "status": "failed",
+  "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'failed'\n- 'success'\n",
+  "finishedAt": "2026-10-07T16:59:26.021Z"
+}

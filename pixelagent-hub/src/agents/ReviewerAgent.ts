@@ -1,6 +1,15 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const reviewSchema = z.object({
+  verdict: z.enum(['approved', 'needs_revision', 'rejected']),
+  score: z.number().min(0).max(100),
+  issues: z.array(z.object({ type: z.string(), severity: z.string(), detail: z.string() })),
+  suggestions: z.array(z.string()),
+  requiredChanges: z.array(z.string()),
+});
 
 export class ReviewerAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -32,32 +41,9 @@ export class ReviewerAgent extends BaseAgent {
         user: `Topic: "${description}"\nDraft content:\n${typeof draft.content === 'string' ? draft.content.slice(0, 3000) : JSON.stringify(draft).slice(0, 3000)}\n\nProvide a structured review as JSON.`,
       }),
       (content) => {
-        const parsed = this.extractJson(content);
-        return {
-          verdict: parsed.verdict || 'needs_revision',
-          score: Number(parsed.score) || 72,
-          issues: parsed.issues || [],
-          suggestions: parsed.suggestions || [],
-          requiredChanges: parsed.requiredChanges || [],
-        };
+        return reviewSchema.parse(this.extractJson(content));
       },
-      (reason) =>
-        this.createResult(
-          task.id,
-          'success',
-          {
-            verdict: 'needs_revision',
-            score: 72,
-            issues: [
-              { type: 'content', severity: 'medium', detail: 'Mock: needs more data' },
-              { type: 'structure', severity: 'low', detail: 'Mock: transitions could improve' },
-            ],
-            suggestions: ['Add more data points', 'Improve structure'],
-            requiredChanges: ['Add supporting evidence', 'Improve logical flow'],
-            generatedBy: 'mock',
-          },
-          `mock: ${reason}`
-        )
+      (output) => output.verdict === 'approved' ? 'success' : 'partial'
     );
   }
 

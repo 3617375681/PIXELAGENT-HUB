@@ -48,7 +48,7 @@ export class TaskRouter {
     timeoutMs: number = 60000,
     control?: TaskRunControl
   ): Promise<{ results: TaskResult[]; finalOutput: any }> {
-    const signal = control?.signal;
+    const signal = control?.signal || initialTask._exec?.signal;
     const emit = control?.emit;
     const results: TaskResult[] = [];
     let currentTask = initialTask;
@@ -60,11 +60,16 @@ export class TaskRouter {
       emit?.({ type: 'pipeline_step_start', stepIndex, agentId: step.agentId });
       // 先发送任务，from 设为等待者 ID 以便 Agent 回复到正确地址
       const waiterId = `temp-${currentTask.id}`;
-      this.route(currentTask, step.agentId, waiterId);
-
-      const result = await this.waitForResult(waiterId, currentTask.id, stepTimeoutMs, signal);
+      const controller = new AbortController();
+      const abort = () => controller.abort(signal?.reason);
+      signal?.addEventListener('abort', abort, { once: true });
+      const pending = this.waitForResult(waiterId, currentTask.id, stepTimeoutMs, controller.signal);
+      this.route({ ...currentTask, _exec: { ...currentTask._exec, signal: controller.signal } }, step.agentId, waiterId);
+      const result = await pending;
+      signal?.removeEventListener('abort', abort);
 
       if (!result) {
+        controller.abort(new Error(`Pipeline timeout at step: ${step.agentId}`));
         throw new Error(`Pipeline timeout at step: ${step.agentId}`);
       }
       emit?.({ type: 'pipeline_step_done', stepIndex, agentId: step.agentId, status: result.status });

@@ -1,6 +1,13 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const codeSchema = z.object({
+  language: z.string().min(1),
+  files: z.array(z.object({ path: z.string().min(1), content: z.string().min(1), description: z.string() })).min(1),
+  explanation: z.string(), dependencies: z.array(z.string()),
+});
 
 export class CodeAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -11,6 +18,7 @@ export class CodeAgent extends BaseAgent {
         role: 'code_generator',
         capabilities: ['code', 'debug', 'refactor', 'test'],
         systemPrompt: 'You are a professional software engineer. Generate clean, well-documented, production-quality code.',
+        timeout: 180_000,
       },
       bus,
       llmProvider
@@ -28,29 +36,14 @@ export class CodeAgent extends BaseAgent {
         user: `Task: "${description}"\nLanguage: ${language}\nContext: ${JSON.stringify(context || {})}\n\nGenerate the code as JSON.`,
       }),
       (content) => {
-        const parsed = this.extractJson(content);
+        const parsed = codeSchema.parse(this.extractJson(content));
         return {
           language: parsed.language || language,
           files: parsed.files || [],
           explanation: parsed.explanation || '',
           dependencies: parsed.dependencies || [],
         };
-      },
-      (reason) =>
-        this.createResult(
-          task.id,
-          'success',
-          {
-            language,
-            files: [
-              { path: `main.${language === 'typescript' ? 'ts' : language}`, content: `// ${description}\nexport function main() {\n  console.log('Running: ${description}');\n  return { status: 'success' };\n}`, description },
-            ],
-            explanation: `Mock code for: ${description}`,
-            dependencies: [],
-            generatedBy: 'mock',
-          },
-          `mock: ${reason}`
-        )
+      }
     );
   }
 

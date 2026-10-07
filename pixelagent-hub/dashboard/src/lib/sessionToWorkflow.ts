@@ -2,7 +2,7 @@ import type { Agent, AgentOutput, AgentStep, AgentThinking, Round, Workflow } fr
 
 type Json = Record<string, unknown>;
 
-const AGENT_META: Record<string, { name: string; role: string; icon: string; color: string }> = {
+export const AGENT_META: Record<string, { name: string; role: string; icon: string; color: string }> = {
   manager: { name: 'Manager', role: 'Planning & Decomposition', icon: '📋', color: '#38bdf8' },
   researcher: { name: 'Researcher', role: 'Research & Facts', icon: '🔍', color: '#a78bfa' },
   writer: { name: 'Writer', role: 'Drafting', icon: '✍️', color: '#34d399' },
@@ -62,20 +62,26 @@ function makeAgent(
   id: string,
   connections: string[],
   outputs: AgentOutput[],
-  reasoning?: string
+  reasoning?: string,
+  result?: Json
 ): Agent {
   const m = metaFor(id);
+  const verdict = asObj(result?.output)?.verdict;
+  const rejected = verdict === 'rejected';
+  const failed = result?.status === 'failed' || result?.status === 'cancelled';
+  const thinking = thinkingFor(id, reasoning);
+  if (failed) thinking.steps = thinking.steps.map((step) => ({ ...step, status: 'error' }));
   return {
     id,
     name: m.name,
     role: m.role,
     icon: m.icon,
     color: m.color,
-    status: 'done',
-    statusMessage: 'Restored from Records',
+    status: failed || rejected ? 'error' : 'done',
+    statusMessage: failed ? String(reasoning || result?.status) : rejected ? 'Review rejected — revision required' : 'Restored from Records',
     progress: 100,
-    outputs,
-    thinking: thinkingFor(id, reasoning),
+    outputs: outputs.map((output) => ({ ...output, type: failed ? 'error' : rejected ? 'warning' : output.type })),
+    thinking,
     position: { x: 0, y: 0 },
     connections,
   };
@@ -108,6 +114,12 @@ function companySessionToWorkflow(session: Json): Workflow {
     researchOut && typeof researchOut.summary === 'string'
       ? `${researchOut.summary}\n\nKey Points:\n${(Array.isArray(researchOut.keyPoints) ? researchOut.keyPoints : [])
           .map((x) => `- ${String(x)}`)
+          .join('\n')}\n\nSources:\n${(Array.isArray(researchOut.sources) ? researchOut.sources : [])
+          .map((source) => {
+            const item = asObj(source);
+            return item ? `- ${String(item.title || '')}\n  ${String(item.url || '')}\n  ${String(item.excerpt || '')}` : '';
+          })
+          .filter(Boolean)
           .join('\n')}`
       : JSON.stringify(research?.output ?? research ?? {}, null, 2);
 
@@ -120,7 +132,7 @@ function companySessionToWorkflow(session: Json): Workflow {
   }
   const r1Agents: Agent[] = [];
   if (plan) {
-    r1Agents.push(makeAgent('manager', research ? ['researcher'] : [], r1Messages.filter((m) => m.agentId === 'manager'), typeof plan.reasoning === 'string' ? plan.reasoning : undefined));
+    r1Agents.push(makeAgent('manager', research ? ['researcher'] : [], r1Messages.filter((m) => m.agentId === 'manager'), typeof plan.reasoning === 'string' ? plan.reasoning : undefined, plan));
   }
   if (research) {
     r1Agents.push(
@@ -128,7 +140,8 @@ function companySessionToWorkflow(session: Json): Workflow {
         'researcher',
         [],
         r1Messages.filter((m) => m.agentId === 'researcher'),
-        typeof research.reasoning === 'string' ? research.reasoning : undefined
+        typeof research.reasoning === 'string' ? research.reasoning : undefined,
+        research
       )
     );
   }
@@ -139,7 +152,7 @@ function companySessionToWorkflow(session: Json): Workflow {
       agents: r1Agents,
       messages: r1Messages,
       timestamp: startedAt,
-      status: 'completed',
+      status: r1Agents.some((agent) => agent.status === 'error') ? 'error' : 'completed',
     });
   }
 
@@ -173,7 +186,7 @@ function companySessionToWorkflow(session: Json): Workflow {
     const agents: Agent[] = [];
     if (dObj) {
       agents.push(
-        makeAgent('writer', rObj ? ['senior_editor'] : [], messages.filter((m) => m.agentId === 'writer'), typeof dObj.reasoning === 'string' ? dObj.reasoning : undefined)
+        makeAgent('writer', rObj ? ['senior_editor'] : [], messages.filter((m) => m.agentId === 'writer'), typeof dObj.reasoning === 'string' ? dObj.reasoning : undefined, dObj)
       );
     }
     if (rObj) {
@@ -182,7 +195,8 @@ function companySessionToWorkflow(session: Json): Workflow {
           'senior_editor',
           [],
           messages.filter((m) => m.agentId === 'senior_editor'),
-          typeof rObj.reasoning === 'string' ? rObj.reasoning : undefined
+          typeof rObj.reasoning === 'string' ? rObj.reasoning : undefined,
+          rObj
         )
       );
     }
@@ -193,7 +207,7 @@ function companySessionToWorkflow(session: Json): Workflow {
         agents,
         messages,
         timestamp: t0,
-        status: 'completed',
+        status: agents.some((agent) => agent.status === 'error') ? 'error' : 'completed',
       });
     }
   }
@@ -209,10 +223,10 @@ function companySessionToWorkflow(session: Json): Workflow {
     rounds.push({
       id: 'round-final',
       roundNumber: rounds.length + 1,
-      agents: [makeAgent('director', [], messages, typeof finalReview.reasoning === 'string' ? finalReview.reasoning : undefined)],
+      agents: [makeAgent('director', [], messages, typeof finalReview.reasoning === 'string' ? finalReview.reasoning : undefined, finalReview)],
       messages,
       timestamp: parseTime(session.finishedAt as string),
-      status: 'completed',
+      status: finalReview.status === 'failed' || frOut?.verdict === 'rejected' ? 'error' : 'completed',
     });
   }
 
@@ -220,12 +234,10 @@ function companySessionToWorkflow(session: Json): Workflow {
     rounds.push({
       id: 'round-fallback',
       roundNumber: 1,
-      agents: [
-        makeAgent('researcher', [], [msg('fb', 'researcher', desc, startedAt)], 'No structured phase data, showing task description only'),
-      ],
-      messages: [msg('fb', 'researcher', desc, startedAt)],
+      agents: [],
+      messages: [msg('fb', 'system', String(session.error || desc), startedAt, session.status === 'failed' || session.status === 'cancelled' ? 'error' : 'info')],
       timestamp: startedAt,
-      status: (session.status === 'failed' ? 'error' : 'completed') as Round['status'],
+      status: session.status === 'failed' || session.status === 'cancelled' ? 'error' : session.status === 'running' ? 'running' : 'completed',
     });
   }
 

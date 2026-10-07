@@ -1,6 +1,7 @@
 import { readdir, readFile, rm, stat, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createOrchestrator } from '../factory.js';
+import { MockProvider } from '../core/llm/mock.js';
 import { ModeRunResponse, RunProgressEvent, RunTrace, RuntimeJobRecord, Task, TaskRunControl } from '../core/types.js';
 import { LocalKeywordRetriever, DEFAULT_KNOWLEDGE_BASE, Retriever } from '../core/retriever.js';
 import { LocalEmbeddingRetriever } from '../core/embeddingRetriever.js';
@@ -222,13 +223,16 @@ function isProtectedPath(pathname: string, _method: string): boolean {
   return pathname.startsWith('/api/');
 }
 
-async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, tag: string): Promise<T> {
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, tag: string, onTimeout?: () => void): Promise<T> {
   let timer: NodeJS.Timeout | undefined;
   try {
     return await Promise.race([
       promise,
       new Promise<T>((_, reject) => {
-        timer = setTimeout(() => reject(new Error(`${tag}_TIMEOUT_${timeoutMs}ms`)), timeoutMs);
+        timer = setTimeout(() => {
+          reject(new Error(`${tag}_TIMEOUT_${timeoutMs}ms`));
+          onTimeout?.();
+        }, timeoutMs);
       }),
     ]);
   } finally {
@@ -286,16 +290,7 @@ function buildRunResponse(mode: string, task: Task, final: any, trace: RunTrace,
   const toSerializable = (value: any) => {
     if (value === undefined || value === null) return value;
     if (typeof value !== 'object') return value;
-    const seen = new WeakSet();
-    return JSON.parse(
-      JSON.stringify(value, (_key, v) => {
-        if (typeof v === 'object' && v !== null) {
-          if (seen.has(v)) return '[Circular]';
-          seen.add(v);
-        }
-        return v;
-      })
-    );
+    return JSON.parse(safeStringifyObject(value));
   };
   return {
     mode,
@@ -309,11 +304,12 @@ function buildRunResponse(mode: string, task: Task, final: any, trace: RunTrace,
 }
 
 function safeStringifyObject(value: any): string {
-  const seen = new WeakSet();
-  return JSON.stringify(value, (_key, v) => {
+  const ancestors: object[] = [];
+  return JSON.stringify(value, function (this: object, _key, v) {
     if (typeof v === 'object' && v !== null) {
-      if (seen.has(v)) return '[Circular]';
-      seen.add(v);
+      while (ancestors.length && ancestors[ancestors.length - 1] !== this) ancestors.pop();
+      if (ancestors.includes(v)) return '[Circular]';
+      ancestors.push(v);
     }
     return v;
   });
@@ -393,15 +389,15 @@ async function writeSessionRecord(record: any): Promise<void> {
   }
 }
 
-async function runCompanyMode(input: any, control?: TaskRunControl): Promise<ModeRunResponse> {
-  const orchestrator = createOrchestrator('OnePersonCompanyAPI');
+async function runCompanyMode(input: any, control?: TaskRunControl, allocatedSessionId?: string): Promise<ModeRunResponse> {
+  const orchestrator = createOrchestrator('OnePersonCompanyAPI', input?.demo === true ? new MockProvider() : undefined);
   const memory = new KnowledgeStore(input?.description || 'company-mode-task');
   const task = buildTask({
     ...input,
     type: input?.type || 'content_delivery',
   });
   const trace = createBaseTrace('company');
-  const sessionId = `${new Date().toISOString().replace(/[:.]/g, '-')}_${task.id}`;
+  const sessionId = allocatedSessionId || `${new Date().toISOString().replace(/[:.]/g, '-')}_${task.id}`;
   const record: any = {
     sessionId,
     mode: 'company',
@@ -414,123 +410,142 @@ async function runCompanyMode(input: any, control?: TaskRunControl): Promise<Mod
   };
   await writeSessionRecord(record);
 
-  if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
-  control?.emit?.({ type: 'company_step', step: 'plan', agentId: 'manager' });
-  const plan = await orchestrator.runTask(task, 'manager', control);
-  record.plan = plan;
-  trace.actions.push({ agentId: 'manager', action: 'plan', reasoning: plan.reasoning });
-  if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
-  control?.emit?.({ type: 'company_step', step: 'research', agentId: 'researcher' });
-  const research = await orchestrator.runTask({ ...task, id: `research-${task.id}` }, 'researcher', control);
-  record.research = research;
-  trace.actions.push({ agentId: 'researcher', action: 'research', reasoning: research.reasoning });
-  record.notes.push('manager_planning_done', 'research_done');
-  const researchEvidence = await retriever.retrieve(`${task.description} research evidence`, 3);
-  memory.updateFromTurn({
-    turnId: 'company-research',
-    round: 0,
-    speakerId: 'researcher',
-    speakerRole: 'researcher',
-    message: String(research.output?.summary || ''),
-    action: 'analysis',
-    evidence: { query: task.description, citations: researchEvidence },
-    timestamp: new Date().toISOString(),
-  });
-
-  let round = 1;
-  let approved = false;
-  let currentDraft: any = null;
-  const reviewHistory: any[] = [];
-
-  while (!approved && round <= 5) {
+  try {
     if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
-    control?.emit?.({ type: 'company_step', step: `draft_${round}`, agentId: 'writer' });
-    const draft = await orchestrator.runTask({
-      ...task,
-      id: `draft-${round}-${task.id}`,
-      context: {
-        ...(task.context || {}),
-        researchData: research.output,
-        groundedEvidence: researchEvidence,
-        memorySummary: memory.getSummaryPrompt(),
-        revisionNotes: round > 1 ? (reviewHistory[reviewHistory.length - 1]?.output?.requiredChanges || []) : [],
-      },
-    }, 'writer', control);
-    currentDraft = draft.output;
-    record.drafts.push(draft);
-    record.finalDraft = currentDraft;
-    trace.actions.push({ agentId: 'writer', action: 'draft', reasoning: draft.reasoning, payload: { round } });
+    control?.emit?.({ type: 'company_step', step: 'plan', agentId: 'manager' });
+    const plan = await orchestrator.runTask(task, 'manager', control);
+    record.plan = plan;
+    if (plan.status !== 'success') throw new Error(plan.reasoning || 'Planning failed');
+    trace.actions.push({ agentId: 'manager', action: 'plan', reasoning: plan.reasoning });
+    if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
+    control?.emit?.({ type: 'company_step', step: 'research', agentId: 'researcher' });
+    const research = await orchestrator.runTask({ ...task, id: `research-${task.id}` }, 'researcher', control);
+    record.research = research;
+    if (research.status !== 'success') throw new Error(research.reasoning || 'Research failed');
+    trace.actions.push({ agentId: 'researcher', action: 'research', reasoning: research.reasoning });
+    record.notes.push('manager_planning_done', 'research_done');
+    const researchEvidence = research.output?.citations || [];
+    memory.updateFromTurn({
+      turnId: 'company-research',
+      round: 0,
+      speakerId: 'researcher',
+      speakerRole: 'researcher',
+      message: String(research.output?.summary || ''),
+      action: 'analysis',
+      evidence: { query: task.description, citations: researchEvidence },
+      timestamp: new Date().toISOString(),
+    });
 
-    control?.emit?.({ type: 'company_step', step: `review_${round}`, agentId: 'senior_editor' });
-    const review = await orchestrator.runTask({
+    let round = 1;
+    let approved = false;
+    let currentDraft: any = null;
+    const reviewHistory: any[] = [];
+
+    while (!approved && round <= 5) {
+      if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
+      control?.emit?.({ type: 'company_step', step: `draft_${round}`, agentId: 'writer' });
+      const draft = await orchestrator.runTask({
+        ...task,
+        id: `draft-${round}-${task.id}`,
+        context: {
+          ...(task.context || {}),
+          researchData: research.output,
+          groundedEvidence: researchEvidence,
+          memorySummary: memory.getSummaryPrompt(),
+          revisionNotes: round > 1 ? (reviewHistory[reviewHistory.length - 1]?.output?.requiredChanges || []) : [],
+        },
+      }, 'writer', control);
+      record.drafts.push(draft);
+      if (draft.status !== 'success') throw new Error(draft.reasoning || 'Drafting failed');
+      currentDraft = draft.output;
+      record.finalDraft = currentDraft;
+      trace.actions.push({ agentId: 'writer', action: 'draft', reasoning: draft.reasoning, payload: { round } });
+
+      control?.emit?.({ type: 'company_step', step: `review_${round}`, agentId: 'senior_editor' });
+      const review = await orchestrator.runTask({
+        ...task,
+        id: `review-${round}-${task.id}`,
+        context: {
+          ...(task.context || {}),
+          draft: currentDraft,
+          round,
+        },
+      }, 'senior_editor', control);
+      record.reviews.push(review);
+      if (review.status === 'failed') throw new Error(review.reasoning || 'Review failed');
+      reviewHistory.push(review);
+      trace.actions.push({ agentId: 'senior_editor', action: 'review', reasoning: review.reasoning, payload: { round, status: review.status } });
+      memory.updateFromTurn({
+        turnId: `company-review-${round}`,
+        round,
+        speakerId: 'senior_editor',
+        speakerRole: 'senior_editor',
+        message: String(review.reasoning || ''),
+        action: 'review',
+        evidence: { query: `${task.description} review ${round}`, citations: researchEvidence },
+        timestamp: new Date().toISOString(),
+      });
+      approved = review.output?.verdict === 'approved';
+      round += approved ? 0 : 1;
+    }
+
+    if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
+    if (approved) control?.emit?.({ type: 'company_step', step: 'final', agentId: 'director' });
+    const final = approved ? await orchestrator.runTask({
       ...task,
-      id: `review-${round}-${task.id}`,
+      id: `final-${task.id}`,
       context: {
         ...(task.context || {}),
         draft: currentDraft,
-        round,
+        reviewHistory,
       },
-    }, 'senior_editor', control);
-    reviewHistory.push(review);
-    record.reviews.push(review);
-    trace.actions.push({ agentId: 'senior_editor', action: 'review', reasoning: review.reasoning, payload: { round, status: review.status } });
-    memory.updateFromTurn({
-      turnId: `company-review-${round}`,
-      round,
-      speakerId: 'senior_editor',
-      speakerRole: 'senior_editor',
-      message: String(review.reasoning || ''),
-      action: 'review',
-      evidence: { query: `${task.description} review ${round}`, citations: await retriever.retrieve(`${task.description} review ${round}`, 2) },
-      timestamp: new Date().toISOString(),
-    });
-    approved = review.status === 'success';
-    round += approved ? 0 : 1;
+    }, 'director', control) : {
+      taskId: `final-${task.id}`,
+      agentId: 'director',
+      status: 'failed' as const,
+      output: { verdict: 'rejected', mustFixBeforeDelivery: ['Review round limit reached'] },
+      reasoning: 'Review round limit reached without approval; final review was not run',
+    };
+
+    record.finalReview = final;
+    trace.actions.push({ agentId: 'director', action: 'final_review', reasoning: final.reasoning, payload: { status: final.status } });
+    record.status = approved && final.status === 'success' && final.output?.verdict === 'approved_for_delivery' ? 'success' : 'failed';
+    record.finishedAt = new Date().toISOString();
+    if (record.status === 'success') record.notes.push('final_approved');
+    else record.notes.push('final_rejected');
+    record.trace = finishTrace(trace, reviewHistory.length, approved);
+    record.memory = memory.snapshot();
+    record.observability = buildObservability(record);
+    await writeSessionRecord(record);
+
+    return buildRunResponse(
+      'company',
+      task,
+      {
+        title: record.finalDraft?.title,
+        content: record.finalDraft?.content,
+        qualityScore: record.finalReview?.output?.qualityScore || null,
+        totalRounds: reviewHistory.length,
+      },
+      record.trace,
+      record.status,
+      record,
+      {
+        sessionId,
+        memorySnapshot: record.memory,
+        citations: researchEvidence,
+        files: [`${sessionId}/session.json`, `${sessionId}/output.md`],
+        observability: record.observability,
+      }
+    );
+  } catch (error) {
+    record.status = control?.signal?.aborted && !String(control.signal.reason).includes('_RUN_TIMEOUT_') ? 'cancelled' : 'failed';
+    record.finishedAt = new Date().toISOString();
+    record.error = error instanceof Error ? error.message : String(error);
+    record.trace = trace;
+    await writeSessionRecord(record);
+    throw error;
   }
-
-  if (control?.signal?.aborted) throw new Error('JOB_CANCELLED');
-  control?.emit?.({ type: 'company_step', step: 'final', agentId: 'director' });
-  const final = await orchestrator.runTask({
-    ...task,
-    id: `final-${task.id}`,
-    context: {
-      ...(task.context || {}),
-      draft: currentDraft,
-      reviewHistory,
-    },
-  }, 'director', control);
-
-  record.finalReview = final;
-  trace.actions.push({ agentId: 'director', action: 'final_review', reasoning: final.reasoning, payload: { status: final.status } });
-  record.status = final.status === 'success' ? 'success' : 'failed';
-  record.finishedAt = new Date().toISOString();
-  if (record.status === 'success') record.notes.push('final_approved');
-  else record.notes.push('final_rejected');
-  record.trace = finishTrace(trace, reviewHistory.length, approved);
-  record.memory = memory.snapshot();
-  record.observability = buildObservability(record);
-  await writeSessionRecord(record);
-
-  return buildRunResponse(
-    'company',
-    task,
-    {
-      title: record.finalDraft?.title,
-      content: record.finalDraft?.content,
-      qualityScore: record.finalReview?.output?.qualityScore || null,
-      totalRounds: reviewHistory.length,
-    },
-    record.trace,
-    record.status,
-    record,
-    {
-      sessionId,
-      memorySnapshot: record.memory,
-      citations: researchEvidence,
-      files: [`${sessionId}/session.json`, `${sessionId}/output.md`],
-      observability: record.observability,
-    }
-  );
 }
 
 async function runRoundtableMode(input: any, control?: TaskRunControl): Promise<ModeRunResponse> {
@@ -994,6 +1009,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
 
     const wantStream = url.searchParams.get('stream') === '1';
     const jobId = `job-${Date.now()}-${task.id}`;
+    if (mode === 'company') sessionId = `${new Date().toISOString().replace(/[:.]/g, '-')}_${task.id.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
 
     const writeSse = (event: string, data: unknown) => {
       const line = typeof data === 'string' ? data : JSON.stringify(data);
@@ -1032,6 +1048,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
         if (mode === 'parallel') {
           const agentIds: string[] = Array.isArray(input?.agentIds) && input.agentIds.length > 0 ? input.agentIds : ['researcher', 'coder'];
           const result = await orchestrator.runParallel(task, agentIds, control);
+          const succeeded = result.every((item) => item.status !== 'failed');
           const trace = finishTrace(
             {
               mode: 'parallel',
@@ -1039,9 +1056,9 @@ async function handleRequest(req: any, res: any): Promise<void> {
               actions: result.map((x) => ({ agentId: x.agentId, action: 'parallel_task', reasoning: x.reasoning })),
             },
             1,
-            true
+            succeeded
           );
-          return buildRunResponse('parallel', task, result, trace, 'success', { agentIds, result }, { observability: buildObservability(result) });
+          return buildRunResponse('parallel', task, result, trace, succeeded ? 'success' : 'failed', { agentIds, result }, { observability: buildObservability(result) });
         }
         if (mode === 'debate') {
           const agentIds: string[] = Array.isArray(input?.agentIds) && input.agentIds.length > 0 ? input.agentIds : ['researcher', 'writer'];
@@ -1085,10 +1102,24 @@ async function handleRequest(req: any, res: any): Promise<void> {
           return buildRunResponse('vote', task, result, trace, 'success', { agentIds, threshold, tieBreakBy, result }, { observability: buildObservability(result) });
         }
         if (mode === 'roundtable') return runRoundtableMode(input, control);
-        if (mode === 'company') return runCompanyMode(input, control);
+        if (mode === 'company') return runCompanyMode(input, control, sessionId);
         throw new Error(`UNSUPPORTED_MODE_${mode}`);
       };
 
+      const runControlled = async (signal: AbortSignal, emit?: (event: RunProgressEvent) => void) => {
+        const controller = new AbortController();
+        const abort = () => controller.abort(signal.reason);
+        if (signal.aborted) abort();
+        else signal.addEventListener('abort', abort, { once: true });
+        try {
+          return await withTimeout(
+            runOnce({ signal: controller.signal, emit }), modeTimeoutMs,
+            `${String(mode).toUpperCase()}_RUN`, () => controller.abort(new Error(`${String(mode).toUpperCase()}_RUN_TIMEOUT_${modeTimeoutMs}ms`)),
+          );
+        } finally {
+          signal.removeEventListener('abort', abort);
+        }
+      };
       const wantAsync = url.searchParams.get('async') === '1';
       if (wantAsync && wantStream) {
         statusCode = 400;
@@ -1103,13 +1134,13 @@ async function handleRequest(req: any, res: any): Promise<void> {
           taskId: task.id,
           sessionId,
           mode,
-          run: async ({ signal }) =>
-            withTimeout(runOnce({ signal, emit: undefined }), modeTimeoutMs, `${String(mode).toUpperCase()}_RUN`),
+          run: async ({ signal }) => runControlled(signal),
         });
         statusCode = 202;
         sendJson(res, 202, {
           jobId,
           jobUrl: `/api/runtime/jobs/${encodeURIComponent(jobId)}`,
+          sessionId,
           message: 'Job accepted; poll GET jobUrl until status is terminal',
         });
         finishLog();
@@ -1126,11 +1157,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
             ? (e: RunProgressEvent) => writeSse('progress', e)
             : undefined;
           if (wantStream) emit!({ type: 'job_running', jobId });
-          return withTimeout(
-            runOnce({ signal, emit }),
-            modeTimeoutMs,
-            `${String(mode).toUpperCase()}_RUN`
-          );
+          return runControlled(signal, emit);
         },
       });
       const payload = runtimeResult.result;
@@ -1445,6 +1472,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
           'Cache-Control': 'no-cache, no-transform',
           Connection: 'keep-alive',
           'Access-Control-Allow-Origin': '*',
+          Deprecation: '/api/chat is unused by UI; will be removed in next major.',
         });
         writeSse('meta', { chatId, stream: true });
 
@@ -1473,7 +1501,18 @@ async function handleRequest(req: any, res: any): Promise<void> {
           ? result.output
           : result.output?.content || result.output?.summary || JSON.stringify(result.output || {});
 
-        sendJson(res, 200, { chatId, content, reasoning: result.reasoning, llmUsage: result.metadata?.llmUsage });
+        const extraHeaders: Record<string, string> = {
+          Deprecation: '/api/chat is unused by UI; will be removed in next major.',
+        };
+        if ((res as any)._corsOrigin) {
+          extraHeaders['Access-Control-Allow-Origin'] = (res as any)._corsOrigin;
+          extraHeaders.Vary = 'Origin';
+        }
+        res.writeHead(200, {
+          'Content-Type': 'application/json; charset=utf-8',
+          ...extraHeaders,
+        });
+        res.end(JSON.stringify({ chatId, content, reasoning: result.reasoning, llmUsage: result.metadata?.llmUsage }));
       }
     } catch (err) {
       logError('chat.failed', { requestId, error: String(err) });

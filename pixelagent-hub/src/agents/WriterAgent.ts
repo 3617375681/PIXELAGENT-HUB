@@ -1,6 +1,9 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const draftSchema = z.object({ title: z.string().min(1), content: z.string().min(1), wordCount: z.number().nonnegative() });
 
 export class WriterAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -11,6 +14,7 @@ export class WriterAgent extends BaseAgent {
         role: 'content_creator',
         capabilities: ['write', 'edit', 'translate', 'adapt_style'],
         systemPrompt: 'You are a professional writer. Produce high-quality, logical, audience-appropriate content from research data.',
+        timeout: 180_000,
       },
       bus,
       llmProvider
@@ -38,7 +42,7 @@ export class WriterAgent extends BaseAgent {
         };
       },
       (content) => {
-        const parsed = this.extractJson(content);
+        const parsed = draftSchema.parse(this.extractJson(content));
         const body = parsed.content || content;
         return {
           title: parsed.title || `About "${description}"`,
@@ -48,40 +52,6 @@ export class WriterAgent extends BaseAgent {
           targetAudience: context?.audience || 'general',
           appliedRevisionNotes: revisionNotes,
         };
-      },
-      (reason) => {
-        const mockContent = [
-          `# ${description}`,
-          '',
-          '## Introduction',
-          `Based on recent research, ${description} is a significant topic that deserves attention.`,
-          '',
-          '## Key Points',
-          researchData?.summary || '(Research data to be added)',
-          '',
-          '## Analysis',
-          '1. Background and current state',
-          '2. Key data and trends',
-          '3. Impact and implications',
-          '',
-          '## Conclusion',
-          `In summary, ${description} requires continued attention and deeper investigation.`,
-          ...(revisionNotes.length > 0 ? ['\n## Revisions Applied\n' + revisionNotes.map((x, i) => `${i + 1}. ${x}`).join('\n')] : []),
-        ].join('\n');
-        return this.createResult(
-          task.id,
-          'success',
-          {
-            title: `About "${description}"`,
-            content: mockContent,
-            wordCount: mockContent.length,
-            style: context?.style || 'formal',
-            targetAudience: context?.audience || 'general',
-            generatedBy: 'mock',
-            appliedRevisionNotes: revisionNotes,
-          },
-          `mock mode (${reason}): no LLM provider configured`
-        );
       }
     );
   }

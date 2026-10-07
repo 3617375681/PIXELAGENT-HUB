@@ -1,6 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { AgentOutput, AgentOutputAttachment } from '../types/agent';
-import { getRecordsApiBaseUrl } from '@/lib/recordsApi';
 
 export interface ChatMessage {
   id: string;
@@ -13,65 +12,158 @@ export interface ChatMessage {
   llmUsage?: { prompt_tokens: number; completion_tokens: number; total_tokens: number; model?: string };
 }
 
-export interface SlashCommand {
-  cmd: string;
-  desc: string;
-  usage: string;
-  action: (args: string) => void | Promise<void>;
+export interface SubmitResult {
+  /** Status text shown as the assistant reply. */
+  content: string;
+  /** Mark the assistant message as error instead of success. */
+  error?: boolean;
 }
 
 export interface UseChatOptions {
-  /** Override the backend chat URL (default: /api/chat) */
-  chatUrl?: string;
-  /** Called when slash command /run is used */
-  onRunMode?: (mode: string, args: string) => void | Promise<void>;
-  /** Chat history initializer */
+  /** Required: handle user submission. Should kick off a workflow / API call and return a short status string. */
+  onSubmit: (text: string, files?: File[]) => Promise<SubmitResult>;
   initialMessages?: ChatMessage[];
 }
 
-export function useChat(opts: UseChatOptions = {}) {
-  const [messages, setMessages] = useState<ChatMessage[]>(opts.initialMessages || []);
-  const [isStreaming, setIsStreaming] = useState(false);
-  const [slashQuery, setSlashQuery] = useState('');
-  const [showSlashMenu, setShowSlashMenu] = useState(false);
-  const abortRef = useRef<AbortController | null>(null);
+type ChatConversation = {
+  id: string;
+  title: string;
+  updatedAt: number;
+  messages: ChatMessage[];
+};
 
-  const baseUrl = opts.chatUrl || getRecordsApiBaseUrl();
-  const chatPath = baseUrl ? `${baseUrl}/api/chat` : '/api/chat';
+const CHAT_STORAGE_KEY = 'pa.chat.conversations.v1';
+
+function createConversation(title = 'New chat', initialMessages: ChatMessage[] = []): ChatConversation {
+  return {
+    id: `conv-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    title,
+    updatedAt: Date.now(),
+    messages: initialMessages,
+  };
+}
+
+export function useChat(opts: UseChatOptions) {
+  const [conversations, setConversations] = useState<ChatConversation[]>(() => {
+    try {
+      const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as ChatConversation[];
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {
+      // ignore corrupted storage
+    }
+    return [createConversation('New chat', opts.initialMessages || [])];
+  });
+  const [currentConversationId, setCurrentConversationId] = useState<string>(() => {
+    try {
+      const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as ChatConversation[];
+        if (Array.isArray(parsed) && parsed[0]?.id) return parsed[0].id;
+      }
+    } catch {
+      // ignore
+    }
+    return '';
+  });
+  const [isStreaming, setIsStreaming] = useState(false);
+
+  useEffect(() => {
+    if (!currentConversationId && conversations[0]?.id) {
+      setCurrentConversationId(conversations[0].id);
+    }
+  }, [currentConversationId, conversations]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(conversations.slice(0, 30)));
+    } catch {
+      // ignore storage quota errors
+    }
+  }, [conversations]);
+
+  const currentConversation = useMemo(
+    () => conversations.find((c) => c.id === currentConversationId) || conversations[0] || null,
+    [conversations, currentConversationId]
+  );
+  const messages = currentConversation?.messages || [];
+
+  const updateCurrentConversation = useCallback((updater: (conv: ChatConversation) => ChatConversation) => {
+    setConversations((prev) => {
+      if (prev.length === 0) return prev;
+      const currentId = (currentConversationId && prev.some((c) => c.id === currentConversationId))
+        ? currentConversationId
+        : prev[0].id;
+      return prev.map((conv) => (conv.id === currentId ? updater(conv) : conv));
+    });
+  }, [currentConversationId]);
 
   const addMessage = useCallback((msg: ChatMessage) => {
-    setMessages((prev) => [...prev, msg]);
-  }, []);
+    updateCurrentConversation((conv) => ({
+      ...conv,
+      updatedAt: Date.now(),
+      messages: [...conv.messages, msg],
+    }));
+  }, [updateCurrentConversation]);
 
   const updateLastMessage = useCallback((updater: (msg: ChatMessage) => ChatMessage) => {
-    setMessages((prev) => {
-      const next = [...prev];
+    updateCurrentConversation((conv) => {
+      const next = [...conv.messages];
       if (next.length > 0) {
         next[next.length - 1] = updater(next[next.length - 1]);
       }
-      return next;
+      return {
+        ...conv,
+        updatedAt: Date.now(),
+        messages: next,
+      };
     });
-  }, []);
+  }, [updateCurrentConversation]);
 
   const clearMessages = useCallback(() => {
-    setMessages([]);
-  }, []);
+    updateCurrentConversation((conv) => ({
+      ...conv,
+      updatedAt: Date.now(),
+      messages: [],
+    }));
+  }, [updateCurrentConversation]);
 
-  const sendMessage = useCallback(async (
-    text: string,
-    files?: File[],
-    opts?: { systemPrompt?: string; historyOverride?: ChatMessage[] },
-  ) => {
+  const switchConversation = useCallback((id: string) => {
+    if (isStreaming) return;
+    setCurrentConversationId(id);
+  }, [isStreaming]);
+
+  const createNewConversation = useCallback(() => {
+    if (isStreaming) return;
+    const created = createConversation('New chat');
+    setConversations((prev) => [created, ...prev].slice(0, 30));
+    setCurrentConversationId(created.id);
+  }, [isStreaming]);
+
+  const deleteConversation = useCallback((id: string) => {
+    if (isStreaming) return;
+    setConversations((prev) => {
+      if (prev.length <= 1) return prev;
+      const next = prev.filter((c) => c.id !== id);
+      if (!next.some((c) => c.id === currentConversationId)) {
+        setCurrentConversationId(next[0]?.id || '');
+      }
+      return next;
+    });
+  }, [currentConversationId, isStreaming]);
+
+  const sendMessage = useCallback(async (text: string, files?: File[]) => {
     const trimmed = text.trim();
     if (!trimmed && (!files || files.length === 0)) return;
+    if (isStreaming) return;
 
-    const controller = new AbortController();
-    abortRef.current = controller;
-
-    // Build user message
     const content = trimmed || 'Analyze these files';
-    let userAttachments: AgentOutputAttachment[] | undefined;
 
+    let userAttachments: AgentOutputAttachment[] | undefined;
     if (files && files.length > 0) {
       userAttachments = await Promise.all(
         files.map(async (f, i) => {
@@ -91,383 +183,47 @@ export function useChat(opts: UseChatOptions = {}) {
       );
     }
 
-    const userMsg: ChatMessage = {
+    addMessage({
       id: `user-${Date.now()}`,
       role: 'user',
       content,
       timestamp: Date.now(),
       attachments: userAttachments,
       status: 'done',
-    };
-    addMessage(userMsg);
+    });
 
-    // Build payload — allow caller to override history (used by regenerateLast)
-    const historyForApi = opts?.historyOverride ?? messages;
-    const apiMessages = historyForApi.map((m) => ({
-      role: m.role,
-      content: m.content,
-    }));
-    apiMessages.push({ role: 'user' as const, content });
-
-    const body: Record<string, unknown> = {
-      messages: apiMessages,
-      stream: true,
-      ...(opts?.systemPrompt ? { systemPrompt: opts.systemPrompt } : {}),
-    };
-
-    // Add file data if present
-    if (files && files.length > 0) {
-      body.files = await Promise.all(
-        files.map(async (f) => {
-          const data = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(String(reader.result));
-            reader.onerror = () => reject(reader.error);
-            reader.readAsDataURL(f);
-          });
-          return { name: f.name, mime: f.type, data };
-        })
-      );
-    }
-
-    // Assistant placeholder
-    const assistantMsg: ChatMessage = {
+    addMessage({
       id: `assistant-${Date.now()}`,
       role: 'assistant',
-      content: '',
+      content: 'Contacting Records API…',
       timestamp: Date.now(),
       status: 'streaming',
-    };
-    addMessage(assistantMsg);
+    });
+
     setIsStreaming(true);
-
     try {
-      const res = await fetch(chatPath, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(import.meta.env.VITE_RECORDS_API_KEY
-            ? { 'X-API-Key': import.meta.env.VITE_RECORDS_API_KEY }
-            : {}),
-        },
-        body: JSON.stringify(body),
-        signal: controller.signal,
-      });
-
-      if (!res.ok) {
-        const errBody = await res.json().catch(() => ({}));
-        throw new Error(
-          (errBody as any)?.error?.message || (errBody as any)?.message || `HTTP ${res.status}`
-        );
-      }
-
-      const ct = res.headers.get('content-type') || '';
-      if (ct.includes('text/event-stream')) {
-        // SSE streaming
-        const reader = res.body?.getReader();
-        if (!reader) throw new Error('No reader');
-
-        const decoder = new TextDecoder();
-        let buffer = '';
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split('\n');
-          buffer = lines.pop() || '';
-
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const raw = line.slice(6);
-              try {
-                const event = JSON.parse(raw) as Record<string, unknown>;
-
-                if (line.includes('event: done') || (event as any)._done) {
-                  updateLastMessage((msg) => ({
-                    ...msg,
-                    status: 'done',
-                    content: (event.content as string) || msg.content,
-                    llmUsage: event.llmUsage as ChatMessage['llmUsage'],
-                  }));
-                } else if (line.includes('event: text') || typeof event.delta === 'string') {
-                  updateLastMessage((msg) => ({
-                    ...msg,
-                    content: msg.content + (event.delta as string),
-                  }));
-                } else if (line.includes('event: error')) {
-                  updateLastMessage((msg) => ({
-                    ...msg,
-                    status: 'error',
-                    error: (event.message as string) || 'Unknown error',
-                  }));
-                } else if (line.includes('event: done')) {
-                  updateLastMessage((msg) => ({
-                    ...msg,
-                    status: 'done',
-                    content: (event.content as string) || msg.content,
-                    llmUsage: event.llmUsage as ChatMessage['llmUsage'],
-                  }));
-                }
-              } catch {
-                // Skip unparseable lines
-              }
-            }
-          }
-        }
-        updateLastMessage((msg) => ({ ...msg, status: 'done' }));
-      } else {
-        // Non-streaming JSON response
-        const json = await res.json();
-        updateLastMessage((msg) => ({
-          ...msg,
-          status: 'done',
-          content: (json as any).content || JSON.stringify(json),
-          llmUsage: (json as any).llmUsage,
-        }));
-      }
+      const result = await opts.onSubmit(content, files);
+      updateLastMessage((msg) => ({
+        ...msg,
+        status: result.error ? 'error' : 'done',
+        content: result.content,
+        error: result.error ? result.content : undefined,
+      }));
     } catch (err: any) {
-      if (err.name === 'AbortError') {
-        updateLastMessage((msg) => ({ ...msg, status: 'done', content: msg.content || '(cancelled)' }));
-      } else {
-        updateLastMessage((msg) => ({
-          ...msg,
-          status: 'error',
-          error: String(err?.message || err),
-        }));
-      }
+      updateLastMessage((msg) => ({
+        ...msg,
+        status: 'error',
+        content: String(err?.message || err),
+        error: String(err?.message || err),
+      }));
     } finally {
       setIsStreaming(false);
     }
-  }, [messages, addMessage, updateLastMessage, chatPath]);
-
-  const cancelStream = useCallback(() => {
-    abortRef.current?.abort();
-  }, []);
-
-  const retryLast = useCallback(() => {
-    const last = messages[messages.length - 1];
-    if (last?.role === 'assistant' && last.status === 'error') {
-      setMessages((prev) => prev.slice(0, -2)); // Remove failed assistant + its user
-      // Re-send the user message before it
-      const userMsg = [...messages].reverse().find((m) => m.role === 'user' && m.id < last.id);
-      if (userMsg) {
-        void sendMessage(userMsg.content);
-      }
+    if (currentConversation && currentConversation.title === 'New chat') {
+      const autoTitle = content.slice(0, 32) + (content.length > 32 ? '…' : '');
+      updateCurrentConversation((conv) => ({ ...conv, title: autoTitle, updatedAt: Date.now() }));
     }
-  }, [messages, sendMessage]);
-
-  /**
-   * Re-run the last user prompt. Removes the latest assistant response (if any)
-   * and re-sends the most recent user message with the same conversation context.
-   */
-  const regenerateLast = useCallback(() => {
-    let userIdx = -1;
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === 'user') {
-        userIdx = i;
-        break;
-      }
-    }
-    if (userIdx === -1) return;
-    const userMsg = messages[userIdx];
-    const truncated = messages.slice(0, userIdx);
-    setMessages(truncated);
-    void sendMessage(userMsg.content, undefined, { historyOverride: truncated });
-  }, [messages, sendMessage]);
-
-  // Slash commands registry
-  const slashCommands: SlashCommand[] = [
-    {
-      cmd: '/clear',
-      desc: '清空当前对话',
-      usage: '/clear',
-      action: () => { clearMessages(); },
-    },
-    {
-      cmd: '/help',
-      desc: '显示所有可用命令',
-      usage: '/help',
-      action: () => {
-        const helpText = slashCommands.map((c) => `**${c.cmd}** — ${c.desc}\n\`${c.usage}\``).join('\n');
-        addMessage({
-          id: `help-${Date.now()}`,
-          role: 'system',
-          content: `# Available Commands\n\n${helpText}`,
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-    {
-      cmd: '/run',
-      desc: '触发多 Agent 编排模式',
-      usage: '/run [pipeline|parallel|debate|vote|roundtable|company]',
-      action: (args) => {
-        const mode = args.trim();
-        if (opts.onRunMode && mode) {
-          void opts.onRunMode(mode, args.slice(mode.length).trim());
-        } else {
-          addMessage({
-            id: `sys-${Date.now()}`,
-            role: 'system',
-            content: `Usage: /run [mode] where mode = pipeline | parallel | debate | vote | roundtable | company`,
-            timestamp: Date.now(),
-            status: 'done',
-          });
-        }
-      },
-    },
-    {
-      cmd: '/export',
-      desc: '导出当前对话为 Markdown',
-      usage: '/export',
-      action: () => {
-        const md = messages.map((m) => {
-          const prefix = m.role === 'user' ? '## You' : m.role === 'assistant' ? '## Assistant' : '## System';
-          return `${prefix}\n\n${m.content}\n`;
-        }).join('\n---\n');
-        const blob = new Blob([md], { type: 'text/markdown' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `chat-export-${new Date().toISOString().slice(0, 10)}.md`;
-        a.click();
-        URL.revokeObjectURL(url);
-      },
-    },
-    {
-      cmd: '/system',
-      desc: '设置系统提示词',
-      usage: '/system <prompt>',
-      action: (_args) => {
-        addMessage({
-          id: `sys-${Date.now()}`,
-          role: 'system',
-          content: 'System prompt set for subsequent messages.',
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-    {
-      cmd: '/tokens',
-      desc: '显示当前对话 token 用量',
-      usage: '/tokens',
-      action: () => {
-        const tokenMsgs = messages.filter((m) => m.llmUsage);
-        let total = 0;
-        let prompt = 0;
-        let completion = 0;
-        tokenMsgs.forEach((m) => {
-          if (m.llmUsage) {
-            total += m.llmUsage.total_tokens;
-            prompt += m.llmUsage.prompt_tokens;
-            completion += m.llmUsage.completion_tokens;
-          }
-        });
-        addMessage({
-          id: `sys-${Date.now()}`,
-          role: 'system',
-          content: `## Token Usage\n\n- Total: ${total}\n- Prompt: ${prompt}\n- Completion: ${completion}\n- Est. cost: $${((total / 1000) * 0.002).toFixed(4)}`,
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-    {
-      cmd: '/model',
-      desc: '显示当前模型信息',
-      usage: '/model',
-      action: () => {
-        const last = [...messages].reverse().find((m) => m.llmUsage?.model);
-        const model = last?.llmUsage?.model || 'default (auto-select)';
-        addMessage({
-          id: `sys-${Date.now()}`,
-          role: 'system',
-          content: `Current model: **${model}**\n\nTo change models, set \`LLM_PROVIDER\` environment variable on the server (openai | anthropic | deepseek | kimi | ollama | custom).`,
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-    {
-      cmd: '/session',
-      desc: '查看当前会话信息',
-      usage: '/session',
-      action: () => {
-        const msgCount = messages.length;
-        const userMsgs = messages.filter((m) => m.role === 'user').length;
-        const assistantMsgs = messages.filter((m) => m.role === 'assistant').length;
-        addMessage({
-          id: `sys-${Date.now()}`,
-          role: 'system',
-          content: `## Session Info\n\n- Messages: ${msgCount}\n- User: ${userMsgs}\n- Assistant: ${assistantMsgs}\n- Started: ${messages[0] ? new Date(messages[0].timestamp).toLocaleString() : 'N/A'}`,
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-    {
-      cmd: '/debug',
-      desc: '切换调试模式（显示原始响应）',
-      usage: '/debug',
-      action: () => {
-        addMessage({
-          id: `sys-${Date.now()}`,
-          role: 'system',
-          content: 'Debug mode toggled. Raw LLM responses will be shown.',
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-    {
-      cmd: '/code',
-      desc: '切换到代码模式（用 Coder agent）',
-      usage: '/code <task description>',
-      action: (args) => {
-        if (args.trim()) {
-          addMessage({
-            id: `sys-${Date.now()}`,
-            role: 'system',
-            content: `Switching to code mode. Task: "${args.trim()}"\nThe Coder agent will be used for this request.`,
-            timestamp: Date.now(),
-            status: 'done',
-          });
-          void sendMessage(args.trim());
-        } else {
-          addMessage({
-            id: `sys-${Date.now()}`,
-            role: 'system',
-            content: 'Usage: /code <task description>',
-            timestamp: Date.now(),
-            status: 'done',
-          });
-        }
-      },
-    },
-    {
-      cmd: '/image',
-      desc: '分析图片（请先上传图片文件）',
-      usage: '/image <optional question>',
-      action: () => {
-        addMessage({
-          id: `sys-${Date.now()}`,
-          role: 'system',
-          content: 'Please attach an image file using the upload button (📎) or drag & drop, then ask your question.',
-          timestamp: Date.now(),
-          status: 'done',
-        });
-      },
-    },
-  ];
-
-  const getSlashCompletions = useCallback((query: string): SlashCommand[] => {
-    const q = query.toLowerCase();
-    return slashCommands.filter((c) => c.cmd.startsWith('/') && c.cmd.toLowerCase().includes(q));
-  }, [slashCommands]);
+  }, [opts, addMessage, updateLastMessage, isStreaming, currentConversation, updateCurrentConversation]);
 
   // Convert to AgentOutput format for ChatPanel display compatibility
   const agentOutputs = messages.map((m): AgentOutput => ({
@@ -485,16 +241,16 @@ export function useChat(opts: UseChatOptions = {}) {
     agentOutputs,
     isStreaming,
     sendMessage,
-    cancelStream,
     clearMessages,
-    retryLast,
-    regenerateLast,
-    addMessage,
-    slashCommands,
-    slashQuery,
-    setSlashQuery,
-    showSlashMenu,
-    setShowSlashMenu,
-    getSlashCompletions,
+    conversations: conversations.map((c) => ({
+      id: c.id,
+      title: c.title,
+      updatedAt: c.updatedAt,
+      messageCount: c.messages.length,
+    })),
+    currentConversationId: currentConversation?.id || '',
+    switchConversation,
+    createNewConversation,
+    deleteConversation,
   };
 }

@@ -28,8 +28,7 @@ class TestAgent extends BaseAgent {
     return this.llmOrMock(
       task,
       () => ({ system: 'test', user: 'test' }),
-      (content) => ({ parsed: content }),
-      (reason) => this.createResult(task.id, 'success', { mocked: true }, reason)
+      (content) => ({ parsed: content })
     );
   }
 }
@@ -61,7 +60,7 @@ describe('BaseAgent', () => {
     assert.deepEqual(result.output, { done: true });
   });
 
-  it('should fall back to mock when no LLM provider', async () => {
+  it('should fail when no LLM provider is configured', async () => {
     const task: Task = {
       id: 'task-2',
       type: 'test',
@@ -69,8 +68,8 @@ describe('BaseAgent', () => {
     };
 
     const result = await agent.testLlmOrMock(task);
-    assert.equal(result.status, 'success');
-    assert.deepEqual(result.output, { mocked: true });
+    assert.equal(result.status, 'failed');
+    assert.equal(result.output, null);
   });
 
   it('should handle task cancellation via _exec.signal', async () => {

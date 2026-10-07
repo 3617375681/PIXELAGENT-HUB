@@ -10,11 +10,11 @@ import { DirectorAgent } from './agents/DirectorAgent.js';
 import { ModeratorAgent } from './agents/ModeratorAgent.js';
 import { Task, TaskResult } from './core/types.js';
 import { LLMProvider } from './core/llm/provider.js';
-import { createLLMProvider } from './core/llm/factory.js';
+import { createLLMProvider, createLLMProviderFor } from './core/llm/factory.js';
 
 export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvider?: LLMProvider | null): Orchestrator {
   const bus = new MessageBusImpl();
-  const provider = llmProvider !== undefined ? llmProvider : createLLMProvider();
+  const providerFor = (agentId: string) => (llmProvider !== undefined ? llmProvider : createLLMProviderFor({ id: agentId }));
 
   const orchestrator = new Orchestrator({
     name,
@@ -69,17 +69,17 @@ export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvide
   // Enable concurrency control for parallel operations (debate, vote, parallel modes)
   orchestrator.enableQueue(5, 50);
 
-  // Register all preset agents with shared bus and LLM provider
-  orchestrator.registerAgent(new ResearchAgent(bus, provider));
-  orchestrator.registerAgent(new WriterAgent(bus, provider));
-  orchestrator.registerAgent(new ReviewerAgent(bus, provider));
-  orchestrator.registerAgent(new CodeAgent(bus, provider));
-  orchestrator.registerAgent(new ManagerAgent(bus, provider));
-  orchestrator.registerAgent(new SeniorEditorAgent(bus, provider));
-  orchestrator.registerAgent(new DirectorAgent(bus, provider));
-  orchestrator.registerAgent(new ModeratorAgent(bus, provider));
+  // Register all preset agents with shared bus and per-agent LLM routing (env / AgentConfig)
+  orchestrator.registerAgent(new ResearchAgent(bus, providerFor('researcher')));
+  orchestrator.registerAgent(new WriterAgent(bus, providerFor('writer')));
+  orchestrator.registerAgent(new ReviewerAgent(bus, providerFor('reviewer')));
+  orchestrator.registerAgent(new CodeAgent(bus, providerFor('coder')));
+  orchestrator.registerAgent(new ManagerAgent(bus, providerFor('manager')));
+  orchestrator.registerAgent(new SeniorEditorAgent(bus, providerFor('senior_editor')));
+  orchestrator.registerAgent(new DirectorAgent(bus, providerFor('director')));
+  orchestrator.registerAgent(new ModeratorAgent(bus, providerFor('moderator')));
 
   return orchestrator;
 }
 
-export { LLMProvider, createLLMProvider };
+export { LLMProvider, createLLMProvider, createLLMProviderFor };

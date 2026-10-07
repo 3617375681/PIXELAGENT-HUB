@@ -23,8 +23,9 @@ import {
   CornerDownLeft,
   Copy,
   Check,
-  RefreshCw,
   ChevronsDown,
+  Plus,
+  Trash2,
 } from 'lucide-react';
 
 interface ThemeConfig {
@@ -40,9 +41,11 @@ export interface ChatPanelProps {
   theme: ThemeConfig;
   activeAgentId: string | null;
   isRunning?: boolean;
+  /** True while Records API is still hydrating the run (optional; refines placeholder text). */
+  isLoading?: boolean;
   enableSeedance?: boolean;
-  /** 当用户使用 /run 指令时回调 */
-  onRunMode?: (mode: string, args: string) => void | Promise<void>;
+  /** Required: handle user submission. Should kick off a workflow / API call and return a short status string. */
+  onSubmit: (text: string, files?: File[]) => Promise<{ content: string; error?: boolean }>;
 }
 
 function pickGenerationId(body: unknown): string | null {
@@ -226,8 +229,10 @@ MarkdownContent.displayName = 'MarkdownContent';
 export const ChatPanel: React.FC<ChatPanelProps> = ({
   theme,
   activeAgentId,
+  isRunning = false,
+  isLoading = false,
   enableSeedance = false,
-  onRunMode,
+  onSubmit,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -240,11 +245,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const [dragOver, setDragOver] = useState(false);
   const [atBottom, setAtBottom] = useState(true);
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
-
-  // Slash menu state
-  const [slashOpen, setSlashOpen] = useState(false);
-  const [slashIdx, setSlashIdx] = useState(0);
-  const [slashMatches, setSlashMatches] = useState<ReturnType<typeof useChat>['slashCommands']>([]);
 
   // Seedance state
   const [seedOpen, setSeedOpen] = useState(false);
@@ -261,11 +261,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     agentOutputs,
     isStreaming,
     sendMessage,
-    cancelStream,
-    retryLast,
-    regenerateLast,
-    slashCommands,
-  } = useChat({ onRunMode });
+    conversations,
+    currentConversationId,
+    switchConversation,
+    createNewConversation,
+    deleteConversation,
+  } = useChat({ onSubmit });
+
+  const composerLocked = isStreaming || isRunning || isLoading;
+  const canDeleteConversation = conversations.length > 1 && !!currentConversationId;
 
   // ---- Manage object URLs for image previews (avoid memory leak) ----
   useEffect(() => {
@@ -454,78 +458,20 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     }
   }, []);
 
-  // ---- Slash command detection ----
-  const updateSlashMenu = useCallback(
-    (value: string, cursorPos: number) => {
-      // Use the real cursor position so the slash menu also triggers mid-text
-      const textBeforeCursor = value.slice(0, cursorPos);
-      const slashMatch = textBeforeCursor.match(/(?:^|\s)\/(\S*)$/);
-      if (slashMatch) {
-        const query = slashMatch[1].toLowerCase();
-        const matches = slashCommands.filter(
-          (c) => c.cmd.toLowerCase().includes(query) || c.desc.toLowerCase().includes(query)
-        );
-        if (matches.length > 0) {
-          setSlashMatches(matches);
-          setSlashOpen(true);
-          setSlashIdx(0);
-          return;
-        }
-      }
-      setSlashOpen(false);
-      setSlashMatches([]);
-      setSlashIdx(0);
-    },
-    [slashCommands],
-  );
-
   // ---- Send ----
   const handleSend = useCallback(async () => {
     const t = draft.trim();
     if (!t && picked.length === 0) return;
-    if (isStreaming) return;
+    if (composerLocked) return;
 
-    setSlashOpen(false);
     await sendMessage(draft, picked.length > 0 ? picked : undefined);
     setDraft('');
     setPicked([]);
     // Refocus textarea
     setTimeout(() => textareaRef.current?.focus(), 50);
-  }, [draft, picked, isStreaming, sendMessage]);
+  }, [draft, picked, composerLocked, sendMessage]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Slash menu keyboard nav
-    if (slashOpen && slashMatches.length > 0) {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setSlashIdx((i) => (i + 1) % slashMatches.length);
-        return;
-      }
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setSlashIdx((i) => (i - 1 + slashMatches.length) % slashMatches.length);
-        return;
-      }
-      if (e.key === 'Enter' || e.key === 'Tab') {
-        e.preventDefault();
-        const cmd = slashMatches[slashIdx];
-        if (cmd) {
-          // Replace the slash text with the full command
-          setDraft((prev) => {
-            const replaced = prev.replace(/(?:^|\s)\/\S*$/, `/${cmd.cmd} `);
-            return replaced;
-          });
-          setSlashOpen(false);
-        }
-        return;
-      }
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        setSlashOpen(false);
-        return;
-      }
-    }
-
     // Send on Ctrl+Enter or Cmd+Enter
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
@@ -534,26 +480,61 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setDraft(value);
-    const cursorPos = e.target.selectionStart ?? value.length;
-    updateSlashMenu(value, cursorPos);
+    setDraft(e.target.value);
   };
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center gap-2 p-3 border-b border-white/10 bg-black/20">
-        <MessageSquare size={14} style={{ color: theme.primary }} />
-        <span className="pixel-font text-[10px]" style={{ color: theme.primary }}>
-          AGENT CHAT
-        </span>
-        <div className="flex items-center gap-1 ml-auto">
-          {isStreaming && (
-            <span className="pixel-font text-[7px] text-amber-400 animate-pulse mr-1">STREAMING</span>
-          )}
-          <Radio size={8} className={messages.length > 0 ? 'text-green-400 animate-pulse' : 'text-white/20'} />
-          <span className="pixel-font text-[8px] text-white/30">{messages.length} msgs</span>
+      <div className="p-3 border-b border-white/10 bg-black/20">
+        <div className="flex items-center gap-2">
+          <MessageSquare size={14} style={{ color: theme.primary }} />
+          <span className="pixel-font text-[10px]" style={{ color: theme.primary }}>
+            AGENT CHAT
+          </span>
+          <div className="flex items-center gap-1 ml-auto">
+            {isStreaming && (
+              <span className="pixel-font text-[7px] text-amber-400 animate-pulse mr-1">STREAMING</span>
+            )}
+            {isRunning && !isStreaming && (
+              <span className="pixel-font text-[7px] text-cyan-400/90 mr-1">CANVAS</span>
+            )}
+            <Radio size={8} className={messages.length > 0 ? 'text-green-400 animate-pulse' : 'text-white/20'} />
+            <span className="pixel-font text-[8px] text-white/30">{messages.length} msgs</span>
+          </div>
+        </div>
+        <div className="mt-2 flex items-center gap-1.5">
+          <select
+            value={currentConversationId}
+            onChange={(e) => switchConversation(e.target.value)}
+            disabled={isStreaming}
+            className="flex-1 min-w-0 pixel-font text-[8px] bg-black/40 border border-white/15 rounded px-2 py-1 text-white/80 disabled:opacity-40"
+            title="Switch conversation history"
+          >
+            {conversations.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.title} ({c.messageCount})
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={createNewConversation}
+            disabled={isStreaming}
+            className="pixel-btn-secondary p-1.5 disabled:opacity-40"
+            title="New conversation"
+          >
+            <Plus size={12} />
+          </button>
+          <button
+            type="button"
+            onClick={() => currentConversationId && deleteConversation(currentConversationId)}
+            disabled={!canDeleteConversation || isStreaming}
+            className="pixel-btn-secondary p-1.5 disabled:opacity-40"
+            title="Delete current conversation"
+          >
+            <Trash2 size={12} />
+          </button>
         </div>
       </div>
 
@@ -573,25 +554,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 className="flex flex-col items-center justify-center h-full text-white/20 gap-3"
               >
                 <Zap size={32} style={{ color: theme.primary + '40' }} />
-                <p className="pixel-font text-[10px] text-center leading-relaxed">
-                  Start a conversation with the AI agents.<br />
-                  Type <span style={{ color: theme.primary }}>/</span> for commands, or attach files/images.
+                <p className="pixel-font text-[10px] text-center leading-relaxed max-w-[260px]">
+                  Sending a message runs <span className="text-white/35">POST /api/run/company</span>.<br />
+                  Attach files via the paperclip, or paste / drop images here.
                 </p>
-                <div className="flex flex-wrap gap-1 justify-center max-w-[280px]">
-                  {slashCommands.slice(0, 6).map((cmd) => (
-                    <button
-                      key={cmd.cmd}
-                      type="button"
-                      onClick={() => {
-                        setDraft(`/${cmd.cmd} `);
-                        textareaRef.current?.focus();
-                      }}
-                      className="pixel-font text-[7px] px-1.5 py-0.5 rounded border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 transition-colors"
-                    >
-                      /{cmd.cmd}
-                    </button>
-                  ))}
-                </div>
               </motion.div>
             )}
 
@@ -601,7 +567,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               const isActive = activeAgentId === msg.agentId;
               const isUser = msg.role === 'user' || msg.agentId === 'user';
               const isStreamingMsg = isLast && msg.type === 'info' && isStreaming;
-              const canRegenerate = !isUser && isLast && !isStreaming && msg.type !== 'error';
 
               const copyContent = () => {
                 void navigator.clipboard.writeText(msg.content);
@@ -650,15 +615,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                       >
                         {isUser ? 'INPUT' : isStreamingMsg ? 'STREAMING' : typeLabels[msg.type]}
                       </span>
-                      {msg.type === 'error' && (
-                        <button
-                          type="button"
-                          onClick={() => retryLast()}
-                          className="pixel-font text-[7px] px-1 text-red-400 hover:text-red-300 border border-red-400/30 hover:border-red-400/60 rounded"
-                        >
-                          RETRY
-                        </button>
-                      )}
                       <span className="pixel-font text-[7px] text-white/20 flex items-center gap-0.5 ml-auto">
                         <Clock size={8} />
                         {new Date(msg.timestamp).toLocaleTimeString('en-US', {
@@ -705,17 +661,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                             {copiedMsgId === msg.id ? <Check size={9} /> : <Copy size={9} />}
                             {copiedMsgId === msg.id ? 'COPIED' : 'COPY'}
                           </button>
-                          {canRegenerate && (
-                            <button
-                              type="button"
-                              onClick={() => regenerateLast()}
-                              title="Regenerate response"
-                              className="pixel-font text-[8px] px-1.5 py-0.5 rounded bg-black/70 text-white/60 hover:text-white border border-white/15 flex items-center gap-1"
-                            >
-                              <RefreshCw size={9} />
-                              REGEN
-                            </button>
-                          )}
                         </div>
                       )}
                     </div>
@@ -800,44 +745,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           </div>
         )}
 
-        {/* Slash command menu */}
-        <AnimatePresence>
-          {slashOpen && slashMatches.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              className="absolute bottom-full left-3 right-3 mb-1 z-20 pixel-card border-white/20 max-h-48 overflow-y-auto pixel-scrollbar"
-              style={{ backgroundColor: theme.background }}
-            >
-              {slashMatches.map((cmd, i) => (
-                <button
-                  key={cmd.cmd}
-                  type="button"
-                  onClick={() => {
-                    setDraft((prev) => {
-                      const replaced = prev.replace(/(?:^|\s)\/\S*$/, `/${cmd.cmd} `);
-                      return replaced;
-                    });
-                    setSlashOpen(false);
-                    textareaRef.current?.focus();
-                  }}
-                  onMouseEnter={() => setSlashIdx(i)}
-                  className={`w-full text-left px-3 py-2 flex items-center gap-2 transition-colors ${
-                    i === slashIdx ? 'bg-white/10' : ''
-                  }`}
-                >
-                  <span className="pixel-font text-[10px] shrink-0" style={{ color: theme.primary }}>
-                    /{cmd.cmd}
-                  </span>
-                  <span className="pixel-font-body text-[9px] text-white/50 truncate">{cmd.desc}</span>
-                  <span className="pixel-font text-[7px] text-white/20 ml-auto shrink-0 hidden sm:inline">{cmd.usage}</span>
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Input area */}
         <div className="flex flex-col gap-2 pixel-card p-2 border-white/10">
           <textarea
@@ -846,7 +753,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
-            placeholder="Type a message... (Type / for commands, Ctrl/⌘+Enter to send)"
+            placeholder={
+              composerLocked
+                ? isStreaming && isLoading
+                  ? 'Contacting API / polling job…'
+                  : isStreaming
+                  ? 'Waiting for response…'
+                  : 'Workflow running — watch the canvas…'
+                : 'Describe your task (Ctrl/⌘+Enter to send)…'
+            }
             rows={1}
             className="pixel-font-body text-sm w-full bg-transparent outline-none placeholder:text-white/15 text-white/70 resize-none overflow-y-auto min-h-[40px] max-h-[200px]"
           />
@@ -860,34 +775,24 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             >
               <Paperclip size={14} />
             </button>
-            {isStreaming ? (
-              <button
-                type="button"
-                onClick={cancelStream}
-                className="pixel-btn-secondary p-1.5 shrink-0 ml-auto flex items-center gap-1 text-amber-400"
-                title="Stop streaming"
-              >
-                <X size={14} />
-                <span className="pixel-font text-[8px] hidden sm:inline">STOP</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => void handleSend()}
-                disabled={!draft.trim() && picked.length === 0}
-                className="pixel-btn-secondary p-1.5 shrink-0 ml-auto flex items-center gap-1 disabled:opacity-30"
-                title="Send (Ctrl+Enter)"
-              >
-                <Send size={14} />
-                <span className="pixel-font text-[8px] text-white/50 hidden sm:inline">
-                  <CornerDownLeft size={10} className="inline" />
-                </span>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => void handleSend()}
+              disabled={composerLocked || (!draft.trim() && picked.length === 0)}
+              className="pixel-btn-secondary p-1.5 shrink-0 ml-auto flex items-center gap-1 disabled:opacity-30"
+              title={composerLocked ? (isStreaming ? 'Submitting…' : 'Canvas busy') : 'Send (Ctrl+Enter)'}
+            >
+              <Send size={14} />
+              <span className="pixel-font text-[8px] text-white/50 hidden sm:inline">
+                <CornerDownLeft size={10} className="inline" />
+              </span>
+            </button>
           </div>
-          {isStreaming && (
-            <div className="h-0.5 w-full bg-amber-500/30 overflow-hidden rounded">
-              <div className="h-full w-1/3 bg-amber-400 animate-pulse" />
+          {composerLocked && (
+            <div className="h-0.5 w-full overflow-hidden rounded bg-white/10">
+              <div
+                className={`h-full w-1/3 animate-pulse ${isStreaming ? 'bg-amber-400' : 'bg-cyan-400/80'}`}
+              />
             </div>
           )}
         </div>

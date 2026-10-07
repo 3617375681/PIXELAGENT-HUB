@@ -33,4 +33,11 @@ export interface LLMProviderOptions {
 }
 
 /** Supported LLM provider IDs */
-export type LLMProviderId = 'openai' | 'anthropic' | 'deepseek' | 'kimi' | 'ollama' | 'custom-openai-compat';
+export type LLMProviderId =
+  | 'openai'
+  | 'anthropic'
+  | 'deepseek'
+  | 'kimi'
+  | 'ollama'
+  | 'custom-openai-compat'
+  | 'mock';

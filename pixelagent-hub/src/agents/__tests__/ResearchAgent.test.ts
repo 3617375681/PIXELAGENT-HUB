@@ -2,6 +2,7 @@ import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { ResearchAgent } from '../ResearchAgent.js';
 import { MessageBusImpl } from '../../core/MessageBus.js';
+import { MockProvider } from '../../core/llm/mock.js';
 import { Task } from '../../core/types.js';
 
 describe('ResearchAgent', () => {
@@ -10,7 +11,7 @@ describe('ResearchAgent', () => {
 
   beforeEach(() => {
     bus = new MessageBusImpl();
-    agent = new ResearchAgent(bus, null); // No LLM provider → uses mock
+    agent = new ResearchAgent(bus, new MockProvider());
   });
 
   it('should return research results in mock mode', async () => {

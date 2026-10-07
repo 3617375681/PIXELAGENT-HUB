@@ -6,6 +6,7 @@ describe('LLMFactory', () => {
   it('should return null when no provider is configured', () => {
     const prev = { ...process.env };
     delete process.env.LLM_PROVIDER;
+    delete process.env.OFFLINE;
     delete process.env.OPENAI_API_KEY;
     delete process.env.ANTHROPIC_API_KEY;
     delete process.env.DEEPSEEK_API_KEY;
@@ -18,9 +19,23 @@ describe('LLMFactory', () => {
     process.env = prev;
   });
 
+  it('should select MockProvider when LLM_PROVIDER=mock', () => {
+    const prev = { ...process.env };
+    process.env.LLM_PROVIDER = 'mock';
+    delete process.env.OFFLINE;
+    process.env.NODE_ENV = 'test';
+
+    const provider = createLLMProvider();
+    assert.ok(provider);
+    assert.equal(provider?.name, 'mock');
+
+    process.env = prev;
+  });
+
   it('should auto-select KimiProvider when KIMI_API_KEY is set', () => {
     const prev = { ...process.env };
     delete process.env.LLM_PROVIDER;
+    delete process.env.OFFLINE;
     delete process.env.OPENAI_API_KEY;
     delete process.env.ANTHROPIC_API_KEY;
     delete process.env.DEEPSEEK_API_KEY;
@@ -37,6 +52,7 @@ describe('LLMFactory', () => {
 
   it('should select provider based on LLM_PROVIDER env', () => {
     const prev = { ...process.env };
+    delete process.env.OFFLINE;
     process.env.LLM_PROVIDER = 'openai';
     process.env.OPENAI_API_KEY = 'sk-test-openai-key-1234567890';
     process.env.NODE_ENV = 'test';
@@ -50,6 +66,7 @@ describe('LLMFactory', () => {
 
   it('should return null when provider creation fails', () => {
     const prev = { ...process.env };
+    delete process.env.OFFLINE;
     process.env.LLM_PROVIDER = 'ollama';
     // Set base URL to something that will fail (fetch won't be called at construction for Ollama though)
     process.env.OLLAMA_BASE_URL = 'http://localhost:11434';

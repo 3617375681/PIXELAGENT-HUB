@@ -5,7 +5,7 @@ import { AgentCard } from './AgentCard';
 import { DataPacketAnimation } from './effects/DataPacket';
 import { useForceLayout } from '../hooks/useForceLayout';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery';
-import { Zap, ArrowRight, Search, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Zap, ArrowRight, Search, X } from 'lucide-react';
 
 interface ThemeConfig {
   primary: string;
@@ -30,10 +30,37 @@ interface AgentFlowProps {
 
 const CARD_W = 240;
 const CARD_H = 200;
-const STORAGE_KEY = 'pixelagent_layout_v2';
+const STORAGE_KEY = 'pixelagent_layout_v3';
 const PADDING = 120;
 const CONTENT_W = 3000;
 const CONTENT_H = 3000;
+
+/** Center of agent card in canvas coordinates (matches card `left`/`top` + half size). */
+function cardCenter(px: number, py: number) {
+  const L = px + PADDING;
+  const T = py + PADDING;
+  return { cx: L + CARD_W / 2, cy: T + CARD_H / 2 };
+}
+
+/**
+ * Point where the ray from this card's center toward (targetCx, targetCy) exits the card rectangle.
+ * Avoids "right edge → left edge" when source and target are stacked vertically (same column), which
+ * produced sideways Bézier loops.
+ */
+function boundaryPointToward(px: number, py: number, targetCx: number, targetCy: number) {
+  const { cx, cy } = cardCenter(px, py);
+  const halfW = CARD_W / 2;
+  const halfH = CARD_H / 2;
+  const dx = targetCx - cx;
+  const dy = targetCy - cy;
+  if (Math.abs(dx) < 1e-9 && Math.abs(dy) < 1e-9) {
+    return { x: cx + halfW, y: cy };
+  }
+  const adx = Math.abs(dx);
+  const ady = Math.abs(dy);
+  const scale = adx * halfH > ady * halfW ? halfW / adx : halfH / ady;
+  return { x: cx + dx * scale, y: cy + dy * scale };
+}
 
 export const AgentFlow: React.FC<AgentFlowProps> = ({
   agents, activeAgentId, onSelectAgent, onShowThinking, theme, isRunning, isMobile = false, scale, onScaleChange,
@@ -43,7 +70,6 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [collapsedNodes, setCollapsedNodes] = useState<Set<string>>(new Set());
   const [dragOverrides, setDragOverrides] = useState<Record<string, { x: number; y: number }>>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -64,6 +90,7 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
     id: string; from: { x: number; y: number }; to: { x: number; y: number };
     color: string; icon: string;
   }>>([]);
+  const collapsedNodes = React.useMemo(() => new Set<string>(), []);
 
   // Force layout engine
   const { positions } = useForceLayout(agents, collapsedNodes, dragOverrides);
@@ -157,19 +184,26 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
         if (!end) return;
         const isActive = agent.status === 'thinking' || agent.status === 'done';
         const inPath = highlightPath.has(agent.id) && highlightPath.has(targetId);
-        const sx = start.x + PADDING + CARD_W;
-        const sy = start.y + PADDING + CARD_H / 2;
-        const ex = end.x + PADDING;
-        const ey = end.y + PADDING + CARD_H / 2;
-        const dx = ex - sx;
-        const dist = Math.sqrt(dx * dx + (ey - sy) * (ey - sy));
-        const cpOffset = Math.min(Math.abs(dx) * 0.5, 120);
+        const sC = cardCenter(start.x, start.y);
+        const eC = cardCenter(end.x, end.y);
+        const p1 = boundaryPointToward(start.x, start.y, eC.cx, eC.cy);
+        const p2 = boundaryPointToward(end.x, end.y, sC.cx, sC.cy);
+        const chdx = p2.x - p1.x;
+        const chdy = p2.y - p1.y;
+        const chord = Math.hypot(chdx, chdy) || 1;
+        const k = Math.min(chord * 0.45, 140);
+        const ux = chdx / chord;
+        const uy = chdy / chord;
+        const cx1 = p1.x + ux * k;
+        const cy1 = p1.y + uy * k;
+        const cx2 = p2.x - ux * k;
+        const cy2 = p2.y - uy * k;
+        const dist = chord;
         newLines.push({
           id: `${agent.id}-${targetId}`,
-          x1: sx, y1: sy,
-          x2: ex, y2: ey,
-          cx1: sx + cpOffset, cy1: sy,
-          cx2: ex - cpOffset, cy2: ey,
+          x1: p1.x, y1: p1.y,
+          x2: p2.x, y2: p2.y,
+          cx1, cy1, cx2, cy2,
           color: agent.color,
           active: isActive || inPath,
           dashed: dist > 600,
@@ -284,28 +318,22 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
 
   const handlePacketComplete = (id: string) => setDataPackets((prev) => prev.filter((p) => p.id !== id));
 
-  const toggleCollapse = (id: string) => {
-    setCollapsedNodes((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
-  };
-
-  // Save layout config
-  const saveLayout = useCallback(() => {
-    const config = {
-      dragOffsets: dragOverrides,
-      collapsedNodes: Array.from(collapsedNodes),
-      savedAt: Date.now(),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-  }, [dragOverrides, collapsedNodes]);
+  // Persist layout automatically
+  useEffect(() => {
+    try {
+      const config = {
+        dragOffsets: dragOverrides,
+        savedAt: Date.now(),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    } catch {
+      // ignore storage errors
+    }
+  }, [dragOverrides]);
 
   // Reset layout
   const resetLayout = useCallback(() => {
     setDragOverrides({});
-    setCollapsedNodes(new Set());
     onScaleChange?.(0.8);
   }, [onScaleChange]);
 
@@ -316,7 +344,6 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
       if (saved) {
         const config = JSON.parse(saved);
         if (config.dragOffsets) setDragOverrides(config.dragOffsets);
-        if (config.collapsedNodes) setCollapsedNodes(new Set(config.collapsedNodes));
       }
     } catch { /* ignore */ }
   }, []);
@@ -490,8 +517,6 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
           const pos = positions[agentId];
           if (!pos) return null;
           const isVisible = visibleAgentIds.has(agentId);
-          const isCollapsed = collapsedNodes.has(agentId);
-          const hasChildren = agent.connections.length > 0;
           const isHighlighted = highlightPath.has(agentId);
           const isDragging = draggingId === agentId;
 
@@ -524,17 +549,6 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
                   transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.5, repeat: Infinity }}
                 />
               )}
-              {hasChildren && (
-                <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleCollapse(agentId); }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  className="absolute -left-7 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center z-10 border-2 border-white/30 hover:border-white/70 hover:bg-white/10 transition-all"
-                  style={{ backgroundColor: isCollapsed ? theme.primary + '50' : theme.card, borderRadius: 6 }}
-                  title={isCollapsed ? 'Expand' : 'Collapse'}
-                >
-                  {isCollapsed ? <ChevronRight size={18} style={{ color: theme.primary }} /> : <ChevronDown size={18} style={{ color: theme.primary }} />}
-                </button>
-              )}
               <AgentCard agent={agent} isActive={activeAgentId === agent.id} onSelect={onSelectAgent} onShowThinking={onShowThinking} />
             </motion.div>
           );
@@ -548,11 +562,6 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
           {agents.length} AGENTS
         </span>
         {isRunning && <motion.span className="pixel-font text-[8px] px-1.5 py-0.5" style={{ backgroundColor: theme.primary + '30', color: theme.primary }} animate={prefersReducedMotion ? undefined : { opacity: [1, 0.3, 1] }} transition={prefersReducedMotion ? undefined : { duration: 0.5, repeat: Infinity }}>LIVE</motion.span>}
-        {collapsedNodes.size > 0 && (
-          <button onClick={() => setCollapsedNodes(new Set())} className="pixel-font text-[7px] px-1.5 py-0.5 border border-white/20 hover:border-white/50 transition-colors" style={{ color: theme.primary }}>
-            EXPAND ALL
-          </button>
-        )}
         <button
           onClick={fitToScreen}
           className="pixel-font text-[7px] px-2 py-1 border transition-colors hover:bg-white/10"
@@ -560,14 +569,6 @@ export const AgentFlow: React.FC<AgentFlowProps> = ({
           title="Fit all agents to screen"
         >
           FIT TO SCREEN
-        </button>
-        <button
-          onClick={saveLayout}
-          className="pixel-font text-[7px] px-2 py-1 border transition-colors hover:bg-white/10"
-          style={{ color: theme.primary, borderColor: theme.primary + '40' }}
-          title="Save current layout"
-        >
-          SAVE
         </button>
         <button
           onClick={resetLayout}

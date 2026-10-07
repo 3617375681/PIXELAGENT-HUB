@@ -1,6 +1,13 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
+import { z } from 'zod';
+
+const planSchema = z.object({
+  projectName: z.string().min(1), goal: z.string().min(1),
+  phases: z.array(z.object({ id: z.string(), name: z.string(), tasks: z.array(z.string()), assignee: z.string(), priority: z.enum(['high', 'medium', 'low']) })).min(1),
+  estimatedRounds: z.number().positive(), risks: z.array(z.string()),
+});
 
 export class ManagerAgent extends BaseAgent {
   constructor(bus: MessageBus, llmProvider?: LLMProvider | null) {
@@ -23,11 +30,11 @@ export class ManagerAgent extends BaseAgent {
     return this.llmOrMock(
       task,
       () => ({
-        system: 'You are a project manager. Output valid JSON with: projectName (string), goal (string), phases (array of {id, name, tasks: string[], assignee: string, priority: "high"|"medium"|"low"}), estimatedRounds (number), risks (string[]).',
+        system: 'You are a project manager. Output valid JSON with: projectName (string), goal (string), phases (array of {id: string such as "p1", name: string, tasks: string[], assignee: string, priority: "high"|"medium"|"low"}), estimatedRounds (positive integer), risks (string[]). Phase IDs must be strings, never numbers.',
         user: `Project: "${description}"\nContext: ${JSON.stringify(context || {})}\n\nCreate a project plan as JSON. Break into 3-5 phases.`,
       }),
       (content) => {
-        const parsed = this.extractJson(content);
+        const parsed = planSchema.parse(this.extractJson(content));
         return {
           projectName: parsed.projectName || description,
           goal: parsed.goal || `Complete: ${description}`,
@@ -35,25 +42,7 @@ export class ManagerAgent extends BaseAgent {
           estimatedRounds: parsed.estimatedRounds || 3,
           risks: parsed.risks || [],
         };
-      },
-      (reason) =>
-        this.createResult(
-          task.id,
-          'success',
-          {
-            projectName: description,
-            goal: `Successfully complete: ${description}`,
-            phases: [
-              { id: 'phase-1', name: 'Research', tasks: ['Research topic', 'Gather data'], assignee: 'researcher', priority: 'high' },
-              { id: 'phase-2', name: 'Create', tasks: ['Write draft', 'Generate code'], assignee: 'writer', priority: 'high' },
-              { id: 'phase-3', name: 'Review', tasks: ['Quality check', 'Final review'], assignee: 'reviewer', priority: 'medium' },
-            ],
-            estimatedRounds: 3,
-            risks: ['Scope creep', 'Resource availability'],
-            generatedBy: 'mock',
-          },
-          `mock: ${reason}`
-        )
+      }
     );
   }
 

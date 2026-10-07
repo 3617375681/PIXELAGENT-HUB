@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import type { Agent } from '../types/agent';
 
 const CARD_W = 240;
@@ -45,31 +45,35 @@ function buildTreePositions(agents: Agent[]) {
   }
 
   // Sort leaves first
-  function sortLeavesFirst(nodeId: string) {
+  function sortLeavesFirst(nodeId: string, seen: Set<string>) {
+    if (seen.has(nodeId)) return;
+    seen.add(nodeId);
     const node = nodes[nodeId];
     node.children.sort((a, b) => {
       const aLeaf = nodes[a].children.length === 0 ? 0 : 1;
       const bLeaf = nodes[b].children.length === 0 ? 0 : 1;
       return aLeaf - bLeaf;
     });
-    node.children.forEach(sortLeavesFirst);
+    node.children.forEach((childId) => sortLeavesFirst(childId, seen));
   }
-  roots.forEach(sortLeavesFirst);
+  roots.forEach((rootId) => sortLeavesFirst(rootId, new Set<string>()));
 
   // Y layout: leaf-first stacking
   let nextLeafY = 0;
-  function layoutY(nodeId: string): number {
+  function layoutY(nodeId: string, seen: Set<string>): number {
+    if (seen.has(nodeId)) return nodes[nodeId].y;
+    seen.add(nodeId);
     const node = nodes[nodeId];
     if (node.children.length === 0) {
       node.y = nextLeafY;
       nextLeafY += CARD_H + V_GAP;
       return node.y;
     }
-    const childYs = node.children.map((c) => layoutY(c));
+    const childYs = node.children.map((c) => layoutY(c, seen));
     node.y = (childYs[0]! + childYs[childYs.length - 1]!) / 2;
     return node.y;
   }
-  roots.forEach((r) => layoutY(r));
+  roots.forEach((rootId) => layoutY(rootId, new Set<string>()));
 
   // X layout: depth-based columns
   Object.values(nodes).forEach((n) => {
@@ -77,8 +81,13 @@ function buildTreePositions(agents: Agent[]) {
   });
 
   const order: string[] = [];
-  function dfs(id: string) { order.push(id); nodes[id].children.forEach((c) => dfs(c)); }
-  roots.forEach((r) => dfs(r));
+  function dfs(id: string, seen: Set<string>) {
+    if (seen.has(id)) return;
+    seen.add(id);
+    order.push(id);
+    nodes[id].children.forEach((childId) => dfs(childId, seen));
+  }
+  roots.forEach((rootId) => dfs(rootId, new Set<string>()));
 
   return { nodes, roots, order };
 }
@@ -86,6 +95,7 @@ function buildTreePositions(agents: Agent[]) {
 function getVisibleAgents(agents: Agent[], collapsedNodes: Set<string>): Agent[] {
   const visibleIds = new Set<string>();
   function visit(id: string) {
+    if (visibleIds.has(id)) return;
     visibleIds.add(id);
     if (!collapsedNodes.has(id)) {
       const agent = agents.find((a) => a.id === id);
@@ -106,20 +116,32 @@ export function useForceLayout(
   collapsedNodes: Set<string>,
   dragOffsets: Record<string, { x: number; y: number }>,
 ) {
-  const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({});
-
-  // Compute positions from tree layout + drag offsets
-  useEffect(() => {
+  // Compute positions during render so cards never paint at a placeholder origin first.
+  const positions = useMemo(() => {
     const visibleAgents = getVisibleAgents(agents, collapsedNodes);
     if (visibleAgents.length === 0) {
-      setPositions({});
-      return;
+      return {};
+    }
+
+    const newPositions: Record<string, { x: number; y: number }> = {};
+    const uniquePresetPositions = new Set(
+      visibleAgents.map((a) => `${a.position?.x ?? 0},${a.position?.y ?? 0}`)
+    ).size;
+    const hasMeaningfulPresetLayout = uniquePresetPositions > 1;
+
+    if (hasMeaningfulPresetLayout) {
+      visibleAgents.forEach((a) => {
+        const offset = dragOffsets[a.id];
+        newPositions[a.id] = {
+          x: (a.position?.x ?? 0) + (offset?.x ?? 0),
+          y: (a.position?.y ?? 0) + (offset?.y ?? 0),
+        };
+      });
+      return newPositions;
     }
 
     const treeResult = buildTreePositions(visibleAgents);
     const treeNodes = treeResult.nodes;
-
-    const newPositions: Record<string, { x: number; y: number }> = {};
     visibleAgents.forEach((a) => {
       const treePos = treeNodes[a.id];
       const offset = dragOffsets[a.id];
@@ -129,7 +151,7 @@ export function useForceLayout(
       };
     });
 
-    setPositions(newPositions);
+    return newPositions;
   }, [agents, collapsedNodes, dragOffsets]);
 
   return { positions };

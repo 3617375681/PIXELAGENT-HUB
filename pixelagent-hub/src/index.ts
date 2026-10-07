@@ -12,7 +12,7 @@ export { RunQueue } from './core/RunQueue.js';
 
 // LLM abstraction
 export { LLMProvider } from './core/llm/provider.js';
-export { createLLMProvider, OpenAIProvider, AnthropicProvider, DeepSeekProvider, KimiProvider, OllamaProvider } from './core/llm/factory.js';
+export { createLLMProvider, createLLMProviderFor, readAgentLlmEnv, OpenAIProvider, AnthropicProvider, DeepSeekProvider, KimiProvider, OllamaProvider, MockProvider } from './core/llm/factory.js';
 export type { LLMMessage, LLMUsage, LLMResponse, LLMChatParams, LLMProviderOptions, LLMProviderId } from './core/llm/types.js';
 
 // Retrieval
@@ -43,6 +43,8 @@ export { IntelligenceRunStore } from './intelligence/core/runStore.js';
 export {
   createSearchProvider,
   MockSearchProvider,
+  DuckDuckGoSearchProvider,
+  SearXNGSearchProvider,
   BraveSearchProvider,
   TavilySearchProvider,
 } from './intelligence/tools/search.js';

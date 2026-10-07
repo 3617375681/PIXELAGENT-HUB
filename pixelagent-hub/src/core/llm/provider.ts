@@ -6,11 +6,11 @@ export interface LLMProvider {
   /** The active model name */
   readonly model: string;
   /** Single chat completion, returns content string */
-  chat(messages: LLMMessage[], temperature?: number): Promise<string>;
+  chat(messages: LLMMessage[], temperature?: number, signal?: AbortSignal): Promise<string>;
   /** Chat completion with token usage info */
-  chatWithUsage(messages: LLMMessage[], temperature?: number): Promise<LLMResponse>;
+  chatWithUsage(messages: LLMMessage[], temperature?: number, signal?: AbortSignal): Promise<LLMResponse>;
   /** Convenience: system + user prompt */
-  ask(systemPrompt: string, userPrompt: string, temperature?: number): Promise<string>;
+  ask(systemPrompt: string, userPrompt: string, temperature?: number, signal?: AbortSignal): Promise<string>;
   /** Convenience: system + user prompt with usage */
-  askWithUsage(systemPrompt: string, userPrompt: string, temperature?: number): Promise<LLMResponse>;
+  askWithUsage(systemPrompt: string, userPrompt: string, temperature?: number, signal?: AbortSignal): Promise<LLMResponse>;
 }

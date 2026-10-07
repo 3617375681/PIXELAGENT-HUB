@@ -1,20 +1,55 @@
 import 'dotenv/config';
 import { LLMProvider } from './provider.js';
-import { LLMProviderId } from './types.js';
+import { LLMProviderId, LLMProviderOptions } from './types.js';
 import { OpenAIProvider } from './openai.js';
 import { AnthropicProvider } from './anthropic.js';
 import { DeepSeekProvider } from './deepseek.js';
 import { KimiProvider } from './kimi.js';
 import { OllamaProvider } from './ollama.js';
+import { MockProvider } from './mock.js';
 
-function detectProviderId(): LLMProviderId {
-  const explicit = process.env.LLM_PROVIDER?.toLowerCase();
+const ALL_PROVIDER_IDS: LLMProviderId[] = [
+  'openai',
+  'anthropic',
+  'deepseek',
+  'kimi',
+  'ollama',
+  'custom-openai-compat',
+  'mock',
+];
+
+function isProviderId(raw: string): raw is LLMProviderId {
+  return (ALL_PROVIDER_IDS as string[]).includes(raw);
+}
+
+function envKeyForAgent(agentId: string): string {
+  return agentId.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+}
+
+/** Per-agent overrides: `AGENT_<AGENTID>_LLM_PROVIDER`, `AGENT_<AGENTID>_LLM_MODEL` (e.g. AGENT_WRITER_LLM_PROVIDER). */
+export function readAgentLlmEnv(agentId: string): { llmProvider?: LLMProviderId; llmModel?: string } {
+  const k = envKeyForAgent(agentId);
+  const pRaw = process.env[`AGENT_${k}_LLM_PROVIDER`]?.trim().toLowerCase();
+  const mRaw = process.env[`AGENT_${k}_LLM_MODEL`]?.trim();
+  let llmProvider: LLMProviderId | undefined;
+  if (pRaw) {
+    if (isProviderId(pRaw)) llmProvider = pRaw;
+    else throw new Error(`Unknown AGENT_${k}_LLM_PROVIDER=${pRaw}`);
+  }
+  return { llmProvider, llmModel: mRaw || undefined };
+}
+
+export function detectProviderId(): LLMProviderId {
+  const explicit = process.env.LLM_PROVIDER?.trim().toLowerCase();
+  if (explicit === 'mock') return 'mock';
+  if (process.env.OFFLINE === 'true' || process.env.OFFLINE === '1') return 'mock';
   if (explicit === 'openai') return 'openai';
   if (explicit === 'anthropic') return 'anthropic';
   if (explicit === 'deepseek') return 'deepseek';
   if (explicit === 'kimi') return 'kimi';
   if (explicit === 'ollama') return 'ollama';
   if (explicit === 'custom-openai-compat') return 'custom-openai-compat';
+  if (explicit) throw new Error(`Unknown LLM_PROVIDER=${explicit}`);
 
   // Auto-detect from environment
   if (process.env.OPENAI_API_KEY || (process.env.LLM_API_KEY && !process.env.KIMI_API_KEY && !process.env.DEEPSEEK_API_KEY && !process.env.ANTHROPIC_API_KEY)) {
@@ -29,12 +64,65 @@ function detectProviderId(): LLMProviderId {
   return 'kimi'; // default
 }
 
+function providerOptions(model?: string): LLMProviderOptions {
+  const m = model?.trim();
+  return m ? { model: m } : {};
+}
+
+/** Construct a single provider instance for a known id (used by global + per-agent routing). */
+export function instantiateLlmProvider(id: LLMProviderId, modelOverride?: string): LLMProvider | null {
+  const opts = providerOptions(modelOverride);
+  try {
+    switch (id) {
+      case 'mock':
+        return new MockProvider(opts);
+      case 'openai':
+        return new OpenAIProvider(opts);
+      case 'anthropic':
+        return new AnthropicProvider(opts);
+      case 'deepseek':
+        return new DeepSeekProvider(opts);
+      case 'kimi':
+        return new KimiProvider(opts);
+      case 'ollama':
+        return new OllamaProvider(opts);
+      case 'custom-openai-compat':
+        return new OpenAIProvider({
+          baseUrl: process.env.LLM_BASE_URL || 'http://localhost:8080/v1',
+          model: modelOverride?.trim() || process.env.LLM_MODEL || 'default',
+        });
+      default:
+        return null;
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (process.env.NODE_ENV !== 'test') {
+      console.warn(`[LLMFactory] Failed to create ${id} provider: ${message}`);
+    }
+    return null;
+  }
+}
+
+/**
+ * Per-agent LLM: uses `AgentConfig`-style fields when passed, else env `AGENT_<ID>_LLM_*`,
+ * else the same selection as {@link createLLMProvider}.
+ */
+export function createLLMProviderFor(spec: { id: string; llmProvider?: LLMProviderId; llmModel?: string }): LLMProvider | null {
+  const env = readAgentLlmEnv(spec.id);
+  const id = spec.llmProvider ?? env.llmProvider;
+  const model = spec.llmModel ?? env.llmModel;
+  if (!id && !model) return createLLMProvider();
+  const resolvedId = id ?? detectProviderId();
+  return instantiateLlmProvider(resolvedId, model);
+}
+
 /**
  * Creates an LLMProvider based on environment configuration.
  *
  * ## Provider Selection
  *
- * Set `LLM_PROVIDER` to one of: `openai`, `anthropic`, `deepseek`, `kimi`, `ollama`, `custom-openai-compat`.
+ * Set `LLM_PROVIDER` to one of: `openai`, `anthropic`, `deepseek`, `kimi`, `ollama`, `custom-openai-compat`, `mock`.
+ * Set `OFFLINE=true` (or `LLM_PROVIDER=mock`) for deterministic local responses without API keys.
  * If not set, auto-detects from available API keys.
  *
  * ## Configuration
@@ -46,42 +134,14 @@ function detectProviderId(): LLMProviderId {
  * | deepseek  | `DEEPSEEK_API_KEY`       | `DEEPSEEK_BASE_URL`    | `DEEPSEEK_MODEL`   |
  * | kimi      | `KIMI_API_KEY`           | `KIMI_BASE_URL`        | `KIMI_MODEL`       |
  * | ollama    | _(none)_                 | `OLLAMA_BASE_URL`      | `OLLAMA_MODEL`     |
+ * | mock      | _(none)_                 | —                      | `MOCK_LLM_MODEL`   |
  * | custom    | `LLM_API_KEY`            | `LLM_BASE_URL`         | `LLM_MODEL`        |
  *
  * All providers also respect `LLM_API_KEY`, `LLM_BASE_URL`, and `LLM_MODEL` as overrides.
  */
 export function createLLMProvider(): LLMProvider | null {
   const id = detectProviderId();
-
-  try {
-    switch (id) {
-      case 'openai':
-        return new OpenAIProvider();
-      case 'anthropic':
-        return new AnthropicProvider();
-      case 'deepseek':
-        return new DeepSeekProvider();
-      case 'kimi':
-        return new KimiProvider();
-      case 'ollama':
-        return new OllamaProvider();
-      case 'custom-openai-compat':
-        // OpenAI-compatible custom endpoint
-        return new OpenAIProvider({
-          baseUrl: process.env.LLM_BASE_URL || 'http://localhost:8080/v1',
-          model: process.env.LLM_MODEL || 'default',
-        });
-      default:
-        return null;
-    }
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    // Log but don't crash — callers handle null provider
-    if (process.env.NODE_ENV !== 'test') {
-      console.warn(`[LLMFactory] Failed to create ${id} provider: ${message}`);
-    }
-    return null;
-  }
+  return instantiateLlmProvider(id, undefined);
 }
 
-export { OpenAIProvider, AnthropicProvider, DeepSeekProvider, KimiProvider, OllamaProvider };
+export { OpenAIProvider, AnthropicProvider, DeepSeekProvider, KimiProvider, OllamaProvider, MockProvider };

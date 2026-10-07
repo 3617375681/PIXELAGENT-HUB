@@ -17,14 +17,15 @@ export class OllamaProvider implements LLMProvider {
     this.fetchFn = options.fetchImpl || fetch;
   }
 
-  async chat(messages: LLMMessage[], temperature: number = 0.7): Promise<string> {
-    const result = await this.chatWithUsage(messages, temperature);
+  async chat(messages: LLMMessage[], temperature: number = 0.7, signal?: AbortSignal): Promise<string> {
+    const result = await this.chatWithUsage(messages, temperature, signal);
     return result.content;
   }
 
-  async chatWithUsage(messages: LLMMessage[], temperature: number = 0.7): Promise<LLMResponse> {
+  async chatWithUsage(messages: LLMMessage[], temperature: number = 0.7, signal?: AbortSignal): Promise<LLMResponse> {
     const resp = await this.fetchFn(`${this.baseUrl}/api/chat`, {
       method: 'POST',
+      signal,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: this.model,
@@ -52,17 +53,17 @@ export class OllamaProvider implements LLMProvider {
     };
   }
 
-  async ask(systemPrompt: string, userPrompt: string, temperature?: number): Promise<string> {
+  async ask(systemPrompt: string, userPrompt: string, temperature?: number, signal?: AbortSignal): Promise<string> {
     return this.chat([
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
-    ], temperature);
+    ], temperature, signal);
   }
 
-  async askWithUsage(systemPrompt: string, userPrompt: string, temperature?: number): Promise<LLMResponse> {
+  async askWithUsage(systemPrompt: string, userPrompt: string, temperature?: number, signal?: AbortSignal): Promise<LLMResponse> {
     return this.chatWithUsage([
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
-    ], temperature);
+    ], temperature, signal);
   }
 }

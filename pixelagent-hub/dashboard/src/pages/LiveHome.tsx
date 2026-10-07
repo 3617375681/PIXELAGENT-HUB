@@ -32,6 +32,7 @@ import {
   Download,
   RefreshCw,
   Database,
+  MoreHorizontal,
 } from 'lucide-react';
 
 /** Records API 驱动的像素控制台（与 `/` 本地演示分离）。 */
@@ -46,7 +47,9 @@ export default function LiveHome() {
   const [showExport, setShowExport] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [mobileTab, setMobileTab] = useState<'flow' | 'chat'>('flow');
+  const [seedanceEnabled, setSeedanceEnabled] = useLocalStorage<boolean>('pa.live.seedanceEnabled', false);
   const [flowScale, setFlowScale] = useLocalStorage<number>('pa.live.flowScale', 0.8);
   const [themeName, setThemeName] = useLocalStorage<ThemeName>('pa.live.theme', 'hacker-green');
   const [soundEnabled, setSoundEnabled] = useLocalStorage<boolean>('pa.sound', true);
@@ -83,6 +86,17 @@ export default function LiveHome() {
     else if (out.message) addToast(out.message, 'error');
     await live.refresh();
   }, [live, addToast, triggerClickFlash]);
+
+  const handleChatSubmit = useCallback(async (text: string, files?: File[]): Promise<{ content: string; error?: boolean }> => {
+    soundEngine.statusChange('thinking');
+    triggerClickFlash('#f59e0b');
+    const out = await live.submitCompanyFollowUp(text, files || []);
+    await live.refresh();
+    if (out.ok) {
+      return { content: 'Follow-up submitted to current company session. Refresh sessions to see updates.' };
+    }
+    return { content: out.message || 'Submit failed', error: true };
+  }, [live, triggerClickFlash]);
 
   const handleRefresh = useCallback(async () => {
     soundEngine.click();
@@ -151,6 +165,7 @@ export default function LiveHome() {
         setShowChat(false);
         setShowExport(false);
         setShowShortcuts(false);
+        setShowMoreMenu(false);
         setSelectedAgent(null);
       }
       if (e.key === '?') {
@@ -272,9 +287,37 @@ export default function LiveHome() {
           >
             ARCHIVE
           </Link>
-          <Link to="/ops" className="pixel-btn-secondary px-2 py-1 pixel-font text-[7px]" onClick={() => soundEngine.click()}>
-            OPS
-          </Link>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowMoreMenu((v) => !v)}
+              className="pixel-btn-secondary px-2 py-1 flex items-center gap-1"
+              title="More tools"
+            >
+              <MoreHorizontal size={11} />
+              <span className="pixel-font text-[7px]">MORE</span>
+            </button>
+            {showMoreMenu && (
+              <div className="absolute right-0 mt-1 w-36 border border-white/15 bg-black/90 p-1 z-40">
+                <Link
+                  to="/ops"
+                  onClick={() => { soundEngine.click(); setShowMoreMenu(false); }}
+                  className="flex items-center gap-1.5 px-2 py-1.5 hover:bg-white/10"
+                >
+                  <Database size={11} className="text-cyan-300" />
+                  <span className="pixel-font text-[8px] text-cyan-200">OPS / NCL</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setSeedanceEnabled((v) => !v)}
+                  className="w-full text-left px-2 py-1.5 hover:bg-white/10 flex items-center justify-between"
+                >
+                  <span className="pixel-font text-[8px] text-white/80">Seedance</span>
+                  <span className="pixel-font text-[8px] text-white/60">{seedanceEnabled ? 'ON' : 'OFF'}</span>
+                </button>
+              </div>
+            )}
+          </div>
           <button type="button" onClick={() => setShowExport(true)} className="pixel-btn-secondary p-1.5" title="Export (E)">
             <Download size={12} />
           </button>
@@ -330,6 +373,14 @@ export default function LiveHome() {
           </button>
         </div>
       </header>
+      <div className="shrink-0 px-3 py-1 border-b border-white/5 bg-black/20">
+        <span className="pixel-font text-[8px] text-white/55">
+          STATUS:{' '}
+          <span style={{ color: live.isLoading ? '#38bdf8' : live.isSubmitting ? '#f59e0b' : theme.primary }}>
+            {live.liveStatus}
+          </span>
+        </span>
+      </div>
 
       {live.error && (
         <div
@@ -393,8 +444,9 @@ export default function LiveHome() {
                 theme={theme}
                 activeAgentId={null}
                 isRunning={live.isSubmitting}
-                enableSeedance
-                onRunMode={() => { void handleRunCompany(); }}
+                isLoading={live.isLoading}
+                enableSeedance={seedanceEnabled}
+                onSubmit={handleChatSubmit}
               />
             </motion.div>
           )}
@@ -426,8 +478,9 @@ export default function LiveHome() {
                   theme={theme}
                   activeAgentId={null}
                   isRunning={live.isSubmitting}
-                  enableSeedance
-                  onRunMode={() => { void handleRunCompany(); }}
+                  isLoading={live.isLoading}
+                  enableSeedance={seedanceEnabled}
+                  onSubmit={handleChatSubmit}
                 />
               </div>
             </motion.div>

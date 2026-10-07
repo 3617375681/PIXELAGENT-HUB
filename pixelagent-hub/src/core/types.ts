@@ -1,5 +1,7 @@
 // 核心类型定义
 
+import type { LLMProviderId } from './llm/types.js';
+
 export interface Message {
   id: string;
   from: string;
@@ -160,6 +162,10 @@ export interface AgentConfig {
   systemPrompt?: string;
   maxRetries?: number;
   timeout?: number;
+  /** When set, this agent uses a different LLM provider than the global default. */
+  llmProvider?: LLMProviderId;
+  /** Optional model id for this agent (provider-specific). */
+  llmModel?: string;
 }
 
 export interface Agent {

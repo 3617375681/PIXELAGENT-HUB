@@ -3,6 +3,13 @@ import { MessageBusImpl } from './MessageBus.js';
 import { TaskRouter } from './TaskRouter.js';
 import { RunQueue } from './RunQueue.js';
 
+function readDefaultAgentTimeoutMs(): number {
+  const raw = process.env.AGENT_DEFAULT_TIMEOUT_MS;
+  if (raw === undefined || raw === '') return 60000;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? n : 60000;
+}
+
 export class Orchestrator {
   private bus: MessageBusImpl;
   private router: TaskRouter;
@@ -47,16 +54,31 @@ export class Orchestrator {
   async runTask(task: Task, agentId: string, control?: TaskRunControl): Promise<TaskResult> {
     const agent = this.agents.get(agentId);
     if (!agent) throw new Error(`Agent not found: ${agentId}`);
-    const merged = this.mergeExec(task, control);
-    const timeoutMs = agent.config.timeout || 60000;
+    const merged = { ...this.mergeExec(task, control) };
+    merged._exec?.signal?.throwIfAborted();
+    const controller = new AbortController();
+    const parentSignal = merged._exec?.signal;
+    const abort = () => controller.abort(parentSignal?.reason);
+    parentSignal?.addEventListener('abort', abort, { once: true });
+    merged._exec = { ...merged._exec, signal: controller.signal };
+    const defaultTimeoutMs = readDefaultAgentTimeoutMs();
+    const timeoutMs = typeof agent.config.timeout === 'number' && agent.config.timeout > 0
+      ? agent.config.timeout
+      : defaultTimeoutMs;
     let timer: NodeJS.Timeout | undefined;
     try {
-      return await Promise.race([
+      const result = await Promise.race([
         agent.execute(merged),
         new Promise<TaskResult>((_, reject) => {
-          timer = setTimeout(() => reject(new Error(`AGENT_TIMEOUT_${agentId}_${timeoutMs}ms`)), timeoutMs);
+          timer = setTimeout(() => {
+            const error = new Error(`AGENT_TIMEOUT_${agentId}_${timeoutMs}ms`);
+            reject(error);
+            controller.abort(error);
+          }, timeoutMs);
         }),
       ]);
+      controller.signal.throwIfAborted();
+      return result;
     } catch (err) {
       console.error(JSON.stringify({
         level: 'error',
@@ -71,6 +93,7 @@ export class Orchestrator {
       throw err;
     } finally {
       if (timer) clearTimeout(timer);
+      parentSignal?.removeEventListener('abort', abort);
     }
   }
 
@@ -125,6 +148,8 @@ export class Orchestrator {
       const results = this.runQueue
         ? await Promise.all(agentIds.map((id) => this.runQueue!.push(() => runner(id))))
         : await Promise.all(agentIds.map(runner));
+      const failed = results.find((result) => result.status === 'failed');
+      if (failed) throw new Error(`Debate failed at ${failed.agentId}: ${failed.reasoning || 'Agent failed'}`);
       control?.emit?.({ type: 'debate_round_done', round: i });
       history.push({ round: i, results });
       currentContext.previousRound = results;
@@ -154,7 +179,7 @@ export class Orchestrator {
           id: `vote-${Date.now()}-${id}`,
           type: 'vote',
           description: topic,
-          context: { topic },
+          context: { topic, draft: { content: topic } },
         },
         id,
         control
@@ -165,6 +190,8 @@ export class Orchestrator {
     const results = this.runQueue
       ? await Promise.all(agentIds.map((id) => this.runQueue!.push(() => runner(id))))
       : await Promise.all(agentIds.map(runner));
+    const failed = results.find((result) => result.status === 'failed');
+    if (failed) throw new Error(`Vote failed at ${failed.agentId}: ${failed.reasoning || 'Agent failed'}`);
     const candidates: VoteCandidate[] = results.map((result, index) => {
       const base = this.scoreResult(result);
       const weight = weights[result.agentId] ?? 1;

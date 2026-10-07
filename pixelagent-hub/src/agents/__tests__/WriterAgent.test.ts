@@ -2,6 +2,7 @@ import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { WriterAgent } from '../WriterAgent.js';
 import { MessageBusImpl } from '../../core/MessageBus.js';
+import { MockProvider } from '../../core/llm/mock.js';
 import { Task } from '../../core/types.js';
 
 describe('WriterAgent', () => {
@@ -10,7 +11,7 @@ describe('WriterAgent', () => {
 
   beforeEach(() => {
     bus = new MessageBusImpl();
-    agent = new WriterAgent(bus, null);
+    agent = new WriterAgent(bus, new MockProvider());
   });
 
   it('should generate content in mock mode', async () => {

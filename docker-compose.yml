@@ -1,0 +1,28 @@
+# PixelAgent Hub — backend (Records API) + dashboard (nginx → /api proxy)
+# Usage: copy pixelagent-hub/.env.example to pixelagent-hub/.env, then:
+#   docker compose up --build
+services:
+  backend:
+    build:
+      context: ./pixelagent-hub
+      dockerfile: Dockerfile
+    ports:
+      - "3100:3100"
+    env_file:
+      - ./pixelagent-hub/.env
+    environment:
+      NODE_ENV: production
+      RECORDS_API_PORT: "3100"
+    volumes:
+      - ./pixelagent-hub/records:/app/records
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./pixelagent-hub/dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

@@ -37,6 +37,7 @@ export class RoundtableRunner {
         'moderator',
         control
       );
+      if (moderation.status === 'failed') throw new Error(`Moderation failed: ${moderation.reasoning || 'Agent failed'}`);
       const speakerId = moderation.output?.nextSpeaker || this.participants[(round - 1) % this.participants.length];
       actions.push({
         agentId: 'moderator',
@@ -60,6 +61,7 @@ export class RoundtableRunner {
       };
       const result = await this.orchestrator.runTask(task, speakerId, control);
       control?.emit?.({ type: 'roundtable_speaker_done', round, agentId: speakerId, status: result.status });
+      if (result.status === 'failed') throw new Error(`Roundtable failed at ${speakerId}: ${result.reasoning || 'Agent failed'}`);
       const message = this.pickMessage(result.output);
       const turn: ConversationTurn = {
         turnId: `turn-${round}`,

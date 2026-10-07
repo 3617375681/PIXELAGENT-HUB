@@ -105,10 +105,14 @@ export class RunRuntime {
   }
 
   private async runQueuedWork<T>(params: ExecuteParams<T>, ac: AbortController, queuedAtMs: number): Promise<T> {
+    const job = this.jobs.get(params.jobId)!;
     if (ac.signal.aborted) {
+      job.status = 'cancelled';
+      job.finishedAt = new Date().toISOString();
+      job.error = 'Cancelled';
+      await this.persist();
       throw new Error('JOB_CANCELLED');
     }
-    const job = this.jobs.get(params.jobId)!;
     job.status = 'running';
     job.startedAt = new Date().toISOString();
     job.queueWaitMs = Date.now() - queuedAtMs;
@@ -126,6 +130,11 @@ export class RunRuntime {
           throw new Error('JOB_CANCELLED');
         }
         const payload = await params.run({ signal: ac.signal });
+        if (ac.signal.aborted) throw new Error('JOB_CANCELLED');
+        if (payload && typeof payload === 'object' && 'mode' in payload && 'status' in payload) {
+          job.runResult = cloneJson(payload as unknown as ModeRunResponse);
+          if (job.runResult.artifacts?.sessionId) job.sessionId = job.runResult.artifacts.sessionId;
+        }
         job.status = 'succeeded';
         job.finishedAt = new Date().toISOString();
         job.runDurationMs = Date.now() - runStart;

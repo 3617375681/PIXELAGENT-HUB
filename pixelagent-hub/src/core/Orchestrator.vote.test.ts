@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createOrchestrator } from '../factory.js';
+import { MockProvider } from './llm/mock.js';
 
 test('runVote returns winner and score breakdown', async () => {
-  const orchestrator = createOrchestrator('VoteTest');
+  const orchestrator = createOrchestrator('VoteTest', new MockProvider());
   const result = await orchestrator.runVote('Should we prioritize reliability?', ['researcher', 'writer', 'reviewer'], {
     threshold: 0.6,
   });
