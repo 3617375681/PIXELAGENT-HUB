@@ -1,4 +1,5 @@
-import { readdir, readFile, rm, stat, writeFile, mkdir } from 'node:fs/promises';
+import { readdir, readFile, rm, stat, writeFile, mkdir, rename } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 import { createOrchestrator } from '../factory.js';
 import { MockProvider } from '../core/llm/mock.js';
@@ -378,7 +379,9 @@ async function writeSessionRecord(record: any): Promise<void> {
   await ensureRecordsRoot();
   const sessionDir = join(RECORDS_ROOT, record.sessionId);
   await mkdir(sessionDir, { recursive: true });
-  await writeFile(join(sessionDir, 'session.json'), JSON.stringify(record, null, 2), 'utf-8');
+  const pendingPath = join(sessionDir, `.session-${randomUUID()}.tmp`);
+  await writeFile(pendingPath, JSON.stringify(record, null, 2), 'utf-8');
+  await rename(pendingPath, join(sessionDir, 'session.json'));
   if (record.finalDraft?.content) {
     await writeFile(join(sessionDir, 'output.md'), String(record.finalDraft.content), 'utf-8');
   } else if (record.final?.summary) {
@@ -1111,11 +1114,19 @@ async function handleRequest(req: any, res: any): Promise<void> {
         const abort = () => controller.abort(signal.reason);
         if (signal.aborted) abort();
         else signal.addEventListener('abort', abort, { once: true });
+        const execution = runOnce({ signal: controller.signal, emit });
         try {
           return await withTimeout(
-            runOnce({ signal: controller.signal, emit }), modeTimeoutMs,
+            execution, modeTimeoutMs,
             `${String(mode).toUpperCase()}_RUN`, () => controller.abort(new Error(`${String(mode).toUpperCase()}_RUN_TIMEOUT_${modeTimeoutMs}ms`)),
           );
+        } catch (error) {
+          if (controller.signal.aborted) {
+            // Let cooperative agents persist their terminal session before the job becomes terminal.
+            // Bound cleanup so a provider that ignores cancellation cannot hang the runtime.
+            await withTimeout(execution.catch(() => undefined), 5000, 'RUN_CLEANUP').catch(() => undefined);
+          }
+          throw error;
         } finally {
           signal.removeEventListener('abort', abort);
         }

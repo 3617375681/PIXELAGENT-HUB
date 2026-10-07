@@ -11,9 +11,21 @@
 - **可观测性优先**：请求级日志、模式轨迹、会话落盘、健康探针
 - **稳定性优先**：超时、并发限制、幂等冲突保护、限流
 - **成本可见**：每次运行返回 LLM 调用次数、token 用量、估算 USD 成本
-- **零额外依赖**：仅 3 个 npm 依赖，所有 LLM 调用使用原生 `fetch`
-- **真实工具集成**：Brave/Tavily 搜索、Slack/Discord 消息、飞书 API
-- **自带可视化**：React 前端面板，实时查看 Agent 状态、消息、思维链
+- **轻量运行时**：LLM 调用使用原生 `fetch`，软件构建使用 esbuild
+- **联网检索**：DuckDuckGo 网页搜索、SearXNG，以及可选的 Brave/Tavily
+- **自带可视化**：React 前端面板，查看 Agent 状态、消息、执行摘要和输出
+
+## Software Studio（开发中）
+
+新增软件生成命令：Manager 规划、Coder 写入独立工作区、真实编译错误触发返修，成功导出可运行预览和源码 ZIP。
+
+```powershell
+cd pixelagent-hub
+npm run studio:create -- "制作像素贪吃蛇，包含暂停、计分和重新开始"
+npm run studio:preview -- <输出的项目UUID>
+```
+
+首个真实生成案例：[像素贪吃蛇源码](pixelagent-hub/examples/software/pixel-snake)、[源码包](pixelagent-hub/examples/software/pixel-snake-source.zip)。当前限离线 HTML/CSS/JS；构建成功仍需交互验收，控制台接入与持续修改尚未完成。[运行说明和成熟度清单](pixelagent-hub/docs/software-studio/README.md)。
 
 ## 30 秒上手
 
