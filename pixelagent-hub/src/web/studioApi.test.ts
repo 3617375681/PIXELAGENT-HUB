@@ -171,6 +171,47 @@ test('repair uses saved errors and original source, with independent success and
   }, provider);
 });
 
+test('revisions inherit source and requests; version selection survives reads and rejects invalid targets', async () => {
+  const provider = new StudioFixture();
+  await withApi(async (base, runtime, root) => {
+    const post = async (url: string, body: unknown) => fetch(`${base}${url}`, { method: 'POST', body: JSON.stringify(body) });
+    const initial = await (await post('/api/studio/projects', { description: 'Counter' })).json();
+    await waitForJob(runtime, initial.jobId);
+    const original = await readFile(join(root, initial.projectId, 'project.json'), 'utf-8');
+    const first = await (await post(`${initial.projectUrl}/revise`, { changeRequest: 'Display sign of the counter' })).json();
+    await waitForJob(runtime, first.jobId);
+    assert.match(provider.prompts.at(-1)!, /Display sign of the counter/);
+    assert.match(provider.prompts.at(-1)!, /#increment/);
+    const second = await (await post(`${first.projectUrl}/revise`, { changeRequest: 'Add keyboard reset' })).json();
+    await waitForJob(runtime, second.jobId);
+    assert.match(provider.prompts.at(-1)!, /Display sign of the counter/);
+    assert.match(provider.prompts.at(-1)!, /Add keyboard reset/);
+    const family = await (await fetch(`${base}${second.projectUrl}/versions`)).json();
+    assert.equal(family.rootProjectId, initial.projectId);
+    assert.equal(family.selectedProjectId, initial.projectId);
+    assert.equal(family.versions.length, 3);
+    assert.equal(family.versions[2].revision.parentProjectId, first.projectId);
+    assert.equal((await post(`${initial.projectUrl}/versions`, { projectId: second.projectId })).status, 200);
+    assert.equal((await (await fetch(`${base}${first.projectUrl}/versions`)).json()).selectedProjectId, second.projectId);
+    const changes = (await (await fetch(`${base}${second.projectUrl}/changes`)).json()).changes;
+    assert.equal(changes.parentProjectId, first.projectId);
+    assert.equal((await post(`${second.projectUrl}/versions`, { projectId: initial.projectId })).status, 200);
+    assert.equal(JSON.parse(await readFile(join(root, initial.projectId, 'version-selection.json'), 'utf-8')).projectId, initial.projectId);
+    const other = await (await post('/api/studio/projects', { description: 'Unrelated' })).json();
+    await waitForJob(runtime, other.jobId);
+    assert.equal((await post(`${initial.projectUrl}/versions`, { projectId: other.projectId })).status, 409);
+    assert.equal((await post(`${initial.projectUrl}/versions`, { projectId: '../bad' })).status, 400);
+    for (const changeRequest of ['', 5, 'x'.repeat(4001)]) assert.equal((await post(`${initial.projectUrl}/revise`, { changeRequest })).status, 400);
+    provider.failCode = true;
+    const failed = await (await post(`${initial.projectUrl}/revise`, { changeRequest: 'Failure fixture' })).json();
+    assert.equal((await waitForJob(runtime, failed.jobId)).status, 'failed');
+    assert.equal((await post(`${initial.projectUrl}/versions`, { projectId: failed.projectId })).status, 409);
+    assert.equal((await post(`${failed.projectUrl}/revise`, { changeRequest: 'Retry' })).status, 409);
+    assert.equal((await (await fetch(`${base}${failed.projectUrl}/versions`)).json()).selectedProjectId, initial.projectId);
+    assert.equal(await readFile(join(root, initial.projectId, 'project.json'), 'utf-8'), original);
+  }, provider);
+});
+
 test('orphaned project is restored as failed and cannot advertise a preview', async () => withApi(async (base, _runtime, root) => {
   const projectId = randomUUID();
   await saveStudioRecord(root, { projectId, jobId: 'missing-restarted-job', description: 'Interrupted work', status: 'running', phase: 'coding', startedAt: new Date().toISOString(), rounds: [] });

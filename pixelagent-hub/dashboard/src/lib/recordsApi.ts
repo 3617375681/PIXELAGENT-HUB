@@ -15,7 +15,7 @@ import type {
   SessionSummary,
   WorkflowDefinition,
 } from '@/types/recordsApi';
-import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary } from '@/types/studio';
+import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
 const RAW_API_BASE = import.meta.env.VITE_RECORDS_API_URL as string | undefined;
@@ -97,6 +97,9 @@ export const studioApi = {
   saveDiagnostic: (projectId: string, payload: Pick<StudioDiagnostic, 'previewFile' | 'loaded' | 'errors'>) => request<{ report: StudioDiagnostic }>(`/api/studio/projects/${encodeURIComponent(projectId)}/diagnostics`, { method: 'POST', body: JSON.stringify(payload) }),
   repair: (projectId: string, diagnosticId: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/repair`, { method: 'POST', body: JSON.stringify({ diagnosticId }) }),
   changes: (projectId: string, signal?: AbortSignal) => request<{ changes: StudioChanges }>(`/api/studio/projects/${encodeURIComponent(projectId)}/changes`, { signal }),
+  versions: (projectId: string, signal?: AbortSignal) => request<StudioVersions>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { signal }),
+  selectVersion: (projectId: string, target: string) => request<{ selectedProjectId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { method: 'POST', body: JSON.stringify({ projectId: target }) }),
+  revise: (projectId: string, changeRequest: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/revise`, { method: 'POST', body: JSON.stringify({ changeRequest }) }),
 };
 
 /** POST /api/run/:mode — supports async=1 (202 + jobUrl) or stream=1 (SSE text body). */

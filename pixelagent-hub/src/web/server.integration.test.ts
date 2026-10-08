@@ -203,6 +203,7 @@ test('studio endpoints use Records API authentication and creation rate limits',
     const { jobId } = await accepted.json();
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', headers, body: JSON.stringify({ description: 'Rate-limited fixture' }) })).status, 429);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/repair`, { method: 'POST', headers, body: '{}' })).status, 429);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/revise`, { method: 'POST', headers, body: '{}' })).status, 429);
     const deadline = Date.now() + 3000;
     while (stack.runtime.getJob(jobId)?.status === 'queued' || stack.runtime.getJob(jobId)?.status === 'running') {
       if (Date.now() > deadline) throw new Error('Studio fixture did not finish');
