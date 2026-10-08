@@ -16,4 +16,4 @@ RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/config ./config
 EXPOSE 3100
-CMD ["node", "dist/web/server.js"]
+CMD ["node", "dist/src/web/server.js"]

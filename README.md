@@ -34,7 +34,11 @@ npm run studio:preview -- <输出的项目UUID>
 ```bash
 cd pixelagent-hub
 cp .env.example .env
-npm install && npm run build && npm test
+npm ci
+npm --prefix dashboard ci
+npm run build
+npm run smoke:package
+npm test
 ```
 
 无需 API Key 的演示需要显式启用 mock 模式：
@@ -45,7 +49,7 @@ LLM_PROVIDER=mock npx tsx examples/company-mode.ts
 启动 API 服务 + 可视化面板：
 ```bash
 npm run records:api       # 后端 API → http://localhost:3100
-npm run ui:dev            # 前端面板 → http://localhost:5173
+npm run ui:dev            # 前端面板 → http://localhost:3000
 ```
 
 ## 5 分钟 Docker 部署

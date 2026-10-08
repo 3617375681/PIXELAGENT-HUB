@@ -2,10 +2,11 @@
   "name": "pixelagent-hub",
   "version": "1.1.0",
   "description": "A lightweight, observable multi-agent orchestration framework in TypeScript with multi-provider LLM support",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "bin": {
-    "pixelagent": "./dist/cli.js"
+    "pixelagent": "./dist/src/cli.js"
   },
   "files": [
     "dist",
@@ -27,6 +28,7 @@
   "homepage": "https://github.com/3617375681/PIXELAGENT-HUB#readme",
   "scripts": {
     "build": "tsc",
+    "smoke:package": "node scripts/smoke-package.mjs",
     "test": "tsx --test src/**/*.test.ts",
     "dev": "tsx examples/content-pipeline.ts",
     "example:pipeline": "tsx examples/content-pipeline.ts",

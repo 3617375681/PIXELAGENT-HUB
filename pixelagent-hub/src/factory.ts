@@ -10,7 +10,7 @@ import { DirectorAgent } from './agents/DirectorAgent.js';
 import { ModeratorAgent } from './agents/ModeratorAgent.js';
 import { TesterAgent } from './agents/TesterAgent.js';
 import { Task, TaskResult } from './core/types.js';
-import { LLMProvider } from './core/llm/provider.js';
+import type { LLMProvider } from './core/llm/provider.js';
 import { createLLMProvider, createLLMProviderFor } from './core/llm/factory.js';
 
 export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvider?: LLMProvider | null, options: { includeTester?: boolean } = {}): Orchestrator {
@@ -84,4 +84,5 @@ export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvide
   return orchestrator;
 }
 
-export { LLMProvider, createLLMProvider, createLLMProviderFor };
+export type { LLMProvider };
+export { createLLMProvider, createLLMProviderFor };

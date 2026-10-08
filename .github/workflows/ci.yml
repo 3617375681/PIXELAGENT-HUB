@@ -28,4 +28,41 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+      - run: npm run smoke:package
+      - run: npm test
+
+  dashboard:
+    name: Dashboard (Node 22)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pixelagent-hub/dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pixelagent-hub/dashboard/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+
+  windows-runtime:
+    name: Windows runtime (Node 22)
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./pixelagent-hub
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pixelagent-hub/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm run smoke:package
       - run: npm test

@@ -10,7 +10,10 @@
 ## 30 秒上手
 
 ```bash
-npm install && npm run build && node dist/examples/company-mode.js
+npm ci
+npm run build
+npm run smoke:package
+LLM_PROVIDER=mock node dist/examples/company-mode.js
 ```
 
 运行完成后，结果和过程都会落盘到 `records/company-mode/<session-id>/`：

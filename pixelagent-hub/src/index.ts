@@ -1,5 +1,5 @@
 // Core types
-export { Agent, Task, TaskResult, AgentConfig, MessageBus, OrchestratorConfig, RunTrace, ModeRunResponse, Citation, VoteResult } from './core/types.js';
+export type { Agent, Task, TaskResult, AgentConfig, MessageBus, OrchestratorConfig, RunTrace, ModeRunResponse, Citation, VoteResult } from './core/types.js';
 
 // Core components
 export { BaseAgent } from './core/BaseAgent.js';
@@ -11,7 +11,7 @@ export { RoundtableRunner } from './core/RoundtableRunner.js';
 export { RunQueue } from './core/RunQueue.js';
 
 // LLM abstraction
-export { LLMProvider } from './core/llm/provider.js';
+export type { LLMProvider } from './core/llm/provider.js';
 export { createLLMProvider, createLLMProviderFor, readAgentLlmEnv, OpenAIProvider, AnthropicProvider, DeepSeekProvider, KimiProvider, OllamaProvider, MockProvider } from './core/llm/factory.js';
 export type { LLMMessage, LLMUsage, LLMResponse, LLMChatParams, LLMProviderOptions, LLMProviderId } from './core/llm/types.js';
 

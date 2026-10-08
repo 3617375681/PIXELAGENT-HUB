@@ -4,22 +4,31 @@ Thanks for improving **PIXELAGENT-HUB**. This document is the short path from cl
 
 ## 开发环境
 
-- Node.js **20+**（与 CI 一致）
-- 复制环境变量模板：`cp .env.example .env`，按需填写（本地跑示例需要 `KIMI_API_KEY` 等）
+- 完整项目使用 Node.js **22.12+**（Dashboard 的 Vite/Vitest 需要较新的 Node）。核心 CI 另外检查 Node 18、20 和 22。
+- 在 `pixelagent-hub/` 复制 `.env.example` 到 `.env`。无密钥演示显式使用 `LLM_PROVIDER=mock`；真实生成需要配置所选 provider 的密钥。
 
 常用命令：
 
 ```bash
 npm ci
+npm --prefix dashboard ci
 npm run build
+npm run smoke:package
 npm test
+npm --prefix dashboard run check
+npm --prefix dashboard test
+npm --prefix dashboard run build
 ```
+
+完成检查后，两个终端分别运行 `npm run records:api` 和 `npm run ui:dev`，打开 `http://localhost:3000/studio`。Dashboard 开发代理默认连接 API 的 3100 端口；修改 API 端口时同步设置 `VITE_DEV_PROXY_TARGET`。
+
+PowerShell 离线示例：`$env:LLM_PROVIDER="mock"; node dist/examples/company-mode.js`。Bash：`LLM_PROVIDER=mock node dist/examples/company-mode.js`。mock 用于流程演示，不代表真实模型生成验收。
 
 ## Pull Request 流程
 
 1. 从 `main` 拉分支，命名建议：`fix/…`、`feat/…`、`docs/…`。
 2. 改动保持聚焦；无关格式化、大范围重排请避免混在同一 PR。
-3. 提交前确保 **`npm run build` 与 `npm test` 通过**（CI 会做同样检查）。
+3. 提交前运行上述检查。CI 检查核心编译、编译产物与 CLI、测试，以及 Dashboard 类型、测试和构建；另在 Windows 检查核心，覆盖本地文件保存与进程中断行为。
 4. PR 描述里写清楚：**动机**、**行为变化**、若涉及 HTTP/API 则注明兼容性与风险。
 5. 大功能或破坏性变更，建议先开 Issue 讨论再写代码。
 

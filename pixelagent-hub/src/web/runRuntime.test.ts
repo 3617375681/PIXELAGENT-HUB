@@ -112,8 +112,7 @@ test('a killed worker leaves a recoverable running record without executing work
   const root = await mkdtemp(join(tmpdir(), 'runtime-killed-'));
   const moduleUrl = pathToFileURL(join(process.cwd(), 'src/web/runRuntime.ts')).href;
   const child = spawn(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', `
-    import runtimeModule from ${JSON.stringify(moduleUrl)};
-    const { RunRuntime } = runtimeModule;
+    import { RunRuntime } from ${JSON.stringify(moduleUrl)};
     const runtime = new RunRuntime({ recordsRoot: ${JSON.stringify(root)}, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
     await runtime.init();
     await runtime.execute({ jobId: 'killed', taskId: 'killed', mode: 'studio', run: async () => {
