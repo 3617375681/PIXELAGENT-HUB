@@ -1,0 +1,61 @@
+[
+  {
+    "id": "counter", "title": "Pixel counter",
+    "description": "Create an offline pixel-style counter with initial integer 0, button IDs increase/decrease/reset, and an output element ID count showing only the integer. Click adds one, subtracts one, or resets to zero. Support negative numbers. Include labeled keyboard-accessible buttons and README. Use HTML/CSS/JS only, no dependencies or storage. Keep total source under 200 lines.",
+    "checks": [
+      { "name": "Initial zero", "actions": [], "selector": "#count", "expected": "0" },
+      { "name": "Increase", "actions": [{ "type": "click", "selector": "#increase" }], "selector": "#count", "expected": "1" },
+      { "name": "Negative count", "actions": [{ "type": "click", "selector": "#decrease" }, { "type": "click", "selector": "#decrease" }], "selector": "#count", "expected": "-1" },
+      { "name": "Reset", "actions": [{ "type": "click", "selector": "#reset" }], "selector": "#count", "expected": "0" }
+    ], "limitations": ["Native keyboard behavior and pixel appearance require separate review."]
+  },
+  {
+    "id": "todo", "title": "Pixel task list",
+    "description": "Create an offline pixel-style task list. Input ID todo-input, add button ID todo-add. Show integer-only total task count in #todo-total and incomplete task count in #remaining, both initially 0. First task gets text span #todo-text-1, checkbox #todo-check-1, and delete button #todo-delete-1. Adding trims text; blank input adds nothing. Toggling checkbox updates incomplete count; deleting removes task and updates both counts. New tasks get increasing numeric IDs. Keep all state in memory, no storage. Include labels and README. HTML/CSS/JS only, under 240 source lines.",
+    "checks": [
+      { "name": "Initially empty", "actions": [], "selector": "#todo-total", "expected": "0" },
+      { "name": "Ignore blank task", "actions": [{ "type": "click", "selector": "#todo-add" }], "selector": "#todo-total", "expected": "0" },
+      { "name": "Add task", "actions": [{ "type": "input", "selector": "#todo-input", "value": " Read book " }, { "type": "click", "selector": "#todo-add" }], "selector": "#todo-total", "expected": "1" },
+      { "name": "Trim task text", "actions": [], "selector": "#todo-text-1", "expected": "Read book" },
+      { "name": "Complete task", "actions": [{ "type": "click", "selector": "#todo-check-1" }], "selector": "#remaining", "expected": "0" },
+      { "name": "Reopen task", "actions": [{ "type": "click", "selector": "#todo-check-1" }], "selector": "#remaining", "expected": "1" },
+      { "name": "Delete task", "actions": [{ "type": "click", "selector": "#todo-delete-1" }], "selector": "#todo-total", "expected": "0" }
+    ], "limitations": ["In-memory list only; native keyboard activation, layout and accessibility need separate review."]
+  },
+  {
+    "id": "calculator", "title": "Pixel calculator",
+    "description": "Create a pixel-style two-number calculator. Inputs IDs left/right; select ID operation with values add/subtract/multiply/divide; button ID calculate; output ID result initially 0. Output only the numeric result, no label in the output. Reject empty/non-finite numbers and division by zero with exact text Error. Support negative inputs. Labels and README required. Offline HTML/CSS/JS, no packages/storage, under 200 lines.",
+    "checks": [
+      { "name": "Initial result", "actions": [], "selector": "#result", "expected": "0" },
+      { "name": "Addition", "actions": [{ "type": "input", "selector": "#left", "value": "7" }, { "type": "input", "selector": "#right", "value": "8" }, { "type": "input", "selector": "#operation", "value": "add" }, { "type": "click", "selector": "#calculate" }], "selector": "#result", "expected": "15" },
+      { "name": "Reject division by zero", "actions": [{ "type": "input", "selector": "#right", "value": "0" }, { "type": "input", "selector": "#operation", "value": "divide" }, { "type": "click", "selector": "#calculate" }], "selector": "#result", "expected": "Error" },
+      { "name": "Negative addition", "actions": [{ "type": "input", "selector": "#left", "value": "-3" }, { "type": "input", "selector": "#right", "value": "1" }, { "type": "input", "selector": "#operation", "value": "add" }, { "type": "click", "selector": "#calculate" }], "selector": "#result", "expected": "-2" },
+      { "name": "Reject empty operand", "actions": [{ "type": "input", "selector": "#left", "value": "" }, { "type": "click", "selector": "#calculate" }], "selector": "#result", "expected": "Error" }
+    ], "limitations": ["Subtraction, multiplication, rounding, native keyboard and visual appearance not covered by these checks."]
+  },
+  {
+    "id": "converter", "title": "Pixel temperature converter",
+    "description": "Create a pixel-style temperature converter. Text input ID temperature, select ID direction values c-to-f/f-to-c, button ID convert, output ID result initially --. Convert C to F with x*9/5+32, F to C with (x-32)*5/9. Output numeric value with exactly two decimals, without units. Empty or invalid/non-finite input produces exact Error. Include labels, formulas and README. Offline HTML/CSS/JS only, no storage/packages, under 200 lines.",
+    "checks": [
+      { "name": "Initial placeholder", "actions": [], "selector": "#result", "expected": "--" },
+      { "name": "Freezing point", "actions": [{ "type": "input", "selector": "#temperature", "value": "0" }, { "type": "input", "selector": "#direction", "value": "c-to-f" }, { "type": "click", "selector": "#convert" }], "selector": "#result", "expected": "32.00" },
+      { "name": "Reverse boiling point", "actions": [{ "type": "input", "selector": "#temperature", "value": "212" }, { "type": "input", "selector": "#direction", "value": "f-to-c" }, { "type": "click", "selector": "#convert" }], "selector": "#result", "expected": "100.00" },
+      { "name": "Negative temperature", "actions": [{ "type": "input", "selector": "#temperature", "value": "-40" }, { "type": "input", "selector": "#direction", "value": "c-to-f" }, { "type": "click", "selector": "#convert" }], "selector": "#result", "expected": "-40.00" },
+      { "name": "Reject invalid text", "actions": [{ "type": "input", "selector": "#temperature", "value": "abc" }, { "type": "click", "selector": "#convert" }], "selector": "#result", "expected": "Error" }
+    ], "limitations": ["Only listed numeric boundaries checked; native keyboard and visual appearance need separate review."]
+  },
+  {
+    "id": "quiz", "title": "Pixel arithmetic quiz",
+    "description": "Create an offline pixel-style two-question quiz. #question initially has exact text 2 + 2 = ?. Buttons #answer-a/#answer-b display 4/5 for first question. Clicking one answer locks answers and increments integer-only #score once if correct; score initially 0. #next advances to second question exact 3 + 3 = ?, answer-a is 5 and answer-b is 6. After answering second, #next sets #question to Finished. #restart resets first question and score. Include labels and README. HTML/CSS/JS only, no storage/packages, under 230 lines.",
+    "checks": [
+      { "name": "Initial question", "actions": [], "selector": "#question", "expected": "2 + 2 = ?" },
+      { "name": "Correct first answer", "actions": [{ "type": "click", "selector": "#answer-a" }], "selector": "#score", "expected": "1" },
+      { "name": "Cannot score twice", "actions": [{ "type": "click", "selector": "#answer-a" }], "selector": "#score", "expected": "1" },
+      { "name": "Second question", "actions": [{ "type": "click", "selector": "#next" }], "selector": "#question", "expected": "3 + 3 = ?" },
+      { "name": "Wrong second answer", "actions": [{ "type": "click", "selector": "#answer-a" }], "selector": "#score", "expected": "1" },
+      { "name": "Finish", "actions": [{ "type": "click", "selector": "#next" }], "selector": "#question", "expected": "Finished" },
+      { "name": "Restart score", "actions": [{ "type": "click", "selector": "#restart" }], "selector": "#score", "expected": "0" },
+      { "name": "Restart question", "actions": [], "selector": "#question", "expected": "2 + 2 = ?" }
+    ], "limitations": ["Second correct answer path, skipping questions, native keyboard and visual appearance need separate review."]
+  }
+]

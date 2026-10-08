@@ -3,6 +3,7 @@ import { listTestPlans, saveTestPlan, type TestPlanRecord } from '../studio/test
 import { randomUUID } from 'node:crypto';
 import { mkdir, readdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { join } from 'node:path';
+import { hostname } from 'node:os';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Orchestrator } from '../core/Orchestrator.js';
 import { runSoftwareStudio, saveStudioRecord, validateProjectId, type StudioRecord } from '../studio/softwareStudio.js';
@@ -23,7 +24,13 @@ export function createStudioApi(options: {
     if (record.projectId !== projectId) throw new Error('Project record ID mismatch');
     if (record.status === 'queued' || record.status === 'running') {
       const job = record.jobId ? options.runtime.getJob(record.jobId) : undefined;
-      if (!job || ['failed', 'cancelled'].includes(job.status)) {
+      let cliAlive = false;
+      if (!record.jobId && record.ownerHost === hostname() && Number.isInteger(record.ownerPid) && record.ownerPid! > 0) {
+        try { process.kill(record.ownerPid!, 0); cliAlive = true; }
+        catch (error) { cliAlive = (error as NodeJS.ErrnoException).code === 'EPERM'; }
+      }
+      const interrupted = record.jobId ? !job || ['failed', 'cancelled'].includes(job.status) : record.ownerPid !== undefined && !cliAlive;
+      if (interrupted) {
         record.status = job?.status === 'cancelled' ? 'cancelled' : 'failed';
         record.phase = record.status;
         record.error = job?.error || 'Generation was interrupted; create a new project to retry';

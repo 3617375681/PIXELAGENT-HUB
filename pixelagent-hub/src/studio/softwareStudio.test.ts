@@ -22,12 +22,14 @@ class FixtureProvider extends MockProvider {
   }
 }
 
-for (const alwaysBroken of [false, true]) {
-  test(`compiler evidence controls bounded revision flow, alwaysBroken=${alwaysBroken}`, async () => {
+for (const strategy of ['manager-coder', 'coder-only'] as const) for (const alwaysBroken of [false, true]) {
+  test(`compiler evidence controls bounded revision flow, strategy=${strategy}, alwaysBroken=${alwaysBroken}`, async () => {
     const root = await mkdtemp(join(tmpdir(), 'studio-flow-'));
     try {
       const provider = new FixtureProvider(alwaysBroken);
-      const record = await runSoftwareStudio({ description: 'Create a game', root, orchestrator: createOrchestrator('fixture', provider) });
+      const record = await runSoftwareStudio({ description: 'Create a game', root, strategy, orchestrator: createOrchestrator('fixture', provider) });
+      assert.equal(record.strategy, strategy);
+      assert.equal(Boolean(record.plan), strategy === 'manager-coder');
       assert.equal(record.status, alwaysBroken ? 'failed' : 'ready_for_review');
       assert.equal(record.rounds.length, alwaysBroken ? 3 : 2);
       assert.equal(record.rounds[0].build?.status, 'failed');

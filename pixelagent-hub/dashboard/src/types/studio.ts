@@ -7,6 +7,7 @@ export type StudioChanges = { projectId: string; parentProjectId: string; fromPr
 export type StudioSummary = { projectId: string; description: string; status: StudioStatus; startedAt: string; phase?: string; jobId?: string; review?: StudioReview | null; repair?: { parentProjectId: string; diagnosticId: string; previewFile: string; errors: string[] }; revision?: { parentProjectId: string; previewFile: string; changeRequest: string } };
 export type StudioVersions = { rootProjectId: string; selectedProjectId: string; versions: StudioSummary[] };
 export type StudioProject = StudioSummary & {
+  strategy?: 'manager-coder' | 'coder-only';
   finishedAt?: string; error?: string;
   plan?: { status: string; output: { projectName?: string; goal?: string; phases?: { id: string; name: string; tasks: string[] }[]; llmProvider?: string; llmModel?: string }; reasoning?: string };
   rounds: { round: number; code: { status: string; output?: { files?: { path: string; content: string }[]; llmProvider?: string; llmModel?: string }; reasoning?: string }; build?: { status: 'passed' | 'failed'; errors: string[]; checkedFiles: string[]; browserVerified: boolean } }[];

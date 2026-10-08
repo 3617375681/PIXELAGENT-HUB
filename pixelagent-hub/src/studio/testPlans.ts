@@ -1,8 +1,8 @@
-import { mkdir, readFile, readdir, writeFile, rename } from 'node:fs/promises';
-import { randomUUID } from 'node:crypto';
+import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { z } from 'zod';
 import type { TaskResult } from '../core/types.js';
+import { writeJsonSnapshot } from './atomicJson.js';
 
 const selector = z.string().min(1).max(160);
 const action = z.discriminatedUnion('type', [
@@ -15,11 +15,7 @@ export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min
 export type TestPlanRecord = { id: string; projectId: string; previewFile: string; jobId: string; status: 'queued' | 'running' | 'ready' | 'failed' | 'cancelled'; startedAt: string; finishedAt?: string; result?: TaskResult; error?: string };
 
 export async function saveTestPlan(root: string, plan: TestPlanRecord): Promise<void> {
-  const directory = join(root, plan.projectId, 'test-plans');
-  await mkdir(directory, { recursive: true });
-  const temporary = join(directory, `${plan.id}-${randomUUID()}.tmp`);
-  await writeFile(temporary, JSON.stringify(plan, null, 2));
-  await rename(temporary, join(directory, `${plan.id}.json`));
+  await writeJsonSnapshot(join(root, plan.projectId, 'test-plans', `${plan.id}.json`), plan);
 }
 export async function listTestPlans(root: string, projectId: string): Promise<TestPlanRecord[]> {
   const directory = join(root, projectId, 'test-plans');

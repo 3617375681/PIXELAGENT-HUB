@@ -16,7 +16,7 @@ async function main() {
     if (req.url !== '/' || req.method !== 'GET') { res.writeHead(404); res.end(); return; }
     res.writeHead(200, {
       'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store',
-      'Content-Security-Policy': "sandbox allow-scripts; default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'",
+      'Content-Security-Policy': "sandbox allow-scripts allow-forms; default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'",
       'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer',
     });
     res.end(html);

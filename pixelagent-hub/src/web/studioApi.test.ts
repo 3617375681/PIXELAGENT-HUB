@@ -13,6 +13,7 @@ import { RunRuntime } from './runRuntime.js';
 import { createStudioApi } from './studioApi.js';
 import { saveTestPlan, testPlanSchema } from '../studio/testPlans.js';
 import { listReviews } from '../studio/reviews.js';
+import { hostname } from 'node:os';
 
 class StudioFixture extends MockProvider {
   prompts: string[] = [];
@@ -272,7 +273,8 @@ test('test planning cancellation aborts the model and retains the built project'
     const deadline = Date.now() + 3000;
     while (!provider.started && Date.now() < deadline) await delay(10);
     assert.equal(provider.started, true);
-    assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify({ cancelPlanId: accepted.planId }) })).status, 200);
+    const cancelled = await fetch(url, { method: 'POST', body: JSON.stringify({ cancelPlanId: accepted.planId }) });
+    assert.equal(cancelled.status, 200, await cancelled.text());
     assert.equal((await waitForJob(runtime, accepted.jobId)).status, 'cancelled');
     assert.equal(provider.aborted, true);
     assert.equal((await (await fetch(url)).json()).plans[0].status, 'cancelled');
@@ -345,6 +347,19 @@ test('review gate rejects invalid confirmation, stale or foreign evidence and fa
   record.status = 'cancelled'; await saveStudioRecord(root, record);
   assert.equal((await post({ ...payload, decision: 'changes_requested' })).status, 409);
   assert.equal((await (await fetch(`${url}/reviews`)).json()).current, null);
+}));
+
+test('API reads preserve live CLI generation, leave unknown legacy ownership alone and fail an absent owner', async () => withApi(async (base, _runtime, root) => {
+  const live = randomUUID();
+  const legacy = randomUUID();
+  const absent = randomUUID();
+  for (const [projectId, owner] of [[live, { ownerPid: process.pid, ownerHost: hostname() }], [legacy, {}], [absent, { ownerPid: 2147483647, ownerHost: hostname() }]] as const) {
+    await saveStudioRecord(root, { projectId, description: 'CLI owner fixture', status: 'running', startedAt: new Date().toISOString(), rounds: [], ...owner });
+  }
+  assert.equal((await (await fetch(`${base}/api/studio/projects/${live}`)).json()).project.status, 'running');
+  assert.equal((await (await fetch(`${base}/api/studio/projects/${legacy}`)).json()).project.status, 'running');
+  assert.equal((await (await fetch(`${base}/api/studio/projects/${absent}`)).json()).project.status, 'failed');
+  assert.equal(JSON.parse(await readFile(join(root, live, 'project.json'), 'utf8')).status, 'running');
 }));
 
 test('orphaned project is restored as failed and cannot advertise a preview', async () => withApi(async (base, _runtime, root) => {
