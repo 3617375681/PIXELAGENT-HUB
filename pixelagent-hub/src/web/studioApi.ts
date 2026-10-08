@@ -5,6 +5,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Orchestrator } from '../core/Orchestrator.js';
 import { runSoftwareStudio, saveStudioRecord, validateProjectId, type StudioRecord } from '../studio/softwareStudio.js';
 import type { RunRuntime } from './runRuntime.js';
+import { diagnosticInput, listDiagnostics, saveDiagnostic } from '../studio/diagnostics.js';
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -71,10 +72,20 @@ export function createStudioApi(options: {
           });
           json(res, 202, { projectId, jobId, projectUrl: `/api/studio/projects/${projectId}` }); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'diagnostics') {
+          if (req.method === 'GET') { json(res, 200, { reports: await listDiagnostics(options.root, projectId) }); return; }
+          if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
+          const parsed = diagnosticInput.safeParse(input);
+          if (!parsed.success) { json(res, 400, { error: { message: 'Provide a preview reference, loaded boolean and up to 20 error messages (1–2000 characters each)' } }); return; }
+          if (record.status !== 'ready_for_review' || record.previewFile !== parsed.data.previewFile) {
+            json(res, 409, { error: { message: 'Diagnostics must reference the current successful preview' } }); return;
+          }
+          json(res, 201, { report: await saveDiagnostic(options.root, projectId, parsed.data) }); return;
+        }
         if (action === 'cancel' && req.method === 'POST') {
           if (!['queued', 'running'].includes(record.status) || !record.jobId || !options.runtime.cancelJob(record.jobId)) { json(res, 409, { error: { message: 'Project is no longer running' } }); return; }
           record.status = 'cancelled';

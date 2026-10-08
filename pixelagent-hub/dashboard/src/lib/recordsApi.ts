@@ -15,7 +15,7 @@ import type {
   SessionSummary,
   WorkflowDefinition,
 } from '@/types/recordsApi';
-import type { StudioProject, StudioSummary } from '@/types/studio';
+import type { StudioDiagnostic, StudioProject, StudioSummary } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
 const RAW_API_BASE = import.meta.env.VITE_RECORDS_API_URL as string | undefined;
@@ -93,6 +93,8 @@ export const studioApi = {
   preview: (projectId: string, signal?: AbortSignal) => request<{ html: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/preview`, { signal }),
   cancel: (projectId: string) => request<{ project: StudioProject }>(`/api/studio/projects/${encodeURIComponent(projectId)}/cancel`, { method: 'POST' }),
   archive: (projectId: string) => fetchRecordsBinary(`/api/studio/projects/${encodeURIComponent(projectId)}/archive`),
+  diagnostics: (projectId: string, signal?: AbortSignal) => request<{ reports: StudioDiagnostic[] }>(`/api/studio/projects/${encodeURIComponent(projectId)}/diagnostics`, { signal }),
+  saveDiagnostic: (projectId: string, payload: Pick<StudioDiagnostic, 'previewFile' | 'loaded' | 'errors'>) => request<{ report: StudioDiagnostic }>(`/api/studio/projects/${encodeURIComponent(projectId)}/diagnostics`, { method: 'POST', body: JSON.stringify(payload) }),
 };
 
 /** POST /api/run/:mode — supports async=1 (202 + jobUrl) or stream=1 (SSE text body). */

@@ -83,6 +83,43 @@ test('studio validates input and never reads arbitrary filesystem paths', async 
   assert.equal((await fetch(`${base}/api/studio/projects/${randomUUID()}`)).status, 404);
 }));
 
+test('browser diagnostics survive separate API reads without approving the build', async () => withApi(async (base, runtime, root) => {
+  const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter' }) })).json();
+  await waitForJob(runtime, accepted.jobId);
+  const url = `${base}${accepted.projectUrl}/diagnostics`;
+  assert.deepEqual((await (await fetch(url)).json()).reports, []);
+  const payload = { previewFile: 'v1/dist/index.html', loaded: true, errors: ['Uncaught Error: example'] };
+  const responses = await Promise.all([1, 2].map(() => fetch(url, { method: 'POST', body: JSON.stringify(payload) })));
+  assert.ok(responses.every((response) => response.status === 201));
+  const reports = (await (await fetch(url)).json()).reports;
+  assert.equal(reports.length, 2);
+  assert.notEqual(reports[0].id, reports[1].id);
+  for (const report of reports) {
+    assert.equal(report.source, 'browser-client');
+    assert.ok(Number.isFinite(Date.parse(report.savedAt)));
+    assert.deepEqual(report.errors, payload.errors);
+    assert.deepEqual(JSON.parse(await readFile(join(root, accepted.projectId, 'diagnostics', `${report.id}.json`), 'utf-8')), report);
+  }
+  const project = (await (await fetch(`${base}${accepted.projectUrl}`)).json()).project;
+  assert.equal(project.status, 'ready_for_review');
+  assert.equal(project.rounds[0].build.browserVerified, false);
+  assert.equal((await fetch(url, { method: 'DELETE' })).status, 405);
+}));
+
+test('diagnostics reject stale previews, invalid observations and fabricated approval', async () => withApi(async (base, _runtime, root) => {
+  const projectId = randomUUID();
+  await saveStudioRecord(root, { projectId, description: 'Counter', status: 'ready_for_review', startedAt: new Date().toISOString(), rounds: [], previewFile: 'v1/dist/index.html' });
+  const url = `${base}/api/studio/projects/${projectId}/diagnostics`;
+  const payload = { previewFile: 'v1/dist/index.html', loaded: true, errors: [] };
+  for (const invalid of [null, { ...payload, loaded: 'yes' }, { ...payload, errors: ['x'.repeat(2001)] }, { ...payload, errors: Array(21).fill('error') }, { ...payload, errors: [7] }, { ...payload, approved: true }, { ...payload, previewFile: '../../secret' }]) {
+    assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify(invalid) })).status, 400);
+  }
+  assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify({ ...payload, previewFile: 'v2/dist/index.html' }) })).status, 409);
+  await saveStudioRecord(root, { projectId, description: 'Cancelled', status: 'cancelled', startedAt: new Date().toISOString(), rounds: [] });
+  assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify(payload) })).status, 409);
+  assert.deepEqual((await (await fetch(url)).json()).reports, []);
+}));
+
 test('orphaned project is restored as failed and cannot advertise a preview', async () => withApi(async (base, _runtime, root) => {
   const projectId = randomUUID();
   await saveStudioRecord(root, { projectId, jobId: 'missing-restarted-job', description: 'Interrupted work', status: 'running', phase: 'coding', startedAt: new Date().toISOString(), rounds: [] });

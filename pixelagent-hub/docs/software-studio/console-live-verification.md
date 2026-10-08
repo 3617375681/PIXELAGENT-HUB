@@ -25,3 +25,9 @@
 同日新增预览诊断桥接。浏览器打开本地测试夹具 `565f1382-632c-410b-8a8c-0a29eac84014`，分别点击“触发运行异常”和“触发 Promise 拒绝”，看到异常数量从 0 到 1、再到 2；验证记录显示 `fixture-click-failed` 和 `fixture-promise-failed`。该夹具通过实际 esbuild 构建，但故意包含运行错误，非模型生成质量样本。截图为 `portfolio-screenshots/studio-runtime-errors-2026-10-08.png`。
 
 随后切回真实生成的计数器，页面成功加载，点击增加观察 0 → 1，没有捕获异常。前端类型检查、8 项测试和构建通过；测试覆盖其他窗口、旧 nonce、无效类型与超长消息拒绝。桥接保留 `sandbox="allow-scripts"`，只接受当前 iframe 的消息。运行诊断是会话内观察，不持久化、不更新 `browserVerified`，不替代需求验收；生成页面也可能遮蔽错误，因此不能以无异常推导正确。
+
+## 诊断持久化
+
+后续增加手动保存观察。浏览器再次触发上述两条异常，点击“保存本次诊断”，按钮变为“当前诊断已保存”；刷新后实时错误清空，但历史中仍显示两条原异常、`v1/dist/index.html`、保存时间和客户端来源。磁盘 `diagnostics/` 下 JSON 与页面内容一致。截图为 `portfolio-screenshots/studio-saved-diagnostics-2026-10-08.png`。
+
+此批后端构建与 104 项测试、前端类型检查与 8 项测试及构建通过。新增 HTTP 回归验证并发写入独立记录、磁盘内容、重复读取、输入限制、旧预览拒绝和取消项目拒绝；保存不改变 `ready_for_review` 或 `browserVerified: false`。尚未以真实进程重启单独验证此诊断路径，不把刷新验证等同于重启验证。
