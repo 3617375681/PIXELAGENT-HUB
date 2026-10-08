@@ -7,6 +7,7 @@ import { readCheckResults, type BrowserCheckResult } from '../lib/studioChecks';
 import { prepareStudioPreview, readPreviewMessage } from '../lib/studioPreview';
 import './Studio.css';
 import StudioReviewPanel from '../components/StudioReviewPanel';
+import { studioStages } from '../lib/studioStages';
 
 const statusText = { queued: '排队中', running: '团队工作中', ready_for_review: '构建完成 · 等待验收', failed: '运行失败', cancelled: '已取消' };
 const phaseText: Record<string, string> = { queued: '等待执行', planning: 'Manager 正在规划', coding: 'Coder 正在生成源码', building: '正在实际编译', ready_for_review: '可以试玩与检查', failed: '执行已停止', cancelled: '执行已取消' };
@@ -175,6 +176,11 @@ export default function Studio() {
     if (!projectId) return;
     const result = await studioApi.cancel(projectId); setProject(result.project); setRefreshKey((key) => key + 1);
   });
+  const retry = () => action(async () => {
+    if (!projectId) return;
+    const accepted = await studioApi.retry(projectId);
+    navigate(`/studio/${accepted.projectId}`); setTab('preview'); setRefreshKey((key) => key + 1);
+  });
   const download = () => action(async () => {
     if (!projectId) return;
     const blob = await studioApi.archive(projectId);
@@ -254,19 +260,20 @@ export default function Studio() {
           <section className="studio-projects">
             <span className="studio-kicker">02 / 我的项目</span>
             {projects.length === 0 && <p className="studio-hint">项目会保存在这里，刷新后仍可继续查看。</p>}
-            {projects.map((item) => <Link key={item.projectId} to={`/studio/${item.projectId}`} className={`studio-project-link ${projectId === item.projectId ? 'selected' : ''}`}><strong>{item.description}</strong><small>{item.repair ? '返修 · ' : item.revision ? '修改 · ' : ''}{projectStatus(item)}</small></Link>)}
+            {projects.map((item) => <Link key={item.projectId} to={`/studio/${item.projectId}`} className={`studio-project-link ${projectId === item.projectId ? 'selected' : ''}`}><strong>{item.description}</strong><small>{item.retry ? '重试 · ' : item.repair ? '返修 · ' : item.revision ? '修改 · ' : ''}{projectStatus(item)}</small></Link>)}
           </section>
         </aside>
         <section className="studio-workspace" aria-label="作品工作区">
           {error && <div className="studio-error" role="alert">{error}<button onClick={() => setRefreshKey((key) => key + 1)}>重试</button></div>}
-          <div className="studio-workspace-heading"><div><span className="studio-kicker">WORKSPACE</span><h2>{project?.plan?.output?.projectName || (project?.strategy === 'coder-only' ? '单 Agent 对照作品' : project ? '正在准备你的项目' : '你的作品，从这里开始')}</h2></div>{project && <span className={`studio-status ${project.status}`} role="status">{projectStatus(project)}</span>}</div>
+          <div className="studio-workspace-heading"><div><span className="studio-kicker">WORKSPACE</span><h2>{project?.plan?.output?.projectName || (project?.strategy === 'coder-only' ? '单 Agent 对照作品' : project ? running ? '正在准备你的项目' : '你的创作任务' : '你的作品，从这里开始')}</h2></div>{project && <span className={`studio-status ${project.status}`} role="status">{projectStatus(project)}</span>}</div>
           {project && <details className="studio-requirements"><summary>本次需求</summary><p>{project.description}</p></details>}
+          {project?.retry && <p className="studio-hint">这是重新生成的新版本。<Link to={`/studio/${project.retry.parentProjectId}`}>查看原失败或取消记录</Link>。</p>}
           {project?.revision && <p className="studio-hint">本次修改：{project.revision.changeRequest} · <Link to={`/studio/${project.revision.parentProjectId}`}>查看基础版本</Link></p>}
-          {versions && <details className="studio-version-history"><summary>版本历史 · {versions.versions.length} 个版本</summary><p className="studio-hint">选择版本会保存当前使用的候选作品；每个版本仍需独立验收。</p>{versions.versions.map((version, index) => <div key={version.projectId}><Link to={`/studio/${version.projectId}`}>V{index + 1} · {version.revision?.changeRequest || (version.repair ? '依据诊断返修' : '初始作品')} · {projectStatus(version)}</Link>{versions.selectedProjectId === version.projectId ? <span>当前使用</span> : <button disabled={busy || running || version.status !== 'ready_for_review'} onClick={() => void selectVersion(version.projectId)}>使用此版本</button>}</div>)}</details>}
+          {versions && <details className="studio-version-history"><summary>版本历史 · {versions.versions.length} 个版本</summary><p className="studio-hint">选择版本会保存当前使用的候选作品；每个版本仍需独立验收。{versions.selectedProjectId === null && ' 尚未选择可用版本。'}</p>{versions.versions.map((version, index) => <div key={version.projectId}><Link to={`/studio/${version.projectId}`}>V{index + 1} · {version.retry ? '重新生成' : version.revision?.changeRequest || (version.repair ? '依据诊断返修' : '初始作品')} · {projectStatus(version)}</Link>{versions.selectedProjectId === version.projectId ? <span>当前使用</span> : <button disabled={busy || running || version.status !== 'ready_for_review'} onClick={() => void selectVersion(version.projectId)}>使用此版本</button>}</div>)}</details>}
           {ready && <details className="studio-revision-brief"><summary>在此版本上追加需求</summary><label htmlFor="studio-change-request">希望修改什么</label><textarea id="studio-change-request" value={changeRequest} onChange={(event) => setChangeRequest(event.target.value)} maxLength={4000} rows={3} disabled={busy} /><button disabled={busy || !changeRequest.trim()} onClick={() => void revise()}>开始修改并生成新版本</button></details>}
           {project?.repair && <p className="studio-hint">本次依据保存的运行诊断返修。<Link to={`/studio/${project.repair.parentProjectId}`}>查看原项目</Link> · 诊断 {project.repair.diagnosticId}。构建通过后仍需复测。</p>}
           <ol className="studio-team" aria-label="团队执行阶段">
-            {[{ icon: '▤', name: 'Manager', detail: '需求与规划', done: project?.plan?.status === 'success', active: project?.phase === 'planning' }, { icon: '⌘', name: 'Coder', detail: '生成真实源码', done: current?.code.status === 'success', active: project?.phase === 'coding' }, { icon: '▣', name: 'Builder', detail: '编译与错误返修', done: current?.build?.status === 'passed', active: project?.phase === 'building' }].map((agent) => <li key={agent.name} className={agent.active ? 'active' : agent.done ? 'done' : ''}><span className="studio-agent-icon">{agent.icon}</span><div><strong>{agent.name}</strong><small>{agent.detail}</small></div><span className="studio-agent-state">{agent.name === 'Manager' && project?.strategy === 'coder-only' ? '对照组未执行' : agent.active ? '工作中' : agent.done ? '完成' : '等待'}</span></li>)}
+            {studioStages(project).map((agent) => <li key={agent.name} className={agent.state}><span className="studio-agent-icon">{agent.icon}</span><div><strong>{agent.name}</strong><small>{agent.detail}</small></div><span className="studio-agent-state">{agent.label}</span></li>)}
           </ol>
           {generationMetrics && <section className="studio-tester" aria-label="生成耗时与用量">
             <h3>本次生成 / 耗时与用量</h3>
@@ -282,6 +289,7 @@ export default function Studio() {
           </section>}
           {running && <div className="studio-progress" role="status"><Hammer size={16} />{phaseText[project?.phase || 'queued']}{current && ` · 第 ${current.round} 轮`}<button onClick={() => void cancel()} disabled={busy}><Square size={12} />取消</button></div>}
           {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
+          {project && ['failed', 'cancelled'].includes(project.status) && <section className="studio-tester" aria-label="重新生成作品"><h3>保留本次记录，重新生成</h3><p className="studio-hint">沿用原需求、追加修改和返修上下文，从头执行并创建新版本。点击后会重新调用模型并产生用量；原错误和记录继续保留。</p><button disabled={busy} onClick={() => void retry()}>重新生成新版本（调用模型）</button></section>}
           {ready && <section className="studio-tester" aria-label="Tester 交互检查"><h3>Tester / 沙箱内交互检查</h3><p className="studio-hint">模型生成检查，页面执行合成事件与文本断言。结果不替代完整浏览器测试或人工批准。</p><button disabled={busy || qaRunning || testPlans.some((plan) => ['queued', 'running'].includes(plan.status))} onClick={() => void generateTests()}>生成交互检查（调用模型）</button>{testPlans.map((plan) => <details key={plan.id}><summary>检查计划 · {plan.status} · {plan.id.slice(0, 8)}</summary>{plan.error && <p role="alert">{plan.error}</p>}{['queued', 'running'].includes(plan.status) && <button onClick={() => void cancelTests(plan.id)} disabled={busy}>取消生成检查</button>}{plan.result?.output?.checks && <><p>{plan.result.output.llmProvider} / {plan.result.output.llmModel}</p><ol>{plan.result.output.checks.map((check, index) => <li key={index}>{check.name}：{check.actions.length} 个操作 → {check.selector} 应为 {JSON.stringify(check.expected)}</li>)}</ol><p>覆盖限制：{plan.result.output.limitations.join('；') || '模型未列出限制，请检查计划覆盖范围。'}</p><button disabled={plan.status !== 'ready' || busy || qaRunning || plan.previewFile !== project?.previewFile} onClick={() => runChecks(plan)}>从初始页面运行检查</button></>}</details>)}{qaRunning && <p role="status">正在执行沙箱检查…</p>}{qaResults.length > 0 && <><p role="status">{qaResults.filter((result) => result.status === 'passed').length} / {qaResults.length} 项检查通过</p><ul>{qaResults.map((result, index) => <li key={index}>{result.name} · {result.status} · 实际文本 {JSON.stringify(result.actual)}{result.error && <pre>{result.error}</pre>}</li>)}</ul><button disabled={busy || qaSaved} onClick={() => void saveChecks()}>{qaSaved ? '检查结果已保存' : '保存检查结果与失败证据'}</button></>}</section>}
           {ready && project && <StudioReviewPanel key={project.projectId} project={project} reports={history.projectId === projectId ? history.reports : []} onSaved={() => setRefreshKey((key) => key + 1)} />}
           <div className="studio-tabs" role="tablist" aria-label="查看作品">

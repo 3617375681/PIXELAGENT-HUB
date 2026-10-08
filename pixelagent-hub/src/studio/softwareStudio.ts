@@ -10,7 +10,7 @@ import { writeJsonSnapshot } from './atomicJson.js';
 
 export type StudioRecord = {
   projectId: string; description: string; status: 'queued' | 'running' | 'ready_for_review' | 'failed' | 'cancelled';
-  jobId?: string; phase?: string;
+  jobId?: string; phase?: string; stoppedPhase?: string;
   strategy?: 'manager-coder' | 'coder-only';
   ownerPid?: number; ownerHost?: string;
   startedAt: string; finishedAt?: string; plan?: TaskResult;
@@ -18,6 +18,7 @@ export type StudioRecord = {
   previewFile?: string; archiveFile?: string; error?: string;
   repair?: { parentProjectId: string; diagnosticId: string; previewFile: string; errors: string[] };
   revision?: { parentProjectId: string; previewFile: string; changeRequest: string };
+  retry?: { parentProjectId: string };
 };
 
 const constraints = 'Create an offline browser app using only HTML, CSS and plain JavaScript. Include root index.html and a README.md. No imports, packages, network requests, external assets, iframes or server code. Draw graphics with CSS or canvas. Use addEventListener instead of inline HTML event handlers. Keep the implementation concise. Provide keyboard-accessible labeled controls. Files must use relative paths and .html/.css/.js/.md extensions.';
@@ -38,6 +39,7 @@ export async function runSoftwareStudio(options: {
   strategy?: StudioRecord['strategy'];
   repair?: StudioRecord['repair']; initialFiles?: SourceFile[];
   revision?: StudioRecord['revision']; changeRequests?: string[];
+  retry?: StudioRecord['retry'];
   onProgress?: (phase: string, round?: number) => void;
 }): Promise<StudioRecord> {
   if (!options.description.trim() || options.description.length > 4000) throw new Error('Provide a project description of 1–4000 characters');
@@ -45,7 +47,7 @@ export async function runSoftwareStudio(options: {
   validateProjectId(projectId);
   const directory = join(options.root, projectId);
   await mkdir(directory, { recursive: true });
-  const record: StudioRecord = { projectId, jobId: options.jobId, strategy: options.strategy || 'manager-coder', ...(!options.jobId ? { ownerPid: process.pid, ownerHost: hostname() } : {}), description: options.description, repair: options.repair, revision: options.revision, status: 'running', startedAt: new Date().toISOString(), rounds: [] };
+  const record: StudioRecord = { projectId, jobId: options.jobId, strategy: options.strategy || 'manager-coder', ...(!options.jobId ? { ownerPid: process.pid, ownerHost: hostname() } : {}), description: options.description, repair: options.repair, revision: options.revision, retry: options.retry, status: 'running', startedAt: new Date().toISOString(), rounds: [] };
   const save = () => saveStudioRecord(options.root, record);
   const progress = async (phase: string, round?: number) => {
     record.phase = phase;
@@ -101,6 +103,7 @@ export async function runSoftwareStudio(options: {
   } catch (error) {
     const reason = options.signal?.aborted ? options.signal.reason : error;
     record.status = options.signal?.aborted && reason?.name !== 'TimeoutError' ? 'cancelled' : 'failed';
+    record.stoppedPhase = record.phase;
     record.phase = record.status;
     record.error = reason instanceof Error ? reason.message : String(reason);
   } finally {

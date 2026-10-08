@@ -182,6 +182,7 @@ test('studio endpoints use Records API authentication and creation rate limits',
   await withTempStack(async ({ baseUrl, stack }) => {
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`)).status, 401);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', body: '{}' })).status, 401);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/retry`, { method: 'POST', body: '{}' })).status, 401);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/reviews`, { method: 'POST', body: '{}' })).status, 401);
     const headers = { 'Content-Type': 'application/json', 'X-API-Key': 'integration-test-api-key' };
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { headers })).status, 200);
@@ -191,6 +192,7 @@ test('studio endpoints use Records API authentication and creation rate limits',
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', headers, body: JSON.stringify({ description: 'Rate-limited fixture' }) })).status, 429);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/repair`, { method: 'POST', headers, body: '{}' })).status, 429);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/revise`, { method: 'POST', headers, body: '{}' })).status, 429);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/retry`, { method: 'POST', headers, body: '{}' })).status, 429);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/test-plans`, { method: 'POST', headers, body: '{}' })).status, 429);
     const deadline = Date.now() + 3000;
     while (stack.runtime.getJob(jobId)?.status === 'queued' || stack.runtime.getJob(jobId)?.status === 'running') {

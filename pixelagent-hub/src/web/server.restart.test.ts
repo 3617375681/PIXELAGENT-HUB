@@ -96,6 +96,7 @@ test('full Records HTTP service preserves completed artifacts and exposes interr
     running = await launch(root, modelUrl);
     const failed = (await (await fetch(`${running.base}${interrupted.projectUrl}`)).json()).project;
     assert.equal(failed.status, 'failed');
+    assert.equal(failed.stoppedPhase, 'coding');
     assert.match(failed.error, /Recovered after process restart/);
     assert.equal(failed.generationMetrics.elapsedMs, null);
     assert.equal((await fetch(`${running.base}${interrupted.projectUrl}/archive`)).status, 409);

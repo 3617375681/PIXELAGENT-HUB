@@ -32,6 +32,7 @@ export function createStudioApi(options: {
       }
       const interrupted = record.jobId ? !job || ['failed', 'cancelled'].includes(job.status) : record.ownerPid !== undefined && !cliAlive;
       if (interrupted) {
+        record.stoppedPhase = record.phase;
         record.status = job?.status === 'cancelled' ? 'cancelled' : 'failed';
         record.phase = record.status;
         record.error = job?.error || 'Generation was interrupted; create a new project to retry';
@@ -67,7 +68,7 @@ export function createStudioApi(options: {
     while (true) {
       if (seen.has(record.projectId)) throw new Error('Version history contains a cycle');
       seen.add(record.projectId);
-      if (record.revision) requests.unshift(record.revision.changeRequest);
+      if (record.revision && !record.retry) requests.unshift(record.revision.changeRequest);
       const parent = parentVersion(record);
       if (!parent) return requests;
       record = await read(parent);
@@ -83,10 +84,10 @@ export function createStudioApi(options: {
     }
     return review;
   };
-  const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[], revision?: StudioRecord['revision'], changeRequests?: string[]) => {
+  const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[], revision?: StudioRecord['revision'], changeRequests?: string[], retry?: StudioRecord['retry'], strategy?: StudioRecord['strategy']) => {
     const projectId = randomUUID();
     const jobId = `studio-${projectId}`;
-    const record: StudioRecord = { projectId, jobId, description: description.trim(), repair, revision, status: 'queued', phase: 'queued', startedAt: new Date().toISOString(), rounds: [] };
+    const record: StudioRecord = { projectId, jobId, description: description.trim(), repair, revision, retry, strategy, status: 'queued', phase: 'queued', startedAt: new Date().toISOString(), rounds: [] };
     await saveStudioRecord(options.root, record);
     options.runtime.submitBackground({
       jobId, taskId: projectId, mode: 'studio', maxRetries: 0,
@@ -96,7 +97,7 @@ export function createStudioApi(options: {
         if (signal.aborted) abort(); else signal.addEventListener('abort', abort, { once: true });
         const timer = setTimeout(() => controller.abort(new DOMException(`Software generation exceeded ${options.timeoutMs}ms`, 'TimeoutError')), options.timeoutMs);
         try {
-          const result = await runSoftwareStudio({ root: options.root, projectId, jobId, description: record.description, repair, initialFiles, revision, changeRequests, signal: controller.signal, orchestrator: options.createOrchestrator?.() });
+          const result = await runSoftwareStudio({ root: options.root, projectId, jobId, description: record.description, repair, initialFiles, revision, retry, strategy, changeRequests, signal: controller.signal, orchestrator: options.createOrchestrator?.() });
           if (result.status !== 'ready_for_review') throw new Error(result.error || result.status);
           return { mode: 'studio', task: { id: projectId, type: 'software_creation', description: record.description }, status: 'success', final: { projectId, status: result.status }, raw: result, trace: { mode: 'studio', startedAt: result.startedAt, finishedAt: result.finishedAt, actions: [] } };
         } finally { clearTimeout(timer); signal.removeEventListener('abort', abort); }
@@ -118,8 +119,8 @@ export function createStudioApi(options: {
           }
           projects.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
           json(res, 200, { projects: await Promise.all(projects.map(async (record) => {
-            const { projectId, description, status, startedAt, phase, jobId, repair, revision } = record;
-            return { projectId, description, status, startedAt, phase, jobId, repair, revision, review: await currentReview(record) };
+            const { projectId, description, status, startedAt, phase, jobId, repair, revision, retry } = record;
+            return { projectId, description, status, startedAt, phase, jobId, repair, revision, retry, review: await currentReview(record) };
           })) });
           return;
         }
@@ -130,10 +131,20 @@ export function createStudioApi(options: {
           }
           json(res, 202, await startProject(description)); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|versions|test-plans|reviews))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|retry|versions|test-plans|reviews))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'retry') {
+          if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
+          if (input !== undefined && (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).length)) { json(res, 400, { error: { message: 'Retry accepts an empty object' } }); return; }
+          if (!['failed', 'cancelled'].includes(record.status)) { json(res, 409, { error: { message: 'Retry requires a failed or cancelled generation' } }); return; }
+          if (record.jobId && options.runtime.isJobActive(record.jobId)) { json(res, 409, { error: { message: 'Wait until the interrupted generation has stopped' } }); return; }
+          const requests = await changeHistory(record);
+          const sourceParent = record.repair?.parentProjectId || record.revision?.parentProjectId;
+          const initialFiles = sourceParent ? sourceForPreview(await read(sourceParent), record.repair?.previewFile || record.revision?.previewFile) : undefined;
+          json(res, 202, await startProject(record.description, record.repair, initialFiles, record.revision, requests, { parentProjectId: projectId }, record.strategy)); return;
+        }
         if (action === 'reviews') {
           if (req.method === 'GET') {
             const reviews = await listReviews(options.root, projectId);
@@ -198,13 +209,13 @@ export function createStudioApi(options: {
           const family = await loadFamily(projectId);
           const selectionFile = join(options.root, family.rootProjectId, 'version-selection.json');
           if (req.method === 'GET') {
-            let selectedProjectId = family.rootProjectId;
+            let selectedProjectId: string | null = family.versions.find((version) => version.projectId === family.rootProjectId)?.status === 'ready_for_review' ? family.rootProjectId : null;
             try { selectedProjectId = JSON.parse(await readFile(selectionFile, 'utf-8')).projectId; }
             catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
-            if (!family.versions.some((version) => version.projectId === selectedProjectId)) throw new Error('Selected version is missing from this family');
+            if (selectedProjectId !== null && !family.versions.some((version) => version.projectId === selectedProjectId)) throw new Error('Selected version is missing from this family');
             json(res, 200, { rootProjectId: family.rootProjectId, selectedProjectId, versions: await Promise.all(family.versions.map(async (record) => {
-              const { projectId, description, status, startedAt, repair, revision } = record;
-              return { projectId, description, status, startedAt, repair, revision, review: await currentReview(record) };
+              const { projectId, description, status, startedAt, repair, revision, retry } = record;
+              return { projectId, description, status, startedAt, repair, revision, retry, review: await currentReview(record) };
             })) }); return;
           }
           if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
@@ -262,6 +273,7 @@ export function createStudioApi(options: {
         }
         if (action === 'cancel' && req.method === 'POST') {
           if (!['queued', 'running'].includes(record.status) || !record.jobId || !options.runtime.cancelJob(record.jobId)) { json(res, 409, { error: { message: 'Project is no longer running' } }); return; }
+          record.stoppedPhase = record.phase;
           record.status = 'cancelled';
           record.phase = 'cancelled';
           record.error = 'User cancelled generation';

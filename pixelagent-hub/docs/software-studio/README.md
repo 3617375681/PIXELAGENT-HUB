@@ -56,6 +56,8 @@ API 项目保存在 `<RECORDS_ROOT>/studio/`；可用 `STUDIO_ROOT_OVERRIDE` 指
 
 API 重启会把未完成任务明确记为中断失败，保留已有结果，不自动重复模型调用。任务历史使用串行原子保存，损坏文件不会被空历史覆盖；恢复步骤和验证边界见 [重启说明](recovery.md)。
 
+失败或取消后，可点击“重新生成新版本（调用模型）”。新版本沿用原需求与修改/返修上下文，原错误和执行记录保留；模型产生新的用量。候选版本需手动选择并重新验收。重试流程的受控浏览器验证见 [手动重试记录](manual-retry-verification.md)。
+
 在 `pixelagent-hub/` 安装依赖并配置本地 `.env` 的模型 provider：
 
 ```powershell

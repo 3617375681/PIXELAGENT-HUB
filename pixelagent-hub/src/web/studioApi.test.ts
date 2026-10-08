@@ -177,10 +177,84 @@ test('repair uses saved errors and original source, with independent success and
     assert.equal(failedRecord.repair.parentProjectId, parent.projectId);
     assert.equal((await fetch(`${base}${failed.projectUrl}/archive`)).status, 409);
     assert.equal((await fetch(`${base}${failed.projectUrl}/changes`)).status, 409);
+    provider.failCode = false;
+    const retried = await (await fetch(`${base}${failed.projectUrl}/retry`, { method: 'POST', body: '{}' })).json();
+    assert.equal((await waitForJob(runtime, retried.jobId)).status, 'succeeded');
+    const retriedRecord = (await (await fetch(`${base}${retried.projectUrl}`)).json()).project;
+    assert.equal(retriedRecord.retry.parentProjectId, failed.projectId);
+    assert.deepEqual(retriedRecord.repair, failedRecord.repair);
+    assert.match(provider.prompts.at(-1)!, /counter-click-failed/);
+    assert.match(provider.prompts.at(-1)!, /#increment/);
     assert.equal(await readFile(join(root, parent.projectId, 'project.json'), 'utf-8'), original);
     assert.deepEqual(await readFile(join(root, parent.projectId, 'source.zip')), archive);
     const clean = await (await fetch(`${base}${parent.projectUrl}/diagnostics`, { method: 'POST', body: JSON.stringify({ previewFile: 'v1/dist/index.html', loaded: true, errors: [] }) })).json();
     assert.equal((await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: clean.report.id }) })).status, 409);
+  }, provider);
+});
+
+test('manual retry preserves failed and cancelled records, lineage and independent candidate selection', async () => withApi(async (base, runtime, root) => {
+  let release!: () => void;
+  const blocked = new Promise<void>((resolve) => { release = resolve; });
+  const activeId = randomUUID();
+  const active = runtime.execute({ jobId: 'settling-fixture', taskId: activeId, mode: 'studio', run: () => blocked });
+  await saveStudioRecord(root, { projectId: activeId, jobId: 'settling-fixture', description: 'Still stopping', status: 'cancelled', startedAt: new Date().toISOString(), rounds: [] });
+  try {
+    assert.equal((await fetch(`${base}/api/studio/projects/${activeId}/retry`, { method: 'POST', body: '{}' })).status, 409);
+  } finally { release(); await active; }
+  for (const status of ['failed', 'cancelled'] as const) {
+    const id = randomUUID();
+    await saveStudioRecord(root, { projectId: id, description: 'Original counter requirements', status, phase: status, stoppedPhase: 'coding', error: 'Original failure evidence', startedAt: new Date().toISOString(), rounds: [] });
+    const original = await readFile(join(root, id, 'project.json'), 'utf-8');
+    const url = `${base}/api/studio/projects/${id}`;
+    assert.equal((await fetch(`${url}/retry`)).status, 405);
+    assert.equal((await fetch(`${url}/retry`, { method: 'POST', body: JSON.stringify({ description: 'replace requirements' }) })).status, 400);
+    const response = await fetch(`${url}/retry`, { method: 'POST', body: '{}' });
+    assert.equal(response.status, 202);
+    const accepted = await response.json();
+    assert.notEqual(accepted.projectId, id);
+    assert.equal((await waitForJob(runtime, accepted.jobId)).status, 'succeeded');
+    const retried = (await (await fetch(`${base}${accepted.projectUrl}`)).json()).project;
+    assert.equal(retried.description, 'Original counter requirements');
+    assert.equal(retried.retry.parentProjectId, id);
+    assert.equal(retried.review, null);
+    assert.equal(retried.rounds[0].build.browserVerified, false);
+    assert.equal(await readFile(join(root, id, 'project.json'), 'utf-8'), original);
+    assert.equal((await fetch(`${base}${accepted.projectUrl}/retry`, { method: 'POST', body: '{}' })).status, 409);
+    const versions = await (await fetch(`${url}/versions`)).json();
+    assert.equal(versions.rootProjectId, id);
+    assert.equal(versions.selectedProjectId, null);
+    assert.equal(versions.versions.length, 2);
+    assert.equal((await fetch(`${url}/versions`, { method: 'POST', body: JSON.stringify({ projectId: accepted.projectId }) })).status, 200);
+    assert.equal((await (await fetch(`${base}${accepted.projectUrl}/versions`)).json()).selectedProjectId, accepted.projectId);
+  }
+}));
+
+test('repeated retries retain revision source and every change request exactly once', async () => {
+  const provider = new StudioFixture();
+  await withApi(async (base, runtime, root) => {
+    const post = async (url: string, payload: unknown = {}) => (await fetch(`${base}${url}`, { method: 'POST', body: JSON.stringify(payload) })).json();
+    const initial = await post('/api/studio/projects', { description: 'Counter' });
+    await waitForJob(runtime, initial.jobId);
+    const first = await post(`${initial.projectUrl}/revise`, { changeRequest: 'Display counter sign' });
+    await waitForJob(runtime, first.jobId);
+    provider.failCode = true;
+    const failed = await post(`${first.projectUrl}/revise`, { changeRequest: 'Add keyboard reset' });
+    assert.equal((await waitForJob(runtime, failed.jobId)).status, 'failed');
+    const failedBytes = await readFile(join(root, failed.projectId, 'project.json'), 'utf-8');
+    const retry1 = await post(`${failed.projectUrl}/retry`);
+    assert.equal((await waitForJob(runtime, retry1.jobId)).status, 'failed');
+    provider.failCode = false;
+    const retry2 = await post(`${retry1.projectUrl}/retry`);
+    assert.equal((await waitForJob(runtime, retry2.jobId)).status, 'succeeded');
+    const requirements = await readFile(join(root, retry2.projectId, 'requirements.md'), 'utf-8');
+    for (const request of ['Display counter sign', 'Add keyboard reset']) assert.equal(requirements.split(request).length - 1, 1);
+    assert.match(provider.prompts.at(-1)!, /#increment/);
+    const versions = await (await fetch(`${base}${retry2.projectUrl}/versions`)).json();
+    assert.equal(versions.rootProjectId, initial.projectId);
+    assert.equal(versions.selectedProjectId, initial.projectId);
+    assert.equal(versions.versions.length, 5);
+    assert.equal(versions.versions.at(-1).retry.parentProjectId, retry1.projectId);
+    assert.equal(await readFile(join(root, failed.projectId, 'project.json'), 'utf-8'), failedBytes);
   }, provider);
 });
 

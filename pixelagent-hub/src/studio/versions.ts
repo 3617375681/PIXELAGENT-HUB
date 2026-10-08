@@ -1,7 +1,7 @@
 import type { StudioRecord } from './softwareStudio.js';
 
 export function parentVersion(record: StudioRecord): string | undefined {
-  return record.repair?.parentProjectId || record.revision?.parentProjectId;
+  return record.retry?.parentProjectId || record.repair?.parentProjectId || record.revision?.parentProjectId;
 }
 
 export function versionFamily(records: StudioRecord[], projectId: string): { rootProjectId: string; versions: StudioRecord[] } {
