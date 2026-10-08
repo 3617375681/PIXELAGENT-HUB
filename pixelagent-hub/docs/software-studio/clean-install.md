@@ -18,6 +18,6 @@ Docker 守护进程不可用，未验证镜像构建和容器运行。上述本�
 
 ## 持续验证
 
-GitHub CI 增加编译入口/CLI smoke；核心保留 Ubuntu Node 18/20/22，新增 Windows Node 22 检查核心构建及测试，Dashboard 用 Ubuntu Node 22 执行锁文件安装、类型检查、测试和构建。工作流配置已加入，远端执行结果需单独确认。
+GitHub CI 增加编译入口/CLI smoke；核心保留 Ubuntu Node 18/20/22，新增 Windows Node 22 检查核心构建及测试，Dashboard 用 Ubuntu Node 22 执行锁文件安装、类型检查、测试和构建。提交 `6b5ab66` 的 [远端运行](https://github.com/3617375681/PIXELAGENT-HUB/actions/runs/37770329196) 五项任务均成功；后续提交须检查各自结果。
 
 安装及两个终端启动步骤见 [CONTRIBUTING](../../CONTRIBUTING.md)。成功安装仍不证明生成应用符合需求；浏览器检查、人工验收和真实案例对照继续分别记录。

@@ -108,6 +108,42 @@ test('concurrent job completion persists every terminal result across restart', 
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test('queue rejection persists failure and releases task admission without invoking work', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'runtime-capacity-'));
+  const runtime = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 1, maxRetries: 0 });
+  let release!: () => void;
+  let started!: () => void;
+  const began = new Promise<void>((resolve) => { started = resolve; });
+  const held = new Promise<void>((resolve) => { release = resolve; });
+  let pending: Promise<unknown>[] = [];
+  try {
+    await runtime.init();
+    const first = runtime.execute({ jobId: 'occupy', taskId: 'occupy', mode: 'studio', run: async () => { started(); await held; return 'done'; } });
+    pending.push(first);
+    await began;
+    const second = runtime.execute({ jobId: 'waiting', taskId: 'waiting', mode: 'studio', run: async () => 'done' });
+    pending.push(second);
+    const deadline = Date.now() + 3000;
+    while (runtime.getSnapshot().queued !== 1 && Date.now() < deadline) await new Promise((resolve) => setTimeout(resolve, 10));
+    assert.equal(runtime.getSnapshot().queued, 1);
+    let called = false;
+    await assert.rejects(runtime.execute({ jobId: 'overflow', taskId: 'overflow', mode: 'studio', run: async () => { called = true; return 'unexpected'; } }), /QUEUE_FULL_limit_1/);
+    assert.equal(called, false);
+    assert.equal(runtime.getJob('overflow')?.status, 'failed');
+    assert.equal(runtime.getJob('overflow')?.attempts, 0);
+    assert.match(runtime.getJob('overflow')?.error || '', /QUEUE_FULL/);
+    assert.equal(runtime.isTaskActive('overflow'), false);
+    assert.equal(runtime.cancelJob('overflow'), false);
+    release(); await Promise.all(pending);
+    const restarted = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 1, maxRetries: 0 });
+    await restarted.init();
+    assert.equal(restarted.getJob('overflow')?.status, 'failed');
+    assert.equal(await restarted.recoverInterruptedJobs(), 0);
+    await runtime.execute({ jobId: 'retry', taskId: 'overflow', mode: 'studio', run: async () => 'accepted' });
+    assert.equal(runtime.getJob('retry')?.status, 'succeeded');
+  } finally { release(); await Promise.allSettled(pending); await rm(root, { recursive: true, force: true }); }
+});
+
 test('a killed worker leaves a recoverable running record without executing work again', async () => {
   const root = await mkdtemp(join(tmpdir(), 'runtime-killed-'));
   const moduleUrl = pathToFileURL(join(process.cwd(), 'src/web/runRuntime.ts')).href;

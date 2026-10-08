@@ -188,11 +188,19 @@ export class RunRuntime {
       maxRetries: params.maxRetries ?? this.maxRetries,
     };
     this.jobs.set(baseJob.jobId, baseJob);
-    await this.persist();
 
     try {
+      await this.persist();
       const result = await this.queue.push(() => this.runQueuedWork(params, ac, queuedAtMs));
       return { result, job: this.jobs.get(baseJob.jobId)! };
+    } catch (error) {
+      if (baseJob.status === 'queued') {
+        baseJob.status = 'failed';
+        baseJob.finishedAt = new Date().toISOString();
+        baseJob.error = String(error);
+        await this.persist();
+      }
+      throw error;
     } finally {
       this.abortControllers.delete(params.jobId);
     }
