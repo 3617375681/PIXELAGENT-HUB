@@ -192,6 +192,24 @@ async function waitForServerReady(baseUrl: string, timeoutMs: number): Promise<v
   throw new Error('Server did not become ready in time');
 }
 
+test('studio endpoints use Records API authentication and creation rate limits', async () => {
+  await withTempStack(async ({ baseUrl, stack }) => {
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects`)).status, 401);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', body: '{}' })).status, 401);
+    const headers = { 'Content-Type': 'application/json', 'X-API-Key': 'integration-test-api-key' };
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { headers })).status, 200);
+    const accepted = await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', headers, body: JSON.stringify({ description: 'API fixture' }) });
+    assert.equal(accepted.status, 202);
+    const { jobId } = await accepted.json();
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', headers, body: JSON.stringify({ description: 'Rate-limited fixture' }) })).status, 429);
+    const deadline = Date.now() + 3000;
+    while (stack.runtime.getJob(jobId)?.status === 'queued' || stack.runtime.getJob(jobId)?.status === 'running') {
+      if (Date.now() > deadline) throw new Error('Studio fixture did not finish');
+      await delay(10);
+    }
+  });
+});
+
 async function withTempStack<T>(
   fn: (ctx: { baseUrl: string; stack: ReturnType<typeof createRecordsWebStack> }) => Promise<T>,
   overrides: Record<string, string> = {}

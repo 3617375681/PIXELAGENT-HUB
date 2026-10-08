@@ -17,6 +17,7 @@ import { IntelligenceRunStore } from '../intelligence/core/runStore.js';
 import { IntelligencePipelineService } from '../intelligence/core/pipelineService.js';
 import { readSessionUploadFile, saveSessionAttachments } from './sessionUploads.js';
 import { seedanceCreateTask, seedanceGetTask } from './seedanceClient.js';
+import { createStudioApi } from './studioApi.js';
 
 export type RecordsWebStack = ReturnType<typeof createRecordsWebStack>;
 
@@ -72,6 +73,7 @@ export function createRecordsWebStack(env: NodeJS.ProcessEnv = process.env) {
     maxQueueSize: config.runQueueSize,
     maxRetries: config.runMaxRetries,
   });
+  const studio = createStudioApi({ root: env.STUDIO_ROOT_OVERRIDE?.trim() || join(RECORDS_ROOT, 'studio'), runtime, timeoutMs: resolveRunTimeoutMs(config, 'studio') });
   const intelligenceConfig = new WorkflowConfigService(join(process.cwd(), 'config', 'workflows.yaml'));
   const intelligenceStore = new IntelligenceRunStore(join(RECORDS_ROOT, 'intelligence', 'runs.json'));
   const intelligence = new IntelligencePipelineService(intelligenceConfig, intelligenceStore, {
@@ -650,6 +652,21 @@ async function handleRequest(req: any, res: any): Promise<void> {
     sendError(res, 401, 'UNAUTHORIZED', 'Valid API key required', requestId);
     finishLog();
     return;
+  }
+
+  if (pathname.startsWith('/api/studio/')) {
+    await runtimeReady;
+    if (req.method === 'POST' && pathname === '/api/studio/projects') {
+      const key = String(req.headers['x-api-key'] || req.socket?.remoteAddress || 'unknown');
+      if (!runRateLimiter.consume(`${key}|studio`).allowed) {
+        statusCode = 429;
+        sendError(res, 429, 'RATE_LIMITED', 'Project creation rate limit exceeded', requestId);
+        finishLog(); return;
+      }
+    }
+    await studio.handle(req, res, pathname, req.method === 'POST' ? await readBody(req) : undefined);
+    statusCode = res.statusCode;
+    finishLog(); return;
   }
 
   if (req.method === 'GET' && pathname === '/health') {

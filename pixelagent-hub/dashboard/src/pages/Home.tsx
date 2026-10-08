@@ -224,6 +224,9 @@ export default function Home() {
           </div>
           <div className="h-4 w-px bg-white/10 hidden sm:block mx-0.5" />
           {/* Navigation Links */}
+          <Link to="/studio" className="pixel-btn-secondary px-2 py-1.5 flex items-center gap-1" title="Software Studio">
+            <Terminal size={12} /><span className="pixel-font text-[8px]">STUDIO</span>
+          </Link>
           <div className="hidden sm:flex items-center gap-1">
             <Link to="/live" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-2 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#22d3ee', backgroundColor: '#22d3ee' }} title="Live Console (Records API Sessions)">
               <Terminal size={12} style={{ color: '#12121a' }} />

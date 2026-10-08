@@ -82,11 +82,13 @@ export function loadWebServerConfig(env: NodeJS.ProcessEnv = process.env): WebSe
     ['roundtable', 'RUN_TIMEOUT_MS_ROUNDTABLE'],
     ['company', 'RUN_TIMEOUT_MS_COMPANY'],
     ['chat', 'RUN_TIMEOUT_MS_CHAT'],
+    ['studio', 'RUN_TIMEOUT_MS_STUDIO'],
   ];
   for (const [mode, envKey] of modeEnvPairs) {
     const v = parseOptionalPositiveInt(env[envKey], envKey);
     if (v !== undefined) runTimeoutMsByMode[mode] = v;
   }
+  runTimeoutMsByMode.studio ??= 480000;
 
   return {
     port: parsePositiveInt(env.RECORDS_API_PORT, 3100, 'RECORDS_API_PORT'),

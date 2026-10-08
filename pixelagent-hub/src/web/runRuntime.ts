@@ -19,6 +19,7 @@ export type ExecuteParams<T> = {
   taskId: string;
   sessionId?: string;
   mode: string;
+  maxRetries?: number;
   run: (ctx: RunExecutionContext) => Promise<T>;
 };
 
@@ -121,7 +122,7 @@ export class RunRuntime {
     let attempt = 0;
     let lastError: unknown;
     const runStart = Date.now();
-    while (attempt <= this.maxRetries) {
+    while (attempt <= job.maxRetries) {
       attempt += 1;
       job.attempts = attempt;
       await this.persist();
@@ -151,7 +152,7 @@ export class RunRuntime {
           await this.persist();
           throw err;
         }
-        if (attempt > this.maxRetries) break;
+        if (attempt > job.maxRetries) break;
       }
     }
 
@@ -176,7 +177,7 @@ export class RunRuntime {
       status: 'queued',
       queuedAt: new Date(queuedAtMs).toISOString(),
       attempts: 0,
-      maxRetries: this.maxRetries,
+      maxRetries: params.maxRetries ?? this.maxRetries,
     };
     this.jobs.set(baseJob.jobId, baseJob);
     await this.persist();
@@ -206,7 +207,7 @@ export class RunRuntime {
       status: 'queued',
       queuedAt: new Date(queuedAtMs).toISOString(),
       attempts: 0,
-      maxRetries: this.maxRetries,
+      maxRetries: params.maxRetries ?? this.maxRetries,
     };
     this.jobs.set(baseJob.jobId, baseJob);
 

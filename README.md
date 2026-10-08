@@ -25,7 +25,7 @@ npm run studio:create -- "制作像素贪吃蛇，包含暂停、计分和重新
 npm run studio:preview -- <输出的项目UUID>
 ```
 
-首个真实生成案例：[像素贪吃蛇源码](pixelagent-hub/examples/software/pixel-snake)、[源码包](pixelagent-hub/examples/software/pixel-snake-source.zip)。当前限离线 HTML/CSS/JS；构建成功仍需交互验收，控制台接入与持续修改尚未完成。[运行说明和成熟度清单](pixelagent-hub/docs/software-studio/README.md)。
+也可以启动 API 与 dashboard，进入首页 **STUDIO**，提交需求、查看执行阶段、试玩、查看源码并下载 ZIP。首个真实生成案例：[像素贪吃蛇源码](pixelagent-hub/examples/software/pixel-snake)、[源码包](pixelagent-hub/examples/software/pixel-snake-source.zip)。当前限离线 HTML/CSS/JS；构建成功仍需交互验收，持续修改尚未完成。[运行说明和成熟度清单](pixelagent-hub/docs/software-studio/README.md)。
 
 ## 30 秒上手
 

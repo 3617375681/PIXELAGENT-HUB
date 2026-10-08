@@ -9,7 +9,7 @@ test('loadWebServerConfig parses numeric defaults', () => {
   });
   assert.equal(cfg.port, 3100);
   assert.equal(cfg.runTimeoutMs, 120000);
-  assert.deepEqual(cfg.runTimeoutMsByMode, {});
+  assert.deepEqual(cfg.runTimeoutMsByMode, { studio: 480000 });
   assert.equal(cfg.maxRunConcurrency, 3);
   assert.equal(cfg.runRateLimitPerMinute, 30);
   assert.equal(cfg.runQueueSize, 20);
@@ -23,6 +23,7 @@ test('loadWebServerConfig parses per-mode run timeouts', () => {
     RUN_TIMEOUT_MS: '90000',
     RUN_TIMEOUT_MS_PIPELINE: '45000',
     RUN_TIMEOUT_MS_VOTE: '30000',
+    RUN_TIMEOUT_MS_STUDIO: '360000',
   });
   assert.equal(cfg.runTimeoutMs, 90000);
   assert.equal(cfg.runTimeoutMsByMode.pipeline, 45000);
@@ -30,6 +31,7 @@ test('loadWebServerConfig parses per-mode run timeouts', () => {
   assert.equal(resolveRunTimeoutMs(cfg, 'pipeline'), 45000);
   assert.equal(resolveRunTimeoutMs(cfg, 'vote'), 30000);
   assert.equal(resolveRunTimeoutMs(cfg, 'parallel'), 90000);
+  assert.equal(resolveRunTimeoutMs(cfg, 'studio'), 360000);
 });
 
 test('loadWebServerConfig requires api key when auth enabled', () => {

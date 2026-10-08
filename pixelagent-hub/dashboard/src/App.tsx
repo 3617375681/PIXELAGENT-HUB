@@ -5,6 +5,7 @@ import OpsConsole from './pages/OpsConsole'
 import SessionDetailPage from './pages/SessionDetailPage'
 import LiveHome from './pages/LiveHome'
 import LiveArchivePage from './pages/LiveArchivePage'
+import Studio from './pages/Studio'
 
 export default function App() {
   return (
@@ -16,6 +17,8 @@ export default function App() {
       <Route path="/live/session/:sessionId/archive" element={<LiveArchivePage />} />
       <Route path="/ops/session/:sessionId" element={<SessionDetailPage />} />
       <Route path="/ops" element={<OpsConsole />} />
+      <Route path="/studio" element={<Studio />} />
+      <Route path="/studio/:projectId" element={<Studio />} />
     </Routes>
   )
 }

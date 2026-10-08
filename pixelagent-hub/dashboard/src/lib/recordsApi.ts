@@ -15,6 +15,7 @@ import type {
   SessionSummary,
   WorkflowDefinition,
 } from '@/types/recordsApi';
+import type { StudioProject, StudioSummary } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
 const RAW_API_BASE = import.meta.env.VITE_RECORDS_API_URL as string | undefined;
@@ -81,9 +82,18 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     },
   });
   const body = await res.json();
-  if (!res.ok) throw new Error(normalizeError(body, res.status));
+  if (!res.ok) throw Object.assign(new Error(normalizeError(body, res.status)), { status: res.status });
   return body as T;
 }
+
+export const studioApi = {
+  list: (signal?: AbortSignal) => request<{ projects: StudioSummary[] }>('/api/studio/projects', { signal }),
+  create: (description: string) => request<{ projectId: string; jobId: string }>('/api/studio/projects', { method: 'POST', body: JSON.stringify({ description }) }),
+  project: (projectId: string, signal?: AbortSignal) => request<{ project: StudioProject }>(`/api/studio/projects/${encodeURIComponent(projectId)}`, { signal }),
+  preview: (projectId: string, signal?: AbortSignal) => request<{ html: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/preview`, { signal }),
+  cancel: (projectId: string) => request<{ project: StudioProject }>(`/api/studio/projects/${encodeURIComponent(projectId)}/cancel`, { method: 'POST' }),
+  archive: (projectId: string) => fetchRecordsBinary(`/api/studio/projects/${encodeURIComponent(projectId)}/archive`),
+};
 
 /** POST /api/run/:mode — supports async=1 (202 + jobUrl) or stream=1 (SSE text body). */
 async function postAgentRun(
