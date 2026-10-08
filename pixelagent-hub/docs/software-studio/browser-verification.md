@@ -10,6 +10,8 @@ npx playwright install chromium
 
 Set `ENABLE_STUDIO_BROWSER_CHECKS=true` in the API environment, then restart `npm run records:api`. Optionally set `STUDIO_BROWSER_EXECUTABLE` to an administrator-controlled installed Edge/Chromium executable. Browser launch failures appear in the saved report; there is no synthetic fallback.
 
+Linux must permit the installed browser's sandbox to create user namespaces. The dedicated browser CI uses Ubuntu 22.04; Ubuntu 24.04's default AppArmor policy may reject downloaded Chromium binaries. Configure an application-specific browser policy with your administrator, following [Chromium's guidance](https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md). The executor keeps `chromiumSandbox: true` and does not automatically disable sandboxing or change host security settings.
+
 In Software Studio, build a project, generate a Tester plan, and select **运行独立浏览器检查**. Each run starts a fresh Chromium context, loads the saved HTML in an opaque iframe, executes real click/fill/key actions and compares exact trimmed text. Checks share page state in plan order. Assertions wait up to two seconds; each action has a two-second limit and a run has a 45-second execution limit (queue time excluded). Viewport: 1280 × 720.
 
 Reports live in `<STUDIO_ROOT>/<projectId>/browser-runs/<runId>.json`, with initial/final PNGs under `<runId>/`. Reports include preview and normalized plan SHA-256 hashes, browser version, check results, runtime/console errors and intercepted network requests. Screenshots can be inspected from the workbench. Cancellation closes the temporary browser; interrupted jobs become failed reports after restart and never rerun automatically.

@@ -9,7 +9,9 @@ on:
 jobs:
   studio-browser:
     name: Studio real browser (Node 22)
-    runs-on: ubuntu-latest
+    # Playwright's downloaded Chromium needs user namespaces for its renderer sandbox.
+    # Pin the browser job; Ubuntu 24's default AppArmor policy blocks that binary.
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     defaults:
       run:
