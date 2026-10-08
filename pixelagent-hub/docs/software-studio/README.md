@@ -46,6 +46,8 @@ API 项目保存在 `<RECORDS_ROOT>/studio/`；可用 `STUDIO_ROOT_OVERRIDE` 指
 
 软件生成默认总上限八分钟，可设置 `RUN_TIMEOUT_MS_STUDIO`。模式不自动重试整个付费生成任务；只在真实编译失败时进行最多三轮源码返修。
 
+API 重启会把未完成任务明确记为中断失败，保留已有结果，不自动重复模型调用。任务历史使用串行原子保存，损坏文件不会被空历史覆盖；恢复步骤和验证边界见 [重启说明](recovery.md)。
+
 在 `pixelagent-hub/` 安装依赖并配置本地 `.env` 的模型 provider：
 
 ```powershell

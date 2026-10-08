@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { rm } from 'node:fs/promises';
+import { rm, mkdtemp, writeFile, readFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { spawn } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 import { join } from 'node:path';
 import { RunRuntime } from './runRuntime.js';
 
@@ -59,29 +62,95 @@ test('RunRuntime executes jobs and persists result', async () => {
 });
 
 test('RunRuntime recovers queued/running jobs as failed', async () => {
-  const runtime = new RunRuntime({
-    recordsRoot: ROOT,
-    maxConcurrency: 1,
-    maxQueueSize: 2,
-    maxRetries: 0,
-  });
-  await runtime.init();
-  await runtime.execute({
-    jobId: 'job-2',
-    taskId: 'task-2',
-    mode: 'parallel',
-    run: async () => 'done',
-  });
+  const root = await mkdtemp(join(tmpdir(), 'runtime-recovery-'));
+  try {
+    const records = ['queued', 'running', 'succeeded', 'failed', 'cancelled'].map((status) => ({ jobId: status, taskId: status, mode: 'studio', status, queuedAt: '2026-10-08T00:00:00.000Z', attempts: 1, maxRetries: 0, ...(status === 'succeeded' ? { runResult: { final: { projectId: 'preserved' } } } : {}) }));
+    await writeFile(join(root, 'runtime-jobs.json'), JSON.stringify(records));
+    const runtime = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
+    await runtime.init();
+    assert.equal(await runtime.recoverInterruptedJobs(), 2);
+    for (const id of ['queued', 'running']) {
+      assert.equal(runtime.getJob(id)?.status, 'failed');
+      assert.equal(runtime.getJob(id)?.error, 'Recovered after process restart');
+    }
+    for (const record of records.slice(2)) assert.deepEqual(runtime.getJob(record.jobId), record);
+    const restarted = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
+    await restarted.init();
+    assert.equal(await restarted.recoverInterruptedJobs(), 0);
+    assert.deepEqual(restarted.listJobs(), runtime.listJobs());
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
 
-  const runtime2 = new RunRuntime({
-    recordsRoot: ROOT,
-    maxConcurrency: 1,
-    maxQueueSize: 2,
-    maxRetries: 0,
-  });
-  await runtime2.init();
-  const recovered = await runtime2.recoverInterruptedJobs();
-  assert.equal(recovered >= 0, true);
+test('invalid runtime history fails initialization without overwriting evidence', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'runtime-corrupt-'));
+  try {
+    for (const raw of ['{truncated', '{}', '[null]', '[{"jobId":"x","queuedAt":"invalid","status":"running"}]']) {
+      const file = join(root, 'runtime-jobs.json');
+      await writeFile(file, raw);
+      const runtime = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
+      await assert.rejects(runtime.init());
+      assert.equal(await readFile(file, 'utf8'), raw);
+    }
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('concurrent job completion persists every terminal result across restart', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'runtime-concurrent-'));
+  try {
+    const runtime = new RunRuntime({ recordsRoot: root, maxConcurrency: 8, maxQueueSize: 30, maxRetries: 0 });
+    await runtime.init();
+    await Promise.all(Array.from({ length: 24 }, (_, index) => runtime.execute({ jobId: `job-${index}`, taskId: `task-${index}`, mode: 'parallel', run: async () => index })));
+    const restarted = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
+    await restarted.init();
+    assert.equal(restarted.listJobs().length, 24);
+    assert.equal(restarted.listJobs().every((job) => job.status === 'succeeded'), true);
+    assert.equal(await restarted.recoverInterruptedJobs(), 0);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('a killed worker leaves a recoverable running record without executing work again', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'runtime-killed-'));
+  const moduleUrl = pathToFileURL(join(process.cwd(), 'src/web/runRuntime.ts')).href;
+  const child = spawn(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', `
+    import runtimeModule from ${JSON.stringify(moduleUrl)};
+    const { RunRuntime } = runtimeModule;
+    const runtime = new RunRuntime({ recordsRoot: ${JSON.stringify(root)}, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
+    await runtime.init();
+    await runtime.execute({ jobId: 'killed', taskId: 'killed', mode: 'studio', run: async () => {
+      console.log('WORK_STARTED');
+      await new Promise((resolve) => setTimeout(resolve, 60000));
+      return 'unexpected completion';
+    } });
+  `], { stdio: ['ignore', 'pipe', 'pipe'] });
+  const exited = new Promise<void>((resolve) => child.once('exit', () => resolve()));
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('Worker did not start')), 10000);
+      let output = '';
+      let errors = '';
+      child.stderr.on('data', (data) => { errors += data.toString(); });
+      child.stdout.on('data', (data) => {
+        output += data.toString();
+        if (output.includes('WORK_STARTED')) { clearTimeout(timer); resolve(); }
+      });
+      child.once('error', (error) => { clearTimeout(timer); reject(error); });
+      child.once('exit', () => { clearTimeout(timer); reject(new Error(`Worker exited before work started: ${errors}`)); });
+    });
+    child.kill('SIGKILL');
+    await exited;
+    const runtime = new RunRuntime({ recordsRoot: root, maxConcurrency: 1, maxQueueSize: 2, maxRetries: 0 });
+    await runtime.init();
+    assert.equal(runtime.getJob('killed')?.status, 'running');
+    assert.equal(await runtime.recoverInterruptedJobs(), 1);
+    assert.equal(runtime.getJob('killed')?.status, 'failed');
+    assert.equal(runtime.getJob('killed')?.attempts, 1);
+    assert.equal(runtime.getSnapshot().running, 0);
+    assert.equal(runtime.getJob('killed')?.runResult, undefined);
+  } finally {
+    if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL');
+    await exited;
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test('RunRuntime cancel marks job cancelled', async () => {

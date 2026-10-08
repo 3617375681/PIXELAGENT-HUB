@@ -1,7 +1,8 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { RunQueue } from '../core/RunQueue.js';
 import { ModeRunResponse, RuntimeJobRecord } from '../core/types.js';
+import { writeJsonSnapshot } from '../studio/atomicJson.js';
 
 type RuntimeOptions = {
   recordsRoot: string;
@@ -45,8 +46,15 @@ export class RunRuntime {
     try {
       const raw = await readFile(this.jobsPath, 'utf-8');
       const items = JSON.parse(raw) as RuntimeJobRecord[];
+      if (!Array.isArray(items) || items.some((item) => !item || typeof item.jobId !== 'string' || !item.jobId
+        || typeof item.queuedAt !== 'string' || !Number.isFinite(Date.parse(item.queuedAt))
+        || !['queued', 'running', 'succeeded', 'failed', 'cancelled'].includes(item.status))
+        || new Set(items.map((item) => item.jobId)).size !== items.length) {
+        throw new Error('Invalid runtime job records');
+      }
       items.forEach((x) => this.jobs.set(x.jobId, x));
-    } catch {
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
       await this.persist();
     }
   }
@@ -242,6 +250,6 @@ export class RunRuntime {
 
   private async persist(): Promise<void> {
     const items = Array.from(this.jobs.values()).sort((a, b) => b.queuedAt.localeCompare(a.queuedAt));
-    await writeFile(this.jobsPath, JSON.stringify(items, null, 2), 'utf-8');
+    await writeJsonSnapshot(this.jobsPath, items);
   }
 }
