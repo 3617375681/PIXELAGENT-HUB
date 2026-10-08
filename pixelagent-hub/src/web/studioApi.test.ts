@@ -45,6 +45,10 @@ async function withApi(work: (base: string, runtime: RunRuntime, root: string) =
   try { await work(base, runtime, join(root, 'projects')); }
   finally {
     await new Promise<void>((resolve) => server.close(() => resolve()));
+    for (const job of runtime.listJobs()) {
+      if (['queued', 'running'].includes(job.status)) runtime.cancelJob(job.jobId);
+      await waitForJob(runtime, job.jobId);
+    }
     await rm(root, { recursive: true, force: true });
   }
 }
@@ -54,7 +58,7 @@ async function waitForJob(runtime: RunRuntime, jobId: string) {
   const deadline = Date.now() + 5000;
   while (Date.now() < deadline) {
     const job = runtime.getJob(jobId)!;
-    if (['succeeded', 'failed', 'cancelled'].includes(job.status)) return job;
+    if (['succeeded', 'failed', 'cancelled'].includes(job.status) && !runtime.isJobActive(jobId)) return job;
     await delay(10);
   }
   throw new Error('Studio test job did not finish');

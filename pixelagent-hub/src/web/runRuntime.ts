@@ -91,6 +91,11 @@ export class RunRuntime {
     return this.jobs.get(jobId);
   }
 
+  /** Includes final persistence after a job reaches its terminal status. */
+  isJobActive(jobId: string): boolean {
+    return this.abortControllers.has(jobId);
+  }
+
   /** Request cooperative cancellation for a queued or running job. */
   cancelJob(jobId: string): boolean {
     const ac = this.abortControllers.get(jobId);

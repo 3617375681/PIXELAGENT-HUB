@@ -11,7 +11,15 @@ export async function writeJsonSnapshot(file: string, value: unknown): Promise<v
     await mkdir(dirname(file), { recursive: true });
     const temporary = `${file}.${randomUUID()}.tmp`;
     await writeFile(temporary, snapshot);
-    await rename(temporary, file);
+    for (let attempt = 0; ; attempt++) {
+      try { await rename(temporary, file); break; }
+      catch (error) {
+        // Windows readers can briefly hold the destination open during replacement.
+        if (process.platform !== 'win32' || attempt >= 5
+          || !['EPERM', 'EACCES', 'EBUSY'].includes((error as NodeJS.ErrnoException).code || '')) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 10 * (attempt + 1)));
+      }
+    }
   });
   pendingWrites.set(file, pending);
   try { await pending; }

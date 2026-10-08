@@ -223,7 +223,9 @@ test('RunRuntime cancel marks job cancelled', async () => {
   });
   await new Promise((r) => setTimeout(r, 15));
   assert.equal(runtime.cancelJob('job-cancel-1'), true);
+  assert.equal(runtime.isJobActive('job-cancel-1'), true);
   await assert.rejects(p, /JOB_CANCELLED/);
+  assert.equal(runtime.isJobActive('job-cancel-1'), false);
   const job = runtime.getJob('job-cancel-1');
   assert.equal(job?.status, 'cancelled');
 });
