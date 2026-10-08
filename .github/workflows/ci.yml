@@ -7,6 +7,26 @@ on:
     branches: [main, master]
 
 jobs:
+  studio-browser:
+    name: Studio real browser (Node 22)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ./pixelagent-hub
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: pixelagent-hub/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: node --import tsx --test src/studio/browserRuns.test.ts src/web/studioApi.test.ts
+        env:
+          RUN_STUDIO_BROWSER_TESTS: '1'
+
   build-and-test:
     name: Build & Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest

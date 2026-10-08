@@ -15,7 +15,7 @@ import type {
   SessionSummary,
   WorkflowDefinition,
 } from '@/types/recordsApi';
-import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview } from '@/types/studio';
+import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview, StudioBrowserRun } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
 const RAW_API_BASE = import.meta.env.VITE_RECORDS_API_URL as string | undefined;
@@ -87,6 +87,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const studioApi = {
+  browserRuns: (projectId: string, signal?: AbortSignal) => request<{ enabled: boolean; runs: StudioBrowserRun[] }>(`/api/studio/projects/${encodeURIComponent(projectId)}/browser-runs`, { signal }),
+  startBrowserRun: (projectId: string, testPlanId: string) => request<{ runId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/browser-runs`, { method: 'POST', body: JSON.stringify({ testPlanId }) }),
+  cancelBrowserRun: (projectId: string, cancelRunId: string) => request<{ runId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/browser-runs`, { method: 'POST', body: JSON.stringify({ cancelRunId }) }),
   reviews: (projectId: string, signal?: AbortSignal) => request<{ reviews: StudioReview[]; current: StudioReview | null }>(`/api/studio/projects/${encodeURIComponent(projectId)}/reviews`, { signal }),
   saveReview: (projectId: string, payload: Omit<StudioReview, 'id' | 'savedAt' | 'source'>) => request<{ review: StudioReview }>(`/api/studio/projects/${encodeURIComponent(projectId)}/reviews`, { method: 'POST', body: JSON.stringify(payload) }),
   list: (signal?: AbortSignal) => request<{ projects: StudioSummary[] }>('/api/studio/projects', { signal }),

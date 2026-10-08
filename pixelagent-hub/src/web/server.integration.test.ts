@@ -184,6 +184,8 @@ test('studio endpoints use Records API authentication and creation rate limits',
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', body: '{}' })).status, 401);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/retry`, { method: 'POST', body: '{}' })).status, 401);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/reviews`, { method: 'POST', body: '{}' })).status, 401);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/browser-runs`, { method: 'POST', body: '{}' })).status, 401);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/browser-runs/00000000-0000-0000-0000-000000000000/final.png`)).status, 401);
     const headers = { 'Content-Type': 'application/json', 'X-API-Key': 'integration-test-api-key' };
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { headers })).status, 200);
     const accepted = await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', headers, body: JSON.stringify({ description: 'API fixture' }) });
@@ -194,6 +196,8 @@ test('studio endpoints use Records API authentication and creation rate limits',
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/revise`, { method: 'POST', headers, body: '{}' })).status, 429);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/retry`, { method: 'POST', headers, body: '{}' })).status, 429);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/test-plans`, { method: 'POST', headers, body: '{}' })).status, 429);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/browser-runs`, { method: 'POST', headers, body: '{}' })).status, 429);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/browser-runs`, { method: 'POST', headers, body: JSON.stringify({ cancelRunId: 'fixture' }) })).status, 404);
     const deadline = Date.now() + 3000;
     while (stack.runtime.getJob(jobId)?.status === 'queued' || stack.runtime.getJob(jobId)?.status === 'running') {
       if (Date.now() > deadline) throw new Error('Studio fixture did not finish');

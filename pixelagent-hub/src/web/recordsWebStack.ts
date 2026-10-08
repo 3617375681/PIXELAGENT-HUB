@@ -73,7 +73,7 @@ export function createRecordsWebStack(env: NodeJS.ProcessEnv = process.env) {
     maxQueueSize: config.runQueueSize,
     maxRetries: config.runMaxRetries,
   });
-  const studio = createStudioApi({ root: env.STUDIO_ROOT_OVERRIDE?.trim() || join(RECORDS_ROOT, 'studio'), runtime, timeoutMs: resolveRunTimeoutMs(config, 'studio') });
+  const studio = createStudioApi({ root: env.STUDIO_ROOT_OVERRIDE?.trim() || join(RECORDS_ROOT, 'studio'), runtime, timeoutMs: resolveRunTimeoutMs(config, 'studio'), browserChecks: { enabled: env.ENABLE_STUDIO_BROWSER_CHECKS === 'true', executablePath: env.STUDIO_BROWSER_EXECUTABLE?.trim() || undefined } });
   const intelligenceConfig = new WorkflowConfigService(join(process.cwd(), 'config', 'workflows.yaml'));
   const intelligenceStore = new IntelligenceRunStore(join(RECORDS_ROOT, 'intelligence', 'runs.json'));
   const intelligence = new IntelligencePipelineService(intelligenceConfig, intelligenceStore, {
@@ -657,7 +657,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
   if (pathname.startsWith('/api/studio/')) {
     await runtimeReady;
     const studioInput = req.method === 'POST' ? await readBody(req) : undefined;
-    if (req.method === 'POST' && (pathname === '/api/studio/projects' || /^\/api\/studio\/projects\/[^/]+\/(repair|revise|retry|test-plans)$/.test(pathname)) && !(pathname.endsWith('/test-plans') && (studioInput as { cancelPlanId?: unknown })?.cancelPlanId !== undefined)) {
+    if (req.method === 'POST' && (pathname === '/api/studio/projects' || /^\/api\/studio\/projects\/[^/]+\/(repair|revise|retry|test-plans|browser-runs)$/.test(pathname)) && !(pathname.endsWith('/test-plans') && (studioInput as { cancelPlanId?: unknown })?.cancelPlanId !== undefined) && !(pathname.endsWith('/browser-runs') && (studioInput as { cancelRunId?: unknown })?.cancelRunId !== undefined)) {
       const key = String(req.headers['x-api-key'] || req.socket?.remoteAddress || 'unknown');
       if (!runRateLimiter.consume(`${key}|studio`).allowed) {
         statusCode = 429;

@@ -30,11 +30,11 @@ class StudioFixture extends MockProvider {
   }
 }
 
-async function withApi(work: (base: string, runtime: RunRuntime, root: string) => Promise<void>, provider = new StudioFixture(), timeoutMs = 5000) {
+async function withApi(work: (base: string, runtime: RunRuntime, root: string) => Promise<void>, provider = new StudioFixture(), timeoutMs = 5000, browserChecks = false) {
   const root = await mkdtemp(join(tmpdir(), 'studio-api-'));
   const runtime = new RunRuntime({ recordsRoot: join(root, 'runtime'), maxConcurrency: 1, maxQueueSize: 4, maxRetries: 2 });
   await runtime.init();
-  const api = createStudioApi({ root: join(root, 'projects'), runtime, timeoutMs, createOrchestrator: () => createOrchestrator('studio-fixture', provider, { includeTester: true }) });
+  const api = createStudioApi({ root: join(root, 'projects'), runtime, timeoutMs, browserChecks: { enabled: browserChecks, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE }, createOrchestrator: () => createOrchestrator('studio-fixture', provider, { includeTester: true }) });
   const server = createServer(async (req, res) => {
     let raw = '';
     for await (const chunk of req) raw += chunk;
@@ -54,8 +54,45 @@ async function withApi(work: (base: string, runtime: RunRuntime, root: string) =
 }
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+test('browser API is opt-in, rejects executable input and recovers interrupted records', async () => withApi(async (base, runtime, root) => {
+  const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Browser gate fixture' }) })).json();
+  await waitForJob(runtime, accepted.jobId);
+  const url = `${base}${accepted.projectUrl}/browser-runs`;
+  assert.deepEqual(await (await fetch(url)).json(), { enabled: false, runs: [] });
+  assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify({ testPlanId: randomUUID() }) })).status, 409);
+  assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify({ testPlanId: randomUUID(), executablePath: 'untrusted' }) })).status, 400);
+  const { saveBrowserRun, contentHash } = await import('../studio/browserRuns.js');
+  const runId = randomUUID();
+  await saveBrowserRun(root, { id: runId, projectId: accepted.projectId, testPlanId: randomUUID(), jobId: 'missing-job', status: 'running', source: 'server-browser', startedAt: new Date().toISOString(), previewFile: 'v1/dist/index.html', previewHash: contentHash('fixture'), planHash: contentHash('plan'), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] });
+  const restored = (await (await fetch(url)).json()).runs[0];
+  assert.equal(restored.status, 'failed'); assert.match(restored.error, /interrupted/);
+  assert.equal((await fetch(`${url}/${runId}/final.png`)).status, 404);
+}));
+
+test('browser HTTP job persists real checks and PNGs without changing build or source archive', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => withApi(async (base, runtime, root) => {
+  const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Browser HTTP fixture' }) })).json();
+  await waitForJob(runtime, accepted.jobId);
+  const original = await readFile(join(root, accepted.projectId, 'project.json'));
+  const archive = await readFile(join(root, accepted.projectId, 'source.zip'));
+  const tests = await (await fetch(`${base}${accepted.projectUrl}/test-plans`, { method: 'POST', body: '{}' })).json();
+  await waitForJob(runtime, tests.jobId);
+  const url = `${base}${accepted.projectUrl}/browser-runs`;
+  assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify({ testPlanId: randomUUID() }) })).status, 409);
+  const response = await fetch(url, { method: 'POST', body: JSON.stringify({ testPlanId: tests.planId }) });
+  assert.equal(response.status, 202);
+  const submitted = await response.json(); await waitForJob(runtime, submitted.jobId);
+  const [run] = (await (await fetch(url)).json()).runs;
+  assert.equal(run.status, 'passed', JSON.stringify(run)); assert.equal(run.source, 'server-browser');
+  const screenshot = await fetch(`${url}/${run.id}/final.png`);
+  assert.equal(screenshot.status, 200); assert.equal(screenshot.headers.get('content-type'), 'image/png');
+  assert.equal(Buffer.from(await screenshot.arrayBuffer()).subarray(1, 4).toString(), 'PNG');
+  assert.deepEqual(await readFile(join(root, accepted.projectId, 'project.json')), original);
+  assert.deepEqual(await readFile(join(root, accepted.projectId, 'source.zip')), archive);
+  assert.equal(JSON.parse(original.toString()).rounds[0].build.browserVerified, false);
+}, new StudioFixture(), 5000, true));
+
 async function waitForJob(runtime: RunRuntime, jobId: string) {
-  const deadline = Date.now() + 5000;
+  const deadline = Date.now() + 15000;
   while (Date.now() < deadline) {
     const job = runtime.getJob(jobId)!;
     if (['succeeded', 'failed', 'cancelled'].includes(job.status) && !runtime.isJobActive(jobId)) return job;

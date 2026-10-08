@@ -1,5 +1,6 @@
 import { createOrchestrator } from '../factory.js';
-import { listTestPlans, saveTestPlan, type TestPlanRecord } from '../studio/testPlans.js';
+import { listTestPlans, saveTestPlan, testPlanSchema, type TestPlanRecord } from '../studio/testPlans.js';
+import { contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from '../studio/browserRuns.js';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -18,6 +19,7 @@ import { summarizeGeneration } from '../studio/generationMetrics.js';
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
   createOrchestrator?: () => Orchestrator;
+  browserChecks?: { enabled: boolean; executablePath?: string };
 }) {
   const read = async (projectId: string): Promise<StudioRecord> => {
     validateProjectId(projectId);
@@ -131,10 +133,58 @@ export function createStudioApi(options: {
           }
           json(res, 202, await startProject(description)); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|retry|versions|test-plans|reviews))?$/);
+        const image = pathname.match(/^\/api\/studio\/projects\/([^/]+)\/browser-runs\/([^/]+)\/(initial\.png|final\.png)$/);
+        if (image && req.method === 'GET') {
+          const [, projectId, runId, name] = image;
+          await read(projectId); validateProjectId(runId);
+          const run = (await listBrowserRuns(options.root, projectId)).find((run) => run.id === runId);
+          if (!run?.screenshots.includes(name as 'initial.png' | 'final.png')) { json(res, 404, { error: { message: 'Screenshot not found' } }); return; }
+          const data = await readFile(join(options.root, projectId, 'browser-runs', runId, name));
+          res.writeHead(200, { 'Content-Type': 'image/png', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); res.end(data); return;
+        }
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|retry|versions|test-plans|reviews|browser-runs))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'browser-runs') {
+          const runs = await listBrowserRuns(options.root, projectId);
+          for (const run of runs.filter((run) => ['queued', 'running'].includes(run.status))) {
+            const job = options.runtime.getJob(run.jobId);
+            if (!options.runtime.isJobActive(run.jobId) && (!job || ['failed', 'cancelled', 'succeeded'].includes(job.status))) {
+              run.status = job?.status === 'cancelled' ? 'cancelled' : 'failed';
+              run.error = job?.error || 'Browser check interrupted; run a new check';
+              run.finishedAt = job?.finishedAt || new Date().toISOString();
+              await saveBrowserRun(options.root, run);
+            }
+          }
+          if (req.method === 'GET') { json(res, 200, { enabled: !!options.browserChecks?.enabled, runs }); return; }
+          if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
+          if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).length !== 1) { json(res, 400, { error: { message: 'Provide only testPlanId or cancelRunId' } }); return; }
+          const { testPlanId, cancelRunId } = input as { testPlanId?: unknown; cancelRunId?: unknown };
+          if (cancelRunId !== undefined) {
+            const run = runs.find((run) => run.id === cancelRunId);
+            if (!run || !['queued', 'running'].includes(run.status) || !options.runtime.cancelJob(run.jobId)) { json(res, 409, { error: { message: 'No active browser run with this ID' } }); return; }
+            json(res, 202, { runId: run.id, jobId: run.jobId }); return;
+          }
+          if (typeof testPlanId !== 'string') { json(res, 400, { error: { message: 'Provide a saved testPlanId' } }); return; }
+          if (!options.browserChecks?.enabled) { json(res, 409, { error: { message: 'Independent browser checks are disabled on this server' } }); return; }
+          if (record.status !== 'ready_for_review' || !record.previewFile) { json(res, 409, { error: { message: 'Browser checks require a successful preview' } }); return; }
+          sourceForPreview(record, record.previewFile);
+          const plan = (await listTestPlans(options.root, projectId)).find((plan) => plan.id === testPlanId);
+          const output = plan?.result?.output;
+          const checks = testPlanSchema.safeParse(output && { checks: output.checks, limitations: output.limitations });
+          if (!plan || plan.status !== 'ready' || plan.previewFile !== record.previewFile || !checks.success) { json(res, 409, { error: { message: 'Browser checks require a ready plan for this preview' } }); return; }
+          const html = await readFile(join(options.root, projectId, record.previewFile), 'utf8');
+          const id = randomUUID();
+          const run: BrowserRun = { id, projectId, testPlanId, previewFile: record.previewFile, previewHash: contentHash(html), planHash: contentHash(JSON.stringify(checks.data)), jobId: `studio-browser-${id}`, source: 'server-browser', status: 'queued', startedAt: new Date().toISOString(), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] };
+          await saveBrowserRun(options.root, run);
+          options.runtime.submitBackground({ jobId: run.jobId, taskId: id, mode: 'studio-browser', maxRetries: 0, run: async ({ signal }) => {
+            const result = await executeBrowserRun({ root: options.root, run, html, plan: checks.data, signal, executablePath: options.browserChecks?.executablePath });
+            if (result.status !== 'passed') throw new Error(result.error || 'Independent browser checks failed; see saved report');
+            return { mode: 'studio-browser', task: { id, type: 'browser_check', description: record.description }, status: 'success', final: { runId: id }, raw: result, trace: { mode: 'studio-browser', startedAt: result.startedAt, finishedAt: result.finishedAt, actions: [] } };
+          } });
+          json(res, 202, { runId: id, jobId: run.jobId }); return;
+        }
         if (action === 'retry') {
           if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
           if (input !== undefined && (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).length)) { json(res, 400, { error: { message: 'Retry accepts an empty object' } }); return; }
