@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, Code2, Download, Hammer, Play, RefreshCw, Square, Terminal } from 'lucide-react';
 import { studioApi } from '../lib/recordsApi';
 import type { StudioProject, StudioSummary } from '../types/studio';
+import { prepareStudioPreview, readPreviewMessage } from '../lib/studioPreview';
 import './Studio.css';
 
 const statusText = { queued: '排队中', running: '团队工作中', ready_for_review: '构建完成 · 等待验收', failed: '运行失败', cancelled: '已取消' };
@@ -21,6 +22,24 @@ export default function Studio() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const previewFrame = useRef<HTMLIFrameElement>(null);
+  const [runtimeErrors, setRuntimeErrors] = useState<string[]>([]);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
+  const preview = useMemo(() => {
+    const nonce = crypto.randomUUID();
+    return { nonce, html: prepareStudioPreview(html, nonce) };
+  }, [html]);
+
+  useEffect(() => {
+    setRuntimeErrors([]); setPreviewLoaded(false);
+    const receive = (event: MessageEvent) => {
+      const message = readPreviewMessage(event, previewFrame.current?.contentWindow || null, preview.nonce);
+      if (message?.kind === 'loaded') setPreviewLoaded(true);
+      if (message?.kind === 'error') setRuntimeErrors((errors) => errors.length < 20 ? [...errors, message.message] : errors);
+    };
+    window.addEventListener('message', receive);
+    return () => window.removeEventListener('message', receive);
+  }, [preview]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -119,9 +138,9 @@ export default function Studio() {
             <button className="studio-download" onClick={() => void download()} disabled={!ready || busy}><Download size={15} />下载源码 ZIP</button>
           </div>
           <div className="studio-panel" id="studio-panel" role="tabpanel" aria-labelledby={`studio-tab-${tab}`}>
-            {tab === 'preview' && (html ? <><iframe title="生成作品试玩" srcDoc={html} sandbox="allow-scripts" referrerPolicy="no-referrer" /><p className="studio-preview-note">构建通过。请实际试玩；编译成功不代表交互验收完成。</p></> : <div className="studio-empty"><span aria-hidden="true">▦</span><h3>{running ? '团队正在制作你的作品' : project?.status === 'failed' || project?.status === 'cancelled' ? '本次运行未生成可试玩版本' : '先给团队一个创作任务'}</h3><p>{running ? '每个阶段会自动更新，完成后可以在这里试玩。' : '成功构建后，作品、源码与检查记录会出现在这里。'}</p></div>)}
+            {tab === 'preview' && (html ? <><iframe ref={previewFrame} title="生成作品试玩" srcDoc={preview.html} sandbox="allow-scripts" referrerPolicy="no-referrer" /><p className="studio-preview-note">{runtimeErrors.length ? `试玩发现 ${runtimeErrors.length} 条运行异常，请查看验证记录。` : previewLoaded ? '页面已加载。请实际试玩；页面加载和编译成功不代表功能验收完成。' : '正在加载试玩页面…'}</p></> : <div className="studio-empty"><span aria-hidden="true">▦</span><h3>{running ? '团队正在制作你的作品' : project?.status === 'failed' || project?.status === 'cancelled' ? '本次运行未生成可试玩版本' : '先给团队一个创作任务'}</h3><p>{running ? '每个阶段会自动更新，完成后可以在这里试玩。' : '成功构建后，作品、源码与检查记录会出现在这里。'}</p></div>)}
             {tab === 'source' && (files.length ? <div className="studio-source"><label htmlFor="studio-file">项目文件</label><select id="studio-file" value={selectedFile?.path || ''} onChange={(event) => setFilePath(event.target.value)}>{files.map((file) => <option key={file.path} value={file.path}>{file.path}</option>)}</select><pre><code>{selectedFile?.content}</code></pre></div> : <div className="studio-empty"><h3>源码尚未生成</h3><p>Coder 完成后会显示实际文件内容。</p></div>)}
-            {tab === 'evidence' && <div className="studio-evidence"><h3>实际执行记录</h3>{project?.plan && <p>规划：{project.plan.status} · {project.plan.output?.llmProvider || '未调用成功'} / {project.plan.output?.llmModel || '—'}</p>}{project?.rounds.map((round) => <article key={round.round}><h4>第 {round.round} 轮</h4><p>代码生成：{round.code.status} · {round.code.output?.llmProvider || '—'} / {round.code.output?.llmModel || '—'}</p><p>实际构建：{round.build?.status || '尚未执行'}</p>{round.build?.errors.map((error, index) => <pre key={index}>{error}</pre>)}{round.build?.checkedFiles && <p>已检查文件：{round.build.checkedFiles.join('、')}</p>}{round.code.status === 'failed' && <pre>{round.code.reasoning}</pre>}</article>)}<p className="studio-hint">浏览器自动验收与人工批准尚未接入，此处不会显示虚构的测试通过记录。</p>{project && <small>项目 {project.projectId}</small>}</div>}
+            {tab === 'evidence' && <div className="studio-evidence"><h3>实际执行记录</h3><article><h4>本次试玩运行诊断</h4><p>{runtimeErrors.length ? `已捕获 ${runtimeErrors.length} 条异常` : previewLoaded ? '页面曾加载，当前未捕获运行异常' : '尚未观察到页面加载'}</p>{runtimeErrors.map((message, index) => <pre key={index}>{message}</pre>)}<p className="studio-hint">只记录本次打开期间的脚本异常和未处理 Promise 拒绝；刷新后清空，不代表功能测试通过。</p></article>{project?.plan && <p>规划：{project.plan.status} · {project.plan.output?.llmProvider || '未调用成功'} / {project.plan.output?.llmModel || '—'}</p>}{project?.rounds.map((round) => <article key={round.round}><h4>第 {round.round} 轮</h4><p>代码生成：{round.code.status} · {round.code.output?.llmProvider || '—'} / {round.code.output?.llmModel || '—'}</p><p>实际构建：{round.build?.status || '尚未执行'}</p>{round.build?.errors.map((error, index) => <pre key={index}>{error}</pre>)}{round.build?.checkedFiles && <p>已检查文件：{round.build.checkedFiles.join('、')}</p>}{round.code.status === 'failed' && <pre>{round.code.reasoning}</pre>}</article>)}<p className="studio-hint">浏览器自动验收与人工批准尚未接入，此处不会显示虚构的测试通过记录。</p>{project && <small>项目 {project.projectId}</small>}</div>}
           </div>
         </section>
       </div>
