@@ -196,6 +196,7 @@ test('studio endpoints use Records API authentication and creation rate limits',
   await withTempStack(async ({ baseUrl, stack }) => {
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`)).status, 401);
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', body: '{}' })).status, 401);
+    assert.equal((await fetch(`${baseUrl}/api/studio/projects/00000000-0000-0000-0000-000000000000/reviews`, { method: 'POST', body: '{}' })).status, 401);
     const headers = { 'Content-Type': 'application/json', 'X-API-Key': 'integration-test-api-key' };
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`, { headers })).status, 200);
     const accepted = await fetch(`${baseUrl}/api/studio/projects`, { method: 'POST', headers, body: JSON.stringify({ description: 'API fixture' }) });

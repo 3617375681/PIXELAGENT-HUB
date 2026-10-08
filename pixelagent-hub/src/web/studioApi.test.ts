@@ -12,6 +12,7 @@ import { saveStudioRecord } from '../studio/softwareStudio.js';
 import { RunRuntime } from './runRuntime.js';
 import { createStudioApi } from './studioApi.js';
 import { saveTestPlan, testPlanSchema } from '../studio/testPlans.js';
+import { listReviews } from '../studio/reviews.js';
 
 class StudioFixture extends MockProvider {
   prompts: string[] = [];
@@ -278,6 +279,73 @@ test('test planning cancellation aborts the model and retains the built project'
     assert.equal((await (await fetch(`${base}${project.projectUrl}`)).json()).project.status, 'ready_for_review');
   }, provider);
 });
+
+test('manual reviews persist independently, surface in versions, and never carry to revised projects', async () => withApi(async (base, runtime, root) => {
+  const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter review fixture' }) })).json();
+  await waitForJob(runtime, accepted.jobId);
+  const url = `${base}${accepted.projectUrl}`;
+  const original = await readFile(join(root, accepted.projectId, 'project.json'), 'utf8');
+  const archive = await readFile(join(root, accepted.projectId, 'source.zip'));
+  assert.deepEqual(await (await fetch(`${url}/reviews`)).json(), { reviews: [], current: null });
+  const { report } = await (await fetch(`${url}/diagnostics`, { method: 'POST', body: JSON.stringify({ previewFile: 'v1/dist/index.html', loaded: true, errors: [] }) })).json();
+  const payload = { previewFile: report.previewFile, diagnosticId: report.id, decision: 'approved', operator: ' Fixture reviewer ', note: ' Checked buttons manually ', manuallyReviewed: true };
+  const response = await fetch(`${url}/reviews`, { method: 'POST', body: JSON.stringify(payload) });
+  assert.equal(response.status, 201);
+  const { review } = await response.json();
+  assert.equal(review.operator, 'Fixture reviewer'); assert.equal(review.note, 'Checked buttons manually');
+  assert.equal(review.source, 'manual-review');
+  assert.deepEqual((await listReviews(root, accepted.projectId))[0], review);
+  // A fresh API instance has no in-memory acceptance state to recover.
+  const restored = createStudioApi({ root, runtime, timeoutMs: 5000 });
+  let restoredBody = '';
+  await restored.handle({ method: 'GET' } as any, { writeHead() {}, end(body: string) { restoredBody = body; } } as any, `/api/studio/projects/${accepted.projectId}/reviews`);
+  assert.deepEqual(JSON.parse(restoredBody).current, review);
+  const project = (await (await fetch(url)).json()).project;
+  assert.equal(project.review.id, review.id);
+  assert.equal(project.status, 'ready_for_review'); assert.equal(project.rounds[0].build.browserVerified, false);
+  assert.equal((await (await fetch(`${base}/api/studio/projects`)).json()).projects[0].review.id, review.id);
+  assert.equal((await (await fetch(`${url}/versions`)).json()).versions[0].review.id, review.id);
+  const child = await (await fetch(`${url}/revise`, { method: 'POST', body: JSON.stringify({ changeRequest: 'Keep the existing counter' }) })).json();
+  await waitForJob(runtime, child.jobId);
+  assert.equal((await (await fetch(`${base}${child.projectUrl}`)).json()).project.review, null);
+  assert.equal(await readFile(join(root, accepted.projectId, 'project.json'), 'utf8'), original);
+  assert.deepEqual(await readFile(join(root, accepted.projectId, 'source.zip')), archive);
+  assert.equal((await fetch(`${url}/reviews`, { method: 'DELETE' })).status, 405);
+}));
+
+test('review gate rejects invalid confirmation, stale or foreign evidence and faulty approval; new diagnostics require re-review', async () => withApi(async (base, runtime, root) => {
+  const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Review gate fixture' }) })).json();
+  await waitForJob(runtime, accepted.jobId);
+  const url = `${base}${accepted.projectUrl}`;
+  const diagnostic = async (loaded: boolean, errors: string[]) => (await (await fetch(`${url}/diagnostics`, { method: 'POST', body: JSON.stringify({ previewFile: 'v1/dist/index.html', loaded, errors }) })).json()).report;
+  const clean = await diagnostic(true, []);
+  const payload = { previewFile: 'v1/dist/index.html', diagnosticId: clean.id, decision: 'approved', operator: 'review fixture', note: 'manual fixture validation', manuallyReviewed: true };
+  const post = (body: unknown) => fetch(`${url}/reviews`, { method: 'POST', body: JSON.stringify(body) });
+  for (const invalid of [null, { ...payload, manuallyReviewed: false }, { ...payload, operator: ' ' }, { ...payload, note: '' }, { ...payload, note: 'x'.repeat(2001) }, { ...payload, browserVerified: true }, { ...payload, decision: 'delivered' }]) assert.equal((await post(invalid)).status, 400);
+  assert.equal((await post({ ...payload, previewFile: 'v2/dist/index.html' })).status, 409);
+  assert.equal((await post({ ...payload, diagnosticId: randomUUID() })).status, 404);
+  const other = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Other project' }) })).json();
+  await waitForJob(runtime, other.jobId);
+  assert.equal((await fetch(`${base}${other.projectUrl}/reviews`, { method: 'POST', body: JSON.stringify(payload) })).status, 404);
+  const unloaded = await diagnostic(false, []);
+  assert.equal((await post({ ...payload, diagnosticId: unloaded.id })).status, 409);
+  const faulty = await diagnostic(true, ['click-failed']);
+  assert.equal((await post({ ...payload, diagnosticId: faulty.id })).status, 409);
+  assert.equal((await post(payload)).status, 409); // Old clean evidence cannot hide newer faults.
+  assert.equal((await post({ ...payload, diagnosticId: faulty.id, decision: 'changes_requested' })).status, 201);
+  const latest = await diagnostic(true, []);
+  assert.equal((await post({ ...payload, diagnosticId: latest.id })).status, 201);
+  assert.equal((await (await fetch(url)).json()).project.review.decision, 'approved');
+  await diagnostic(true, ['new-regression']);
+  assert.equal((await (await fetch(url)).json()).project.review, null);
+  const history = await (await fetch(`${url}/reviews`)).json();
+  assert.equal(history.current, null); assert.equal(history.reviews.length, 2);
+  assert.deepEqual(history.reviews.map((review: { decision: string }) => review.decision), ['approved', 'changes_requested']);
+  const record = JSON.parse(await readFile(join(root, accepted.projectId, 'project.json'), 'utf8'));
+  record.status = 'cancelled'; await saveStudioRecord(root, record);
+  assert.equal((await post({ ...payload, decision: 'changes_requested' })).status, 409);
+  assert.equal((await (await fetch(`${url}/reviews`)).json()).current, null);
+}));
 
 test('orphaned project is restored as failed and cannot advertise a preview', async () => withApi(async (base, _runtime, root) => {
   const projectId = randomUUID();

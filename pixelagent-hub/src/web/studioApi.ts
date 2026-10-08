@@ -11,6 +11,7 @@ import { diagnosticInput, listDiagnostics, saveDiagnostic } from '../studio/diag
 import { validateFiles, type SourceFile } from '../studio/workspace.js';
 import { compareSources } from '../studio/sourceChanges.js';
 import { parentVersion, versionFamily } from '../studio/versions.js';
+import { listReviews, reviewInput, saveReview } from '../studio/reviews.js';
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -64,6 +65,16 @@ export function createStudioApi(options: {
       record = await read(parent);
     }
   };
+  const currentReview = async (record: StudioRecord) => {
+    if (record.status !== 'ready_for_review') return null;
+    const review = (await listReviews(options.root, record.projectId)).find((review) => review.previewFile === record.previewFile);
+    if (!review) return null;
+    if (review.decision === 'approved') {
+      const latest = (await listDiagnostics(options.root, record.projectId)).find((report) => report.previewFile === record.previewFile);
+      if (latest?.id !== review.diagnosticId) return null;
+    }
+    return review;
+  };
   const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[], revision?: StudioRecord['revision'], changeRequests?: string[]) => {
     const projectId = randomUUID();
     const jobId = `studio-${projectId}`;
@@ -98,7 +109,10 @@ export function createStudioApi(options: {
             projects.push(await read(entry.name));
           }
           projects.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
-          json(res, 200, { projects: projects.map(({ projectId, description, status, startedAt, phase, jobId, repair, revision }) => ({ projectId, description, status, startedAt, phase, jobId, repair, revision })) });
+          json(res, 200, { projects: await Promise.all(projects.map(async (record) => {
+            const { projectId, description, status, startedAt, phase, jobId, repair, revision } = record;
+            return { projectId, description, status, startedAt, phase, jobId, repair, revision, review: await currentReview(record) };
+          })) });
           return;
         }
         if (pathname === '/api/studio/projects' && req.method === 'POST') {
@@ -108,10 +122,28 @@ export function createStudioApi(options: {
           }
           json(res, 202, await startProject(description)); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|versions|test-plans))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|versions|test-plans|reviews))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'reviews') {
+          if (req.method === 'GET') {
+            const reviews = await listReviews(options.root, projectId);
+            json(res, 200, { reviews, current: await currentReview(record) }); return;
+          }
+          if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
+          const parsed = reviewInput.safeParse(input);
+          if (!parsed.success) { json(res, 400, { error: { message: 'Provide a decision, current preview, saved diagnostic, reviewer, note and explicit manual review confirmation' } }); return; }
+          if (record.status !== 'ready_for_review' || parsed.data.previewFile !== record.previewFile) { json(res, 409, { error: { message: 'Review requires the current successful preview' } }); return; }
+          sourceForPreview(record, record.previewFile);
+          const reports = await listDiagnostics(options.root, projectId);
+          const report = reports.find((report) => report.id === parsed.data.diagnosticId);
+          if (!report) { json(res, 404, { error: { message: 'Diagnostic not found in this project' } }); return; }
+          if (report.previewFile !== record.previewFile) { json(res, 409, { error: { message: 'Review evidence must reference the current preview' } }); return; }
+          if (parsed.data.decision === 'approved' && (!report.loaded || report.errors.length || report.checks?.some((check) => check.status === 'failed'))) { json(res, 409, { error: { message: 'Approval requires a loaded observation without reported errors or failed checks' } }); return; }
+          if (parsed.data.decision === 'approved' && reports.find((report) => report.previewFile === record.previewFile)?.id !== report.id) { json(res, 409, { error: { message: 'Approval must reference the latest diagnostic for this preview' } }); return; }
+          json(res, 201, { review: await saveReview(options.root, projectId, parsed.data) }); return;
+        }
         if (action === 'test-plans') {
           const plans = await listTestPlans(options.root, projectId);
           for (const plan of plans) {
@@ -162,7 +194,10 @@ export function createStudioApi(options: {
             try { selectedProjectId = JSON.parse(await readFile(selectionFile, 'utf-8')).projectId; }
             catch (error) { if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; }
             if (!family.versions.some((version) => version.projectId === selectedProjectId)) throw new Error('Selected version is missing from this family');
-            json(res, 200, { rootProjectId: family.rootProjectId, selectedProjectId, versions: family.versions.map(({ projectId, description, status, startedAt, repair, revision }) => ({ projectId, description, status, startedAt, repair, revision })) }); return;
+            json(res, 200, { rootProjectId: family.rootProjectId, selectedProjectId, versions: await Promise.all(family.versions.map(async (record) => {
+              const { projectId, description, status, startedAt, repair, revision } = record;
+              return { projectId, description, status, startedAt, repair, revision, review: await currentReview(record) };
+            })) }); return;
           }
           if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
           const target = (input as { projectId?: unknown })?.projectId;
@@ -227,7 +262,7 @@ export function createStudioApi(options: {
           json(res, 200, { project: record }); return;
         }
         if (req.method !== 'GET') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
-        if (!action) { json(res, 200, { project: record }); return; }
+        if (!action) { json(res, 200, { project: { ...record, review: await currentReview(record) } }); return; }
         if (action === 'changes') {
           if (!(record.repair || record.revision) || record.status !== 'ready_for_review') { json(res, 409, { error: { message: 'Source comparison requires a successful repair project' } }); return; }
           const origin = (record.repair || record.revision)!;
