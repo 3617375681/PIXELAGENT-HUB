@@ -1,5 +1,6 @@
 export type StudioStatus = 'queued' | 'running' | 'ready_for_review' | 'failed' | 'cancelled';
 export type StudioDiagnostic = { id: string; savedAt: string; source: 'browser-client'; previewFile: string; loaded: boolean; errors: string[] };
+export type StudioChanges = { projectId: string; parentProjectId: string; fromPreview: string; toPreview: string; unchanged: number; files: { path: string; status: 'added' | 'removed' | 'modified'; before?: string; after?: string }[] };
 export type StudioSummary = { projectId: string; description: string; status: StudioStatus; startedAt: string; phase?: string; jobId?: string; repair?: { parentProjectId: string; diagnosticId: string; previewFile: string; errors: string[] } };
 export type StudioProject = StudioSummary & {
   finishedAt?: string; error?: string;

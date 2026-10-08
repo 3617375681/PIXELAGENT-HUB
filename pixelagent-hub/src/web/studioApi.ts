@@ -7,6 +7,7 @@ import { runSoftwareStudio, saveStudioRecord, validateProjectId, type StudioReco
 import type { RunRuntime } from './runRuntime.js';
 import { diagnosticInput, listDiagnostics, saveDiagnostic } from '../studio/diagnostics.js';
 import { validateFiles, type SourceFile } from '../studio/workspace.js';
+import { compareSources } from '../studio/sourceChanges.js';
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -31,6 +32,12 @@ export function createStudioApi(options: {
   const json = (res: ServerResponse, status: number, body: unknown) => {
     res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
     res.end(JSON.stringify(body));
+  };
+  const sourceForPreview = (record: StudioRecord, previewFile?: string): SourceFile[] => {
+    if (!previewFile || !/^v[1-3]\/dist\/index.html$/.test(previewFile)) throw new Error('Invalid source preview reference');
+    const round = record.rounds.find((attempt) => `v${attempt.round}/dist/index.html` === previewFile);
+    if (round?.build?.status !== 'passed') throw new Error('Source has no successful build');
+    return validateFiles(round.code.output.files);
   };
   const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[]) => {
     const projectId = randomUUID();
@@ -76,7 +83,7 @@ export function createStudioApi(options: {
           }
           json(res, 202, await startProject(description)); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
@@ -90,9 +97,7 @@ export function createStudioApi(options: {
           if (record.status !== 'ready_for_review' || report.previewFile !== record.previewFile || !report.errors.length) {
             json(res, 409, { error: { message: 'Repair requires errors from the current successful preview' } }); return;
           }
-          const round = record.rounds.find((attempt) => `v${attempt.round}/dist/index.html` === record.previewFile);
-          if (round?.build?.status !== 'passed') throw new Error('Repair source has no successful build');
-          const files = validateFiles(round.code.output.files);
+          const files = sourceForPreview(record, record.previewFile);
           json(res, 202, await startProject(record.description, { parentProjectId: projectId, diagnosticId, previewFile: report.previewFile, errors: report.errors }, files)); return;
         }
         if (action === 'diagnostics') {
@@ -116,6 +121,12 @@ export function createStudioApi(options: {
         }
         if (req.method !== 'GET') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
         if (!action) { json(res, 200, { project: record }); return; }
+        if (action === 'changes') {
+          if (!record.repair || record.status !== 'ready_for_review') { json(res, 409, { error: { message: 'Source comparison requires a successful repair project' } }); return; }
+          const parent = await read(record.repair.parentProjectId);
+          const changes = compareSources(sourceForPreview(parent, record.repair.previewFile), sourceForPreview(record, record.previewFile));
+          json(res, 200, { changes: { projectId, parentProjectId: parent.projectId, fromPreview: record.repair.previewFile, toPreview: record.previewFile, ...changes } }); return;
+        }
         if (record.status !== 'ready_for_review') { json(res, 409, { error: { message: 'Project has no successful build' } }); return; }
         if (action === 'preview') {
           if (!record.previewFile || !/^v[1-3]\/dist\/index.html$/.test(record.previewFile)) throw new Error('Invalid preview reference');

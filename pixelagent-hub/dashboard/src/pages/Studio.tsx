@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, Code2, Download, Hammer, Play, RefreshCw, Square, Terminal } from 'lucide-react';
 import { studioApi } from '../lib/recordsApi';
-import type { StudioDiagnostic, StudioProject, StudioSummary } from '../types/studio';
+import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary } from '../types/studio';
 import { prepareStudioPreview, readPreviewMessage } from '../lib/studioPreview';
 import './Studio.css';
 
@@ -18,7 +18,9 @@ export default function Studio() {
   const [project, setProject] = useState<StudioProject | null>(null);
   const [html, setHtml] = useState('');
   const [filePath, setFilePath] = useState('index.html');
-  const [tab, setTab] = useState<'preview' | 'source' | 'evidence'>('preview');
+  const [tab, setTab] = useState<'preview' | 'source' | 'evidence' | 'changes'>('preview');
+  const [changes, setChanges] = useState<StudioChanges | null>(null);
+  const [changesError, setChangesError] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -91,6 +93,15 @@ export default function Studio() {
   const files = current?.code.output?.files || [];
   const selectedFile = files.find((file) => file.path === filePath) || files[0];
   const ready = project?.status === 'ready_for_review';
+  useEffect(() => {
+    setChanges(null); setChangesError('');
+    if (!projectId || tab !== 'changes' || !ready) return;
+    const controller = new AbortController();
+    void studioApi.changes(projectId, controller.signal).then(({ changes }) => {
+      if (!controller.signal.aborted) setChanges(changes);
+    }).catch((error) => { if (!controller.signal.aborted) setChangesError(error instanceof Error ? error.message : String(error)); });
+    return () => controller.abort();
+  }, [projectId, tab, ready, refreshKey]);
   const diagnosticSnapshot = JSON.stringify({ previewFile: project?.previewFile, loaded: previewLoaded, errors: runtimeErrors });
   const action = async (work: () => Promise<void>) => {
     setBusy(true); setError('');
@@ -159,9 +170,11 @@ export default function Studio() {
           {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
           <div className="studio-tabs" role="tablist" aria-label="查看作品">
             {([{ key: 'preview', label: '试玩', icon: Play }, { key: 'source', label: '源码', icon: Code2 }, { key: 'evidence', label: '验证记录', icon: Terminal }] as const).map(({ key, label, icon: Icon }) => <button key={key} id={`studio-tab-${key}`} role="tab" aria-selected={tab === key} aria-controls="studio-panel" onClick={() => setTab(key)}><Icon size={15} />{label}</button>)}
+            <button id="studio-tab-changes" role="tab" aria-selected={tab === 'changes'} aria-controls="studio-panel" disabled={!ready || !project?.repair} onClick={() => setTab('changes')}><Code2 size={15} />返修差异</button>
             <button className="studio-download" onClick={() => void download()} disabled={!ready || busy}><Download size={15} />下载源码 ZIP</button>
           </div>
           <div className="studio-panel" id="studio-panel" role="tabpanel" aria-labelledby={`studio-tab-${tab}`}>
+            {tab === 'changes' && <div className="studio-changes"><h3>返修前后的实际源码</h3>{changesError && <p role="alert">{changesError}</p>}{!changes && !changesError && <p>{project?.repair ? '正在读取源码差异…' : '该项目没有返修来源。'}</p>}{changes && <><p>{changes.files.length} 个文件有变化，{changes.unchanged} 个文件内容未变。差异不代表功能验收通过。</p><p className="studio-hint">原项目 {changes.parentProjectId} / {changes.fromPreview} → 当前项目 {changes.projectId} / {changes.toPreview}</p>{changes.files.length === 0 && <p>源码没有变化，请复测保存的错误是否仍存在。</p>}{changes.files.map((file) => <details key={file.path} open={changes.files.length === 1}><summary>{file.path} · {{ added: '新增', removed: '删除', modified: '修改' }[file.status]}</summary><div className="studio-change-columns"><section><h4>原源码</h4><pre><code>{file.before === undefined ? '原项目没有此文件' : file.before}</code></pre></section><section><h4>返修源码</h4><pre><code>{file.after === undefined ? '返修项目已删除此文件' : file.after}</code></pre></section></div></details>)}</>}</div>}
             {tab === 'preview' && (html ? <><iframe ref={previewFrame} title="生成作品试玩" srcDoc={preview.html} sandbox="allow-scripts" referrerPolicy="no-referrer" /><p className="studio-preview-note">{runtimeErrors.length ? `试玩发现 ${runtimeErrors.length} 条运行异常，请查看验证记录。` : previewLoaded ? '页面已加载。请实际试玩；页面加载和编译成功不代表功能验收完成。' : '正在加载试玩页面…'}</p></> : <div className="studio-empty"><span aria-hidden="true">▦</span><h3>{running ? '团队正在制作你的作品' : project?.status === 'failed' || project?.status === 'cancelled' ? '本次运行未生成可试玩版本' : '先给团队一个创作任务'}</h3><p>{running ? '每个阶段会自动更新，完成后可以在这里试玩。' : '成功构建后，作品、源码与检查记录会出现在这里。'}</p></div>)}
             {tab === 'source' && (files.length ? <div className="studio-source"><label htmlFor="studio-file">项目文件</label><select id="studio-file" value={selectedFile?.path || ''} onChange={(event) => setFilePath(event.target.value)}>{files.map((file) => <option key={file.path} value={file.path}>{file.path}</option>)}</select><pre><code>{selectedFile?.content}</code></pre></div> : <div className="studio-empty"><h3>源码尚未生成</h3><p>Coder 完成后会显示实际文件内容。</p></div>)}
             {tab === 'evidence' && <div className="studio-evidence"><h3>实际执行记录</h3><article><h4>本次试玩运行诊断</h4><p>{runtimeErrors.length ? `已捕获 ${runtimeErrors.length} 条异常` : previewLoaded ? '页面曾加载，当前未捕获运行异常' : '尚未观察到页面加载'}</p>{runtimeErrors.map((message, index) => <pre key={index}>{message}</pre>)}<p className="studio-hint">实时记录刷新后清空；可保存到项目供后续查看，不代表功能测试通过。</p><button disabled={!ready || busy || (!previewLoaded && !runtimeErrors.length) || savedSnapshot === diagnosticSnapshot} onClick={() => void saveDiagnostic()}>{savedSnapshot === diagnosticSnapshot ? '当前诊断已保存' : '保存本次诊断'}</button></article><article><h4>已保存的试玩诊断</h4>{history.reports.length === 0 && <p>暂无保存记录。</p>}{history.reports.map((report) => <section key={report.id}><h5>{new Date(report.savedAt).toLocaleString()} · {report.previewFile}</h5><p>来源：浏览器客户端观察 · 页面{report.loaded ? '已加载' : '未观察到加载'} · {report.errors.length} 条异常</p>{report.errors.map((message, index) => <pre key={index}>{message}</pre>)}<button disabled={!ready || busy || !report.errors.length || report.previewFile !== project?.previewFile} onClick={() => void repair(report.id)}>依据此诊断返修</button></section>)}<p className="studio-hint">保存的是客户端观察，不是可信的自动功能测试或人工批准。</p></article>{project?.plan && <p>规划：{project.plan.status} · {project.plan.output?.llmProvider || '未调用成功'} / {project.plan.output?.llmModel || '—'}</p>}{project?.rounds.map((round) => <article key={round.round}><h4>第 {round.round} 轮</h4><p>代码生成：{round.code.status} · {round.code.output?.llmProvider || '—'} / {round.code.output?.llmModel || '—'}</p><p>实际构建：{round.build?.status || '尚未执行'}</p>{round.build?.errors.map((error, index) => <pre key={index}>{error}</pre>)}{round.build?.checkedFiles && <p>已检查文件：{round.build.checkedFiles.join('、')}</p>}{round.code.status === 'failed' && <pre>{round.code.reasoning}</pre>}</article>)}<p className="studio-hint">浏览器自动验收与人工批准尚未接入，此处不会显示虚构的测试通过记录。</p>{project && <small>项目 {project.projectId}</small>}</div>}

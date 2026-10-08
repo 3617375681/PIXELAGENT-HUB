@@ -145,6 +145,13 @@ test('repair uses saved errors and original source, with independent success and
     assert.equal(record.repair.diagnosticId, saved.report.id);
     assert.equal(record.status, 'ready_for_review');
     assert.equal(record.rounds[0].build.browserVerified, false);
+    const changes = (await (await fetch(`${base}${child.projectUrl}/changes`)).json()).changes;
+    assert.equal(changes.parentProjectId, parent.projectId);
+    assert.equal(changes.projectId, child.projectId);
+    assert.equal(changes.fromPreview, 'v1/dist/index.html');
+    assert.deepEqual(changes.files, []);
+    assert.equal(changes.unchanged, 2);
+    assert.equal((await fetch(`${base}${parent.projectUrl}/changes`)).status, 409);
     const codePrompt = provider.prompts.at(-1)!;
     assert.match(codePrompt, /counter-click-failed/);
     assert.match(codePrompt, /previousFiles/);
@@ -156,6 +163,7 @@ test('repair uses saved errors and original source, with independent success and
     assert.equal(failedRecord.status, 'failed');
     assert.equal(failedRecord.repair.parentProjectId, parent.projectId);
     assert.equal((await fetch(`${base}${failed.projectUrl}/archive`)).status, 409);
+    assert.equal((await fetch(`${base}${failed.projectUrl}/changes`)).status, 409);
     assert.equal(await readFile(join(root, parent.projectId, 'project.json'), 'utf-8'), original);
     assert.deepEqual(await readFile(join(root, parent.projectId, 'source.zip')), archive);
     const clean = await (await fetch(`${base}${parent.projectUrl}/diagnostics`, { method: 'POST', body: JSON.stringify({ previewFile: 'v1/dist/index.html', loaded: true, errors: [] }) })).json();
