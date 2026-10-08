@@ -13,6 +13,7 @@ import { validateFiles, type SourceFile } from '../studio/workspace.js';
 import { compareSources } from '../studio/sourceChanges.js';
 import { parentVersion, versionFamily } from '../studio/versions.js';
 import { listReviews, reviewInput, saveReview } from '../studio/reviews.js';
+import { summarizeGeneration } from '../studio/generationMetrics.js';
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -269,7 +270,7 @@ export function createStudioApi(options: {
           json(res, 200, { project: record }); return;
         }
         if (req.method !== 'GET') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
-        if (!action) { json(res, 200, { project: { ...record, review: await currentReview(record) } }); return; }
+        if (!action) { json(res, 200, { project: { ...record, generationMetrics: summarizeGeneration(record), review: await currentReview(record) } }); return; }
         if (action === 'changes') {
           if (!(record.repair || record.revision) || record.status !== 'ready_for_review') { json(res, 409, { error: { message: 'Source comparison requires a successful repair project' } }); return; }
           const origin = (record.repair || record.revision)!;

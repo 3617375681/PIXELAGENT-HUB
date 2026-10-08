@@ -142,6 +142,7 @@ export default function Studio() {
   const files = current?.code.output?.files || [];
   const selectedFile = files.find((file) => file.path === filePath) || files[0];
   const ready = project?.status === 'ready_for_review';
+  const generationMetrics = project?.generationMetrics;
   useEffect(() => {
     setVersions(null);
     if (!projectId) return;
@@ -267,6 +268,18 @@ export default function Studio() {
           <ol className="studio-team" aria-label="团队执行阶段">
             {[{ icon: '▤', name: 'Manager', detail: '需求与规划', done: project?.plan?.status === 'success', active: project?.phase === 'planning' }, { icon: '⌘', name: 'Coder', detail: '生成真实源码', done: current?.code.status === 'success', active: project?.phase === 'coding' }, { icon: '▣', name: 'Builder', detail: '编译与错误返修', done: current?.build?.status === 'passed', active: project?.phase === 'building' }].map((agent) => <li key={agent.name} className={agent.active ? 'active' : agent.done ? 'done' : ''}><span className="studio-agent-icon">{agent.icon}</span><div><strong>{agent.name}</strong><small>{agent.detail}</small></div><span className="studio-agent-state">{agent.name === 'Manager' && project?.strategy === 'coder-only' ? '对照组未执行' : agent.active ? '工作中' : agent.done ? '完成' : '等待'}</span></li>)}
           </ol>
+          {generationMetrics && <section className="studio-tester" aria-label="生成耗时与用量">
+            <h3>本次生成 / 耗时与用量</h3>
+            <dl className="studio-usage-grid">
+              <div><dt>生成耗时</dt><dd>{generationMetrics.elapsedMs === null ? running ? '等待生成完成' : '未知' : `${(generationMetrics.elapsedMs / 1000).toFixed(1)} 秒`}</dd></div>
+              <div><dt>已报告 Token</dt><dd>{generationMetrics.reportedUsageTasks ? generationMetrics.reportedTokens.toLocaleString() : '未报告'}</dd></div>
+              <div><dt>已返回角色任务</dt><dd>{generationMetrics.agentTasks} 个 · {generationMetrics.reportedUsageTasks} 个含用量</dd></div>
+              <div><dt>构建尝试 / 失败</dt><dd>{generationMetrics.buildAttempts} / {generationMetrics.failedBuilds}</dd></div>
+            </dl>
+            <p className="studio-hint">模型：{generationMetrics.models.join('、') || '未返回模型信息'}</p>
+            {generationMetrics.missingUsageTasks > 0 && <p className="studio-hint">{generationMetrics.missingUsageTasks} 个已返回任务缺失用量，统计不完整。</p>}
+            <p className="studio-hint">金额未计算。仅汇总 Manager/Coder 已返回结果，不包含 Tester、外部工具或未返回结果的请求。角色任务数不等于模型请求数。</p>
+          </section>}
           {running && <div className="studio-progress" role="status"><Hammer size={16} />{phaseText[project?.phase || 'queued']}{current && ` · 第 ${current.round} 轮`}<button onClick={() => void cancel()} disabled={busy}><Square size={12} />取消</button></div>}
           {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
           {ready && <section className="studio-tester" aria-label="Tester 交互检查"><h3>Tester / 沙箱内交互检查</h3><p className="studio-hint">模型生成检查，页面执行合成事件与文本断言。结果不替代完整浏览器测试或人工批准。</p><button disabled={busy || qaRunning || testPlans.some((plan) => ['queued', 'running'].includes(plan.status))} onClick={() => void generateTests()}>生成交互检查（调用模型）</button>{testPlans.map((plan) => <details key={plan.id}><summary>检查计划 · {plan.status} · {plan.id.slice(0, 8)}</summary>{plan.error && <p role="alert">{plan.error}</p>}{['queued', 'running'].includes(plan.status) && <button onClick={() => void cancelTests(plan.id)} disabled={busy}>取消生成检查</button>}{plan.result?.output?.checks && <><p>{plan.result.output.llmProvider} / {plan.result.output.llmModel}</p><ol>{plan.result.output.checks.map((check, index) => <li key={index}>{check.name}：{check.actions.length} 个操作 → {check.selector} 应为 {JSON.stringify(check.expected)}</li>)}</ol><p>覆盖限制：{plan.result.output.limitations.join('；') || '模型未列出限制，请检查计划覆盖范围。'}</p><button disabled={plan.status !== 'ready' || busy || qaRunning || plan.previewFile !== project?.previewFile} onClick={() => runChecks(plan)}>从初始页面运行检查</button></>}</details>)}{qaRunning && <p role="status">正在执行沙箱检查…</p>}{qaResults.length > 0 && <><p role="status">{qaResults.filter((result) => result.status === 'passed').length} / {qaResults.length} 项检查通过</p><ul>{qaResults.map((result, index) => <li key={index}>{result.name} · {result.status} · 实际文本 {JSON.stringify(result.actual)}{result.error && <pre>{result.error}</pre>}</li>)}</ul><button disabled={busy || qaSaved} onClick={() => void saveChecks()}>{qaSaved ? '检查结果已保存' : '保存检查结果与失败证据'}</button></>}</section>}

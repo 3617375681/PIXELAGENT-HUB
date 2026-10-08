@@ -71,6 +71,11 @@ test('studio HTTP creates, persists, lists, previews and exports a real build', 
   assert.equal(project.status, 'ready_for_review');
   assert.equal(project.phase, 'ready_for_review');
   assert.equal(project.rounds[0].build.browserVerified, false);
+  assert.equal(project.generationMetrics.reportedTokens, 4);
+  assert.equal(project.generationMetrics.agentTasks, 2);
+  assert.equal(project.generationMetrics.missingUsageTasks, 0);
+  assert.equal(project.generationMetrics.buildAttempts, 1);
+  assert.equal(project.generationMetrics.costUsd, null);
   assert.equal(JSON.parse(await readFile(join(root, accepted.projectId, 'project.json'), 'utf-8')).jobId, job.jobId);
   const preview = await fetch(`${base}${accepted.projectUrl}/preview`);
   assert.match(preview.headers.get('content-type')!, /application\/json/);

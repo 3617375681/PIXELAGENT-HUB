@@ -7,6 +7,8 @@ import { runSoftwareStudio, validateProjectId, type StudioRecord } from './softw
 import { saveTestPlan, testPlanSchema } from './testPlans.js';
 import { listDiagnostics } from './diagnostics.js';
 import { listReviews } from './reviews.js';
+import { summarizeGeneration } from './generationMetrics.js';
+export { summarizeGeneration } from './generationMetrics.js';
 
 const caseSchema = z.object({ id: z.string().regex(/^[a-z][a-z0-9-]{0,39}$/), title: z.string().min(1), description: z.string().min(1).max(4000), checks: testPlanSchema.shape.checks, limitations: testPlanSchema.shape.limitations }).strict();
 export const benchmarkCasesSchema = z.array(caseSchema).min(1).max(20).refine((cases) => new Set(cases.map((entry) => entry.id)).size === cases.length, 'Case IDs must be unique');
@@ -18,20 +20,6 @@ export type BenchmarkEntry = {
   testPlanId?: string; interactionStatus: 'not_run'; costUsd: null;
 };
 export type BenchmarkRun = { id: string; startedAt: string; finishedAt?: string; sourceRevision: string; sourceDirty: boolean; casesSha256: string; status: 'running' | 'completed' | 'cancelled' | 'interrupted'; entries: BenchmarkEntry[] };
-
-export function summarizeGeneration(record: StudioRecord) {
-  const tasks = [...(record.plan ? [record.plan] : []), ...record.rounds.map((round) => round.code)];
-  const withUsage = tasks.filter((task) => Number.isFinite(task.output?.llmUsage?.total_tokens) && task.output.llmUsage.total_tokens >= 0);
-  return {
-    status: record.status, elapsedMs: record.error?.startsWith('Benchmark process interrupted') ? null : Math.max(0, Date.parse(record.finishedAt || record.startedAt) - Date.parse(record.startedAt)),
-    buildAttempts: record.rounds.filter((round) => round.build).length,
-    failedBuilds: record.rounds.filter((round) => round.build?.status === 'failed').length,
-    agentTasks: tasks.length, reportedUsageTasks: withUsage.length,
-    reportedTokens: withUsage.reduce((sum, task) => sum + task.output.llmUsage.total_tokens, 0),
-    models: [...new Set(tasks.filter((task) => task.output?.llmProvider && task.output?.llmModel).map((task) => `${task.output.llmProvider}/${task.output.llmModel}`))] as string[],
-    ...(record.error ? { error: record.error } : {}),
-  };
-}
 
 export async function runStudioBenchmark(options: {
   cases: BenchmarkCase[]; strategies: NonNullable<StudioRecord['strategy']>[];
