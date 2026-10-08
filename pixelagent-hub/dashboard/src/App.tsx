@@ -1,14 +1,17 @@
 import { Routes, Route } from 'react-router'
-import Home from './pages/Home'
-import ArchivePage from './pages/ArchivePage'
-import OpsConsole from './pages/OpsConsole'
-import SessionDetailPage from './pages/SessionDetailPage'
-import LiveHome from './pages/LiveHome'
-import LiveArchivePage from './pages/LiveArchivePage'
-import Studio from './pages/Studio'
+import { lazy, Suspense } from 'react'
+
+const Home = lazy(() => import('./pages/Home'))
+const ArchivePage = lazy(() => import('./pages/ArchivePage'))
+const OpsConsole = lazy(() => import('./pages/OpsConsole'))
+const SessionDetailPage = lazy(() => import('./pages/SessionDetailPage'))
+const LiveHome = lazy(() => import('./pages/LiveHome'))
+const LiveArchivePage = lazy(() => import('./pages/LiveArchivePage'))
+const Studio = lazy(() => import('./pages/Studio'))
 
 export default function App() {
   return (
+    <Suspense fallback={<main role="status" className="min-h-screen flex items-center justify-center pixel-font-body">正在加载工作区…</main>}>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/archive" element={<ArchivePage />} />
@@ -20,5 +23,6 @@ export default function App() {
       <Route path="/studio" element={<Studio />} />
       <Route path="/studio/:projectId" element={<Studio />} />
     </Routes>
+    </Suspense>
   )
 }

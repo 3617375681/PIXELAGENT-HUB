@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { AgentOutput, AgentOutputAttachment } from '../types/agent';
 import { mockAgents } from '../data/mockData';
 import { useChat } from '../hooks/useChat';
@@ -143,6 +141,7 @@ function AttachmentGrid({ items, theme }: { items: AgentOutputAttachment[]; them
 }
 
 // ---- Markdown renderer with syntax-highlighted code blocks ----
+const CodeHighlight = lazy(() => import('./CodeHighlight'));
 const MarkdownCodeBlock: React.FC<{ language: string; value: string }> = ({ language, value }) => {
   const [copied, setCopied] = useState(false);
   const onCopy = () => {
@@ -159,14 +158,9 @@ const MarkdownCodeBlock: React.FC<{ language: string; value: string }> = ({ lang
       >
         {copied ? 'COPIED' : 'COPY'}
       </button>
-      <SyntaxHighlighter
-        language={language || 'text'}
-        style={vscDarkPlus}
-        customStyle={{ margin: 0, fontSize: '12px', borderRadius: 4, padding: '8px 12px' }}
-        codeTagProps={{ style: { fontSize: '12px', fontFamily: 'ui-monospace, monospace' } }}
-      >
-        {value}
-      </SyntaxHighlighter>
+      <Suspense fallback={<pre className="m-0 rounded p-3 text-xs overflow-x-auto"><code>{value}</code></pre>}>
+        <CodeHighlight language={language} value={value} />
+      </Suspense>
     </div>
   );
 };
