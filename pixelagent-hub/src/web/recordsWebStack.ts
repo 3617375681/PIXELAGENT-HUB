@@ -656,7 +656,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
 
   if (pathname.startsWith('/api/studio/')) {
     await runtimeReady;
-    if (req.method === 'POST' && pathname === '/api/studio/projects') {
+    if (req.method === 'POST' && (pathname === '/api/studio/projects' || /^\/api\/studio\/projects\/[^/]+\/repair$/.test(pathname))) {
       const key = String(req.headers['x-api-key'] || req.socket?.remoteAddress || 'unknown');
       if (!runRateLimiter.consume(`${key}|studio`).allowed) {
         statusCode = 429;

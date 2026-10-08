@@ -95,6 +95,7 @@ export const studioApi = {
   archive: (projectId: string) => fetchRecordsBinary(`/api/studio/projects/${encodeURIComponent(projectId)}/archive`),
   diagnostics: (projectId: string, signal?: AbortSignal) => request<{ reports: StudioDiagnostic[] }>(`/api/studio/projects/${encodeURIComponent(projectId)}/diagnostics`, { signal }),
   saveDiagnostic: (projectId: string, payload: Pick<StudioDiagnostic, 'previewFile' | 'loaded' | 'errors'>) => request<{ report: StudioDiagnostic }>(`/api/studio/projects/${encodeURIComponent(projectId)}/diagnostics`, { method: 'POST', body: JSON.stringify(payload) }),
+  repair: (projectId: string, diagnosticId: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/repair`, { method: 'POST', body: JSON.stringify({ diagnosticId }) }),
 };
 
 /** POST /api/run/:mode — supports async=1 (202 + jobUrl) or stream=1 (SSE text body). */

@@ -13,8 +13,12 @@ import { RunRuntime } from './runRuntime.js';
 import { createStudioApi } from './studioApi.js';
 
 class StudioFixture extends MockProvider {
+  prompts: string[] = [];
+  failCode = false;
   async askWithUsage(system: string, user: string, temperature?: number, signal?: AbortSignal) {
+    this.prompts.push(user);
     if (system.includes('project manager')) return super.askWithUsage(system, user, temperature);
+    if (this.failCode) throw new Error('Fixture repair generation failed');
     return { content: JSON.stringify({ language: 'javascript', files: [
       { path: 'index.html', content: '<html><body><button id="increment">Add</button><output>0</output><script src="app.js"></script></body></html>', description: 'Counter UI' },
       { path: 'app.js', content: 'document.querySelector("#increment").addEventListener("click",()=>document.querySelector("output").textContent++);', description: 'Counter behavior' },
@@ -119,6 +123,45 @@ test('diagnostics reject stale previews, invalid observations and fabricated app
   assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify(payload) })).status, 409);
   assert.deepEqual((await (await fetch(url)).json()).reports, []);
 }));
+
+test('repair uses saved errors and original source, with independent success and failure records', async () => {
+  const provider = new StudioFixture();
+  await withApi(async (base, runtime, root) => {
+    const parent = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter' }) })).json();
+    await waitForJob(runtime, parent.jobId);
+    const original = await readFile(join(root, parent.projectId, 'project.json'), 'utf-8');
+    const archive = await readFile(join(root, parent.projectId, 'source.zip'));
+    const saved = await (await fetch(`${base}${parent.projectUrl}/diagnostics`, { method: 'POST', body: JSON.stringify({ previewFile: 'v1/dist/index.html', loaded: true, errors: ['counter-click-failed'] }) })).json();
+    const repairUrl = `${base}${parent.projectUrl}/repair`;
+    for (const invalid of ['', '../../private', 5]) assert.equal((await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: invalid }) })).status, 400);
+    assert.equal((await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: randomUUID() }) })).status, 404);
+    const response = await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: saved.report.id }) });
+    assert.equal(response.status, 202);
+    const child = await response.json();
+    assert.notEqual(child.projectId, parent.projectId);
+    assert.equal((await waitForJob(runtime, child.jobId)).status, 'succeeded');
+    const record = (await (await fetch(`${base}${child.projectUrl}`)).json()).project;
+    assert.equal(record.repair.parentProjectId, parent.projectId);
+    assert.equal(record.repair.diagnosticId, saved.report.id);
+    assert.equal(record.status, 'ready_for_review');
+    assert.equal(record.rounds[0].build.browserVerified, false);
+    const codePrompt = provider.prompts.at(-1)!;
+    assert.match(codePrompt, /counter-click-failed/);
+    assert.match(codePrompt, /previousFiles/);
+    assert.match(codePrompt, /#increment/);
+    provider.failCode = true;
+    const failed = await (await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: saved.report.id }) })).json();
+    assert.equal((await waitForJob(runtime, failed.jobId)).status, 'failed');
+    const failedRecord = (await (await fetch(`${base}${failed.projectUrl}`)).json()).project;
+    assert.equal(failedRecord.status, 'failed');
+    assert.equal(failedRecord.repair.parentProjectId, parent.projectId);
+    assert.equal((await fetch(`${base}${failed.projectUrl}/archive`)).status, 409);
+    assert.equal(await readFile(join(root, parent.projectId, 'project.json'), 'utf-8'), original);
+    assert.deepEqual(await readFile(join(root, parent.projectId, 'source.zip')), archive);
+    const clean = await (await fetch(`${base}${parent.projectUrl}/diagnostics`, { method: 'POST', body: JSON.stringify({ previewFile: 'v1/dist/index.html', loaded: true, errors: [] }) })).json();
+    assert.equal((await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: clean.report.id }) })).status, 409);
+  }, provider);
+});
 
 test('orphaned project is restored as failed and cannot advertise a preview', async () => withApi(async (base, _runtime, root) => {
   const projectId = randomUUID();

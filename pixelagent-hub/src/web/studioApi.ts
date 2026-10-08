@@ -6,6 +6,7 @@ import type { Orchestrator } from '../core/Orchestrator.js';
 import { runSoftwareStudio, saveStudioRecord, validateProjectId, type StudioRecord } from '../studio/softwareStudio.js';
 import type { RunRuntime } from './runRuntime.js';
 import { diagnosticInput, listDiagnostics, saveDiagnostic } from '../studio/diagnostics.js';
+import { validateFiles, type SourceFile } from '../studio/workspace.js';
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -31,6 +32,27 @@ export function createStudioApi(options: {
     res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
     res.end(JSON.stringify(body));
   };
+  const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[]) => {
+    const projectId = randomUUID();
+    const jobId = `studio-${projectId}`;
+    const record: StudioRecord = { projectId, jobId, description: description.trim(), repair, status: 'queued', phase: 'queued', startedAt: new Date().toISOString(), rounds: [] };
+    await saveStudioRecord(options.root, record);
+    options.runtime.submitBackground({
+      jobId, taskId: projectId, mode: 'studio', maxRetries: 0,
+      run: async ({ signal }) => {
+        const controller = new AbortController();
+        const abort = () => controller.abort(signal.reason);
+        if (signal.aborted) abort(); else signal.addEventListener('abort', abort, { once: true });
+        const timer = setTimeout(() => controller.abort(new DOMException(`Software generation exceeded ${options.timeoutMs}ms`, 'TimeoutError')), options.timeoutMs);
+        try {
+          const result = await runSoftwareStudio({ root: options.root, projectId, jobId, description: record.description, repair, initialFiles, signal: controller.signal, orchestrator: options.createOrchestrator?.() });
+          if (result.status !== 'ready_for_review') throw new Error(result.error || result.status);
+          return { mode: 'studio', task: { id: projectId, type: 'software_creation', description: record.description }, status: 'success', final: { projectId, status: result.status }, raw: result, trace: { mode: 'studio', startedAt: result.startedAt, finishedAt: result.finishedAt, actions: [] } };
+        } finally { clearTimeout(timer); signal.removeEventListener('abort', abort); }
+      },
+    });
+    return { projectId, jobId, projectUrl: `/api/studio/projects/${projectId}` };
+  };
   return {
     async handle(req: IncomingMessage, res: ServerResponse, pathname: string, input?: unknown): Promise<void> {
       try {
@@ -44,7 +66,7 @@ export function createStudioApi(options: {
             projects.push(await read(entry.name));
           }
           projects.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
-          json(res, 200, { projects: projects.map(({ projectId, description, status, startedAt, phase, jobId }) => ({ projectId, description, status, startedAt, phase, jobId })) });
+          json(res, 200, { projects: projects.map(({ projectId, description, status, startedAt, phase, jobId, repair }) => ({ projectId, description, status, startedAt, phase, jobId, repair })) });
           return;
         }
         if (pathname === '/api/studio/projects' && req.method === 'POST') {
@@ -52,30 +74,27 @@ export function createStudioApi(options: {
           if (typeof description !== 'string' || !description.trim() || description.length > 4000) {
             json(res, 400, { error: { message: 'Provide a project description of 1–4000 characters' } }); return;
           }
-          const projectId = randomUUID();
-          const jobId = `studio-${projectId}`;
-          const record: StudioRecord = { projectId, jobId, description: description.trim(), status: 'queued', phase: 'queued', startedAt: new Date().toISOString(), rounds: [] };
-          await saveStudioRecord(options.root, record);
-          options.runtime.submitBackground({
-            jobId, taskId: projectId, mode: 'studio', maxRetries: 0,
-            run: async ({ signal }) => {
-              const controller = new AbortController();
-              const abort = () => controller.abort(signal.reason);
-              if (signal.aborted) abort(); else signal.addEventListener('abort', abort, { once: true });
-              const timer = setTimeout(() => controller.abort(new DOMException(`Software generation exceeded ${options.timeoutMs}ms`, 'TimeoutError')), options.timeoutMs);
-              try {
-                const result = await runSoftwareStudio({ root: options.root, projectId, jobId, description: record.description, signal: controller.signal, orchestrator: options.createOrchestrator?.() });
-                if (result.status !== 'ready_for_review') throw new Error(result.error || result.status);
-                return { mode: 'studio', task: { id: projectId, type: 'software_creation', description: record.description }, status: 'success', final: { projectId, status: result.status }, raw: result, trace: { mode: 'studio', startedAt: result.startedAt, finishedAt: result.finishedAt, actions: [] } };
-              } finally { clearTimeout(timer); signal.removeEventListener('abort', abort); }
-            },
-          });
-          json(res, 202, { projectId, jobId, projectUrl: `/api/studio/projects/${projectId}` }); return;
+          json(res, 202, await startProject(description)); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'repair' && req.method === 'POST') {
+          const diagnosticId = (input as { diagnosticId?: unknown })?.diagnosticId;
+          if (typeof diagnosticId !== 'string' || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(diagnosticId)) {
+            json(res, 400, { error: { message: 'Provide a saved diagnostic UUID' } }); return;
+          }
+          const report = (await listDiagnostics(options.root, projectId)).find((report) => report.id === diagnosticId);
+          if (!report) { json(res, 404, { error: { message: 'Diagnostic not found in this project' } }); return; }
+          if (record.status !== 'ready_for_review' || report.previewFile !== record.previewFile || !report.errors.length) {
+            json(res, 409, { error: { message: 'Repair requires errors from the current successful preview' } }); return;
+          }
+          const round = record.rounds.find((attempt) => `v${attempt.round}/dist/index.html` === record.previewFile);
+          if (round?.build?.status !== 'passed') throw new Error('Repair source has no successful build');
+          const files = validateFiles(round.code.output.files);
+          json(res, 202, await startProject(record.description, { parentProjectId: projectId, diagnosticId, previewFile: report.previewFile, errors: report.errors }, files)); return;
+        }
         if (action === 'diagnostics') {
           if (req.method === 'GET') { json(res, 200, { reports: await listDiagnostics(options.root, projectId) }); return; }
           if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }

@@ -6,6 +6,10 @@
 
 诊断 API 为 `GET/POST /api/studio/projects/<UUID>/diagnostics`，写入 `diagnostics/<reportUUID>.json`。POST 必须提供当前 `previewFile`、布尔值 `loaded` 和最多 20 条 `errors`（每条 1–2000 字符）；旧预览或非成功项目返回 409。客户端观察不能作为可信 QA 或批准结果。
 
+保存含异常的诊断后，点击“依据此诊断返修”。`POST /api/studio/projects/<UUID>/repair` 接收 `diagnosticId`，从服务器读取匹配的原源码与错误；Manager 重新规划，Coder 根据源码和诊断修正，Builder 再次真实编译。返修受创建限流、取消和超时控制，不自动重跑整个付费任务。
+
+返修生成独立关联项目，`project.json.repair` 保存原项目 ID、诊断 ID、预览版本和错误，页面可返回原项目。原项目、源码和包不被覆盖，返修失败也能保留原成果。新构建仍为 `ready_for_review`，需要再次试玩；这不是完整的同项目版本管理、自动交互验收或已修复保证。
+
 ## 创建与试玩
 
 启动 Records API 和 dashboard 后，打开 `/studio`（首页 STUDIO 按钮）。输入需求后点击“开始创作”，页面自动显示执行阶段，完成后可试玩、看源码与构建记录、下载 ZIP；刷新后根据 URL 恢复项目。取消不会开始后续代码生成。此流程受原有 API 鉴权、创建限流与运行队列控制。
