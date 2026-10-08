@@ -178,20 +178,6 @@ test('explicit demo works without a real model and is marked synthetic', async (
   });
 });
 
-async function waitForServerReady(baseUrl: string, timeoutMs: number): Promise<void> {
-  const startedAt = Date.now();
-  while (Date.now() - startedAt < timeoutMs) {
-    try {
-      const res = await fetch(`${baseUrl}/health`);
-      if (res.ok) return;
-    } catch {
-      // Keep retrying.
-    }
-    await delay(150);
-  }
-  throw new Error('Server did not become ready in time');
-}
-
 test('studio endpoints use Records API authentication and creation rate limits', async () => {
   await withTempStack(async ({ baseUrl, stack }) => {
     assert.equal((await fetch(`${baseUrl}/api/studio/projects`)).status, 401);
@@ -223,11 +209,10 @@ async function withTempStack<T>(
   process.env.LLM_PROVIDER = 'mock';
   process.env.KIMI_API_KEY = '';
   const dir = await mkdtemp(join(tmpdir(), 'maf-records-'));
-  const port = 3217 + Math.floor(Math.random() * 200);
   const stack = createRecordsWebStack({
     ...process.env,
     NODE_ENV: 'development',
-    RECORDS_API_PORT: String(port),
+    RECORDS_API_PORT: '3100',
     RECORDS_ROOT_OVERRIDE: dir,
     ALLOW_UNAUTH_IN_DEV: 'false',
     RECORDS_API_KEY: 'integration-test-api-key',
@@ -239,13 +224,16 @@ async function withTempStack<T>(
   const server = createServer((req, res) => {
     void stack.handleRequest(req, res);
   });
-  const baseUrl = `http://127.0.0.1:${port}`;
   await new Promise<void>((resolve, reject) => {
     server.once('error', reject);
-    server.listen(port, resolve);
+    server.listen(0, '127.0.0.1', resolve);
   });
+  const baseUrl = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
   try {
-    await waitForServerReady(baseUrl, 10_000);
+    await stack.runtimeReady;
+    const health = await fetch(`${baseUrl}/health`);
+    assert.equal(health.status, 200);
+    assert.equal((await health.json()).ok, true);
     return await fn({ baseUrl, stack });
   } finally {
     await new Promise<void>((resolve, reject) => {
