@@ -19,6 +19,7 @@ export function useWorkflowData() {
 
   const baseWorkflow = useMemo<Workflow>(() => ({
     id: "company-console",
+    source: "empty",
     name: "Company console (8 agents)",
     description: "Research → Draft → Review → Final review",
     currentRound: 1,
@@ -35,7 +36,7 @@ export function useWorkflowData() {
     setRestoredWorkflow(workflow);
     setRoundIndex(0);
     if (typeof session.sessionId === "string") localStorage.setItem(SESSION_KEY, session.sessionId);
-    const demo = JSON.stringify(session).includes('"llmProvider":"mock"') || JSON.stringify(session).includes('"generatedBy":"mock"');
+    const demo = workflow.source === 'mock';
     const status = session.status === "failed"
       ? `Run failed: ${String(session.error || "Review rejected")}`
       : session.status === "cancelled" ? "Run cancelled" : "Session loaded";

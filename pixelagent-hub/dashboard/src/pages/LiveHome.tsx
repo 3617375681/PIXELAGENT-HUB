@@ -523,6 +523,7 @@ export default function LiveHome() {
           isOpen={showExport}
           workflow={{
             id: String(workflow.id),
+            source: workflow.source,
             name: workflow.name,
             description: workflow.description,
             rounds: workflow.rounds.map((r: Round) => ({

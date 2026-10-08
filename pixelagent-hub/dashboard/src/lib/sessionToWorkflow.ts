@@ -330,12 +330,18 @@ function roundtableSessionToWorkflow(session: Json): Workflow {
  */
 export function sessionJsonToWorkflow(session: Record<string, unknown>): Workflow {
   const s = session as Json;
+  const containsMock = (value: unknown): boolean => {
+    if (!value || typeof value !== 'object') return false;
+    const object = value as Record<string, unknown>;
+    return object.llmProvider === 'mock' || object.generatedBy === 'mock' || Object.values(object).some(containsMock);
+  };
+  const source = containsMock(session) ? 'mock' : 'records-api';
   if (Array.isArray(s.drafts) || s.plan || s.research) {
-    return companySessionToWorkflow(s);
+    return { ...companySessionToWorkflow(s), source };
   }
   const trace = asObj(s.trace);
   if (trace && Array.isArray(trace.conversation) && trace.conversation.length > 0) {
-    return roundtableSessionToWorkflow(s);
+    return { ...roundtableSessionToWorkflow(s), source };
   }
-  return companySessionToWorkflow(s);
+  return { ...companySessionToWorkflow(s), source };
 }

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
@@ -112,7 +112,7 @@ export default function ArchivePage() {
         </button>
         <BookOpen size={14} style={{ color: theme.primary }} />
         <span className="pixel-font text-xs glow-text" style={{ color: theme.primary }}>
-          ARCHIVE
+          DEMO ARCHIVE
         </span>
         <span className="pixel-font text-[8px] text-white/30 ml-1">
           {currentWorkflow?.name || ''}
@@ -123,6 +123,11 @@ export default function ArchivePage() {
             {rounds.length} ROUND{rounds.length > 1 ? 'S' : ''}
           </span>
         </div>
+      </div>
+
+      <div role="note" className="shrink-0 border-b border-amber-400/30 bg-amber-400/10 px-4 py-2 text-sm text-amber-200">
+        模拟演示数据：发布、测试和完成状态均为示例，不代表实际执行或验收。
+        <Link to="/live" className="ml-2 underline">查看真实会话记录</Link>
       </div>
 
       {/* Main */}

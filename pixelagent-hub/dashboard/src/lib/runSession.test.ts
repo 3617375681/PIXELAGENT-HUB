@@ -11,6 +11,16 @@ const session = {
 };
 
 describe('full session resolution', () => {
+  it('retains mock provenance from output metadata when mapping restored sessions', () => {
+    const workflow = sessionJsonToWorkflow({ ...session, drafts: [{ output: { content: 'Synthetic', llmProvider: 'mock' } }] });
+    expect(workflow.source).toBe('mock');
+    expect(workflow.id).toBe(session.sessionId);
+  });
+
+  it('does not classify quoted provider text as mock execution metadata', () => {
+    expect(sessionJsonToWorkflow({ ...session, task: { description: 'Discuss "llmProvider":"mock"' } }).source).toBe('records-api');
+  });
+
   it('sync response and async runResult map to the same complete workflow', async () => {
     const result = { status: 'success', artifacts: { sessionId: session.sessionId }, final: { content: 'summary only' } };
     const job = { status: 'succeeded', runResult: result };

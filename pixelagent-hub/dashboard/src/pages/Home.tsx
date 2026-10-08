@@ -232,9 +232,9 @@ export default function Home() {
               <Terminal size={12} style={{ color: '#12121a' }} />
               <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>LIVE</span>
             </Link>
-            <Link to="/archive" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-3 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#a855f7', backgroundColor: '#a855f7' }} title="Archive">
+            <Link to="/archive" onClick={() => soundEngine.click()} className="flex items-center gap-1.5 px-3 py-1.5 border transition-all" style={{ borderRadius: 4, borderColor: '#a855f7', backgroundColor: '#a855f7' }} title="模拟演示归档">
               <BookOpen size={12} style={{ color: '#12121a' }} />
-              <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>ARCHIVE</span>
+              <span className="pixel-font text-[8px] font-bold" style={{ color: '#12121a' }}>DEMO ARCHIVE</span>
             </Link>
             <div className="relative">
               <button
@@ -394,6 +394,7 @@ export default function Home() {
           isOpen={showExport}
           workflow={{
             id: String(workflow.id),
+            source: workflow.source,
             name: workflow.name,
             description: workflow.description,
             rounds: workflow.rounds.map((r: Round) => ({

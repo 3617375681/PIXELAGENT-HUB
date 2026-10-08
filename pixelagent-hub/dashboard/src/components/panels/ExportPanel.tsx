@@ -15,6 +15,9 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ workflow, isOpen, onCl
   const exportJSON = () => {
     const data = {
       workflow: workflow.name,
+      source: workflow.source || 'unknown',
+      sessionId: ['records-api', 'mock'].includes(workflow.source || '') ? workflow.id : null,
+      acceptance: 'not_verified',
       exportedAt: new Date().toISOString(),
       totalRounds: workflow.rounds.length,
       rounds: workflow.rounds.map((r: Round) => ({
@@ -38,6 +41,8 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ workflow, isOpen, onCl
 
   const exportMarkdown = () => {
     let md = `# ${workflow.name}\n\n`;
+    md += `> Source: ${workflow.source || 'unknown'}. This export is a workflow record, not proof of tests, deployment or acceptance.\n\n`;
+    md += `> Session: ${['records-api', 'mock'].includes(workflow.source || '') ? workflow.id : 'none'}\n\n`;
     md += `> ${workflow.description}\n\n`;
     md += `---\n\n`;
 
@@ -103,6 +108,10 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ workflow, isOpen, onCl
                 [CLOSE]
               </button>
             </div>
+
+            <p role="note" className="shrink-0 px-4 py-2 text-sm text-amber-200 border-b border-white/10">
+              数据来源：{workflow.source === 'mock' ? '模拟模型输出' : workflow.source === 'records-api' ? 'Records API 会话记录' : workflow.source === 'empty' ? '未运行的空工作区' : '来源未确认'}。导出不代表测试、发布或交付验收通过。
+            </p>
 
             <div className="flex-1 flex overflow-hidden">
               {/* JSON Export */}

@@ -58,6 +58,7 @@ export interface Round {
 }
 
 export interface Workflow {
+  source?: 'records-api' | 'mock' | 'empty';
   id: string;
   name: string;
   description: string;
