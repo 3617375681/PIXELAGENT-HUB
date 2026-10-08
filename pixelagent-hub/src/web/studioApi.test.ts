@@ -11,12 +11,14 @@ import { MockProvider } from '../core/llm/mock.js';
 import { saveStudioRecord } from '../studio/softwareStudio.js';
 import { RunRuntime } from './runRuntime.js';
 import { createStudioApi } from './studioApi.js';
+import { saveTestPlan, testPlanSchema } from '../studio/testPlans.js';
 
 class StudioFixture extends MockProvider {
   prompts: string[] = [];
   failCode = false;
   async askWithUsage(system: string, user: string, temperature?: number, signal?: AbortSignal) {
     this.prompts.push(user);
+    if (system.includes('browser test planner')) return { content: JSON.stringify({ checks: [{ name: 'Initial counter', actions: [], selector: 'output', expected: '0' }], limitations: ['Synthetic DOM fixture only'] }), usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }, model: 'fixture', provider: 'mock' as const };
     if (system.includes('project manager')) return super.askWithUsage(system, user, temperature);
     if (this.failCode) throw new Error('Fixture repair generation failed');
     return { content: JSON.stringify({ language: 'javascript', files: [
@@ -30,7 +32,7 @@ async function withApi(work: (base: string, runtime: RunRuntime, root: string) =
   const root = await mkdtemp(join(tmpdir(), 'studio-api-'));
   const runtime = new RunRuntime({ recordsRoot: join(root, 'runtime'), maxConcurrency: 1, maxQueueSize: 4, maxRetries: 2 });
   await runtime.init();
-  const api = createStudioApi({ root: join(root, 'projects'), runtime, timeoutMs, createOrchestrator: () => createOrchestrator('studio-fixture', provider) });
+  const api = createStudioApi({ root: join(root, 'projects'), runtime, timeoutMs, createOrchestrator: () => createOrchestrator('studio-fixture', provider, { includeTester: true }) });
   const server = createServer(async (req, res) => {
     let raw = '';
     for await (const chunk of req) raw += chunk;
@@ -209,6 +211,71 @@ test('revisions inherit source and requests; version selection survives reads an
     assert.equal((await post(`${failed.projectUrl}/revise`, { changeRequest: 'Retry' })).status, 409);
     assert.equal((await (await fetch(`${base}${failed.projectUrl}/versions`)).json()).selectedProjectId, initial.projectId);
     assert.equal(await readFile(join(root, initial.projectId, 'project.json'), 'utf-8'), original);
+  }, provider);
+});
+
+test('tester creates a bounded plan and saved browser failures become repair evidence without approval', async () => withApi(async (base, runtime, root) => {
+  const post = async (url: string, body: unknown) => fetch(`${base}${url}`, { method: 'POST', body: JSON.stringify(body) });
+  const project = await (await post('/api/studio/projects', { description: 'Counter' })).json();
+  await waitForJob(runtime, project.jobId);
+  assert.equal((await post(`${project.projectUrl}/test-plans`, { code: 'unrequested' })).status, 400);
+  const planned = await (await post(`${project.projectUrl}/test-plans`, {})).json();
+  assert.equal((await waitForJob(runtime, planned.jobId)).status, 'succeeded');
+  const plans = (await (await fetch(`${base}${project.projectUrl}/test-plans`)).json()).plans;
+  assert.equal(plans[0].status, 'ready');
+  assert.equal(plans[0].result.output.llmProvider, 'mock');
+  const checks = [{ name: 'Initial counter', status: 'failed', actual: 'wrong', error: 'Expected 0, observed wrong' }];
+  const payload = { previewFile: 'v1/dist/index.html', loaded: true, errors: [], checks, testPlanId: planned.planId };
+  assert.equal((await post(`${project.projectUrl}/diagnostics`, { ...payload, testPlanId: randomUUID() })).status, 409);
+  assert.equal((await post(`${project.projectUrl}/diagnostics`, { ...payload, checks: [{ ...checks[0], name: 'Another check' }] })).status, 409);
+  assert.equal((await post(`${project.projectUrl}/diagnostics`, { ...payload, checks: undefined })).status, 400);
+  assert.equal((await post(`${project.projectUrl}/diagnostics`, { ...payload, checks: [{ name: 'Initial counter', status: 'passed', actual: 'wrong' }] })).status, 409);
+  const saved = await (await post(`${project.projectUrl}/diagnostics`, payload)).json();
+  assert.match(saved.report.errors[0], /Initial counter.*Expected 0/);
+  assert.equal(saved.report.testPlanId, planned.planId);
+  const unchanged = (await (await fetch(`${base}${project.projectUrl}`)).json()).project;
+  assert.equal(unchanged.status, 'ready_for_review');
+  assert.equal(unchanged.rounds[0].build.browserVerified, false);
+  await saveTestPlan(root, { id: randomUUID(), projectId: project.projectId, previewFile: 'v1/dist/index.html', jobId: 'missing-job', status: 'running', startedAt: new Date().toISOString() });
+  assert.equal((await (await fetch(`${base}${project.projectUrl}/test-plans`)).json()).plans[0].status, 'failed');
+}));
+
+test('test plan schema rejects model code and oversized plans', () => {
+  const check = { name: 'Counter', actions: [], selector: 'output', expected: '0' };
+  assert.equal(testPlanSchema.safeParse({ checks: [{ ...check, actions: [{ type: 'eval', code: 'process.exit()' }] }], limitations: [] }).success, false);
+  assert.equal(testPlanSchema.safeParse({ checks: Array(11).fill(check), limitations: [] }).success, false);
+  assert.equal(testPlanSchema.safeParse({ checks: [], limitations: [] }).success, false);
+  assert.equal(testPlanSchema.safeParse({ checks: [check, check], limitations: [] }).success, false);
+});
+
+class TestPlanningWaitFixture extends StudioFixture {
+  started = false;
+  aborted = false;
+  async askWithUsage(system: string, user: string, temperature?: number, signal?: AbortSignal) {
+    if (!system.includes('browser test planner')) return super.askWithUsage(system, user, temperature, signal);
+    this.started = true;
+    return await new Promise<never>((_resolve, reject) => {
+      const abort = () => { this.aborted = true; reject(signal?.reason); };
+      if (signal?.aborted) abort(); else signal?.addEventListener('abort', abort, { once: true });
+    });
+  }
+}
+
+test('test planning cancellation aborts the model and retains the built project', async () => {
+  const provider = new TestPlanningWaitFixture();
+  await withApi(async (base, runtime) => {
+    const project = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter' }) })).json();
+    await waitForJob(runtime, project.jobId);
+    const url = `${base}${project.projectUrl}/test-plans`;
+    const accepted = await (await fetch(url, { method: 'POST', body: '{}' })).json();
+    const deadline = Date.now() + 3000;
+    while (!provider.started && Date.now() < deadline) await delay(10);
+    assert.equal(provider.started, true);
+    assert.equal((await fetch(url, { method: 'POST', body: JSON.stringify({ cancelPlanId: accepted.planId }) })).status, 200);
+    assert.equal((await waitForJob(runtime, accepted.jobId)).status, 'cancelled');
+    assert.equal(provider.aborted, true);
+    assert.equal((await (await fetch(url)).json()).plans[0].status, 'cancelled');
+    assert.equal((await (await fetch(`${base}${project.projectUrl}`)).json()).project.status, 'ready_for_review');
   }, provider);
 });
 

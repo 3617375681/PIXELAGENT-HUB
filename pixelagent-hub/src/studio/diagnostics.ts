@@ -7,7 +7,9 @@ export const diagnosticInput = z.object({
   previewFile: z.string().regex(/^v[1-3]\/dist\/index.html$/),
   loaded: z.boolean(),
   errors: z.array(z.string().min(1).max(2000)).max(20),
-}).strict();
+  testPlanId: z.string().uuid().optional(),
+  checks: z.array(z.object({ name: z.string().min(1).max(120), status: z.enum(['passed', 'failed']), actual: z.string().max(300), error: z.string().max(2000).optional() }).strict()).min(1).max(10).optional(),
+}).strict().refine((input) => Boolean(input.testPlanId) === Boolean(input.checks), 'Checks require a test plan ID');
 
 export type StudioDiagnostic = z.infer<typeof diagnosticInput> & {
   id: string; savedAt: string; source: 'browser-client';

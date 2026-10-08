@@ -1,3 +1,5 @@
+import { createOrchestrator } from '../factory.js';
+import { listTestPlans, saveTestPlan, type TestPlanRecord } from '../studio/testPlans.js';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -106,10 +108,52 @@ export function createStudioApi(options: {
           }
           json(res, 202, await startProject(description)); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|versions))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|versions|test-plans))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'test-plans') {
+          const plans = await listTestPlans(options.root, projectId);
+          for (const plan of plans) {
+            if (!['queued', 'running'].includes(plan.status)) continue;
+            const job = options.runtime.getJob(plan.jobId);
+            if (!job || ['failed', 'cancelled', 'succeeded'].includes(job.status)) {
+              plan.status = job?.status === 'cancelled' ? 'cancelled' : 'failed';
+              plan.error = job?.error || 'Test planning was interrupted';
+              plan.finishedAt = job?.finishedAt || new Date().toISOString();
+              await saveTestPlan(options.root, plan);
+            }
+          }
+          if (req.method === 'GET') { json(res, 200, { plans }); return; }
+          if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
+          if (input !== undefined && (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some((key) => key !== 'cancelPlanId'))) { json(res, 400, { error: { message: 'Provide an empty object or cancelPlanId' } }); return; }
+          const cancelPlanId = (input as { cancelPlanId?: unknown })?.cancelPlanId;
+          if (cancelPlanId !== undefined) {
+            const plan = plans.find((plan) => plan.id === cancelPlanId);
+            if (!plan || !['queued', 'running'].includes(plan.status) || !options.runtime.cancelJob(plan.jobId)) { json(res, 409, { error: { message: 'No running test plan with this ID' } }); return; }
+            plan.status = 'cancelled'; plan.error = 'User cancelled test planning'; plan.finishedAt = new Date().toISOString();
+            await saveTestPlan(options.root, plan); json(res, 200, { plan }); return;
+          }
+          if (record.status !== 'ready_for_review' || !record.previewFile) { json(res, 409, { error: { message: 'Test planning requires a successful preview' } }); return; }
+          const files = sourceForPreview(record, record.previewFile);
+          const requests = await changeHistory(record);
+          const id = randomUUID();
+          const plan: TestPlanRecord = { id, projectId, previewFile: record.previewFile, jobId: `studio-tests-${id}`, status: 'queued', startedAt: new Date().toISOString() };
+          await saveTestPlan(options.root, plan);
+          options.runtime.submitBackground({ jobId: plan.jobId, taskId: id, mode: 'studio-tests', maxRetries: 0, run: async ({ signal }) => {
+            plan.status = 'running'; await saveTestPlan(options.root, plan);
+            try {
+              const orchestrator = options.createOrchestrator?.() || createOrchestrator('StudioTester', undefined, { includeTester: true });
+              plan.result = await orchestrator.runTask({ id, type: 'browser_test_plan', description: record.description, context: { files, changeRequests: requests, repair: record.repair } }, 'tester', { signal });
+              if (plan.result.status !== 'success') throw new Error(plan.result.reasoning || 'Test planning failed');
+              signal.throwIfAborted(); plan.status = 'ready';
+              return { mode: 'studio-tests', task: { id, type: 'browser_test_plan', description: record.description }, status: 'success', final: { planId: id }, raw: plan, trace: { mode: 'studio-tests', startedAt: plan.startedAt, finishedAt: new Date().toISOString(), actions: [] } };
+            } catch (error) {
+              plan.status = signal.aborted ? 'cancelled' : 'failed'; plan.error = error instanceof Error ? error.message : String(error); throw error;
+            } finally { plan.finishedAt = new Date().toISOString(); await saveTestPlan(options.root, plan); }
+          } });
+          json(res, 202, { planId: id, jobId: plan.jobId }); return;
+        }
         if (action === 'versions') {
           const family = await loadFamily(projectId);
           const selectionFile = join(options.root, family.rootProjectId, 'version-selection.json');
@@ -160,6 +204,16 @@ export function createStudioApi(options: {
           if (!parsed.success) { json(res, 400, { error: { message: 'Provide a preview reference, loaded boolean and up to 20 error messages (1–2000 characters each)' } }); return; }
           if (record.status !== 'ready_for_review' || record.previewFile !== parsed.data.previewFile) {
             json(res, 409, { error: { message: 'Diagnostics must reference the current successful preview' } }); return;
+          }
+          if (parsed.data.checks) {
+            const plan = (await listTestPlans(options.root, projectId)).find((plan) => plan.id === parsed.data.testPlanId);
+            if (!plan || plan.status !== 'ready' || plan.previewFile !== record.previewFile
+              || plan.result?.output.checks.length !== parsed.data.checks.length
+              || parsed.data.checks.some((check, index) => check.name !== plan.result?.output.checks[index].name
+                || (check.status === 'passed' && (check.actual !== plan.result?.output.checks[index].expected || check.error !== undefined)))) {
+              json(res, 409, { error: { message: 'Check results must match a ready plan for this preview' } }); return;
+            }
+            parsed.data.errors = [...parsed.data.errors, ...parsed.data.checks.filter((check) => check.status === 'failed').map((check) => `Check ${check.name}: ${check.error || 'failed'}`.slice(0, 2000))].slice(0, 20);
           }
           json(res, 201, { report: await saveDiagnostic(options.root, projectId, parsed.data) }); return;
         }

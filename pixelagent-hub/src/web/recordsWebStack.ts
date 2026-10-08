@@ -656,7 +656,8 @@ async function handleRequest(req: any, res: any): Promise<void> {
 
   if (pathname.startsWith('/api/studio/')) {
     await runtimeReady;
-    if (req.method === 'POST' && (pathname === '/api/studio/projects' || /^\/api\/studio\/projects\/[^/]+\/(repair|revise)$/.test(pathname))) {
+    const studioInput = req.method === 'POST' ? await readBody(req) : undefined;
+    if (req.method === 'POST' && (pathname === '/api/studio/projects' || /^\/api\/studio\/projects\/[^/]+\/(repair|revise|test-plans)$/.test(pathname)) && !(pathname.endsWith('/test-plans') && (studioInput as { cancelPlanId?: unknown })?.cancelPlanId !== undefined)) {
       const key = String(req.headers['x-api-key'] || req.socket?.remoteAddress || 'unknown');
       if (!runRateLimiter.consume(`${key}|studio`).allowed) {
         statusCode = 429;
@@ -664,7 +665,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
         finishLog(); return;
       }
     }
-    await studio.handle(req, res, pathname, req.method === 'POST' ? await readBody(req) : undefined);
+    await studio.handle(req, res, pathname, studioInput);
     statusCode = res.statusCode;
     finishLog(); return;
   }

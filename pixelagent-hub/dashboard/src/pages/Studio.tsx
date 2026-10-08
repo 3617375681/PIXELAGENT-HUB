@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, Code2, Download, Hammer, Play, RefreshCw, Square, Terminal } from 'lucide-react';
 import { studioApi } from '../lib/recordsApi';
-import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions } from '../types/studio';
+import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan } from '../types/studio';
+import { readCheckResults, type BrowserCheckResult } from '../lib/studioChecks';
 import { prepareStudioPreview, readPreviewMessage } from '../lib/studioPreview';
 import './Studio.css';
 
@@ -23,6 +24,14 @@ export default function Studio() {
   const [changesError, setChangesError] = useState('');
   const [versions, setVersions] = useState<StudioVersions | null>(null);
   const [changeRequest, setChangeRequest] = useState('');
+  const [testPlans, setTestPlans] = useState<StudioTestPlan[]>([]);
+  const [testPlanRefresh, setTestPlanRefresh] = useState(0);
+  const [qaRun, setQaRun] = useState(0);
+  const [qaRunning, setQaRunning] = useState(false);
+  const [qaResults, setQaResults] = useState<BrowserCheckResult[]>([]);
+  const [qaSaved, setQaSaved] = useState(false);
+  const qaPlan = useRef<StudioTestPlan | null>(null);
+  const qaTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -34,18 +43,52 @@ export default function Studio() {
   const preview = useMemo(() => {
     const nonce = crypto.randomUUID();
     return { nonce, html: prepareStudioPreview(html, nonce) };
-  }, [html]);
+  }, [html, qaRun]);
 
   useEffect(() => {
     setRuntimeErrors([]); setPreviewLoaded(false); setSavedSnapshot('');
     const receive = (event: MessageEvent) => {
       const message = readPreviewMessage(event, previewFrame.current?.contentWindow || null, preview.nonce);
-      if (message?.kind === 'loaded') setPreviewLoaded(true);
+      if (message?.kind === 'loaded') {
+        setPreviewLoaded(true);
+        const plan = qaPlan.current;
+        if (plan?.projectId === projectId && qaTimer.current) previewFrame.current?.contentWindow?.postMessage({ channel: 'studio-checks', nonce: preview.nonce, checks: plan?.result?.output.checks }, '*');
+      }
       if (message?.kind === 'error') setRuntimeErrors((errors) => errors.length < 20 ? [...errors, message.message] : errors);
+      if (message?.kind === 'checks' && qaTimer.current) {
+        const results = readCheckResults(message.message);
+        const checks = qaPlan.current?.result?.output.checks;
+        if (results && checks && results.length === checks.length && results.every((result, index) => result.name === checks[index].name)) {
+          clearTimeout(qaTimer.current); qaTimer.current = undefined;
+          setQaResults(results); setQaRunning(false);
+        }
+      }
     };
     window.addEventListener('message', receive);
     return () => window.removeEventListener('message', receive);
-  }, [preview]);
+  }, [preview, projectId]);
+
+  useEffect(() => {
+    qaPlan.current = null; setQaRunning(false); setQaResults([]); setQaSaved(false);
+    return () => { clearTimeout(qaTimer.current); qaTimer.current = undefined; };
+  }, [projectId]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout>;
+    setTestPlans([]);
+    if (!projectId) return;
+    const poll = async () => {
+      try {
+        const { plans } = await studioApi.testPlans(projectId, controller.signal);
+        if (controller.signal.aborted) return;
+        setTestPlans(plans);
+        if (plans.some((plan) => ['queued', 'running'].includes(plan.status))) timer = setTimeout(poll, 1000);
+      } catch (error) { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : String(error)); }
+    };
+    void poll();
+    return () => { controller.abort(); clearTimeout(timer); };
+  }, [projectId, testPlanRefresh, refreshKey]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -155,6 +198,28 @@ export default function Studio() {
     await studioApi.selectVersion(projectId, target);
     navigate(`/studio/${target}`); setTab('preview'); setRefreshKey((key) => key + 1);
   });
+  const generateTests = () => action(async () => {
+    if (!projectId) return;
+    await studioApi.createTestPlan(projectId); setTestPlanRefresh((key) => key + 1);
+  });
+  const cancelTests = (id: string) => action(async () => {
+    if (!projectId) return;
+    await studioApi.cancelTestPlan(projectId, id); setTestPlanRefresh((key) => key + 1);
+  });
+  const runChecks = (plan: StudioTestPlan) => {
+    qaPlan.current = plan; setQaResults([]); setQaSaved(false); setQaRunning(true); setTab('preview');
+    qaTimer.current = setTimeout(() => {
+      qaTimer.current = undefined; setQaRunning(false);
+      setQaResults((plan.result?.output.checks || []).map((check) => ({ name: check.name, status: 'failed', actual: '', error: 'Sandbox checks did not finish within 20 seconds' })));
+    }, 20000);
+    setQaRun((value) => value + 1);
+  };
+  const saveChecks = () => action(async () => {
+    if (!projectId || !project?.previewFile || !qaPlan.current || !qaResults.length) return;
+    const { report } = await studioApi.saveDiagnostic(projectId, { previewFile: project.previewFile, loaded: previewLoaded, errors: runtimeErrors, testPlanId: qaPlan.current.id, checks: qaResults });
+    setHistory((current) => current.projectId === projectId ? { projectId, reports: [report, ...current.reports] } : current);
+    setQaSaved(true);
+  });
 
   return (
     <main className="studio">
@@ -192,6 +257,7 @@ export default function Studio() {
           </ol>
           {running && <div className="studio-progress" role="status"><Hammer size={16} />{phaseText[project?.phase || 'queued']}{current && ` · 第 ${current.round} 轮`}<button onClick={() => void cancel()} disabled={busy}><Square size={12} />取消</button></div>}
           {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
+          {ready && <section className="studio-tester" aria-label="Tester 交互检查"><h3>Tester / 沙箱内交互检查</h3><p className="studio-hint">模型生成检查，页面执行合成事件与文本断言。结果不替代完整浏览器测试或人工批准。</p><button disabled={busy || qaRunning || testPlans.some((plan) => ['queued', 'running'].includes(plan.status))} onClick={() => void generateTests()}>生成交互检查（调用模型）</button>{testPlans.map((plan) => <details key={plan.id}><summary>检查计划 · {plan.status} · {plan.id.slice(0, 8)}</summary>{plan.error && <p role="alert">{plan.error}</p>}{['queued', 'running'].includes(plan.status) && <button onClick={() => void cancelTests(plan.id)} disabled={busy}>取消生成检查</button>}{plan.result?.output?.checks && <><p>{plan.result.output.llmProvider} / {plan.result.output.llmModel}</p><ol>{plan.result.output.checks.map((check, index) => <li key={index}>{check.name}：{check.actions.length} 个操作 → {check.selector} 应为 {JSON.stringify(check.expected)}</li>)}</ol><p>覆盖限制：{plan.result.output.limitations.join('；') || '模型未列出限制，请检查计划覆盖范围。'}</p><button disabled={plan.status !== 'ready' || busy || qaRunning || plan.previewFile !== project?.previewFile} onClick={() => runChecks(plan)}>从初始页面运行检查</button></>}</details>)}{qaRunning && <p role="status">正在执行沙箱检查…</p>}{qaResults.length > 0 && <><p role="status">{qaResults.filter((result) => result.status === 'passed').length} / {qaResults.length} 项检查通过</p><ul>{qaResults.map((result, index) => <li key={index}>{result.name} · {result.status} · 实际文本 {JSON.stringify(result.actual)}{result.error && <pre>{result.error}</pre>}</li>)}</ul><button disabled={busy || qaSaved} onClick={() => void saveChecks()}>{qaSaved ? '检查结果已保存' : '保存检查结果与失败证据'}</button></>}</section>}
           <div className="studio-tabs" role="tablist" aria-label="查看作品">
             {([{ key: 'preview', label: '试玩', icon: Play }, { key: 'source', label: '源码', icon: Code2 }, { key: 'evidence', label: '验证记录', icon: Terminal }] as const).map(({ key, label, icon: Icon }) => <button key={key} id={`studio-tab-${key}`} role="tab" aria-selected={tab === key} aria-controls="studio-panel" onClick={() => setTab(key)}><Icon size={15} />{label}</button>)}
             <button id="studio-tab-changes" role="tab" aria-selected={tab === 'changes'} aria-controls="studio-panel" disabled={!ready || !(project?.repair || project?.revision)} onClick={() => setTab('changes')}><Code2 size={15} />版本差异</button>
@@ -201,7 +267,7 @@ export default function Studio() {
             {tab === 'changes' && <div className="studio-changes"><h3>版本前后的实际源码</h3>{changesError && <p role="alert">{changesError}</p>}{!changes && !changesError && <p>{project?.repair || project?.revision ? '正在读取源码差异…' : '该项目没有基础版本。'}</p>}{changes && <><p>{changes.files.length} 个文件有变化，{changes.unchanged} 个文件内容未变。差异不代表功能验收通过。</p><p className="studio-hint">原项目 {changes.parentProjectId} / {changes.fromPreview} → 当前项目 {changes.projectId} / {changes.toPreview}</p>{changes.files.length === 0 && <p>源码没有变化，请复测保存的错误是否仍存在。</p>}{changes.files.map((file) => <details key={file.path} open={changes.files.length === 1}><summary>{file.path} · {{ added: '新增', removed: '删除', modified: '修改' }[file.status]}</summary><div className="studio-change-columns"><section><h4>原源码</h4><pre><code>{file.before === undefined ? '原项目没有此文件' : file.before}</code></pre></section><section><h4>当前源码</h4><pre><code>{file.after === undefined ? '返修项目已删除此文件' : file.after}</code></pre></section></div></details>)}</>}</div>}
             {tab === 'preview' && (html ? <><iframe ref={previewFrame} title="生成作品试玩" srcDoc={preview.html} sandbox="allow-scripts" referrerPolicy="no-referrer" /><p className="studio-preview-note">{runtimeErrors.length ? `试玩发现 ${runtimeErrors.length} 条运行异常，请查看验证记录。` : previewLoaded ? '页面已加载。请实际试玩；页面加载和编译成功不代表功能验收完成。' : '正在加载试玩页面…'}</p></> : <div className="studio-empty"><span aria-hidden="true">▦</span><h3>{running ? '团队正在制作你的作品' : project?.status === 'failed' || project?.status === 'cancelled' ? '本次运行未生成可试玩版本' : '先给团队一个创作任务'}</h3><p>{running ? '每个阶段会自动更新，完成后可以在这里试玩。' : '成功构建后，作品、源码与检查记录会出现在这里。'}</p></div>)}
             {tab === 'source' && (files.length ? <div className="studio-source"><label htmlFor="studio-file">项目文件</label><select id="studio-file" value={selectedFile?.path || ''} onChange={(event) => setFilePath(event.target.value)}>{files.map((file) => <option key={file.path} value={file.path}>{file.path}</option>)}</select><pre><code>{selectedFile?.content}</code></pre></div> : <div className="studio-empty"><h3>源码尚未生成</h3><p>Coder 完成后会显示实际文件内容。</p></div>)}
-            {tab === 'evidence' && <div className="studio-evidence"><h3>实际执行记录</h3><article><h4>本次试玩运行诊断</h4><p>{runtimeErrors.length ? `已捕获 ${runtimeErrors.length} 条异常` : previewLoaded ? '页面曾加载，当前未捕获运行异常' : '尚未观察到页面加载'}</p>{runtimeErrors.map((message, index) => <pre key={index}>{message}</pre>)}<p className="studio-hint">实时记录刷新后清空；可保存到项目供后续查看，不代表功能测试通过。</p><button disabled={!ready || busy || (!previewLoaded && !runtimeErrors.length) || savedSnapshot === diagnosticSnapshot} onClick={() => void saveDiagnostic()}>{savedSnapshot === diagnosticSnapshot ? '当前诊断已保存' : '保存本次诊断'}</button></article><article><h4>已保存的试玩诊断</h4>{history.reports.length === 0 && <p>暂无保存记录。</p>}{history.reports.map((report) => <section key={report.id}><h5>{new Date(report.savedAt).toLocaleString()} · {report.previewFile}</h5><p>来源：浏览器客户端观察 · 页面{report.loaded ? '已加载' : '未观察到加载'} · {report.errors.length} 条异常</p>{report.errors.map((message, index) => <pre key={index}>{message}</pre>)}<button disabled={!ready || busy || !report.errors.length || report.previewFile !== project?.previewFile} onClick={() => void repair(report.id)}>依据此诊断返修</button></section>)}<p className="studio-hint">保存的是客户端观察，不是可信的自动功能测试或人工批准。</p></article>{project?.plan && <p>规划：{project.plan.status} · {project.plan.output?.llmProvider || '未调用成功'} / {project.plan.output?.llmModel || '—'}</p>}{project?.rounds.map((round) => <article key={round.round}><h4>第 {round.round} 轮</h4><p>代码生成：{round.code.status} · {round.code.output?.llmProvider || '—'} / {round.code.output?.llmModel || '—'}</p><p>实际构建：{round.build?.status || '尚未执行'}</p>{round.build?.errors.map((error, index) => <pre key={index}>{error}</pre>)}{round.build?.checkedFiles && <p>已检查文件：{round.build.checkedFiles.join('、')}</p>}{round.code.status === 'failed' && <pre>{round.code.reasoning}</pre>}</article>)}<p className="studio-hint">浏览器自动验收与人工批准尚未接入，此处不会显示虚构的测试通过记录。</p>{project && <small>项目 {project.projectId}</small>}</div>}
+            {tab === 'evidence' && <div className="studio-evidence"><h3>实际执行记录</h3><article><h4>本次试玩运行诊断</h4><p>{runtimeErrors.length ? `已捕获 ${runtimeErrors.length} 条异常` : previewLoaded ? '页面曾加载，当前未捕获运行异常' : '尚未观察到页面加载'}</p>{runtimeErrors.map((message, index) => <pre key={index}>{message}</pre>)}<p className="studio-hint">实时记录刷新后清空；可保存到项目供后续查看，不代表功能测试通过。</p><button disabled={!ready || busy || (!previewLoaded && !runtimeErrors.length) || savedSnapshot === diagnosticSnapshot} onClick={() => void saveDiagnostic()}>{savedSnapshot === diagnosticSnapshot ? '当前诊断已保存' : '保存本次诊断'}</button></article><article><h4>已保存的试玩诊断</h4>{history.reports.length === 0 && <p>暂无保存记录。</p>}{history.reports.map((report) => <section key={report.id}><h5>{new Date(report.savedAt).toLocaleString()} · {report.previewFile}</h5><p>来源：浏览器客户端观察 · 页面{report.loaded ? '已加载' : '未观察到加载'} · {report.errors.length} 条异常</p>{report.errors.map((message, index) => <pre key={index}>{message}</pre>)}{report.checks && <p>检查计划 {report.testPlanId}：{report.checks.filter((check) => check.status === 'passed').length} / {report.checks.length} 项通过</p>}<button disabled={!ready || busy || !report.errors.length || report.previewFile !== project?.previewFile} onClick={() => void repair(report.id)}>依据此诊断返修</button></section>)}<p className="studio-hint">保存的是客户端观察，不是可信的自动功能测试或人工批准。</p></article>{project?.plan && <p>规划：{project.plan.status} · {project.plan.output?.llmProvider || '未调用成功'} / {project.plan.output?.llmModel || '—'}</p>}{project?.rounds.map((round) => <article key={round.round}><h4>第 {round.round} 轮</h4><p>代码生成：{round.code.status} · {round.code.output?.llmProvider || '—'} / {round.code.output?.llmModel || '—'}</p><p>实际构建：{round.build?.status || '尚未执行'}</p>{round.build?.errors.map((error, index) => <pre key={index}>{error}</pre>)}{round.build?.checkedFiles && <p>已检查文件：{round.build.checkedFiles.join('、')}</p>}{round.code.status === 'failed' && <pre>{round.code.reasoning}</pre>}</article>)}<p className="studio-hint">浏览器自动验收与人工批准尚未接入，此处不会显示虚构的测试通过记录。</p>{project && <small>项目 {project.projectId}</small>}</div>}
           </div>
         </section>
       </div>

@@ -8,11 +8,12 @@ import { ManagerAgent } from './agents/ManagerAgent.js';
 import { SeniorEditorAgent } from './agents/SeniorEditorAgent.js';
 import { DirectorAgent } from './agents/DirectorAgent.js';
 import { ModeratorAgent } from './agents/ModeratorAgent.js';
+import { TesterAgent } from './agents/TesterAgent.js';
 import { Task, TaskResult } from './core/types.js';
 import { LLMProvider } from './core/llm/provider.js';
 import { createLLMProvider, createLLMProviderFor } from './core/llm/factory.js';
 
-export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvider?: LLMProvider | null): Orchestrator {
+export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvider?: LLMProvider | null, options: { includeTester?: boolean } = {}): Orchestrator {
   const bus = new MessageBusImpl();
   const providerFor = (agentId: string) => (llmProvider !== undefined ? llmProvider : createLLMProviderFor({ id: agentId }));
 
@@ -78,6 +79,7 @@ export function createOrchestrator(name: string = 'MultiAgentSystem', llmProvide
   orchestrator.registerAgent(new SeniorEditorAgent(bus, providerFor('senior_editor')));
   orchestrator.registerAgent(new DirectorAgent(bus, providerFor('director')));
   orchestrator.registerAgent(new ModeratorAgent(bus, providerFor('moderator')));
+  if (options.includeTester) orchestrator.registerAgent(new TesterAgent(bus, providerFor('tester')));
 
   return orchestrator;
 }
