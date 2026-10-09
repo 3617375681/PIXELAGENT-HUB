@@ -1,4 +1,4 @@
-export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string } | { type: 'input'; selector: string; value: string } | { type: 'key'; selector: string; key: string })[]; selector: string; expected: string };
+export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string } | { type: 'input'; selector: string; value: string } | { type: 'key'; selector: string; key: string })[]; selector: string; expected: string; assertion?: 'text' | 'disabled' };
 export type BrowserCheckResult = { name: string; status: 'passed' | 'failed'; actual: string; error?: string };
 
 // This function is serialized into the sandbox. Keep all helpers local; no eval or model code.
@@ -26,7 +26,8 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         } else throw new Error('Unsupported check action');
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      const observed = (element(check.selector).textContent || '').trim();
+      const target = element(check.selector);
+      const observed = check.assertion === 'disabled' ? String(target.matches(':disabled')) : (target.textContent || '').trim();
       actual = observed.slice(0, 300);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
       if (observed !== check.expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);

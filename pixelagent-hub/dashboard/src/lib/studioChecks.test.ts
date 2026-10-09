@@ -1,6 +1,20 @@
 import { expect, it } from 'vitest';
 import { readCheckResults, runDOMChecks } from './studioChecks';
 
+it('reads disabled state independently of button text and detects an incorrect state', async () => {
+  let disabled = false;
+  const button = { textContent: '4', matches: (selector: string) => selector === ':disabled' && disabled, click: () => { disabled = true; } };
+  const document = { querySelectorAll: () => [button] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Initially enabled', actions: [], selector: '#answer', assertion: 'disabled', expected: 'false' },
+    { name: 'Locked after answering', actions: [{ type: 'click', selector: '#answer' }], selector: '#answer', assertion: 'disabled', expected: 'true' },
+    { name: 'Incorrect enabled claim', actions: [], selector: '#answer', assertion: 'disabled', expected: 'false' },
+    { name: 'Text still checked normally', actions: [], selector: '#answer', expected: '4' },
+  ]);
+  expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'failed', 'passed']);
+  expect(results.map((result) => result.actual)).toEqual(['false', 'true', 'true', '4']);
+});
+
 it('executes sequential DOM actions, distinguishes assertion failures and rejects ambiguous selectors', async () => {
   const output = { textContent: '0' };
   const button = { click: () => { output.textContent = String(Number(output.textContent) + 1); } };

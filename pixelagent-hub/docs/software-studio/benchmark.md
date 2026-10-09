@@ -30,6 +30,8 @@ npm run studio:benchmark:report -- <运行UUID>
 
 新的固定提交真实模型评测见 [2026-10-09 记录](benchmark-results/2026-10-09/README.md)：十项首次构建成功，原始独立浏览器检查六项通过、四项失败；包含打包时序缺陷及检查计划问题。修复构建器后，两项原源码重构建各通过五项检查，单独保留结果，不覆盖原失败，也不用于宣称多 Agent 优势。
 
+问答的修正计划增加原生禁用状态断言，两份原应用均通过十项检查，见 [独立复测记录](benchmark-results/2026-10-09-quiz-disabled/README.md)。这次只改计划，未生成或返修源码；旧基准仍引用原计划并保留失败结果。
+
 ## 2026-10-08 实际记录
 
 原始运行 [original-run.json](benchmark-results/original-run.json) 中，Manager/Coder 尝试五例，四例构建及固定检查通过，第五例在生成时进程中断。单 Coder 尝试四例，三例构建及检查通过，温度转换器请求返回 `LLM error: terminated`；问答尚未开始。

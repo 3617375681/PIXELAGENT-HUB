@@ -1,0 +1,98 @@
+{
+  "id": "quiz",
+  "title": "Pixel arithmetic quiz",
+  "description": "Create an offline pixel-style two-question quiz. #question initially has exact text 2 + 2 = ?. Buttons #answer-a/#answer-b display 4/5 for first question. Clicking one answer locks answers and increments integer-only #score once if correct; score initially 0. #next advances to second question exact 3 + 3 = ?, answer-a is 5 and answer-b is 6. After answering second, #next sets #question to Finished. #restart resets first question and score. Include labels and README. HTML/CSS/JS only, no storage/packages, under 230 lines.",
+  "checks": [
+    {
+      "name": "Initial question",
+      "actions": [],
+      "selector": "#question",
+      "expected": "2 + 2 = ?"
+    },
+    {
+      "name": "Correct first answer",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#answer-a"
+        }
+      ],
+      "selector": "#score",
+      "expected": "1"
+    },
+    {
+      "name": "First answer locked",
+      "actions": [],
+      "selector": "#answer-a",
+      "expected": "true",
+      "assertion": "disabled"
+    },
+    {
+      "name": "Other answer locked",
+      "actions": [],
+      "selector": "#answer-b",
+      "expected": "true",
+      "assertion": "disabled"
+    },
+    {
+      "name": "Second question",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#next"
+        }
+      ],
+      "selector": "#question",
+      "expected": "3 + 3 = ?"
+    },
+    {
+      "name": "Wrong second answer",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#answer-a"
+        }
+      ],
+      "selector": "#score",
+      "expected": "1"
+    },
+    {
+      "name": "Finish",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#next"
+        }
+      ],
+      "selector": "#question",
+      "expected": "Finished"
+    },
+    {
+      "name": "Restart score",
+      "actions": [
+        {
+          "type": "click",
+          "selector": "#restart"
+        }
+      ],
+      "selector": "#score",
+      "expected": "0"
+    },
+    {
+      "name": "Restart question",
+      "actions": [],
+      "selector": "#question",
+      "expected": "2 + 2 = ?"
+    },
+    {
+      "name": "Restart enables answers",
+      "actions": [],
+      "selector": "#answer-a",
+      "expected": "false",
+      "assertion": "disabled"
+    }
+  ],
+  "limitations": [
+    "Second correct answer path, skipping questions, the second answer state after restart, native keyboard and visual appearance need separate review."
+  ]
+}

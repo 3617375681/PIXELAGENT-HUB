@@ -50,12 +50,14 @@
     "checks": [
       { "name": "Initial question", "actions": [], "selector": "#question", "expected": "2 + 2 = ?" },
       { "name": "Correct first answer", "actions": [{ "type": "click", "selector": "#answer-a" }], "selector": "#score", "expected": "1" },
-      { "name": "Cannot score twice", "actions": [{ "type": "click", "selector": "#answer-a" }], "selector": "#score", "expected": "1" },
+      { "name": "First answer locked", "actions": [], "selector": "#answer-a", "assertion": "disabled", "expected": "true" },
+      { "name": "Other answer locked", "actions": [], "selector": "#answer-b", "assertion": "disabled", "expected": "true" },
       { "name": "Second question", "actions": [{ "type": "click", "selector": "#next" }], "selector": "#question", "expected": "3 + 3 = ?" },
       { "name": "Wrong second answer", "actions": [{ "type": "click", "selector": "#answer-a" }], "selector": "#score", "expected": "1" },
       { "name": "Finish", "actions": [{ "type": "click", "selector": "#next" }], "selector": "#question", "expected": "Finished" },
       { "name": "Restart score", "actions": [{ "type": "click", "selector": "#restart" }], "selector": "#score", "expected": "0" },
-      { "name": "Restart question", "actions": [], "selector": "#question", "expected": "2 + 2 = ?" }
-    ], "limitations": ["Second correct answer path, skipping questions, native keyboard and visual appearance need separate review."]
+      { "name": "Restart question", "actions": [], "selector": "#question", "expected": "2 + 2 = ?" },
+      { "name": "Restart enables answers", "actions": [], "selector": "#answer-a", "assertion": "disabled", "expected": "false" }
+    ], "limitations": ["Second correct answer path, skipping questions, the second answer state after restart, native keyboard and visual appearance need separate review."]
   }
 ]

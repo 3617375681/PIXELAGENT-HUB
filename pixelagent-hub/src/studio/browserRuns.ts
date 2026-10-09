@@ -25,7 +25,7 @@ export function browserRepairErrors(run: BrowserRun, plan: TestPlanRecord | unde
   return [
     ...run.checks.filter((check) => check.status === 'failed').map((check) => {
       const planned = parsed.data.checks.find((item) => item.name === check.name)!;
-      return `Browser check ${JSON.stringify(check.name)}: selector=${JSON.stringify(planned.selector)}, expected=${JSON.stringify(planned.expected)}, actual=${JSON.stringify(check.actual)}, failure=${JSON.stringify(check.error || 'Text assertion failed')}, actions=${JSON.stringify(planned.actions)}`;
+      return `Browser check ${JSON.stringify(check.name)}: selector=${JSON.stringify(planned.selector)}, assertion=${JSON.stringify(planned.assertion || 'text')}, expected=${JSON.stringify(planned.expected)}, actual=${JSON.stringify(check.actual)}, failure=${JSON.stringify(check.error || 'Assertion failed')}, actions=${JSON.stringify(planned.actions)}`;
     }),
     ...run.errors.map((error) => `Browser runtime/console error: ${error}`),
     ...run.blockedRequests.map((request) => `Blocked network request from offline app: ${request}`),
@@ -105,7 +105,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         const deadline = Date.now() + 2000;
         do {
           controller.signal.throwIfAborted();
-          actual = (await target.textContent() || '').trim();
+          actual = check.assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : (await target.textContent() || '').trim();
           if (actual === check.expected) break;
           await new Promise((resolve) => setTimeout(resolve, 50));
         } while (Date.now() < deadline);

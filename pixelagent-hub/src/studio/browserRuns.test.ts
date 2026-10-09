@@ -7,13 +7,41 @@ import { randomUUID } from 'node:crypto';
 import { browserRepairErrors, contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from './browserRuns.js';
 import type { TestPlanRecord } from './testPlans.js';
 import { buildStaticProject } from './workspace.js';
+import { testPlanSchema } from './testPlans.js';
 
 const html = '<html><body><input aria-label="Name" id="name"><button id="add">Add</button><output>0</output><script>document.querySelector("#add").addEventListener("click",()=>document.querySelector("output").textContent++);document.querySelector("#name").addEventListener("keydown",e=>{if(e.key==="Enter")document.querySelector("output").textContent=e.target.value})</script></body></html>';
 const plan = { checks: [
   { name: 'Increment', actions: [{ type: 'click', selector: '#add' }], selector: 'output', expected: '1' },
   { name: 'Enter name', actions: [{ type: 'input', selector: '#name', value: 'Pixel' }, { type: 'key', selector: '#name', key: 'Enter' }], selector: 'output', expected: 'Pixel' },
 ], limitations: ['Controlled browser fixture; not model quality evidence'] };
-const makeRun = (content = html, checks: unknown = plan): BrowserRun => ({ id: randomUUID(), projectId: randomUUID(), testPlanId: randomUUID(), previewFile: 'v1/dist/index.html', previewHash: contentHash(content), planHash: contentHash(JSON.stringify(checks)), jobId: randomUUID(), source: 'server-browser', status: 'queued', startedAt: new Date().toISOString(), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] });
+const makeRun = (content = html, checks: unknown = plan): BrowserRun => ({ id: randomUUID(), projectId: randomUUID(), testPlanId: randomUUID(), previewFile: 'v1/dist/index.html', previewHash: contentHash(content), planHash: contentHash(JSON.stringify(testPlanSchema.parse(checks))), jobId: randomUUID(), source: 'server-browser', status: 'queued', startedAt: new Date().toISOString(), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] });
+
+test('disabled assertions require booleans as text while legacy plans retain their hash', () => {
+  assert.equal(contentHash(JSON.stringify(testPlanSchema.parse(plan))), contentHash(JSON.stringify(plan)));
+  const check = { name: 'Locked', actions: [], selector: '#answer', assertion: 'disabled', expected: 'true' };
+  assert.equal(testPlanSchema.safeParse({ checks: [check], limitations: [] }).success, true);
+  for (const change of [{ expected: '4' }, { expected: '' }, { assertion: 'eval' }, { assertion: 'attribute', code: 'alert(1)' }]) {
+    assert.equal(testPlanSchema.safeParse({ checks: [{ ...check, ...change }], limitations: [] }).success, false);
+  }
+});
+
+test('real browser observes native disabled state without clicking locked controls', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-disabled-'));
+  try {
+    const content = '<html><body><button id="answer">4</button><button id="reset">Reset</button><script>document.querySelector("#answer").addEventListener("click",e=>e.target.disabled=true);document.querySelector("#reset").addEventListener("click",()=>document.querySelector("#answer").disabled=false)</script></body></html>';
+    const checks = { checks: [
+      { name: 'Initially enabled', actions: [], selector: '#answer', assertion: 'disabled', expected: 'false' },
+      { name: 'Answer locks', actions: [{ type: 'click', selector: '#answer' }], selector: '#answer', assertion: 'disabled', expected: 'true' },
+      { name: 'Text differs from state', actions: [], selector: '#answer', expected: '4' },
+      { name: 'Incorrect state', actions: [], selector: '#answer', assertion: 'disabled', expected: 'false' },
+      { name: 'Reset unlocks', actions: [{ type: 'click', selector: '#reset' }], selector: '#answer', assertion: 'disabled', expected: 'false' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.deepEqual(run.checks.map((check) => check.status), ['passed', 'passed', 'passed', 'failed', 'passed'], JSON.stringify(run));
+    assert.deepEqual(run.checks.map((check) => check.actual), ['false', 'true', '4', 'true', 'false']);
+    assert.equal(run.status, 'failed'); assert.equal(run.error, undefined);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
 
 test('build preserves deferred and module ordering before DOMContentLoaded in a real browser', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
   const root = await mkdtemp(join(tmpdir(), 'browser-script-order-'));
