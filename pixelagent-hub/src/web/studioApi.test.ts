@@ -284,6 +284,14 @@ test('repair uses saved errors and original source, with independent success and
     assert.match(codePrompt, /counter-click-failed/);
     assert.match(codePrompt, /previousFiles/);
     assert.match(codePrompt, /#increment/);
+    const contextOf = (prompt: string) => JSON.parse(prompt.split('\nContext: ')[1].split('\n\n')[0]);
+    const managerContext = contextOf(provider.prompts.at(-2)!);
+    const coderContext = contextOf(codePrompt);
+    assert.deepEqual(managerContext.previousFiles, coderContext.previousFiles);
+    assert.deepEqual(managerContext.repair.errors, ['counter-click-failed']);
+    assert.ok(managerContext.previousFiles.some((file: { content: string }) => file.content.includes('#increment')));
+    assert.deepEqual(managerContext.revisionNotes, coderContext.revisionNotes);
+    assert.match(coderContext.revisionNotes[0], /copying unaffected files byte-for-byte/);
     provider.failCode = true;
     const failed = await (await fetch(repairUrl, { method: 'POST', body: JSON.stringify({ diagnosticId: saved.report.id }) })).json();
     assert.equal((await waitForJob(runtime, failed.jobId)).status, 'failed');
