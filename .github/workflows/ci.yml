@@ -26,7 +26,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       # Browser suites share runner resources; serialize files to avoid launch contention.
-      - run: node --import tsx --test --test-concurrency=1 src/studio/browserRuns.test.ts src/studio/benchmark.test.ts src/web/studioApi.test.ts
+      - run: node --import tsx --test --test-concurrency=1 src/studio/browserRuns.test.ts src/studio/benchmark.test.ts src/studio/doctor.test.ts src/web/studioApi.test.ts
         env:
           RUN_STUDIO_BROWSER_TESTS: '1'
 

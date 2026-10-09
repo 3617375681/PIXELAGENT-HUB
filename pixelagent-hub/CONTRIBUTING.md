@@ -12,6 +12,7 @@ Thanks for improving **PIXELAGENT-HUB**. This document is the short path from cl
 ```bash
 npm ci
 npm --prefix dashboard ci
+npm run studio:doctor
 npm run build
 npm run smoke:package
 npm test
@@ -25,6 +26,8 @@ npm --prefix dashboard run build
 PowerShell 离线示例：`$env:LLM_PROVIDER="mock"; node dist/examples/company-mode.js`。Bash：`LLM_PROVIDER=mock node dist/examples/company-mode.js`。mock 用于流程演示，不代表真实模型生成验收。
 
 ## Pull Request 流程
+
+首次启动遇到问题时，查看 [Studio 环境检查](docs/software-studio/environment-check.md)。`npm run studio:doctor -- --browser` 会检查本地 Chromium；不发起模型请求。
 
 1. 从 `main` 拉分支，命名建议：`fix/…`、`feat/…`、`docs/…`。
 2. 改动保持聚焦；无关格式化、大范围重排请避免混在同一 PR。

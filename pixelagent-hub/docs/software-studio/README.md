@@ -62,6 +62,8 @@ API 重启会把未完成任务明确记为中断失败，保留已有结果，�
 
 在 `pixelagent-hub/` 安装依赖并配置本地 `.env` 的模型 provider：
 
+首次安装可运行 `npm run studio:doctor` 检查模型配置与本地工具；`-- --browser` 额外验证带沙箱的 Chromium 启动。诊断范围及修复方式见 [环境检查](environment-check.md)。
+
 ```powershell
 npm ci
 npm run studio:create -- "制作像素贪吃蛇，包含方向键移动、暂停、计分和重新开始"

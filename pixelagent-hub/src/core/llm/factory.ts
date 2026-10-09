@@ -27,10 +27,10 @@ function envKeyForAgent(agentId: string): string {
 }
 
 /** Per-agent overrides: `AGENT_<AGENTID>_LLM_PROVIDER`, `AGENT_<AGENTID>_LLM_MODEL` (e.g. AGENT_WRITER_LLM_PROVIDER). */
-export function readAgentLlmEnv(agentId: string): { llmProvider?: LLMProviderId; llmModel?: string } {
+export function readAgentLlmEnv(agentId: string, env: NodeJS.ProcessEnv = process.env): { llmProvider?: LLMProviderId; llmModel?: string } {
   const k = envKeyForAgent(agentId);
-  const pRaw = process.env[`AGENT_${k}_LLM_PROVIDER`]?.trim().toLowerCase();
-  const mRaw = process.env[`AGENT_${k}_LLM_MODEL`]?.trim();
+  const pRaw = env[`AGENT_${k}_LLM_PROVIDER`]?.trim().toLowerCase();
+  const mRaw = env[`AGENT_${k}_LLM_MODEL`]?.trim();
   let llmProvider: LLMProviderId | undefined;
   if (pRaw) {
     if (isProviderId(pRaw)) llmProvider = pRaw;
@@ -39,10 +39,10 @@ export function readAgentLlmEnv(agentId: string): { llmProvider?: LLMProviderId;
   return { llmProvider, llmModel: mRaw || undefined };
 }
 
-export function detectProviderId(): LLMProviderId {
-  const explicit = process.env.LLM_PROVIDER?.trim().toLowerCase();
+export function detectProviderId(env: NodeJS.ProcessEnv = process.env): LLMProviderId {
+  const explicit = env.LLM_PROVIDER?.trim().toLowerCase();
   if (explicit === 'mock') return 'mock';
-  if (process.env.OFFLINE === 'true' || process.env.OFFLINE === '1') return 'mock';
+  if (env.OFFLINE === 'true' || env.OFFLINE === '1') return 'mock';
   if (explicit === 'openai') return 'openai';
   if (explicit === 'anthropic') return 'anthropic';
   if (explicit === 'deepseek') return 'deepseek';
@@ -52,14 +52,14 @@ export function detectProviderId(): LLMProviderId {
   if (explicit) throw new Error(`Unknown LLM_PROVIDER=${explicit}`);
 
   // Auto-detect from environment
-  if (process.env.OPENAI_API_KEY || (process.env.LLM_API_KEY && !process.env.KIMI_API_KEY && !process.env.DEEPSEEK_API_KEY && !process.env.ANTHROPIC_API_KEY)) {
+  if (env.OPENAI_API_KEY || (env.LLM_API_KEY && !env.KIMI_API_KEY && !env.DEEPSEEK_API_KEY && !env.ANTHROPIC_API_KEY)) {
     return 'openai';
   }
-  if (process.env.ANTHROPIC_API_KEY) return 'anthropic';
-  if (process.env.DEEPSEEK_API_KEY) return 'deepseek';
-  if (process.env.KIMI_API_KEY) return 'kimi';
-  if (process.env.OLLAMA_MODEL || process.env.OLLAMA_BASE_URL) return 'ollama';
-  if (process.env.LLM_BASE_URL) return 'custom-openai-compat';
+  if (env.ANTHROPIC_API_KEY) return 'anthropic';
+  if (env.DEEPSEEK_API_KEY) return 'deepseek';
+  if (env.KIMI_API_KEY) return 'kimi';
+  if (env.OLLAMA_MODEL || env.OLLAMA_BASE_URL) return 'ollama';
+  if (env.LLM_BASE_URL) return 'custom-openai-compat';
 
   return 'kimi'; // default
 }
