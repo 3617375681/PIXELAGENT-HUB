@@ -32,6 +32,12 @@ npm run studio:benchmark:report -- <运行UUID>
 
 问答的修正计划增加原生禁用状态断言，两份原应用均通过十项检查，见 [独立复测记录](benchmark-results/2026-10-09-quiz-disabled/README.md)。这次只改计划，未生成或返修源码；旧基准仍引用原计划并保留失败结果。
 
+## 真实模型返修实验（2026-10-09）
+
+在已通过检查的计数器副本中把“加一”改成“加二”，通过生产浏览器报告触发真实 Manager/Coder 返修。两次独立实验均通过原四项检查及未提供给模型的七项补充检查。第一次还改了无关 CSS 和 README；提供原源码给 Manager、明确保留无关文件后，第二次只修改错误数字，其余文件逐字节不变。完整证据见 [原返修实验](benchmark-results/2026-10-09-real-repair/README.md) 和 [源码上下文复测](benchmark-results/2026-10-09-real-repair-source-context/README.md)。
+
+这是同一应用各一次的受控故障注入；不替代原始生成基准，不证明一般返修可靠性或多 Agent 优势，也没有自动批准交付。两次原项目及故障副本均保留。
+
 ## 2026-10-08 实际记录
 
 原始运行 [original-run.json](benchmark-results/original-run.json) 中，Manager/Coder 尝试五例，四例构建及固定检查通过，第五例在生成时进程中断。单 Coder 尝试四例，三例构建及检查通过，温度转换器请求返回 `LLM error: terminated`；问答尚未开始。

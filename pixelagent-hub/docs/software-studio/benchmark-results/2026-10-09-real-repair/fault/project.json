@@ -1,0 +1,56 @@
+{
+  "projectId": "3cce4c6f-dc7b-4fe5-90f6-1d84fc79a558",
+  "description": "Create an offline pixel-style counter with initial integer 0, button IDs increase/decrease/reset, and an output element ID count showing only the integer. Click adds one, subtracts one, or resets to zero. Support negative numbers. Include labeled keyboard-accessible buttons and README. Use HTML/CSS/JS only, no dependencies or storage. Keep total source under 200 lines.",
+  "strategy": "manager-coder",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-09T11:08:03.529Z",
+  "finishedAt": "2026-10-09T11:08:03.529Z",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "rounds": [
+    {
+      "round": 1,
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      },
+      "code": {
+        "taskId": "3cce4c6f-dc7b-4fe5-90f6-1d84fc79a558",
+        "agentId": "controlled-fixture",
+        "status": "success",
+        "output": {
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Pixel Counter</title>\n    <link rel=\"stylesheet\" href=\"styles.css\">\n  </head>\n  <body>\n    <main class=\"counter\">\n      <h1>Pixel Counter</h1>\n      <output id=\"count\" aria-live=\"polite\">0</output>\n      <div class=\"controls\">\n        <button type=\"button\" id=\"increase\" class=\"pixel-btn\">Increase +1</button>\n        <button type=\"button\" id=\"decrease\" class=\"pixel-btn\">Decrease -1</button>\n        <button type=\"button\" id=\"reset\" class=\"pixel-btn\">Reset to 0</button>\n      </div>\n    </main>\n    <script src=\"script.js\"></script>\n  </body>\n</html>"
+            },
+            {
+              "path": "styles.css",
+              "content": ":root {\n  --pixel: 4px;\n  --ink: #222;\n  --bg: #f0e6d2;\n  --accent: #ff6b6b;\n  --accent2: #6bc5ff;\n  --accent3: #ffe66d;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: 'Courier New', Courier, monospace;\n}\n\n.counter {\n  background: #fff;\n  border: var(--pixel) solid var(--ink);\n  box-shadow: 8px 8px 0 var(--ink);\n  padding: 2rem;\n  display: flex;\n  flex-direction: column;\n  gap: 1.5rem;\n  align-items: center;\n  max-width: 320px;\n  width: 100%;\n}\n\nh1 {\n  margin: 0;\n  font-size: 1.4rem;\n  letter-spacing: 1px;\n  text-shadow: 2px 2px 0 var(--accent3);\n}\n\n#count {\n  font-size: 4rem;\n  font-weight: bold;\n  background: #111;\n  color: #0f0;\n  padding: 0.5rem 1rem;\n  border: var(--pixel) solid var(--ink);\n  box-shadow: inset 0 0 0 2px #333, 4px 4px 0 var(--ink);\n  min-width: 5ch;\n  text-align: center;\n  display: block;\n}\n\n.controls {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 1rem;\n  justify-content: center;\n}\n\n.pixel-btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: bold;\n  padding: 0.75rem 1rem;\n  color: var(--ink);\n  background: var(--accent);\n  border: var(--pixel) solid var(--ink);\n  box-shadow: 4px 4px 0 var(--ink);\n  cursor: pointer;\n}\n\n.pixel-btn:nth-child(2) { background: var(--accent2); }\n.pixel-btn:nth-child(3) { background: var(--accent3); }\n.pixel-btn:hover { filter: brightness(1.05); }\n\n.pixel-btn:active {\n  transform: translate(4px, 4px);\n  box-shadow: 0 0 0 var(--ink);\n}\n\n.pixel-btn:focus-visible {\n  outline: 3px dashed #000;\n  outline-offset: 3px;\n}"
+            },
+            {
+              "path": "script.js",
+              "content": "const countEl = document.getElementById('count');\nlet count = 0;\n\nconst update = () => {\n  countEl.textContent = count;\n};\n\ndocument.getElementById('increase').addEventListener('click', () => {\n  count += 2;\n  update();\n});\n\ndocument.getElementById('decrease').addEventListener('click', () => {\n  count -= 1;\n  update();\n});\n\ndocument.getElementById('reset').addEventListener('click', () => {\n  count = 0;\n  update();\n});\n\nupdate();"
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Counter\n\nAn offline pixel-style counter built with only HTML, CSS, and JavaScript.\n\n## Run\n\nOpen `index.html` in any modern browser. No network or build steps are required.\n\n## Files\n\n- `index.html` — semantic page structure, `output` element with `id` of `count`, and labeled buttons\n- `styles.css` — pixel-style layout, keyboard focus indicators, and button states\n- `script.js` — counter logic using `addEventListener`\n\n## Controls\n\n- **Increase +1** adds one to the count\n- **Decrease -1** subtracts one from the count\n- **Reset to 0** resets the count to zero\n\nAll buttons are keyboard accessible. Use the `Tab` key to move focus and `Enter` or `Space` to activate.\n\n## Notes\n\n- Supports negative integers\n- No dependencies, storage, or external assets\n- Total source under 200 lines"
+            }
+          ],
+          "language": "javascript",
+          "dependencies": [],
+          "provenance": "Controlled copy of prior real-model source; no generation call"
+        },
+        "reasoning": "Controlled experiment preparation"
+      }
+    }
+  ]
+}

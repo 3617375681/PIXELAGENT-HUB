@@ -1,0 +1,65 @@
+{
+  "id": "052eeac2-f713-46ba-87f9-e4ed9c661f8a",
+  "projectId": "892470f0-592a-42d8-9951-b5e7caafe96c",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "fixed-052eeac2-f713-46ba-87f9-e4ed9c661f8a",
+  "status": "ready",
+  "startedAt": "2026-10-09T11:13:12.079Z",
+  "finishedAt": "2026-10-09T11:13:12.079Z",
+  "result": {
+    "taskId": "052eeac2-f713-46ba-87f9-e4ed9c661f8a",
+    "agentId": "fixed-plan",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initial zero",
+          "actions": [],
+          "selector": "#count",
+          "expected": "0"
+        },
+        {
+          "name": "Increase",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#increase"
+            }
+          ],
+          "selector": "#count",
+          "expected": "1"
+        },
+        {
+          "name": "Negative count",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#decrease"
+            },
+            {
+              "type": "click",
+              "selector": "#decrease"
+            }
+          ],
+          "selector": "#count",
+          "expected": "-1"
+        },
+        {
+          "name": "Reset",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#reset"
+            }
+          ],
+          "selector": "#count",
+          "expected": "0"
+        }
+      ],
+      "limitations": [
+        "Native keyboard behavior and pixel appearance require separate review."
+      ]
+    },
+    "reasoning": "Fixed evaluator checks; no Tester model call"
+  }
+}
