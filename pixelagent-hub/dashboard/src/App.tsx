@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router'
 import { lazy, Suspense } from 'react'
+import ApiConnection from './components/ApiConnection'
 
 const Home = lazy(() => import('./pages/Home'))
 const ArchivePage = lazy(() => import('./pages/ArchivePage'))
@@ -11,6 +12,8 @@ const Studio = lazy(() => import('./pages/Studio'))
 
 export default function App() {
   return (
+    <>
+    <ApiConnection />
     <Suspense fallback={<main role="status" className="min-h-screen flex items-center justify-center pixel-font-body">正在加载工作区…</main>}>
     <Routes>
       <Route path="/" element={<Home />} />
@@ -24,5 +27,6 @@ export default function App() {
       <Route path="/studio/:projectId" element={<Studio />} />
     </Routes>
     </Suspense>
+    </>
   )
 }

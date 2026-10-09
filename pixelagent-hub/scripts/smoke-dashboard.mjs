@@ -10,10 +10,11 @@ await new Promise((done) => reservation.listen(0, '127.0.0.1', done));
 const port = reservation.address().port;
 await new Promise((done) => reservation.close(done));
 const root = await mkdtemp(join(tmpdir(), 'studio-start-smoke-'));
+const apiKey = 'controlled-startup-smoke-key';
 const child = spawn(process.execPath, [resolve('dist/src/web/server.js'), '--dashboard'], {
   env: {
     ...process.env, DOTENV_CONFIG_PATH: join(root, '.env'), NODE_ENV: 'test', LLM_PROVIDER: 'mock',
-    ALLOW_UNAUTH_IN_DEV: 'true', RECORDS_API_PORT: String(port), RECORDS_API_KEY: '',
+    ALLOW_UNAUTH_IN_DEV: 'false', RECORDS_API_PORT: String(port), RECORDS_API_KEY: apiKey,
     RECORDS_ROOT_OVERRIDE: join(root, 'records'), STUDIO_ROOT_OVERRIDE: join(root, 'studio'),
     ENABLE_EMBEDDING_RETRIEVER: 'false', ENABLE_STUDIO_BROWSER_CHECKS: 'false',
   },
@@ -35,7 +36,9 @@ try {
     child.once('error', (error) => { clearTimeout(timeout); clearInterval(poll); reject(error); });
   });
   const base = `http://127.0.0.1:${port}`;
-  const get = (path) => fetch(`${base}${path}`, { signal: AbortSignal.timeout(10000) });
+  const get = (path, authenticated = false) => fetch(`${base}${path}`, {
+    signal: AbortSignal.timeout(10000), headers: authenticated ? { 'X-API-Key': apiKey } : {},
+  });
   const html = await get('/studio');
   assert.equal(html.status, 200); assert.match(html.headers.get('content-type'), /text\/html/);
   const body = await html.text();
@@ -47,9 +50,14 @@ try {
   const deepLink = await get('/studio/12345678-1234-1234-1234-123456789abc');
   assert.equal(deepLink.status, 200); assert.equal(await deepLink.text(), body);
   assert.equal((await get('/health/readiness')).status, 200);
-  const projects = await get('/api/studio/projects');
+  assert.equal((await get('/api/sessions')).status, 401);
+  const rejected = await fetch(`${base}/api/sessions`, { headers: { 'X-API-Key': 'wrong-fixture-key' }, signal: AbortSignal.timeout(10000) });
+  assert.equal(rejected.status, 401);
+  const sessions = await get('/api/sessions', true);
+  assert.equal(sessions.status, 200); assert.deepEqual((await sessions.json()).sessions, []);
+  const projects = await get('/api/studio/projects', true);
   assert.equal(projects.status, 200); assert.deepEqual((await projects.json()).projects, []);
-  const missingApi = await get('/api/nonexistent');
+  const missingApi = await get('/api/nonexistent', true);
   assert.equal(missingApi.status, 404); assert.match(missingApi.headers.get('content-type'), /application\/json/);
   assert.equal((await get('/assets/missing.js')).status, 404);
   console.log('Compiled single-service startup, dashboard assets, SPA refresh, readiness and Studio API passed. No model requests.');

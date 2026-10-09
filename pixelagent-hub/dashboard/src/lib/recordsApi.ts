@@ -24,6 +24,41 @@ const API_BASE =
     ? RAW_API_BASE.replace(/\/$/, '')
     : '';
 const API_KEY = import.meta.env.VITE_RECORDS_API_KEY || '';
+const CONNECTION_STORAGE_KEY = `pixelagent:records-key:${API_BASE || 'same-origin'}`;
+
+/** An empty session override explicitly disables the legacy build-time key. */
+export function hasRecordsCredential(): boolean {
+  return Boolean(currentApiKey());
+}
+
+function currentApiKey(): string {
+  try {
+    return window.sessionStorage.getItem(CONNECTION_STORAGE_KEY) ?? API_KEY;
+  } catch {
+    return '';
+  }
+}
+
+export async function connectRecordsApi(key: string): Promise<void> {
+  const candidate = key.trim();
+  if (!candidate || candidate.length > 4096 || /[^\x21-\x7e]/.test(candidate)) {
+    throw new Error('请输入有效的 API Key（不含空格或控制字符）。');
+  }
+  const res = await fetch(`${API_BASE}/api/sessions`, {
+    headers: { 'X-API-Key': candidate },
+    redirect: 'error',
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error(res.status === 401 || res.status === 403
+    ? 'API Key 无效或没有访问权限。' : `连接检查失败（HTTP ${res.status}）。`);
+  const body = await res.json();
+  if (!Array.isArray(body.sessions)) throw new Error('服务返回的内容不是 Records API。');
+  window.sessionStorage.setItem(CONNECTION_STORAGE_KEY, candidate);
+}
+
+export function disconnectRecordsApi(): void {
+  window.sessionStorage.setItem(CONNECTION_STORAGE_KEY, '');
+}
 
 function normalizeError(body: unknown, status: number): string {
   const b = (body || {}) as ApiErrorShape;
@@ -41,10 +76,13 @@ function normalizeError(body: unknown, status: number): string {
 
 const jsonHeaders = (): Record<string, string> => ({
   'Content-Type': 'application/json',
-  ...(API_KEY ? { 'X-API-Key': API_KEY } : {}),
+  ...authHeaders(),
 });
 
-const authHeaders = (): Record<string, string> => (API_KEY ? { 'X-API-Key': API_KEY } : {});
+const authHeaders = (): Record<string, string> => {
+  const key = currentApiKey();
+  return key ? { 'X-API-Key': key } : {};
+};
 
 /** Same-origin in dev when Vite proxies `/api` to Records. */
 export function getRecordsApiBaseUrl(): string {
@@ -58,7 +96,12 @@ export function sessionFileUrl(sessionId: string, fileId: string): string {
 
 export async function fetchRecordsBinary(path: string): Promise<Blob> {
   const url = path.startsWith('http') ? path : `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
-  const res = await fetch(url, { headers: authHeaders() });
+  const base = new URL(`${API_BASE}/`, window.location.origin);
+  const target = new URL(url, window.location.origin);
+  if (target.origin !== base.origin || !target.pathname.startsWith(`${base.pathname}api/`) || target.username || target.password) {
+    throw new Error('只能下载当前 Records API 的文件。');
+  }
+  const res = await fetch(target.href, { headers: authHeaders(), redirect: 'error' });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
   return res.blob();
 }
@@ -76,6 +119,7 @@ async function fileToUploadPart(file: File): Promise<{ name: string; mime: strin
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     ...init,
+    redirect: 'error',
     headers: {
       ...jsonHeaders(),
       ...(init?.headers || {}),
@@ -125,6 +169,7 @@ async function postAgentRun(
   const path = `/api/run/${encodeURIComponent(mode)}${qs ? `?${qs}` : ''}`;
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
+    redirect: 'error',
     signal: opts?.signal,
     headers: jsonHeaders(),
     body: JSON.stringify(body),
