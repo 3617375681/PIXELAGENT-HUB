@@ -50,6 +50,16 @@ paths:
           $ref: '#/components/responses/Error500'
     post:
       operationId: createStudioProject
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          description: Persisted initial-creation key. Same key and trimmed description returns the original project; conflicting or incomplete reservations return 409. Other POST operations do not support this key. Authentication and rate limits still apply.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 128
+            pattern: '^[A-Za-z0-9_-]+$'
       tags:
         - Studio
       summary: Start Manager/Coder generation (model usage)

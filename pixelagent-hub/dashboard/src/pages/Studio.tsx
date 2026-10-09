@@ -21,6 +21,7 @@ export default function Studio() {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [description, setDescription] = useState(defaultDescription);
+  const creationRequest = useRef<{ description: string; key: string } | null>(null);
   const [projects, setProjects] = useState<StudioSummary[]>([]);
   const [project, setProject] = useState<StudioProject | null>(null);
   const [html, setHtml] = useState('');
@@ -170,7 +171,10 @@ export default function Studio() {
     finally { setBusy(false); }
   };
   const create = () => action(async () => {
-    const accepted = await studioApi.create(description.trim());
+    const text = description.trim();
+    if (creationRequest.current?.description !== text) creationRequest.current = { description: text, key: crypto.randomUUID() };
+    const accepted = await studioApi.create(text, creationRequest.current.key);
+    creationRequest.current = null;
     navigate(`/studio/${accepted.projectId}`); setTab('preview'); setRefreshKey((key) => key + 1);
   });
   const cancel = () => action(async () => {

@@ -71,6 +71,20 @@ async function withApi(work: (base: string, runtime: RunRuntime, root: string) =
 }
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+test('initial creation deduplicates concurrent and completed retries and rejects conflicting keys', async () => withApi(async (base, runtime) => {
+  const create = (description: string, key = 'client-request-1') => fetch(`${base}/api/studio/projects`, { method: 'POST', headers: { 'Idempotency-Key': key }, body: JSON.stringify({ description }) });
+  const responses = await Promise.all([create('Counter'), create('Counter'), create(' Counter ')]);
+  assert.deepEqual(responses.map((response) => response.status), [202, 202, 202]);
+  const accepted = await Promise.all(responses.map((response) => response.json()));
+  assert.deepEqual(accepted[1], accepted[0]); assert.deepEqual(accepted[2], accepted[0]);
+  await waitForJob(runtime, accepted[0].jobId);
+  assert.deepEqual(await (await create('Counter')).json(), accepted[0]);
+  assert.equal(runtime.listJobs().length, 1);
+  assert.equal((await create('Different requirement')).status, 409);
+  assert.equal((await create('Counter', '../invalid')).status, 400);
+  assert.equal((await create('Counter', 'x'.repeat(129))).status, 400);
+  assert.equal((await create('Counter', 'client-request-2')).status, 202);
+}));
 test('browser API is opt-in, rejects executable input and recovers interrupted records', async () => withApi(async (base, runtime, root) => {
   const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Browser gate fixture' }) })).json();
   await waitForJob(runtime, accepted.jobId);

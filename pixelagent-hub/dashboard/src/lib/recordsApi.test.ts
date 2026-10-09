@@ -21,6 +21,18 @@ beforeEach(() => {
 
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
+it('sends the explicit creation key with authentication on repeated requests', async () => {
+  const api = await import('./recordsApi');
+  fetchMock.mockImplementation(async () => Response.json({ projectId: 'fixture', jobId: 'studio-fixture' }));
+  await api.studioApi.create('Counter', 'same-request');
+  await api.studioApi.create('Counter', 'same-request');
+  for (const call of fetchMock.mock.calls) {
+    expect(call[1].headers['Idempotency-Key']).toBe('same-request');
+    expect(call[1].headers['X-API-Key']).toBe('legacy-fixture-key');
+    expect(JSON.parse(call[1].body)).toEqual({ description: 'Counter' });
+  }
+});
+
 it('verifies a candidate before saving and keeps the old connection after rejection', async () => {
   const api = await import('./recordsApi');
   fetchMock.mockResolvedValueOnce(new Response('{}', { status: 401 }));

@@ -15,6 +15,7 @@ import { compareSources } from '../studio/sourceChanges.js';
 import { parentVersion, versionFamily } from '../studio/versions.js';
 import { listReviews, reviewInput, saveReview } from '../studio/reviews.js';
 import { summarizeGeneration } from '../studio/generationMetrics.js';
+import { createStudioRequest, StudioRequestConflict } from './studioRequests.js';
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -86,8 +87,7 @@ export function createStudioApi(options: {
     }
     return review;
   };
-  const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[], revision?: StudioRecord['revision'], changeRequests?: string[], retry?: StudioRecord['retry'], strategy?: StudioRecord['strategy']) => {
-    const projectId = randomUUID();
+  const startProject = async (description: string, repair?: StudioRecord['repair'], initialFiles?: SourceFile[], revision?: StudioRecord['revision'], changeRequests?: string[], retry?: StudioRecord['retry'], strategy?: StudioRecord['strategy'], projectId: string = randomUUID()) => {
     const jobId = `studio-${projectId}`;
     const record: StudioRecord = { projectId, jobId, description: description.trim(), repair, revision, retry, strategy, status: 'queued', phase: 'queued', startedAt: new Date().toISOString(), rounds: [] };
     await saveStudioRecord(options.root, record);
@@ -131,7 +131,18 @@ export function createStudioApi(options: {
           if (typeof description !== 'string' || !description.trim() || description.length > 4000) {
             json(res, 400, { error: { message: 'Provide a project description of 1–4000 characters' } }); return;
           }
-          json(res, 202, await startProject(description)); return;
+          const key = req.headers['idempotency-key'];
+          if (key !== undefined && (typeof key !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(key))) {
+            json(res, 400, { error: { message: 'Idempotency-Key must contain 1–128 letters, digits, underscores or hyphens' } }); return;
+          }
+          try {
+            const accepted = key === undefined ? await startProject(description) : await createStudioRequest(options.root, key, description.trim(), (id) => startProject(description, undefined, undefined, undefined, undefined, undefined, undefined, id));
+            json(res, 202, accepted);
+          } catch (error) {
+            if (!(error instanceof StudioRequestConflict)) throw error;
+            json(res, 409, { error: { message: error.message } });
+          }
+          return;
         }
         const image = pathname.match(/^\/api\/studio\/projects\/([^/]+)\/browser-runs\/([^/]+)\/(initial\.png|final\.png)$/);
         if (image && req.method === 'GET') {

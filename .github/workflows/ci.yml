@@ -108,6 +108,9 @@ jobs:
       - name: Verify built dashboard and API startup
         working-directory: ./pixelagent-hub
         run: npm run smoke:dashboard
+      - name: Verify portfolio replay artifacts
+        run: npm run portfolio:demo -- --check
+        working-directory: pixelagent-hub
 
   windows-runtime:
     name: Windows runtime (Node 22)

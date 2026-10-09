@@ -4,22 +4,22 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
 [![node](https://img.shields.io/node/v/pixelagent-hub)](https://nodejs.org/)
 
-轻量、可观测的 **TypeScript 多 Agent 编排框架**。面向内容与代码工作流，内置 **6 种协作模式**，支持 **6 大 LLM 提供商**，附带**可视化监控面板**。
+**像素风多 Agent 软件工作台**：从需求规划、源码生成和真实编译，到浏览器检查、版本返修与源码交付。底层为 TypeScript 编排框架，提供 6 种协作模式，支持 OpenAI、Anthropic、DeepSeek、Kimi、Ollama、自定义 OpenAI 兼容服务及离线 mock。
 
-## 为什么不是"又一个 Agent Demo"
+## 项目能力
 
 - **可观测性优先**：请求级日志、模式轨迹、会话落盘、健康探针
 - **稳定性优先**：超时、并发限制、幂等冲突保护、限流
-- **成本可见**：每次运行返回 LLM 调用次数、token 用量、估算 USD 成本
+- **用量记录**：Studio 展示生成耗时、返回的角色任务、模型、token 和构建次数；缺失用量明确标注，实际货币成本尚未计算
 - **轻量运行时**：LLM 调用使用原生 `fetch`，软件构建使用 esbuild
 - **联网检索**：DuckDuckGo 网页搜索、SearXNG，以及可选的 Brave/Tavily
 - **自带可视化**：React 前端面板，查看 Agent 状态、消息、执行摘要和输出
 
-## Software Studio（开发中）
+## Software Studio
 
 新增软件生成命令：Manager 规划、Coder 写入独立工作区、真实编译错误触发返修，成功导出可运行预览和源码 ZIP。
 
-工作室控制台支持试玩诊断保存、按诊断返修、基于现有源码追加需求，以及关联版本历史、源码对比和切回旧版。构建成功保持等待验收，自动交互验收仍在开发。
+工作室支持试玩诊断、按已保存错误返修、追加需求、版本历史、源码对比和候选版本切换。Tester 生成有限的声明式检查计划，独立沙箱浏览器执行点击、输入和断言并保存截图。构建通过、浏览器检查通过和人工批准分别记录。
 
 ```powershell
 cd pixelagent-hub
@@ -27,9 +27,24 @@ npm run studio:create -- "制作像素贪吃蛇，包含暂停、计分和重新
 npm run studio:preview -- <输出的项目UUID>
 ```
 
-也可以启动 API 与 dashboard，进入首页 **STUDIO**，提交需求、查看执行阶段、试玩、查看源码并下载 ZIP。首个真实生成案例：[像素贪吃蛇源码](pixelagent-hub/examples/software/pixel-snake)、[源码包](pixelagent-hub/examples/software/pixel-snake-source.zip)。当前限离线 HTML/CSS/JS；构建成功仍需交互验收，持续修改尚未完成。[运行说明和成熟度清单](pixelagent-hub/docs/software-studio/README.md)。
+也可以启动 API 与 dashboard，进入 **STUDIO**，提交需求、查看阶段、试玩、查看源码并下载 ZIP。当前生成范围为离线 HTML/CSS/JS 应用与小游戏；不支持自动生成数据库、登录支付或任意 npm 项目。[运行说明](pixelagent-hub/docs/software-studio/README.md)、[完整 API 契约](pixelagent-hub/openapi/studio-api.yaml)。
 
-## 30 秒上手
+![真实模型生成的计数器及浏览器检查](portfolio-screenshots/studio-real-counter-browser-2026-10-09.png)
+
+## 个人项目展示与演示
+
+[作品集介绍、接单文案和演示步骤](pixelagent-hub/docs/portfolio/README.md)包含技术栈、可验证案例和交付范围。已有 10 次真实模型生成实测，全部首次编译通过，原始浏览器检查 6 次通过、4 次失败；保留失败及后续修复证据，不将编译成功等同于完整功能验收。
+
+完成下方依赖安装后，可直接回放真实返修实验，无需模型密钥：
+
+```sh
+npm run build:all
+npm run portfolio:demo
+```
+
+打开 `http://127.0.0.1:3131/studio`。演示将保存的原始作品、受控故障、真实模型修复及浏览器报告复制到临时目录；不重新生成或批准作品，不改动原记录。它是历史证据回放，创建按钮使用 mock，不能用于现场真实生成。正常退出清理临时副本，强制终止可能留下系统临时目录。
+
+## 本地运行
 
 ```bash
 cd pixelagent-hub

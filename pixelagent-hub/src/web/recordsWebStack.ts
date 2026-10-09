@@ -635,7 +635,7 @@ async function handleRequest(req: any, res: any): Promise<void> {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': corsOrigin(req),
       'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-API-Key,X-Request-Id',
+      'Access-Control-Allow-Headers': 'Content-Type,Authorization,X-API-Key,X-Request-Id,Idempotency-Key',
       'Vary': 'Origin',
     });
     res.end();
