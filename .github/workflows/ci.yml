@@ -25,7 +25,7 @@ jobs:
           cache-dependency-path: pixelagent-hub/package-lock.json
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: node --import tsx --test src/studio/browserRuns.test.ts src/web/studioApi.test.ts
+      - run: node --import tsx --test src/studio/browserRuns.test.ts src/studio/benchmark.test.ts src/web/studioApi.test.ts
         env:
           RUN_STUDIO_BROWSER_TESTS: '1'
 

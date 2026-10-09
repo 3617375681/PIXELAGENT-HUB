@@ -4,7 +4,8 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import type { Orchestrator } from '../core/Orchestrator.js';
 import { runSoftwareStudio, validateProjectId, type StudioRecord } from './softwareStudio.js';
-import { saveTestPlan, testPlanSchema } from './testPlans.js';
+import { listTestPlans, saveTestPlan, testPlanSchema } from './testPlans.js';
+import { contentHash, listBrowserRuns } from './browserRuns.js';
 import { listDiagnostics } from './diagnostics.js';
 import { listReviews } from './reviews.js';
 import { summarizeGeneration } from './generationMetrics.js';
@@ -69,7 +70,7 @@ export async function readBenchmarkCases(path: string): Promise<BenchmarkCase[]>
   return benchmarkCasesSchema.parse(JSON.parse(await readFile(path, 'utf8')));
 }
 
-/** Browser-client observations remain separate from generation and human decisions. */
+/** Independent browser evidence, client observations and human decisions remain separate. */
 export async function collectBenchmarkReport(run: BenchmarkRun, projectRoot: string) {
   const entries = await Promise.all(run.entries.map(async (entry) => {
     validateProjectId(entry.projectId);
@@ -78,9 +79,34 @@ export async function collectBenchmarkReport(run: BenchmarkRun, projectRoot: str
     const diagnostics = await listDiagnostics(projectRoot, entry.projectId);
     const observation = record.status === 'ready_for_review' ? diagnostics.find((report) => report.previewFile === record.previewFile && report.testPlanId === entry.testPlanId && report.checks) : undefined;
     const review = (await listReviews(projectRoot, entry.projectId)).find((review) => review.previewFile === record.previewFile);
+    const browserRun = record.status === 'ready_for_review' && entry.testPlanId
+      ? (await listBrowserRuns(projectRoot, entry.projectId)).find((item) => item.testPlanId === entry.testPlanId && item.previewFile === record.previewFile) : undefined;
+    let browserStatus: 'not_run' | 'pending' | 'passed' | 'failed' | 'cancelled' | 'invalid' = 'not_run';
+    if (browserRun) {
+      const plan = (await listTestPlans(projectRoot, entry.projectId)).find((item) => item.id === entry.testPlanId);
+      const parsed = testPlanSchema.safeParse(plan?.result?.output && { checks: plan.result.output.checks, limitations: plan.result.output.limitations });
+      // Only read a generated preview path; record contents are not arbitrary file paths.
+      const html = record.previewFile && /^v[1-3]\/dist\/index\.html$/.test(record.previewFile)
+        ? await readFile(join(projectRoot, entry.projectId, record.previewFile), 'utf8').catch((error) => {
+          if ((error as NodeJS.ErrnoException).code === 'ENOENT') return undefined;
+          throw error;
+        }) : undefined;
+      const matches = browserRun.projectId === entry.projectId && browserRun.source === 'server-browser'
+        && plan?.status === 'ready' && plan.projectId === entry.projectId && plan.previewFile === record.previewFile
+        && parsed.success && html !== undefined && browserRun.previewHash === contentHash(html)
+        && browserRun.planHash === contentHash(JSON.stringify(parsed.data));
+      browserStatus = !matches ? 'invalid' : ['queued', 'running'].includes(browserRun.status) ? 'pending'
+        : browserRun.status === 'cancelled' ? 'cancelled' : browserRun.status === 'failed' && browserRun.finishedAt ? 'failed' : 'invalid';
+      if (matches && parsed.success && browserRun.status === 'passed' && browserRun.finishedAt && browserRun.browserVersion
+        && !browserRun.error && !browserRun.errors.length && !browserRun.blockedRequests.length && browserRun.screenshots.includes('final.png')
+        && browserRun.checks.length === parsed.data.checks.length && browserRun.checks.every((check, index) =>
+          check.name === parsed.data.checks[index].name && check.status === 'passed' && !check.error && check.actual === parsed.data.checks[index].expected)) browserStatus = 'passed';
+    }
     return { ...entry, ...summarizeGeneration(record), interactionStatus: observation
       ? observation.loaded && !observation.errors.length && observation.checks!.every((check) => check.status === 'passed') ? 'client_checks_passed' : 'client_checks_failed'
       : 'not_run', diagnosticId: observation?.id || null, checksPassed: observation?.checks?.filter((check) => check.status === 'passed').length || 0, checksTotal: observation?.checks?.length || 0,
+      browserStatus, browserRunId: browserRun?.id || null, browserChecksPassed: browserRun?.checks.filter((check) => check.status === 'passed').length || 0,
+      browserChecksTotal: browserRun?.checks.length || 0, browserError: browserRun?.error || null,
       manualDecision: record.status !== 'ready_for_review' || (review?.decision === 'approved' && diagnostics.find((report) => report.previewFile === record.previewFile)?.id !== review.diagnosticId) ? null : review?.decision || null };
   }));
   const strategies = [...new Set(entries.map((entry) => entry.strategy))].map((strategy) => {
@@ -89,9 +115,15 @@ export async function collectBenchmarkReport(run: BenchmarkRun, projectRoot: str
       clientChecksPassed: rows.filter((entry) => entry.interactionStatus === 'client_checks_passed').length,
       clientChecksFailed: rows.filter((entry) => entry.interactionStatus === 'client_checks_failed').length,
       interactionsNotRun: rows.filter((entry) => entry.interactionStatus === 'not_run').length,
+      browserPassed: rows.filter((entry) => entry.browserStatus === 'passed').length,
+      browserFailed: rows.filter((entry) => entry.browserStatus === 'failed').length,
+      browserPending: rows.filter((entry) => entry.browserStatus === 'pending').length,
+      browserCancelled: rows.filter((entry) => entry.browserStatus === 'cancelled').length,
+      browserInvalid: rows.filter((entry) => entry.browserStatus === 'invalid').length,
+      browserNotRun: rows.filter((entry) => entry.browserStatus === 'not_run').length,
       totalElapsedMs: rows.reduce((sum, entry) => sum + (entry.elapsedMs || 0), 0), reportedTokens: rows.reduce((sum, entry) => sum + entry.reportedTokens, 0),
       reportedUsageTasks: rows.reduce((sum, entry) => sum + entry.reportedUsageTasks, 0), agentTasks: rows.reduce((sum, entry) => sum + entry.agentTasks, 0), costUsd: null };
   });
   return { runId: run.id, generatedAt: new Date().toISOString(), sourceRevision: run.sourceRevision, sourceDirty: run.sourceDirty, casesSha256: run.casesSha256, runStatus: run.status, entries, strategies,
-    limitations: ['Single run per case/strategy; no statistical superiority claim.', 'DOM checks are synthetic browser-client observations, not independent trusted browser QA or visual acceptance.', 'Reported token totals may omit failed calls without returned usage; cost is unknown. Null elapsed time means interrupted duration is unknown and omitted from totals.', 'Task ordering, model randomness and cache effects are not controlled.'] };
+    limitations: ['Single run per case/strategy; no statistical superiority claim.', 'Client DOM checks are synthetic observations. Independent browser results are reported separately for the latest matching fixed plan and preview, with content hashes checked; neither proves complete requirements coverage or visual acceptance.', 'Browser failures include infrastructure errors; browserError retains their cause. Invalid evidence is never counted as passed. Repair versions are not substituted for original benchmark entries.', 'Reported token totals may omit failed calls without returned usage; cost is unknown. Null elapsed time means interrupted duration is unknown and omitted from totals.', 'Task ordering, model randomness and cache effects are not controlled.'] };
 }
