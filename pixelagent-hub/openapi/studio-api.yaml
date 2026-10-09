@@ -1,0 +1,1790 @@
+openapi: 3.0.3
+info:
+  title: PixelAgent Software Studio API
+  version: 1.1.0
+  description: >-
+    Personal static-app generation, evidence and version API. Use X-API-Key or Authorization Bearer when
+    server authentication is enabled. Shared keys do not provide per-user identity or permissions. Model-using
+    POST operations are explicit and may incur provider charges; never retry automatically on ambiguous
+    transport failure. Request acceptance, successful compilation, browser verification and manual approval
+    are separate states.
+servers:
+  - url: http://127.0.0.1:3100
+security:
+  - ApiKey: []
+  - Bearer: []
+tags:
+  - name: Studio
+paths:
+  /api/studio/projects:
+    get:
+      operationId: listStudioProjects
+      tags:
+        - Studio
+      summary: List projects, newest first
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - projects
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectSummary'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+    post:
+      operationId: createStudioProject
+      tags:
+        - Studio
+      summary: Start Manager/Coder generation (model usage)
+      description: >-
+        Accepted is not completed. Poll the returned projectUrl. No automatic retry of the paid task;
+        compilation may trigger up to three code attempts.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProject'
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptedProject'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: getStudioProject
+      tags:
+        - Studio
+      summary: Read source rounds, build evidence, metrics and current review
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - project
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/preview:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: getStudioPreview
+      tags:
+        - Studio
+      summary: Read self-contained HTML as JSON
+      description: >-
+        Only ready_for_review projects. Treat generated HTML as untrusted; use an isolated sandbox, never
+        insert it into the host page.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - html
+                properties:
+                  html:
+                    type: string
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/archive:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: downloadStudioArchive
+      tags:
+        - Studio
+      summary: Download source ZIP; not an approved release
+      responses:
+        '200':
+          description: Source ZIP with preview and build report
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/cancel:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    post:
+      operationId: cancelStudioProject
+      tags:
+        - Studio
+      summary: Cancel active generation
+      description: No request body. Queued/running projects only; cancellation does not create an archive.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - project
+                properties:
+                  project:
+                    $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/retry:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    post:
+      operationId: retryStudioProject
+      tags:
+        - Studio
+      summary: Create a new version from failed/cancelled generation (model usage)
+      description: No request body. Original records remain unchanged; wait until the old task has actually stopped.
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptedProject'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/revise:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    post:
+      operationId: reviseStudioProject
+      tags:
+        - Studio
+      summary: Create a new version with an additional requirement (model usage)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviseProject'
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptedProject'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/repair:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    post:
+      operationId: repairStudioProject
+      tags:
+        - Studio
+      summary: Create a new version from saved failure evidence (model usage)
+      description: >-
+        Supply exactly one diagnosticId or browserRunId. Evidence must belong to this current successful
+        preview. Browser repair requires a completed application failure with matching plan/preview hashes;
+        infrastructure failures, cancellations and stale reports are rejected. New versions need retesting and
+        do not inherit approval.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepairProject'
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptedProject'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/versions:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: listStudioVersions
+      tags:
+        - Studio
+      summary: Read the version family and manually selected candidate
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - rootProjectId
+                  - selectedProjectId
+                  - versions
+                properties:
+                  rootProjectId:
+                    type: string
+                    pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+                  selectedProjectId:
+                    type: string
+                    pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+                    nullable: true
+                  versions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectSummary'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+    post:
+      operationId: selectStudioVersion
+      tags:
+        - Studio
+      summary: Select a successful version in this family
+      description: Selection is a preference, not approval. New generation does not automatically replace it.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectVersion'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - selectedProjectId
+                properties:
+                  selectedProjectId:
+                    type: string
+                    pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/changes:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: getStudioChanges
+      tags:
+        - Studio
+      summary: Read complete before/after source contents for a successful derived version
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - changes
+                properties:
+                  changes:
+                    $ref: '#/components/schemas/SourceChanges'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/diagnostics:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: listStudioDiagnostics
+      tags:
+        - Studio
+      summary: Read saved client observations
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - reports
+                properties:
+                  reports:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Diagnostic'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+    post:
+      operationId: saveStudioDiagnostic
+      tags:
+        - Studio
+      summary: Save client observations for the current preview
+      description: >-
+        testPlanId and checks must appear together and match a ready saved plan. Passing results must match
+        expected values without an error. Client observations are not independent browser proof. Saving new
+        diagnostics invalidates the current approval.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiagnosticInput'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - report
+                properties:
+                  report:
+                    $ref: '#/components/schemas/Diagnostic'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/test-plans:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: listStudioTestPlans
+      tags:
+        - Studio
+      summary: Read Tester plans, including failures and interruptions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - plans
+                properties:
+                  plans:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TestPlan'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+    post:
+      operationId: createOrCancelStudioTestPlan
+      tags:
+        - Studio
+      summary: Generate a Tester plan (model usage), or cancel an active plan
+      description: >-
+        Send {} to generate; poll GET test-plans until ready/failed/cancelled. Send cancelPlanId to cancel
+        without model usage; cancellation returns 200 with {plan}. Plans contain at most ten uniquely named
+        checks; completeness must be reviewed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanRequest'
+      responses:
+        '200':
+          description: Cancelled plan
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - plan
+                properties:
+                  plan:
+                    $ref: '#/components/schemas/TestPlan'
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - planId
+                  - jobId
+                properties:
+                  planId:
+                    type: string
+                    pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+                  jobId:
+                    type: string
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/browser-runs:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: listStudioBrowserRuns
+      tags:
+        - Studio
+      summary: Read independent browser reports and availability
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - enabled
+                  - runs
+                properties:
+                  enabled:
+                    type: boolean
+                  runs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BrowserRun'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+    post:
+      operationId: startOrCancelStudioBrowserRun
+      tags:
+        - Studio
+      summary: Execute a saved plan in sandboxed Chromium, or cancel a run
+      description: >-
+        Supply exactly one testPlanId or cancelRunId. No model usage. Starting requires enabled browser checks
+        and a ready plan for the current successful preview. Poll GET browser-runs. A passed report covers
+        only its plan, never automatic approval.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrowserRequest'
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - runId
+                  - jobId
+                properties:
+                  runId:
+                    type: string
+                    pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+                  jobId:
+                    type: string
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/browser-runs/{runId}/{name}:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+      - name: runId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+            - initial.png
+            - final.png
+    get:
+      operationId: getStudioBrowserScreenshot
+      tags:
+        - Studio
+      summary: Download an existing saved initial/final screenshot
+      responses:
+        '200':
+          description: PNG screenshot from the saved report
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/reviews:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: listStudioReviews
+      tags:
+        - Studio
+      summary: Read review history and current valid decision
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - reviews
+                  - current
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Review'
+                  current:
+                    anyOf:
+                      - $ref: '#/components/schemas/Review'
+                      - type: object
+                        nullable: true
+                        enum:
+                          - null
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+    post:
+      operationId: saveStudioReview
+      tags:
+        - Studio
+      summary: Record an explicit human review decision
+      description: >-
+        Approved requires the latest current-preview diagnostic to be loaded, without errors or failed checks.
+        operator is a user-supplied label, not an authenticated identity. ManuallyReviewed must be true;
+        clients must never infer or submit approval from compilation or browser checks alone.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewInput'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - review
+                properties:
+                  review:
+                    $ref: '#/components/schemas/Review'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    Bearer:
+      type: http
+      scheme: bearer
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+    AcceptedProject:
+      type: object
+      required:
+        - projectId
+        - jobId
+        - projectUrl
+      properties:
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        jobId:
+          type: string
+        projectUrl:
+          type: string
+    CreateProject:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          maxLength: 4000
+          minLength: 1
+          pattern: \S
+    ReviseProject:
+      type: object
+      required:
+        - changeRequest
+      properties:
+        changeRequest:
+          type: string
+          maxLength: 4000
+          minLength: 1
+          pattern: \S
+    SelectVersion:
+      type: object
+      required:
+        - projectId
+      properties:
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    RepairProject:
+      oneOf:
+        - type: object
+          required:
+            - diagnosticId
+          properties:
+            diagnosticId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+          additionalProperties: false
+        - type: object
+          required:
+            - browserRunId
+          properties:
+            browserRunId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+          additionalProperties: false
+    PlanRequest:
+      oneOf:
+        - type: object
+          properties: {}
+          additionalProperties: false
+        - type: object
+          required:
+            - cancelPlanId
+          properties:
+            cancelPlanId:
+              type: string
+          additionalProperties: false
+    BrowserRequest:
+      oneOf:
+        - type: object
+          required:
+            - testPlanId
+          properties:
+            testPlanId:
+              type: string
+          additionalProperties: false
+        - type: object
+          required:
+            - cancelRunId
+          properties:
+            cancelRunId:
+              type: string
+          additionalProperties: false
+    CheckResult:
+      type: object
+      required:
+        - name
+        - status
+        - actual
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 1
+        status:
+          type: string
+          enum:
+            - passed
+            - failed
+        actual:
+          type: string
+          maxLength: 300
+        error:
+          type: string
+          maxLength: 2000
+      additionalProperties: false
+    ReviewInput:
+      type: object
+      required:
+        - previewFile
+        - diagnosticId
+        - decision
+        - operator
+        - note
+        - manuallyReviewed
+      properties:
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        diagnosticId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        decision:
+          type: string
+          enum:
+            - approved
+            - changes_requested
+        operator:
+          type: string
+          maxLength: 80
+          minLength: 1
+          pattern: \S
+        note:
+          type: string
+          maxLength: 2000
+          minLength: 1
+          pattern: \S
+        manuallyReviewed:
+          type: boolean
+          enum:
+            - true
+      additionalProperties: false
+    GenerationMetrics:
+      type: object
+      required:
+        - status
+        - elapsedMs
+        - buildAttempts
+        - failedBuilds
+        - agentTasks
+        - reportedUsageTasks
+        - missingUsageTasks
+        - reportedTokens
+        - models
+        - costUsd
+      properties:
+        status:
+          type: string
+          enum:
+            - queued
+            - running
+            - ready_for_review
+            - failed
+            - cancelled
+        elapsedMs:
+          type: number
+          minimum: 0
+          nullable: true
+        buildAttempts:
+          type: integer
+          minimum: 0
+        failedBuilds:
+          type: integer
+          minimum: 0
+        agentTasks:
+          type: integer
+          minimum: 0
+        reportedUsageTasks:
+          type: integer
+          minimum: 0
+        missingUsageTasks:
+          type: integer
+          minimum: 0
+        reportedTokens:
+          type: number
+          minimum: 0
+        models:
+          type: array
+          items:
+            type: string
+        costUsd:
+          type: number
+          nullable: true
+          enum:
+            - null
+    SourceFile:
+      type: object
+      required:
+        - path
+        - content
+      properties:
+        path:
+          type: string
+          minLength: 1
+        content:
+          type: string
+          minLength: 1
+        description:
+          type: string
+    TaskResult:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - partial
+            - failed
+        output:
+          type: object
+          properties:
+            files:
+              type: array
+              items:
+                $ref: '#/components/schemas/SourceFile'
+            llmProvider:
+              type: string
+            llmModel:
+              type: string
+            llmUsage:
+              type: object
+        reasoning:
+          type: string
+    BuildReport:
+      type: object
+      required:
+        - status
+        - errors
+        - checkedFiles
+        - browserVerified
+      properties:
+        status:
+          type: string
+          enum:
+            - passed
+            - failed
+        errors:
+          type: array
+          items:
+            type: string
+        checkedFiles:
+          type: array
+          items:
+            type: string
+        browserVerified:
+          type: boolean
+    BrowserAction:
+      oneOf:
+        - type: object
+          required:
+            - type
+            - selector
+          properties:
+            type:
+              type: string
+              enum:
+                - click
+            selector:
+              type: string
+              maxLength: 160
+              minLength: 1
+          additionalProperties: false
+        - type: object
+          required:
+            - type
+            - selector
+            - value
+          properties:
+            type:
+              type: string
+              enum:
+                - input
+            selector:
+              type: string
+              maxLength: 160
+              minLength: 1
+            value:
+              type: string
+              maxLength: 300
+          additionalProperties: false
+        - type: object
+          required:
+            - type
+            - selector
+            - key
+          properties:
+            type:
+              type: string
+              enum:
+                - key
+            selector:
+              type: string
+              maxLength: 160
+              minLength: 1
+            key:
+              type: string
+              maxLength: 32
+              minLength: 1
+          additionalProperties: false
+    BrowserCheck:
+      type: object
+      required:
+        - name
+        - actions
+        - selector
+        - expected
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 1
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrowserAction'
+          maxItems: 8
+        selector:
+          type: string
+          maxLength: 160
+          minLength: 1
+        expected:
+          type: string
+          maxLength: 300
+        assertion:
+          type: string
+          enum:
+            - text
+            - disabled
+          description: Defaults to text; disabled requires expected "true" or "false".
+      additionalProperties: false
+    TestPlan:
+      type: object
+      required:
+        - id
+        - projectId
+        - previewFile
+        - jobId
+        - status
+        - startedAt
+      properties:
+        id:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        jobId:
+          type: string
+        status:
+          type: string
+          enum:
+            - queued
+            - running
+            - ready
+            - failed
+            - cancelled
+        startedAt:
+          type: string
+        finishedAt:
+          type: string
+        error:
+          type: string
+        result:
+          type: object
+          required:
+            - status
+            - output
+          properties:
+            status:
+              type: string
+            output:
+              type: object
+              required:
+                - checks
+                - limitations
+              properties:
+                checks:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BrowserCheck'
+                  maxItems: 10
+                  minItems: 1
+                limitations:
+                  type: array
+                  items:
+                    type: string
+                    maxLength: 300
+                  maxItems: 10
+    BrowserRun:
+      type: object
+      required:
+        - id
+        - projectId
+        - testPlanId
+        - previewFile
+        - previewHash
+        - planHash
+        - jobId
+        - source
+        - status
+        - startedAt
+        - viewport
+        - checks
+        - errors
+        - blockedRequests
+        - screenshots
+      properties:
+        id:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        testPlanId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        previewHash:
+          type: string
+          minLength: 1
+        planHash:
+          type: string
+          minLength: 1
+        jobId:
+          type: string
+        source:
+          type: string
+          enum:
+            - server-browser
+        status:
+          type: string
+          enum:
+            - queued
+            - running
+            - passed
+            - failed
+            - cancelled
+        startedAt:
+          type: string
+        finishedAt:
+          type: string
+        browserVersion:
+          type: string
+        error:
+          type: string
+        viewport:
+          type: object
+          required:
+            - width
+            - height
+          properties:
+            width:
+              type: integer
+              minimum: 0
+            height:
+              type: integer
+              minimum: 0
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckResult'
+        errors:
+          type: array
+          items:
+            type: string
+        blockedRequests:
+          type: array
+          items:
+            type: string
+        screenshots:
+          type: array
+          items:
+            type: string
+            enum:
+              - initial.png
+              - final.png
+        repairable:
+          type: boolean
+    SourceChanges:
+      type: object
+      required:
+        - projectId
+        - parentProjectId
+        - fromPreview
+        - toPreview
+        - unchanged
+        - files
+      properties:
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        parentProjectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        fromPreview:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        toPreview:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        unchanged:
+          type: integer
+          minimum: 0
+        files:
+          type: array
+          items:
+            type: object
+            required:
+              - path
+              - status
+            properties:
+              path:
+                type: string
+              status:
+                type: string
+                enum:
+                  - added
+                  - removed
+                  - modified
+              before:
+                type: string
+              after:
+                type: string
+    DiagnosticInput:
+      type: object
+      required:
+        - previewFile
+        - loaded
+        - errors
+      properties:
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        loaded:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+            maxLength: 2000
+            minLength: 1
+          maxItems: 20
+        testPlanId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckResult'
+          maxItems: 10
+          minItems: 1
+      additionalProperties: false
+      oneOf:
+        - required:
+            - testPlanId
+            - checks
+        - not:
+            anyOf:
+              - required:
+                  - testPlanId
+              - required:
+                  - checks
+    Diagnostic:
+      type: object
+      required:
+        - previewFile
+        - loaded
+        - errors
+        - id
+        - savedAt
+        - source
+      properties:
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        loaded:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+            maxLength: 2000
+            minLength: 1
+          maxItems: 20
+        testPlanId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckResult'
+          maxItems: 10
+          minItems: 1
+        id:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        savedAt:
+          type: string
+        source:
+          type: string
+          enum:
+            - browser-client
+    Review:
+      type: object
+      required:
+        - previewFile
+        - diagnosticId
+        - decision
+        - operator
+        - note
+        - manuallyReviewed
+        - id
+        - savedAt
+        - source
+      properties:
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        diagnosticId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        decision:
+          type: string
+          enum:
+            - approved
+            - changes_requested
+        operator:
+          type: string
+          maxLength: 80
+          minLength: 1
+          pattern: \S
+        note:
+          type: string
+          maxLength: 2000
+          minLength: 1
+          pattern: \S
+        manuallyReviewed:
+          type: boolean
+          enum:
+            - true
+        id:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        savedAt:
+          type: string
+        source:
+          type: string
+          enum:
+            - manual-review
+    ProjectSummary:
+      type: object
+      required:
+        - projectId
+        - description
+        - status
+        - startedAt
+        - review
+      properties:
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - queued
+            - running
+            - ready_for_review
+            - failed
+            - cancelled
+        startedAt:
+          type: string
+        phase:
+          type: string
+        jobId:
+          type: string
+        repair:
+          type: object
+          required:
+            - parentProjectId
+            - previewFile
+            - errors
+          properties:
+            parentProjectId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            previewFile:
+              type: string
+              pattern: ^v[1-3]/dist/index\.html$
+            errors:
+              type: array
+              items:
+                type: string
+            diagnosticId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            browserRunId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            testPlanId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        revision:
+          type: object
+          required:
+            - parentProjectId
+            - previewFile
+            - changeRequest
+          properties:
+            parentProjectId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            previewFile:
+              type: string
+              pattern: ^v[1-3]/dist/index\.html$
+            changeRequest:
+              type: string
+        retry:
+          type: object
+          required:
+            - parentProjectId
+          properties:
+            parentProjectId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        review:
+          anyOf:
+            - $ref: '#/components/schemas/Review'
+            - type: object
+              nullable: true
+              enum:
+                - null
+    Project:
+      type: object
+      required:
+        - projectId
+        - description
+        - status
+        - startedAt
+        - rounds
+      properties:
+        projectId:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - queued
+            - running
+            - ready_for_review
+            - failed
+            - cancelled
+        startedAt:
+          type: string
+        phase:
+          type: string
+        jobId:
+          type: string
+        repair:
+          type: object
+          required:
+            - parentProjectId
+            - previewFile
+            - errors
+          properties:
+            parentProjectId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            previewFile:
+              type: string
+              pattern: ^v[1-3]/dist/index\.html$
+            errors:
+              type: array
+              items:
+                type: string
+            diagnosticId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            browserRunId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            testPlanId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        revision:
+          type: object
+          required:
+            - parentProjectId
+            - previewFile
+            - changeRequest
+          properties:
+            parentProjectId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+            previewFile:
+              type: string
+              pattern: ^v[1-3]/dist/index\.html$
+            changeRequest:
+              type: string
+        retry:
+          type: object
+          required:
+            - parentProjectId
+          properties:
+            parentProjectId:
+              type: string
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        review:
+          anyOf:
+            - $ref: '#/components/schemas/Review'
+            - type: object
+              nullable: true
+              enum:
+                - null
+        strategy:
+          type: string
+          enum:
+            - manager-coder
+            - coder-only
+        finishedAt:
+          type: string
+        error:
+          type: string
+        stoppedPhase:
+          type: string
+        plan:
+          $ref: '#/components/schemas/TaskResult'
+        rounds:
+          type: array
+          items:
+            type: object
+            required:
+              - round
+              - code
+            properties:
+              round:
+                type: integer
+                minimum: 1
+                maximum: 3
+              code:
+                $ref: '#/components/schemas/TaskResult'
+              build:
+                $ref: '#/components/schemas/BuildReport'
+        previewFile:
+          type: string
+          pattern: ^v[1-3]/dist/index\.html$
+        archiveFile:
+          type: string
+        generationMetrics:
+          $ref: '#/components/schemas/GenerationMetrics'
+  responses:
+    Error400:
+      description: Invalid input or project ID
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error401:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error404:
+      description: Project, record or route not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error409:
+      description: Project state, current preview or evidence does not satisfy this operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error429:
+      description: Creation rate limit or runtime queue capacity exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error500:
+      description: Internal or stored-record error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
