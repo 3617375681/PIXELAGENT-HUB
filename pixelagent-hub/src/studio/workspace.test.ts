@@ -19,7 +19,8 @@ test('build produces real compiled preview and a recoverable source archive', as
     assert.equal(report.status, 'passed');
     assert.equal(report.browserVerified, false);
     const preview = await readFile(join(directory, 'dist/index.html'), 'utf-8');
-    assert.match(preview, /dataset.started/);
+    assert.match(preview, /src="data:application\/javascript;base64,/);
+    assert.match(Buffer.from(preview.match(/src="data:application\/javascript;base64,([^"]+)"/)![1], 'base64').toString(), /dataset.started/);
     assert.match(preview, /Content-Security-Policy/);
     assert.match(preview, /font-family: "Courier New"/);
     assert.doesNotMatch(preview, /src="game.js"|href="style.css"/);

@@ -1,0 +1,109 @@
+{
+  "id": "c41e4dfc-aaaa-43dc-982f-ac8ecb7dece5",
+  "projectId": "679ac1fd-cb37-480e-b877-8a393f74af96",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "benchmark-fixed-c41e4dfc-aaaa-43dc-982f-ac8ecb7dece5",
+  "status": "ready",
+  "startedAt": "2026-10-09T07:12:51.247Z",
+  "finishedAt": "2026-10-09T07:12:51.247Z",
+  "result": {
+    "taskId": "c41e4dfc-aaaa-43dc-982f-ac8ecb7dece5",
+    "agentId": "benchmark",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initial placeholder",
+          "actions": [],
+          "selector": "#result",
+          "expected": "--"
+        },
+        {
+          "name": "Freezing point",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#temperature",
+              "value": "0"
+            },
+            {
+              "type": "input",
+              "selector": "#direction",
+              "value": "c-to-f"
+            },
+            {
+              "type": "click",
+              "selector": "#convert"
+            }
+          ],
+          "selector": "#result",
+          "expected": "32.00"
+        },
+        {
+          "name": "Reverse boiling point",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#temperature",
+              "value": "212"
+            },
+            {
+              "type": "input",
+              "selector": "#direction",
+              "value": "f-to-c"
+            },
+            {
+              "type": "click",
+              "selector": "#convert"
+            }
+          ],
+          "selector": "#result",
+          "expected": "100.00"
+        },
+        {
+          "name": "Negative temperature",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#temperature",
+              "value": "-40"
+            },
+            {
+              "type": "input",
+              "selector": "#direction",
+              "value": "c-to-f"
+            },
+            {
+              "type": "click",
+              "selector": "#convert"
+            }
+          ],
+          "selector": "#result",
+          "expected": "-40.00"
+        },
+        {
+          "name": "Reject invalid text",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#temperature",
+              "value": "abc"
+            },
+            {
+              "type": "click",
+              "selector": "#convert"
+            }
+          ],
+          "selector": "#result",
+          "expected": "Error"
+        }
+      ],
+      "limitations": [
+        "Only listed numeric boundaries checked; native keyboard and visual appearance need separate review."
+      ],
+      "llmProvider": "benchmark",
+      "llmModel": "fixed-checks"
+    },
+    "reasoning": "Fixed benchmark checks; no Tester model call"
+  }
+}

@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { browserRepairErrors, contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from './browserRuns.js';
 import type { TestPlanRecord } from './testPlans.js';
+import { buildStaticProject } from './workspace.js';
 
 const html = '<html><body><input aria-label="Name" id="name"><button id="add">Add</button><output>0</output><script>document.querySelector("#add").addEventListener("click",()=>document.querySelector("output").textContent++);document.querySelector("#name").addEventListener("keydown",e=>{if(e.key==="Enter")document.querySelector("output").textContent=e.target.value})</script></body></html>';
 const plan = { checks: [
@@ -13,6 +14,27 @@ const plan = { checks: [
   { name: 'Enter name', actions: [{ type: 'input', selector: '#name', value: 'Pixel' }, { type: 'key', selector: '#name', key: 'Enter' }], selector: 'output', expected: 'Pixel' },
 ], limitations: ['Controlled browser fixture; not model quality evidence'] };
 const makeRun = (content = html, checks: unknown = plan): BrowserRun => ({ id: randomUUID(), projectId: randomUUID(), testPlanId: randomUUID(), previewFile: 'v1/dist/index.html', previewHash: contentHash(content), planHash: contentHash(JSON.stringify(checks)), jobId: randomUUID(), source: 'server-browser', status: 'queued', startedAt: new Date().toISOString(), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] });
+
+test('build preserves deferred and module ordering before DOMContentLoaded in a real browser', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-script-order-'));
+  try {
+    const report = await buildStaticProject([
+      { path: 'index.html', content: '<html><head><script src="first.js" defer></script><script src="module.js" type="module"></script><script src="second.js" defer></script></head><body><output id="order"></output><output id="count">0</output><button id="add">Add</button><script>window.order = ["inline"];</script></body></html>' },
+      { path: 'first.js', content: 'window.order.push("defer-one"); document.addEventListener("DOMContentLoaded", () => { window.order.push("loaded"); document.querySelector("#order").textContent = window.order.join(","); });' },
+      { path: 'module.js', content: 'window.order.push("module");' },
+      { path: 'second.js', content: 'window.order.push("defer-two"); document.querySelector("#add").addEventListener("click", () => document.querySelector("#count").textContent = "1");' },
+    ], join(root, 'build'));
+    assert.equal(report.status, 'passed');
+    const preview = await readFile(join(root, 'build/dist/index.html'), 'utf8');
+    const checks = { checks: [
+      { name: 'Parser scheduling', actions: [], selector: '#order', expected: 'inline,defer-one,module,defer-two,loaded' },
+      { name: 'Handler sees parsed button', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' },
+    ], limitations: ['Controlled scheduling regression'] };
+    const run = await executeBrowserRun({ root, run: makeRun(preview, checks), html: preview, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.deepEqual(run.blockedRequests, []); assert.deepEqual(run.errors, []);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
 
 test('browser repair binds completed application failures to the exact preview and saved plan', () => {
   const run = makeRun();
@@ -65,7 +87,7 @@ test('real browser uses click, fill and key actions, captures screenshots and de
     const network = '<html><body><button>Fetch</button><output>idle</output><script>document.querySelector("button").addEventListener("click",()=>fetch("https://example.invalid/secret").catch(()=>document.querySelector("output").textContent="blocked"))</script></body></html>';
     const networkPlan = { checks: [{ name: 'Network blocked', actions: [{ type: 'click', selector: 'button' }], selector: 'output', expected: 'blocked' }], limitations: [] };
     const blocked = await execute(makeRun(network, networkPlan), network, networkPlan);
-    assert.equal(blocked.status, 'failed', JSON.stringify(blocked)); assert.equal(blocked.blockedRequests.length, 1);
+    assert.equal(blocked.status, 'failed', JSON.stringify(blocked)); assert.equal(blocked.blockedRequests.length, 1, JSON.stringify(blocked));
     const timeout = await execute(makeRun(html, mismatch), html, mismatch, undefined, 1000);
     assert.equal(timeout.status, 'failed'); assert.match(timeout.error!, /time limit/);
     const controller = new AbortController(); controller.abort();

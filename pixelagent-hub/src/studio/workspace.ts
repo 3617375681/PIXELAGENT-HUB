@@ -75,8 +75,11 @@ export async function buildStaticProject(input: unknown, directory: string, sign
         if (!path.endsWith('.js') || !compiled.has(path)) throw new Error(`Missing or external script: ${src}`);
         code = compiled.get(path)!;
       } else code = await compileScript(node.html() || '', 'index.html inline script');
-      node.removeAttr('src').removeAttr('type').removeAttr('integrity');
-      node.html(code.replace(/<\/script/gi, '<\\/script'));
+      node.removeAttr('integrity');
+      // Local data URLs retain external-script scheduling: defer/async and module type.
+      // Turning a head defer script into a classic inline script runs it before the DOM.
+      if (src) node.attr('src', `data:application/javascript;base64,${Buffer.from(code).toString('base64')}`).empty();
+      else node.html(code.replace(/<\/script/gi, '<\\/script'));
     }
     for (const element of $('link[rel="stylesheet"]').toArray()) {
       const href = $(element).attr('href') || '';
@@ -86,7 +89,7 @@ export async function buildStaticProject(input: unknown, directory: string, sign
     }
     // Restrict networking even when the exported preview is opened outside the dashboard.
     $('meta[http-equiv], link').remove();
-    $('head').prepend('<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data:; font-src data:; connect-src \'none\'; form-action \'none\'; base-uri \'none\'">');
+    $('head').prepend('<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\' data:; style-src \'unsafe-inline\'; img-src data:; font-src data:; connect-src \'none\'; form-action \'none\'; base-uri \'none\'">');
     signal?.throwIfAborted();
     await mkdir(join(directory, 'dist'), { recursive: true });
     await writeFile(join(directory, 'dist', 'index.html'), $.html());

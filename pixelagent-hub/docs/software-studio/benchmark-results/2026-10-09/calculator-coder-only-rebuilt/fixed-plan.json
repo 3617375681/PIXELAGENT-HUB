@@ -1,0 +1,119 @@
+{
+  "id": "46cbd997-d4f1-4c1d-a480-c91bd7a04d38",
+  "projectId": "1c6a80f2-0a92-4133-ba34-30a747217bc7",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "rebuild-fixed-plan",
+  "status": "ready",
+  "startedAt": "2026-10-09T07:22:08.115Z",
+  "finishedAt": "2026-10-09T07:22:08.117Z",
+  "result": {
+    "taskId": "8414389b-97c6-4ffb-aa34-865d38514b43",
+    "agentId": "benchmark",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initial result",
+          "actions": [],
+          "selector": "#result",
+          "expected": "0"
+        },
+        {
+          "name": "Addition",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#left",
+              "value": "7"
+            },
+            {
+              "type": "input",
+              "selector": "#right",
+              "value": "8"
+            },
+            {
+              "type": "input",
+              "selector": "#operation",
+              "value": "add"
+            },
+            {
+              "type": "click",
+              "selector": "#calculate"
+            }
+          ],
+          "selector": "#result",
+          "expected": "15"
+        },
+        {
+          "name": "Reject division by zero",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#right",
+              "value": "0"
+            },
+            {
+              "type": "input",
+              "selector": "#operation",
+              "value": "divide"
+            },
+            {
+              "type": "click",
+              "selector": "#calculate"
+            }
+          ],
+          "selector": "#result",
+          "expected": "Error"
+        },
+        {
+          "name": "Negative addition",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#left",
+              "value": "-3"
+            },
+            {
+              "type": "input",
+              "selector": "#right",
+              "value": "1"
+            },
+            {
+              "type": "input",
+              "selector": "#operation",
+              "value": "add"
+            },
+            {
+              "type": "click",
+              "selector": "#calculate"
+            }
+          ],
+          "selector": "#result",
+          "expected": "-2"
+        },
+        {
+          "name": "Reject empty operand",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#left",
+              "value": ""
+            },
+            {
+              "type": "click",
+              "selector": "#calculate"
+            }
+          ],
+          "selector": "#result",
+          "expected": "Error"
+        }
+      ],
+      "limitations": [
+        "Subtraction, multiplication, rounding, native keyboard and visual appearance not covered by these checks."
+      ],
+      "llmProvider": "benchmark",
+      "llmModel": "fixed-checks"
+    },
+    "reasoning": "Fixed benchmark checks; no Tester model call"
+  }
+}

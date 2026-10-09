@@ -1,0 +1,55 @@
+[
+  {
+    "id": "counter",
+    "title": "Pixel counter",
+    "description": "Create an offline pixel-style counter with initial integer 0, button IDs increase/decrease/reset, and an output element ID count showing only the integer. Click adds one, subtracts one, or resets to zero. Support negative numbers. Include labeled keyboard-accessible buttons and README. Use HTML/CSS/JS only, no dependencies or storage. Keep total source under 200 lines.",
+    "checks": [
+      {
+        "name": "Initial zero",
+        "actions": [],
+        "selector": "#count",
+        "expected": "0"
+      },
+      {
+        "name": "Increase",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          }
+        ],
+        "selector": "#count",
+        "expected": "1"
+      },
+      {
+        "name": "Negative count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          },
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#count",
+        "expected": "-1"
+      },
+      {
+        "name": "Reset",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#count",
+        "expected": "0"
+      }
+    ],
+    "limitations": [
+      "Native keyboard behavior and pixel appearance require separate review."
+    ]
+  }
+]

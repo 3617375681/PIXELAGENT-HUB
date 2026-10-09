@@ -1,0 +1,96 @@
+{
+  "id": "19ea639c-4265-4760-acae-ee06f5fd0def",
+  "projectId": "c9f15979-da96-4229-a95f-0a96dfa9527d",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "benchmark-fixed-19ea639c-4265-4760-acae-ee06f5fd0def",
+  "status": "ready",
+  "startedAt": "2026-10-09T07:06:50.267Z",
+  "finishedAt": "2026-10-09T07:06:50.267Z",
+  "result": {
+    "taskId": "19ea639c-4265-4760-acae-ee06f5fd0def",
+    "agentId": "benchmark",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initially empty",
+          "actions": [],
+          "selector": "#todo-total",
+          "expected": "0"
+        },
+        {
+          "name": "Ignore blank task",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#todo-add"
+            }
+          ],
+          "selector": "#todo-total",
+          "expected": "0"
+        },
+        {
+          "name": "Add task",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#todo-input",
+              "value": " Read book "
+            },
+            {
+              "type": "click",
+              "selector": "#todo-add"
+            }
+          ],
+          "selector": "#todo-total",
+          "expected": "1"
+        },
+        {
+          "name": "Trim task text",
+          "actions": [],
+          "selector": "#todo-text-1",
+          "expected": "Read book"
+        },
+        {
+          "name": "Complete task",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#todo-check-1"
+            }
+          ],
+          "selector": "#remaining",
+          "expected": "0"
+        },
+        {
+          "name": "Reopen task",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#todo-check-1"
+            }
+          ],
+          "selector": "#remaining",
+          "expected": "1"
+        },
+        {
+          "name": "Delete task",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#todo-delete-1"
+            }
+          ],
+          "selector": "#todo-total",
+          "expected": "0"
+        }
+      ],
+      "limitations": [
+        "In-memory list only; native keyboard activation, layout and accessibility need separate review."
+      ],
+      "llmProvider": "benchmark",
+      "llmModel": "fixed-checks"
+    },
+    "reasoning": "Fixed benchmark checks; no Tester model call"
+  }
+}
