@@ -25,6 +25,8 @@ npm --prefix dashboard run build
 
 PowerShell 离线示例：`$env:LLM_PROVIDER="mock"; node dist/examples/company-mode.js`。Bash：`LLM_PROVIDER=mock node dist/examples/company-mode.js`。mock 用于流程演示，不代表真实模型生成验收。
 
+本地使用构建后的工作台时，执行 `npm run build:all` 和 `npm start`，打开 `http://127.0.0.1:3100/studio`；页面和 API 共用服务，支持刷新 Studio 深层链接。运行 `npm run smoke:dashboard` 验证实际编译入口。配置和开发模式区别见 [同源启动说明](docs/software-studio/local-start.md)。
+
 ## Pull Request 流程
 
 首次启动遇到问题时，查看 [Studio 环境检查](docs/software-studio/environment-check.md)。`npm run studio:doctor -- --browser` 会检查本地 Chromium；不发起模型请求。

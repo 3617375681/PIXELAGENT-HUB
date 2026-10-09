@@ -23,6 +23,7 @@ npm --prefix dashboard ci
 ```
 
 - `npm run build`: compile framework TypeScript into `dist/`.
+- `npm run build:all` / `npm start`: build both packages, then serve the dashboard and API on one local port.
 - `npm test`: run core tests through `tsx` and Node's test runner.
 - `npm run lint`: type-check the framework without emitting files.
 - `npm run dev`: run the content-pipeline example.

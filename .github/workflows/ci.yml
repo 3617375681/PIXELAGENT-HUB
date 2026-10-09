@@ -72,6 +72,15 @@ jobs:
       - run: npm test
       - run: npm run build
 
+      - name: Build API for single-service startup
+        working-directory: ./pixelagent-hub
+        run: |
+          npm ci
+          npm run build
+      - name: Verify built dashboard and API startup
+        working-directory: ./pixelagent-hub
+        run: npm run smoke:dashboard
+
   windows-runtime:
     name: Windows runtime (Node 22)
     runs-on: windows-latest

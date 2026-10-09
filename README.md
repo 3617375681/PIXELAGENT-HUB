@@ -52,6 +52,8 @@ npm run records:api       # 后端 API → http://localhost:3100
 npm run ui:dev            # 前端面板 → http://localhost:3000
 ```
 
+构建后的本地工作台也可单服务启动：在 `pixelagent-hub/` 执行 `npm run build:all`、`npm start`，打开 `http://127.0.0.1:3100/studio`。页面、API 和健康检查共用端口，支持刷新深层链接。首次配置及验证命令见 [同源本地启动](pixelagent-hub/docs/software-studio/local-start.md)。
+
 ## 5 分钟 Docker 部署
 
 1. 准备环境文件：`cp pixelagent-hub/.env.example pixelagent-hub/.env`，至少填写 `RECORDS_API_KEY`（生产勿用默认占位符）。
