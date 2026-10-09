@@ -54,6 +54,8 @@
 
 完整工作台可在应用目录执行 `npm run build:all`、`npm start`，使用同一个本机服务打开页面和 API。首次安装、端口及同源配置见 [本地启动](local-start.md)；热更新开发仍使用 API 与 Vite 两个终端。
 
+容器部署使用仓库根目录的 Compose；运行时连接、持久化与容器检查范围见 [Docker 本机部署](docker-start.md)。
+
 启动 Records API 和 dashboard 后，打开 `/studio`（首页 STUDIO 按钮）。输入需求后点击“开始创作”，页面自动显示执行阶段，完成后可试玩、看源码与构建记录、下载 ZIP；刷新后根据 URL 恢复项目。取消不会开始后续代码生成。此流程受原有 API 鉴权、创建限流与运行队列控制。
 
 API 项目保存在 `<RECORDS_ROOT>/studio/`；可用 `STUDIO_ROOT_OVERRIDE` 指定目录。CLI 默认使用 `records/software-studio/`。若要在页面加载 CLI 项目，可显式配置 API 指向该目录；不要让两个进程同时修改同一个项目。

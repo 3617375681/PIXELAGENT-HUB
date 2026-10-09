@@ -7,12 +7,15 @@ services:
       context: ./pixelagent-hub
       dockerfile: Dockerfile
     ports:
-      - "3100:3100"
+      - "127.0.0.1:3100:3100"
     env_file:
       - ./pixelagent-hub/.env
     environment:
       NODE_ENV: production
+      ALLOW_UNAUTH_IN_DEV: "false"
       RECORDS_API_PORT: "3100"
+      RECORDS_ROOT_OVERRIDE: /app/records/company-mode
+      STUDIO_ROOT_OVERRIDE: /app/records/company-mode/studio
     volumes:
       - ./pixelagent-hub/records:/app/records
     restart: unless-stopped
@@ -22,7 +25,7 @@ services:
       context: ./pixelagent-hub/dashboard
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     depends_on:
       - backend
     restart: unless-stopped

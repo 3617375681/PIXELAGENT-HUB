@@ -53,3 +53,10 @@ test('loadWebServerConfig rejects weak production api key', () => {
     });
   });
 });
+
+test('production rejects the documented placeholder and accepts an explicit key without unauthenticated access', () => {
+  assert.throws(() => loadWebServerConfig({ NODE_ENV: 'production', ALLOW_UNAUTH_IN_DEV: 'false', RECORDS_API_KEY: 'replace-with-strong-api-key' }), /Replace the example/);
+  const cfg = loadWebServerConfig({ NODE_ENV: 'production', ALLOW_UNAUTH_IN_DEV: 'false', RECORDS_API_KEY: 'controlled-production-fixture-key' });
+  assert.equal(cfg.allowUnauthInDev, false);
+  assert.throws(() => loadWebServerConfig({ NODE_ENV: 'production', ALLOW_UNAUTH_IN_DEV: 'true', RECORDS_API_KEY: 'controlled-production-fixture-key' }), /cannot be true/);
+});

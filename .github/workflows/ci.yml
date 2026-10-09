@@ -7,6 +7,34 @@ on:
     branches: [main, master]
 
 jobs:
+  docker-startup:
+    name: Docker production startup
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      COMPOSE_PROJECT_NAME: pixelagent-ci
+      RECORDS_API_KEY: controlled-ci-production-key
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare controlled environment
+        run: |
+          cp pixelagent-hub/.env.example pixelagent-hub/.env
+          printf '\nRECORDS_API_KEY=controlled-ci-production-key\nLLM_PROVIDER=mock\nENABLE_EMBEDDING_RETRIEVER=false\n' >> pixelagent-hub/.env
+          printf 'VITE_RECORDS_API_KEY=DOCKER_BUILD_SECRET_CANARY\n' > pixelagent-hub/dashboard/.env.local
+      - name: Build and start actual Compose services
+        run: docker compose up --build -d
+      - name: Verify protected API, built dashboard, source delivery and persistence
+        run: node pixelagent-hub/scripts/smoke-docker.mjs
+      - name: Show controlled service logs on failure
+        if: failure()
+        run: docker compose logs --no-color --tail=100
+      - name: Stop CI services
+        if: always()
+        run: docker compose down
+
   studio-browser:
     name: Studio real browser (Node 22)
     # Playwright's downloaded Chromium needs user namespaces for its renderer sandbox.

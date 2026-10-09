@@ -54,7 +54,7 @@ npm run ui:dev            # 前端面板 → http://localhost:3000
 
 构建后的本地工作台也可单服务启动：在 `pixelagent-hub/` 执行 `npm run build:all`、`npm start`，打开 `http://127.0.0.1:3100/studio`。页面、API 和健康检查共用端口，支持刷新深层链接。首次配置及验证命令见 [同源本地启动](pixelagent-hub/docs/software-studio/local-start.md)。
 
-## 5 分钟 Docker 部署
+## Docker 本机部署
 
 1. 准备环境文件：`cp pixelagent-hub/.env.example pixelagent-hub/.env`，至少填写 `RECORDS_API_KEY`（生产勿用默认占位符）。
 2. 可选：在 `.env` 中设置 `LLM_PROVIDER=mock` 做无外网演示；或配置各厂商 API Key。
@@ -67,6 +67,8 @@ docker compose up --build
 - **前端**：`http://localhost:8080`（nginx 托管静态资源，并将 `/api`、`/health` 反代到后端）
 - **后端直连**：`http://localhost:3100`（Records API）
 - **会话落盘**：宿主机目录 `pixelagent-hub/records` 挂载到容器内 `/app/records`（与默认 `records/company-mode` 路径一致）
+
+Compose 默认只向本机开放端口，强制生产鉴权；复制示例文件后必须替换 API Key。打开前端顶部“API 连接”，输入该 Key 即可，无需把密钥打入镜像。首次运行、保留数据、容器检查范围和浏览器限制见 [Docker 部署说明](pixelagent-hub/docs/software-studio/docker-start.md)。
 
 ## 6 种协作模式
 

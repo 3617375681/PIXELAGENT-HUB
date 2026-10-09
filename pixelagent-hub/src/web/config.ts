@@ -71,6 +71,9 @@ export function loadWebServerConfig(env: NodeJS.ProcessEnv = process.env): WebSe
   if (nodeEnv === 'production' && recordsApiKey.length < 16) {
     throw new Error('[config] RECORDS_API_KEY must be at least 16 chars in production');
   }
+  if (nodeEnv === 'production' && recordsApiKey.startsWith('replace-with-')) {
+    throw new Error('[config] Replace the example RECORDS_API_KEY before starting production');
+  }
 
   const runTimeoutMs = parsePositiveInt(env.RUN_TIMEOUT_MS, 120000, 'RUN_TIMEOUT_MS');
   const runTimeoutMsByMode: Partial<Record<string, number>> = {};
