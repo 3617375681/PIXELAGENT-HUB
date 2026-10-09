@@ -105,6 +105,7 @@ export const studioApi = {
   createTestPlan: (projectId: string) => request<{ planId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/test-plans`, { method: 'POST', body: '{}' }),
   cancelTestPlan: (projectId: string, cancelPlanId: string) => request<{ plan: StudioTestPlan }>(`/api/studio/projects/${encodeURIComponent(projectId)}/test-plans`, { method: 'POST', body: JSON.stringify({ cancelPlanId }) }),
   repair: (projectId: string, diagnosticId: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/repair`, { method: 'POST', body: JSON.stringify({ diagnosticId }) }),
+  repairBrowserRun: (projectId: string, browserRunId: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/repair`, { method: 'POST', body: JSON.stringify({ browserRunId }) }),
   changes: (projectId: string, signal?: AbortSignal) => request<{ changes: StudioChanges }>(`/api/studio/projects/${encodeURIComponent(projectId)}/changes`, { signal }),
   versions: (projectId: string, signal?: AbortSignal) => request<StudioVersions>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { signal }),
   selectVersion: (projectId: string, target: string) => request<{ selectedProjectId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { method: 'POST', body: JSON.stringify({ projectId: target }) }),

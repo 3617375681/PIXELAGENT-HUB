@@ -1,6 +1,6 @@
 import { createOrchestrator } from '../factory.js';
 import { listTestPlans, saveTestPlan, testPlanSchema, type TestPlanRecord } from '../studio/testPlans.js';
-import { contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from '../studio/browserRuns.js';
+import { browserRepairErrors, contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from '../studio/browserRuns.js';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -157,7 +157,12 @@ export function createStudioApi(options: {
               await saveBrowserRun(options.root, run);
             }
           }
-          if (req.method === 'GET') { json(res, 200, { enabled: !!options.browserChecks?.enabled, runs }); return; }
+          if (req.method === 'GET') {
+            if (record.status === 'ready_for_review') sourceForPreview(record, record.previewFile);
+            const html = record.status === 'ready_for_review' && record.previewFile ? await readFile(join(options.root, projectId, record.previewFile), 'utf8') : undefined;
+            const plans = html !== undefined ? await listTestPlans(options.root, projectId) : [];
+            json(res, 200, { enabled: !!options.browserChecks?.enabled, runs: runs.map((run) => ({ ...run, repairable: html !== undefined && run.projectId === projectId && run.previewFile === record.previewFile && browserRepairErrors(run, plans.find((plan) => plan.id === run.testPlanId), html).length > 0 })) }); return;
+          }
           if (req.method !== 'POST') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
           if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).length !== 1) { json(res, 400, { error: { message: 'Provide only testPlanId or cancelRunId' } }); return; }
           const { testPlanId, cancelRunId } = input as { testPlanId?: unknown; cancelRunId?: unknown };
@@ -289,6 +294,20 @@ export function createStudioApi(options: {
           json(res, 202, await startProject(record.description, undefined, files, { parentProjectId: projectId, previewFile: record.previewFile, changeRequest: changeRequest.trim() }, requests)); return;
         }
         if (action === 'repair' && req.method === 'POST') {
+          if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).length !== 1) { json(res, 400, { error: { message: 'Provide only diagnosticId or browserRunId' } }); return; }
+          const browserRunId = (input as { browserRunId?: unknown }).browserRunId;
+          if (browserRunId !== undefined) {
+            if (typeof browserRunId !== 'string' || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(browserRunId)) { json(res, 400, { error: { message: 'Provide a saved browser run UUID' } }); return; }
+            const run = (await listBrowserRuns(options.root, projectId)).find((run) => run.id === browserRunId);
+            if (!run || run.projectId !== projectId) { json(res, 404, { error: { message: 'Browser run not found in this project' } }); return; }
+            if (record.status !== 'ready_for_review' || !record.previewFile || run.previewFile !== record.previewFile) { json(res, 409, { error: { message: 'Browser repair requires the current successful preview' } }); return; }
+            const files = sourceForPreview(record, record.previewFile);
+            const plan = (await listTestPlans(options.root, projectId)).find((plan) => plan.id === run.testPlanId);
+            const html = await readFile(join(options.root, projectId, record.previewFile), 'utf8');
+            const errors = browserRepairErrors(run, plan, html);
+            if (!errors.length) { json(res, 409, { error: { message: 'Repair requires completed application failures in the matching browser run; infrastructure errors require server recovery' } }); return; }
+            json(res, 202, await startProject(record.description, { parentProjectId: projectId, browserRunId, testPlanId: run.testPlanId, previewFile: run.previewFile, errors }, files, undefined, await changeHistory(record), undefined, record.strategy)); return;
+          }
           const diagnosticId = (input as { diagnosticId?: unknown })?.diagnosticId;
           if (typeof diagnosticId !== 'string' || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(diagnosticId)) {
             json(res, 400, { error: { message: 'Provide a saved diagnostic UUID' } }); return;

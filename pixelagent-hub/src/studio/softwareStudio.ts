@@ -16,7 +16,7 @@ export type StudioRecord = {
   startedAt: string; finishedAt?: string; plan?: TaskResult;
   rounds: { round: number; code: TaskResult; build?: BuildReport }[];
   previewFile?: string; archiveFile?: string; error?: string;
-  repair?: { parentProjectId: string; diagnosticId: string; previewFile: string; errors: string[] };
+  repair?: { parentProjectId: string; previewFile: string; errors: string[] } & ({ diagnosticId: string; browserRunId?: never } | { browserRunId: string; testPlanId: string; diagnosticId?: never });
   revision?: { parentProjectId: string; previewFile: string; changeRequest: string };
   retry?: { parentProjectId: string };
 };

@@ -27,6 +27,16 @@ Request bodies cannot supply HTML, URLs, executable paths or scripts. Service wo
 
 Passing proves only the saved plan's assertions during this run. It does not prove visual quality, complete coverage or human approval. Build reports, source ZIPs, client diagnostics and manual reviews remain separate.
 
+## Repair from browser failures
+
+The controlled failure → separate repair → real browser retest walkthrough and its limitations are recorded in [repair evidence](browser-repair-evidence.md).
+
+Expand a failed run and select **依据浏览器失败返修（调用模型）**. The server requires a completed run with a final screenshot, matching preview/plan hashes and application errors or failed assertions. A launch error, timeout, cancellation or stale report cannot trigger code generation; recover the browser environment or run a fresh check first. `GET browser-runs` returns the server-derived `repairable` flag.
+
+`POST /api/studio/projects/:id/repair` accepts only `{browserRunId}` or the existing `{diagnosticId}`. Browser repair reads saved evidence and original source on the server; request bodies cannot supply errors or replacement source. The child project's `repair` stores the parent, browser run and plan IDs. Manager/Coder receive bounded observed/expected text, actions and runtime errors as untrusted data. Existing source, report, screenshots and ZIP remain intact.
+
+The repaired version still requires a new Tester plan and independent browser run. Compare its source and recheck the failed behavior and unaffected requirements; build success alone does not establish a fix. Candidate selection and human approval remain manual and do not inherit from the parent. Infrastructure failures never fall back to paid code repair.
+
 Run real browser integration checks after installation:
 
 ```sh

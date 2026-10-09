@@ -30,6 +30,23 @@ class StudioFixture extends MockProvider {
   }
 }
 
+class BrowserRepairFixture extends StudioFixture {
+  codeCalls = 0;
+  async askWithUsage(system: string, user: string, temperature?: number, signal?: AbortSignal) {
+    if (system.includes('browser test planner')) {
+      this.prompts.push(user);
+      return { content: JSON.stringify({ checks: [{ name: 'Increment by one', actions: [{ type: 'click', selector: '#increment' }], selector: 'output', expected: '1' }], limitations: ['Controlled fixture; not model quality evidence'] }), usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 }, model: 'fixture', provider: 'mock' as const };
+    }
+    const response = await super.askWithUsage(system, user, temperature, signal);
+    if (!system.includes('project manager') && this.codeCalls++ === 0) {
+      const code = JSON.parse(response.content);
+      code.files[1].content = 'document.querySelector("#increment").addEventListener("click",()=>document.querySelector("output").textContent=String(Number(document.querySelector("output").textContent)+2));';
+      response.content = JSON.stringify(code);
+    }
+    return response;
+  }
+}
+
 async function withApi(work: (base: string, runtime: RunRuntime, root: string) => Promise<void>, provider = new StudioFixture(), timeoutMs = 5000, browserChecks = false) {
   const root = await mkdtemp(join(tmpdir(), 'studio-api-'));
   const runtime = new RunRuntime({ recordsRoot: join(root, 'runtime'), maxConcurrency: 1, maxQueueSize: 4, maxRetries: 2 });
@@ -91,14 +108,75 @@ test('browser HTTP job persists real checks and PNGs without changing build or s
   assert.equal(JSON.parse(original.toString()).rounds[0].build.browserVerified, false);
 }, new StudioFixture(), 5000, true));
 
+test('real browser failure repairs a separate version and retests without overwriting original evidence', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const provider = new BrowserRepairFixture();
+  await withApi(async (base, runtime, root) => {
+    const post = async (path: string, body: unknown) => {
+      const response = await fetch(`${base}${path}`, { method: 'POST', body: JSON.stringify(body) });
+      assert.equal(response.status, 202, await response.clone().text()); return response.json();
+    };
+    const parent = await post('/api/studio/projects', { description: 'Increment counter by one' }); await waitForJob(runtime, parent.jobId);
+    const parentJson = await readFile(join(root, parent.projectId, 'project.json'));
+    const parentZip = await readFile(join(root, parent.projectId, 'source.zip'));
+    const check = async (projectUrl: string) => {
+      const plan = await post(`${projectUrl}/test-plans`, {}); await waitForJob(runtime, plan.jobId);
+      const run = await post(`${projectUrl}/browser-runs`, { testPlanId: plan.planId }); await waitForJob(runtime, run.jobId);
+      return (await (await fetch(`${base}${projectUrl}/browser-runs`)).json()).runs.find((item: { id: string }) => item.id === run.runId);
+    };
+    const failed = await check(parent.projectUrl);
+    assert.equal(failed.status, 'failed'); assert.equal(failed.checks[0].actual, '2'); assert.equal(failed.repairable, true);
+    const evidenceFile = join(root, parent.projectId, 'browser-runs', `${failed.id}.json`);
+    const originalEvidence = await readFile(evidenceFile);
+    const child = await post(`${parent.projectUrl}/repair`, { browserRunId: failed.id }); await waitForJob(runtime, child.jobId);
+    const repaired = (await (await fetch(`${base}${child.projectUrl}`)).json()).project;
+    assert.equal(repaired.status, 'ready_for_review'); assert.equal(repaired.repair.browserRunId, failed.id);
+    assert.equal(repaired.repair.testPlanId, failed.testPlanId); assert.equal(repaired.repair.parentProjectId, parent.projectId);
+    assert.equal(repaired.repair.diagnosticId, undefined); assert.equal(repaired.review, null);
+    assert.match(provider.prompts.at(-1)!, /expected=\\"1\\", actual=\\"2\\"/);
+    assert.match(provider.prompts.at(-1)!, /previousFiles/);
+    const retest = await check(child.projectUrl);
+    assert.equal(retest.status, 'passed', JSON.stringify(retest)); assert.equal(retest.checks[0].actual, '1'); assert.equal(retest.repairable, false);
+    assert.deepEqual(await readFile(join(root, parent.projectId, 'project.json')), parentJson);
+    assert.deepEqual(await readFile(join(root, parent.projectId, 'source.zip')), parentZip);
+    assert.deepEqual(await readFile(evidenceFile), originalEvidence);
+    const versions = await (await fetch(`${base}${child.projectUrl}/versions`)).json();
+    assert.equal(versions.versions.length, 2); assert.equal(versions.selectedProjectId, parent.projectId);
+    assert.equal((await fetch(`${base}${child.projectUrl}/repair`, { method: 'POST', body: JSON.stringify({ browserRunId: retest.id }) })).status, 409);
+    assert.equal((await fetch(`${base}${child.projectUrl}/repair`, { method: 'POST', body: JSON.stringify({ browserRunId: failed.id }) })).status, 404);
+  }, provider, 5000, true);
+});
+
+test('browser repair rejects stale, incomplete and infrastructure evidence before calling a model', async () => {
+  const provider = new StudioFixture();
+  await withApi(async (base, runtime, root) => {
+    const parent = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Repair guard fixture' }) })).json(); await waitForJob(runtime, parent.jobId);
+    const planned = await (await fetch(`${base}${parent.projectUrl}/test-plans`, { method: 'POST', body: '{}' })).json(); await waitForJob(runtime, planned.jobId);
+    const { contentHash, saveBrowserRun } = await import('../studio/browserRuns.js');
+    const html = await readFile(join(root, parent.projectId, 'v1/dist/index.html'), 'utf8');
+    const inputPlan = { checks: [{ name: 'Initial counter', actions: [], selector: 'output', expected: '0' }], limitations: ['Synthetic DOM fixture only'] };
+    const valid = { id: randomUUID(), projectId: parent.projectId, testPlanId: planned.planId, jobId: 'fixture-run', source: 'server-browser' as const, status: 'failed' as const, previewFile: 'v1/dist/index.html', previewHash: contentHash(html), planHash: contentHash(JSON.stringify(inputPlan)), startedAt: new Date().toISOString(), finishedAt: new Date().toISOString(), browserVersion: 'fixture', viewport: { width: 1280, height: 720 }, checks: [{ name: 'Initial counter', status: 'failed' as const, actual: '1', error: 'Expected zero' }], errors: [], blockedRequests: [], screenshots: ['final.png' as const] };
+    const count = provider.prompts.length;
+    for (const change of [{ previewHash: 'different' }, { planHash: 'different' }, { error: 'Chromium not installed' }, { error: 'Timed out' }, { screenshots: [] }, { testPlanId: randomUUID() }]) {
+      await saveBrowserRun(root, { ...valid, ...change });
+      const response = await fetch(`${base}${parent.projectUrl}/repair`, { method: 'POST', body: JSON.stringify({ browserRunId: valid.id }) });
+      assert.equal(response.status, 409, JSON.stringify(change));
+      assert.equal((await (await fetch(`${base}${parent.projectUrl}/browser-runs`)).json()).runs[0].repairable, false);
+    }
+    assert.equal((await fetch(`${base}${parent.projectUrl}/repair`, { method: 'POST', body: JSON.stringify({ browserRunId: valid.id, errors: ['caller invented'] }) })).status, 400);
+    assert.equal((await fetch(`${base}${parent.projectUrl}/repair`, { method: 'POST', body: JSON.stringify({ browserRunId: '../escape' }) })).status, 400);
+    assert.equal(provider.prompts.length, count);
+  }, provider);
+});
+
 async function waitForJob(runtime: RunRuntime, jobId: string) {
-  const deadline = Date.now() + 15000;
+  // Browser checks have a 45-second execution limit plus browser cleanup/persistence.
+  const deadline = Date.now() + (runtime.getJob(jobId)?.mode === 'studio-browser' ? 60000 : 15000);
   while (Date.now() < deadline) {
     const job = runtime.getJob(jobId)!;
     if (['succeeded', 'failed', 'cancelled'].includes(job.status) && !runtime.isJobActive(jobId)) return job;
     await delay(10);
   }
-  throw new Error('Studio test job did not finish');
+  throw new Error(`Studio test job did not finish: ${JSON.stringify(runtime.getJob(jobId))}`);
 }
 
 test('studio HTTP creates, persists, lists, previews and exports a real build', async () => withApi(async (base, runtime, root) => {

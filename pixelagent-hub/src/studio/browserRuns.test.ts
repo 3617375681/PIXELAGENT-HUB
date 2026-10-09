@@ -4,7 +4,8 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from './browserRuns.js';
+import { browserRepairErrors, contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from './browserRuns.js';
+import type { TestPlanRecord } from './testPlans.js';
 
 const html = '<html><body><input aria-label="Name" id="name"><button id="add">Add</button><output>0</output><script>document.querySelector("#add").addEventListener("click",()=>document.querySelector("output").textContent++);document.querySelector("#name").addEventListener("keydown",e=>{if(e.key==="Enter")document.querySelector("output").textContent=e.target.value})</script></body></html>';
 const plan = { checks: [
@@ -12,6 +13,25 @@ const plan = { checks: [
   { name: 'Enter name', actions: [{ type: 'input', selector: '#name', value: 'Pixel' }, { type: 'key', selector: '#name', key: 'Enter' }], selector: 'output', expected: 'Pixel' },
 ], limitations: ['Controlled browser fixture; not model quality evidence'] };
 const makeRun = (content = html, checks: unknown = plan): BrowserRun => ({ id: randomUUID(), projectId: randomUUID(), testPlanId: randomUUID(), previewFile: 'v1/dist/index.html', previewHash: contentHash(content), planHash: contentHash(JSON.stringify(checks)), jobId: randomUUID(), source: 'server-browser', status: 'queued', startedAt: new Date().toISOString(), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] });
+
+test('browser repair binds completed application failures to the exact preview and saved plan', () => {
+  const run = makeRun();
+  Object.assign(run, { status: 'failed', finishedAt: new Date().toISOString(), browserVersion: 'fixture', screenshots: ['initial.png', 'final.png'], checks: [{ name: 'Increment', status: 'failed', actual: '2', error: 'Expected 1' }, { name: 'Enter name', status: 'passed', actual: 'Pixel' }] });
+  const saved: TestPlanRecord = { id: run.testPlanId, projectId: run.projectId, previewFile: run.previewFile, jobId: 'fixture-plan', status: 'ready', startedAt: run.startedAt, result: { taskId: 'fixture', agentId: 'tester', status: 'success', output: plan } };
+  const errors = browserRepairErrors(run, saved, html);
+  assert.equal(errors.length, 1); assert.match(errors[0], /expected="1", actual="2"/); assert.match(errors[0], /#add/);
+  for (const change of [
+    { status: 'passed' }, { status: 'running' }, { status: 'cancelled' }, { error: 'Browser executable missing' },
+    { previewHash: 'changed' }, { planHash: 'changed' }, { finishedAt: undefined }, { screenshots: ['initial.png'] }, { checks: [] },
+  ]) assert.deepEqual(browserRepairErrors({ ...run, ...change } as BrowserRun, saved, html), [], JSON.stringify(change));
+  for (const change of [{ status: 'failed' }, { projectId: randomUUID() }, { previewFile: 'v2/dist/index.html' }, { id: randomUUID() }]) {
+    assert.deepEqual(browserRepairErrors(run, { ...saved, ...change } as TestPlanRecord, html), []);
+  }
+  assert.deepEqual(browserRepairErrors(run, saved, html + 'changed'), []);
+  assert.deepEqual(browserRepairErrors(run, undefined, html), []);
+  const runtime = { ...run, checks: run.checks.map((check) => ({ ...check, status: 'passed' as const })), errors: ['Uncaught fixture error'] };
+  assert.match(browserRepairErrors(runtime, saved, html)[0], /Uncaught fixture error/);
+});
 
 test('browser evidence is separately persisted with hashes and rejects changed preview', async () => {
   const root = await mkdtemp(join(tmpdir(), 'browser-record-'));
