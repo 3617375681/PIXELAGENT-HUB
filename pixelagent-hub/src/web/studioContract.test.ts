@@ -29,6 +29,7 @@ function responseSchema(operation: any, status: number) {
   const resolved = response?.$ref ? contract.components.responses[response.$ref.split('/').pop()] : response;
   return resolved?.content['application/json']?.schema;
 }
+const guideExample = (guide: string) => guide.match(/```js\r?\n([\s\S]*?)\r?\n```/)?.[1];
 
 class ContractFixture extends MockProvider {
   override async askWithUsage(system: string, user: string) {
@@ -57,6 +58,9 @@ test('Studio OpenAPI validates with resolved references and unique operation IDs
   }
   assert.equal(new Set(ids).size, ids.length);
   assert.equal(contract.security[0].ApiKey.length, 0);
+  const guide = (await readFile(new URL('../../docs/software-studio/api-integration.md', import.meta.url), 'utf8')).replace(/\r\n/g, '\n');
+  assert.ok(guideExample(guide));
+  assert.equal(guideExample(guide.replace(/\n/g, '\r\n'))?.replace(/\r\n/g, '\n'), guideExample(guide));
 });
 
 test('actual Studio HTTP responses conform across generation, plans, diagnostics, review, versions, repair and binary delivery', async () => {
@@ -164,7 +168,7 @@ test('the full server enforces the documented header/Bearer authentication befor
       conforms(contract.paths['/api/studio/projects'].get.responses['200'].content['application/json'].schema, await response.json());
     }
     const guide = await readFile(new URL('../../docs/software-studio/api-integration.md', import.meta.url), 'utf8');
-    const example = guide.match(/```js\n([\s\S]*?)\n```/)?.[1];
+    const example = guideExample(guide);
     assert.ok(example, 'Guide must contain the executable read-only connection example');
     const { stdout } = await promisify(execFile)(process.execPath, ['--input-type=module', '-e', example], {
       env: { ...process.env, RECORDS_API_URL: url.replace('/api/studio/projects', ''), RECORDS_API_KEY: key, CREATE_STUDIO_PROJECT: 'false' }, timeout: 15000,
