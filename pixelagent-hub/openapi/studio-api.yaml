@@ -201,6 +201,74 @@ paths:
           $ref: '#/components/responses/Error429'
         '500':
           $ref: '#/components/responses/Error500'
+  /api/studio/projects/{projectId}/events:
+    parameters:
+      - name: projectId
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+    get:
+      operationId: listStudioEvents
+      tags:
+        - Studio
+      summary: Read or stream the project event timeline
+      description: >-
+        Events are appended as the project runs (planning, coding rounds, real build results,
+        terminal state, then test-plan and browser-check activity for the finished preview).
+        With stream=1 the response is Server-Sent Events: events after `after` (or Last-Event-ID)
+        are replayed, live events follow, and the stream ends after the generation's terminal
+        event (ready_for_review, failed or cancelled). Projects created before event logs existed
+        return a coarse timeline rebuilt from the saved record with derived=true.
+      parameters:
+        - name: after
+          in: query
+          required: false
+          description: Return only events with a larger sequence number.
+          schema:
+            type: integer
+            minimum: 0
+        - name: stream
+          in: query
+          required: false
+          description: Set to 1 for a text/event-stream response.
+          schema:
+            type: string
+            enum:
+              - '1'
+      responses:
+        '200':
+          description: Event timeline
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - events
+                  - derived
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StudioEvent'
+                  derived:
+                    type: boolean
+                    description: True when no event log exists and the timeline was rebuilt from the record.
+            text/event-stream:
+              schema:
+                type: string
+                description: 'Each message has `id: <seq>`, `event: studio` and `data: <StudioEvent JSON>`; `: ping` comments keep the connection open.'
+        '400':
+          $ref: '#/components/responses/Error400'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '429':
+          $ref: '#/components/responses/Error429'
+        '500':
+          $ref: '#/components/responses/Error500'
   /api/studio/projects/{projectId}/cancel:
     parameters:
       - name: projectId
@@ -886,6 +954,44 @@ components:
           properties:
             message:
               type: string
+    StudioEvent:
+      type: object
+      required:
+        - seq
+        - at
+        - type
+      properties:
+        seq:
+          type: integer
+          minimum: 1
+        at:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum:
+            - queued
+            - phase
+            - plan_ready
+            - code_ready
+            - build_failed
+            - build_passed
+            - ready_for_review
+            - failed
+            - cancelled
+            - test_plan_started
+            - test_plan_ready
+            - test_plan_failed
+            - browser_run_started
+            - browser_check
+            - browser_run_finished
+        round:
+          type: integer
+          minimum: 1
+        data:
+          type: object
+          description: Type-specific details, e.g. phase name, file count, the first three compiler errors, or check results.
+          additionalProperties: true
     AcceptedProject:
       type: object
       required:

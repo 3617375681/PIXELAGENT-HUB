@@ -107,6 +107,16 @@ test('actual Studio HTTP responses conform across generation, plans, diagnostics
     const detail = await call(template, 'get', undefined, id);
     assert.equal(detail.project.status, 'ready_for_review', detail.project.error);
     await call(`${template}/preview`, 'get', undefined, id);
+    const timeline = await call(`${template}/events`, 'get', undefined, id);
+    assert.equal(timeline.derived, false);
+    assert.equal(timeline.events[0].type, 'queued');
+    assert.equal(timeline.events.at(-1).type, 'ready_for_review');
+    assert.ok(timeline.events.every((event: { seq: number }, index: number) => event.seq === index + 1));
+    // The SSE variant replays the finished timeline and then closes on its own.
+    const stream = await fetch(`${base}${created.projectUrl}/events?stream=1`);
+    assert.equal(stream.status, 200); assert.match(stream.headers.get('content-type')!, /text\/event-stream/);
+    const streamed = (await stream.text()).split('\n').filter((line) => line.startsWith('data: ')).map((line) => JSON.parse(line.slice(6)));
+    assert.deepEqual(streamed.map((event) => event.seq), timeline.events.map((event: { seq: number }) => event.seq));
     const zip = await fetch(`${base}${created.projectUrl}/archive`);
     assert.equal(zip.status, 200); assert.match(zip.headers.get('content-type')!, /application\/zip/);
     assert.equal(new Uint8Array(await zip.arrayBuffer())[0], 80);

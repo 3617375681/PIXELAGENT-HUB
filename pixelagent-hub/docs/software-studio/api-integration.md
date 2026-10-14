@@ -39,6 +39,7 @@ Dashboard 在同一页面内失败后重试相同需求会复用键；接受成�
 | 阶段 | 请求与处理 |
 | --- | --- |
 | 生成 | `POST /api/studio/projects` 传 `description`，返回 **202** 和 `projectId/jobId/projectUrl`；GET 项目直到离开 `queued/running`。 |
+| 事件时间线 | GET `events` 返回 `{ events, derived }`，每条事件有递增的 `seq`、时间和类型（阶段切换、每轮编码、真实构建通过/失败及前 3 条错误、终态，以及之后的测试规划与浏览器检查）。加 `?stream=1` 得到 SSE（`id`、`event: studio`、`data`），可用 `after` 或 `Last-Event-ID` 续传，生成到达终态后服务端结束流。浏览器原生 `EventSource` 不能附加 `X-API-Key`，启用鉴权时用 `fetch` 读取流。事件日志出现前的旧项目返回 `derived: true` 的粗略时间线，只有起止时间。 |
 | 查看成果 | `ready_for_review` 才能 GET `preview`（JSON 中的 `html`）和 `archive`（ZIP）。隔离运行生成 HTML，禁止直接注入宿主页。 |
 | 测试规划 | POST `test-plans` 传 `{}`，返回 202；GET 同一路径，找到对应 `planId` 并等待 `ready`。此步调用 Tester 模型。 |
 | 独立检查 | POST `browser-runs` 传 `{ "testPlanId": "..." }`，返回 202；GET 等待对应 `runId` 完成。需启用带沙箱的 Chromium，没有模型调用。 |

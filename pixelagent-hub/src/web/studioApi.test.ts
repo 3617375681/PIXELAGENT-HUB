@@ -14,6 +14,10 @@ import { createStudioApi } from './studioApi.js';
 import { saveTestPlan, testPlanSchema } from '../studio/testPlans.js';
 import { listReviews } from '../studio/reviews.js';
 import { hostname } from 'node:os';
+import { studioEventListenerCount, type StudioEvent } from '../studio/events.js';
+
+const readSse = async (response: Response): Promise<StudioEvent[]> =>
+  (await response.text()).split('\n').filter((line) => line.startsWith('data: ')).map((line) => JSON.parse(line.slice(6)));
 
 class StudioFixture extends MockProvider {
   prompts: string[] = [];
@@ -120,6 +124,13 @@ test('browser HTTP job persists real checks and PNGs without changing build or s
   assert.deepEqual(await readFile(join(root, accepted.projectId, 'project.json')), original);
   assert.deepEqual(await readFile(join(root, accepted.projectId, 'source.zip')), archive);
   assert.equal(JSON.parse(original.toString()).rounds[0].build.browserVerified, false);
+  const events = (await (await fetch(`${base}${accepted.projectUrl}/events`)).json()).events as StudioEvent[];
+  const checks = events.filter((event) => event.type === 'browser_check');
+  const afterGeneration = events.slice(events.findIndex((event) => event.type === 'ready_for_review') + 1).map((event) => event.type);
+  assert.deepEqual(afterGeneration, ['test_plan_started', 'test_plan_ready', 'browser_run_started', ...checks.map(() => 'browser_check'), 'browser_run_finished']);
+  assert.equal(checks.length, run.checks.length);
+  assert.ok(checks.every((event) => event.data!.runId === run.id && event.data!.passed === true));
+  assert.equal(events.at(-1)!.data!.status, 'passed');
 }, new StudioFixture(), 5000, true));
 
 test('real browser failure repairs a separate version and retests without overwriting original evidence', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
@@ -624,3 +635,76 @@ for (const scenario of ['cancel', 'timeout'] as const) {
     }, provider, scenario === 'timeout' ? 100 : 5000);
   });
 }
+
+/** Slows every model call so tests can observe a generation while it is still running. */
+class SlowStudioFixture extends StudioFixture {
+  async askWithUsage(system: string, user: string, temperature?: number, signal?: AbortSignal) {
+    await delay(150);
+    return super.askWithUsage(system, user, temperature, signal);
+  }
+}
+
+test('event stream follows a running generation live and closes at its terminal event', async () => {
+  await withApi(async (base, runtime) => {
+    const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter' }) })).json();
+    const stream = await fetch(`${base}${accepted.projectUrl}/events?stream=1`);
+    assert.equal(stream.status, 200);
+    assert.match(stream.headers.get('content-type')!, /text\/event-stream/);
+    assert.ok(['queued', 'running'].includes(runtime.getJob(accepted.jobId)!.status), 'stream must open while the generation is running');
+    const events = await readSse(stream);
+    assert.deepEqual(events.map((event) => event.seq), events.map((_, index) => index + 1));
+    assert.equal(events[0].type, 'queued');
+    assert.equal(events.at(-1)!.type, 'ready_for_review');
+    assert.ok(events.some((event) => event.type === 'build_passed'));
+    const all = (await (await fetch(`${base}${accepted.projectUrl}/events`)).json()).events as StudioEvent[];
+    assert.deepEqual(all.map((event) => event.seq), events.map((event) => event.seq));
+    const tail = await (await fetch(`${base}${accepted.projectUrl}/events?after=${all.length - 2}`)).json();
+    assert.deepEqual(tail.events.map((event: StudioEvent) => event.seq), [all.length - 1, all.length]);
+    const resumed = await readSse(await fetch(`${base}${accepted.projectUrl}/events?stream=1`, { headers: { 'Last-Event-ID': String(all.length - 1) } }));
+    assert.deepEqual(resumed.map((event) => event.seq), [all.length]);
+    for (const after of ['-1', '1.5', 'x']) assert.equal((await fetch(`${base}${accepted.projectUrl}/events?after=${after}`)).status, 400);
+    assert.equal((await fetch(`${base}${accepted.projectUrl}/events`, { method: 'POST', body: '{}' })).status, 405);
+  }, new SlowStudioFixture());
+});
+
+test('user cancellation ends the stream with exactly one terminal event', async () => {
+  await withApi(async (base, runtime) => {
+    const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter' }) })).json();
+    const stream = await fetch(`${base}${accepted.projectUrl}/events?stream=1`);
+    await delay(50);
+    assert.equal((await fetch(`${base}${accepted.projectUrl}/cancel`, { method: 'POST' })).status, 200);
+    const events = await readSse(stream);
+    assert.equal(events.at(-1)!.type, 'cancelled');
+    await waitForJob(runtime, accepted.jobId);
+    const all = (await (await fetch(`${base}${accepted.projectUrl}/events`)).json()).events as StudioEvent[];
+    assert.equal(all.filter((event) => ['ready_for_review', 'failed', 'cancelled'].includes(event.type)).length, 1);
+  }, new SlowStudioFixture());
+});
+
+test('a client disconnect unsubscribes the stream', async () => {
+  await withApi(async (base, runtime, root) => {
+    const accepted = await (await fetch(`${base}/api/studio/projects`, { method: 'POST', body: JSON.stringify({ description: 'Counter' }) })).json();
+    const controller = new AbortController();
+    const stream = await fetch(`${base}${accepted.projectUrl}/events?stream=1`, { signal: controller.signal });
+    assert.equal(stream.status, 200);
+    await delay(20);
+    assert.equal(studioEventListenerCount(root, accepted.projectId), 1);
+    controller.abort();
+    const deadline = Date.now() + 2000;
+    while (studioEventListenerCount(root, accepted.projectId) && Date.now() < deadline) await delay(10);
+    assert.equal(studioEventListenerCount(root, accepted.projectId), 0);
+    await waitForJob(runtime, accepted.jobId);
+  }, new SlowStudioFixture());
+});
+
+test('projects saved before event logs existed return a derived timeline', async () => {
+  await withApi(async (base, _runtime, root) => {
+    const projectId = randomUUID();
+    await saveStudioRecord(root, { projectId, description: 'Legacy', status: 'failed', stoppedPhase: 'coding', error: 'Fixture failure', startedAt: new Date().toISOString(), finishedAt: new Date().toISOString(), rounds: [] });
+    const body = await (await fetch(`${base}/api/studio/projects/${projectId}/events`)).json();
+    assert.equal(body.derived, true);
+    assert.deepEqual(body.events.map((event: StudioEvent) => event.type), ['failed']);
+    const streamed = await readSse(await fetch(`${base}/api/studio/projects/${projectId}/events?stream=1`));
+    assert.deepEqual(streamed.map((event) => event.type), ['failed']);
+  });
+});

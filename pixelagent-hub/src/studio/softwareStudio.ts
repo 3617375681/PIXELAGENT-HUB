@@ -7,6 +7,7 @@ import type { Orchestrator } from '../core/Orchestrator.js';
 import type { TaskResult } from '../core/types.js';
 import { buildStaticProject, createSourceArchive, type BuildReport, type SourceFile } from './workspace.js';
 import { writeJsonSnapshot } from './atomicJson.js';
+import { appendStudioEvent, summarizeErrors, type StudioEventInput } from './events.js';
 
 export type StudioRecord = {
   projectId: string; description: string; status: 'queued' | 'running' | 'ready_for_review' | 'failed' | 'cancelled';
@@ -50,9 +51,11 @@ export async function runSoftwareStudio(options: {
   await mkdir(directory, { recursive: true });
   const record: StudioRecord = { projectId, jobId: options.jobId, strategy: options.strategy || 'manager-coder', ...(!options.jobId ? { ownerPid: process.pid, ownerHost: hostname() } : {}), description: options.description, repair: options.repair, revision: options.revision, retry: options.retry, status: 'running', startedAt: new Date().toISOString(), rounds: [] };
   const save = () => saveStudioRecord(options.root, record);
+  const emit = (event: StudioEventInput) => appendStudioEvent(options.root, projectId, event);
   const progress = async (phase: string, round?: number) => {
     record.phase = phase;
     await save();
+    if (phase !== 'ready_for_review') await emit({ type: 'phase', round, data: { phase } });
     options.onProgress?.(phase, round);
   };
   await save();
@@ -66,6 +69,7 @@ export async function runSoftwareStudio(options: {
       record.plan = await orchestrator.runTask({ ...task, context: { constraints, repair: options.repair, changeRequests: options.changeRequests, ...(options.repair ? { previousFiles: options.initialFiles || [], revisionNotes: requestNotes } : {}), deliverable: 'Runnable browser app, build evidence, source archive; human interaction acceptance follows build.' } }, 'manager', { signal: options.signal });
       await save();
       if (record.plan.status !== 'success') throw new Error(record.plan.reasoning || 'Planning failed');
+      await emit({ type: 'plan_ready', data: { projectName: record.plan.output?.projectName } });
     }
     await writeFile(join(directory, 'requirements.md'), `# Requirements\n\n${options.description}\n\n${(options.changeRequests || []).map((request, index) => `## Change ${index + 1}\n\n${request}`).join('\n\n')}\n\n${constraints}\n\nBrowser acceptance is pending.\n`);
     await writeFile(join(directory, 'design.md'), record.plan ? `# Project plan\n\n\`\`\`json\n${JSON.stringify(record.plan.output, null, 2)}\n\`\`\`\n` : '# Project plan\n\nCoder-only benchmark baseline: no Manager plan.\n');
@@ -82,9 +86,11 @@ export async function runSoftwareStudio(options: {
       await save();
       if (code.status !== 'success') throw new Error(code.reasoning || 'Code generation failed');
       if (code.output.dependencies?.length) throw new Error('Generated project requires unsupported dependencies');
+      await emit({ type: 'code_ready', round, data: { files: code.output.files?.length ?? 0 } });
       await progress('building', round);
       attempt.build = await buildStaticProject(code.output.files, join(directory, `v${round}`), options.signal);
       await save();
+      await emit(attempt.build.status === 'passed' ? { type: 'build_passed', round } : { type: 'build_failed', round, data: { errors: summarizeErrors(attempt.build.errors) } });
       if (attempt.build.status === 'passed') {
         options.signal?.throwIfAborted();
         const preview = await readFile(join(directory, `v${round}`, 'dist', 'index.html'), 'utf-8');
@@ -95,6 +101,7 @@ export async function runSoftwareStudio(options: {
         record.archiveFile = 'source.zip';
         record.status = 'ready_for_review';
         await progress('ready_for_review', round);
+        await emit({ type: 'ready_for_review', round, data: { previewFile: record.previewFile } });
         break;
       }
       previousFiles = code.output.files;
@@ -110,6 +117,7 @@ export async function runSoftwareStudio(options: {
   } finally {
     record.finishedAt = new Date().toISOString();
     await save();
+    if (record.status === 'failed' || record.status === 'cancelled') await emit({ type: record.status, data: { stoppedPhase: record.stoppedPhase, error: record.error?.slice(0, 300) } });
   }
   return record;
 }
