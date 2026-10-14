@@ -1,20 +1,4 @@
-import type {
-  AgentRunMode,
-  ApiErrorShape,
-  ApprovalRecord,
-  HealthOk,
-  IntelligenceEventResponse,
-  KnowledgeStats,
-  MemoryResponse,
-  PipelineRunRecord,
-  RuntimeJob,
-  RuntimeJobEnvelope,
-  ScorerWeightsResponse,
-  SelfImproveHistoryRow,
-  SessionAttachment,
-  SessionSummary,
-  WorkflowDefinition,
-} from '@/types/recordsApi';
+import type { ApiErrorShape } from '@/types/recordsApi';
 import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview, StudioBrowserRun } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
@@ -89,11 +73,6 @@ export function getRecordsApiBaseUrl(): string {
   return API_BASE;
 }
 
-export function sessionFileUrl(sessionId: string, fileId: string): string {
-  const path = `/api/sessions/${encodeURIComponent(sessionId)}/files/${encodeURIComponent(fileId)}`;
-  return API_BASE ? `${API_BASE}${path}` : path;
-}
-
 export async function fetchRecordsBinary(path: string): Promise<Blob> {
   const url = path.startsWith('http') ? path : `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
   const base = new URL(`${API_BASE}/`, window.location.origin);
@@ -104,16 +83,6 @@ export async function fetchRecordsBinary(path: string): Promise<Blob> {
   const res = await fetch(target.href, { headers: authHeaders(), redirect: 'error' });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
   return res.blob();
-}
-
-async function fileToUploadPart(file: File): Promise<{ name: string; mime: string; data: string }> {
-  const data = await new Promise<string>((resolve, reject) => {
-    const fr = new FileReader();
-    fr.onload = () => resolve(String(fr.result));
-    fr.onerror = () => reject(fr.error);
-    fr.readAsDataURL(file);
-  });
-  return { name: file.name, mime: file.type || 'application/octet-stream', data };
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
@@ -154,136 +123,4 @@ export const studioApi = {
   versions: (projectId: string, signal?: AbortSignal) => request<StudioVersions>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { signal }),
   selectVersion: (projectId: string, target: string) => request<{ selectedProjectId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { method: 'POST', body: JSON.stringify({ projectId: target }) }),
   revise: (projectId: string, changeRequest: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/revise`, { method: 'POST', body: JSON.stringify({ changeRequest }) }),
-};
-
-/** POST /api/run/:mode — supports async=1 (202 + jobUrl) or stream=1 (SSE text body). */
-async function postAgentRun(
-  mode: AgentRunMode,
-  body: Record<string, unknown>,
-  opts?: { async?: boolean; stream?: boolean; signal?: AbortSignal },
-): Promise<unknown> {
-  const q = new URLSearchParams();
-  if (opts?.async) q.set('async', '1');
-  if (opts?.stream) q.set('stream', '1');
-  const qs = q.toString();
-  const path = `/api/run/${encodeURIComponent(mode)}${qs ? `?${qs}` : ''}`;
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: 'POST',
-    redirect: 'error',
-    signal: opts?.signal,
-    headers: jsonHeaders(),
-    body: JSON.stringify(body),
-  });
-  const ct = res.headers.get('content-type') || '';
-  if (ct.includes('text/event-stream')) {
-    const text = await res.text();
-    if (!res.ok) throw new Error(`HTTP ${res.status} (stream)`);
-    return { _stream: true as const, text };
-  }
-  const json = await res.json();
-  if (!res.ok) throw new Error(normalizeError(json, res.status));
-  return json;
-}
-
-export const recordsApi = {
-  getHealth: () => request<HealthOk>('/health'),
-  getLiveness: () => request<HealthOk>('/health/liveness'),
-  getReadiness: () => request<HealthOk>('/health/readiness'),
-
-  listSessions: (opts?: { signal?: AbortSignal }) =>
-    request<{ sessions: SessionSummary[] }>('/api/sessions', { signal: opts?.signal }),
-  getSession: (sessionId: string, opts?: { signal?: AbortSignal }) =>
-    request<{ session: Record<string, unknown>; markdown: string }>(
-      `/api/sessions/${encodeURIComponent(sessionId)}`,
-      { signal: opts?.signal },
-    ),
-  deleteSession: (sessionId: string) =>
-    request<{ ok: boolean; sessionId: string }>(`/api/sessions/${encodeURIComponent(sessionId)}`, {
-      method: 'DELETE',
-    }),
-  getMemory: (sessionId: string) =>
-    request<MemoryResponse>(`/api/memory?sessionId=${encodeURIComponent(sessionId)}`),
-  /** Writes `session-index.json` under records root; optional `sessionId` query is accepted by backend. */
-  exportSessionIndex: (sessionId?: string) =>
-    request<{ ok: boolean; file: string }>(
-      `/api/export${sessionId ? `?sessionId=${encodeURIComponent(sessionId)}` : ''}`
-    ),
-  getRuntimeMetrics: () => request<{ runtime: Record<string, unknown> }>('/api/runtime/metrics'),
-  listRuntimeJobs: (limit: number = 50) => request<{ jobs: RuntimeJob[] }>(`/api/runtime/jobs?limit=${limit}`),
-  getRuntimeJob: (jobId: string, opts?: { signal?: AbortSignal }) =>
-    request<RuntimeJobEnvelope>(`/api/runtime/jobs/${encodeURIComponent(jobId)}`, { signal: opts?.signal }),
-  cancelRuntimeJob: (jobId: string) =>
-    request<{ ok: true; jobId: string }>(`/api/runtime/jobs/${encodeURIComponent(jobId)}/cancel`, {
-      method: 'POST',
-      body: JSON.stringify({}),
-    }),
-  listWorkflows: () => request<{ workflows: WorkflowDefinition[] }>('/api/intelligence/workflows'),
-  triggerWorkflow: (workflowId: string) =>
-    request<{ run: PipelineRunRecord }>('/api/intelligence/trigger', {
-      method: 'POST',
-      body: JSON.stringify({ workflowId }),
-    }),
-  validateWorkflowJson: (payload: unknown) =>
-    request<{ ok: boolean; error?: string }>('/api/intelligence/workflows/validate', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-  reloadWorkflows: (payload?: Record<string, unknown>) =>
-    request<{ ok: boolean }>('/api/intelligence/workflows/reload', {
-      method: 'POST',
-      body: JSON.stringify(payload && Object.keys(payload).length > 0 ? payload : {}),
-    }),
-  postIntelligenceEvent: (eventType: string) =>
-    request<IntelligenceEventResponse>('/api/intelligence/events', {
-      method: 'POST',
-      body: JSON.stringify({ eventType }),
-    }),
-  listRuns: (limit: number = 50) => request<{ runs: PipelineRunRecord[] }>(`/api/intelligence/runs?limit=${limit}`),
-  getIntelligenceRun: (runId: string) =>
-    request<{ run: PipelineRunRecord }>(`/api/intelligence/runs/${encodeURIComponent(runId)}`),
-  listApprovals: (status: 'pending' | 'approved' | 'rejected' | '' = 'pending') =>
-    request<{ approvals: ApprovalRecord[] }>(`/api/intelligence/approvals${status ? `?status=${status}` : ''}`),
-  resolveApproval: (approvalId: string, payload: { decision: 'approved' | 'rejected'; operator: string; reason?: string }) =>
-    request<{ approval: ApprovalRecord }>(`/api/intelligence/approvals/${encodeURIComponent(approvalId)}/resolve`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-  getIntelMetrics: () => request<{ metrics: Record<string, number> }>('/api/intelligence/metrics'),
-  runSelfImprove: (rounds: number) =>
-    request<{ rounds: Array<{ round: number; metric: number; path?: string }> }>('/api/intelligence/self-improve', {
-      method: 'POST',
-      body: JSON.stringify({ rounds }),
-    }),
-  getSelfImproveHistory: (limit: number = 50) =>
-    request<{ history: SelfImproveHistoryRow[] }>(`/api/intelligence/self-improve/history?limit=${limit}`),
-  getRetrievalScorer: () => request<ScorerWeightsResponse>('/api/intelligence/retrieval-scorer'),
-  getKnowledgeStats: () => request<KnowledgeStats>('/api/knowledge/stats'),
-  indexKnowledge: (documents: Array<{ id?: string; title: string; text: string; sourceUrl?: string; tags?: string[] }>) =>
-    request<{ ok: boolean; chunks: number; dim: number; documents: number }>('/api/knowledge/index', {
-      method: 'POST',
-      body: JSON.stringify({ documents }),
-    }),
-
-  /** Classic multi-agent modes (orchestrator): pipeline | parallel | debate | vote | roundtable | company */
-  postRun: postAgentRun,
-
-  uploadSessionAttachments: async (sessionId: string, files: File[]) => {
-    const parts = await Promise.all(files.map((f) => fileToUploadPart(f)));
-    return request<{ ok: boolean; attachments: SessionAttachment[] }>(
-      `/api/sessions/${encodeURIComponent(sessionId)}/attachments`,
-      { method: 'POST', body: JSON.stringify({ files: parts }) },
-    );
-  },
-
-  /** Proxy to Seedance 2.0 (server uses AIMLAPI_KEY / SEEDANCE_API_KEY). */
-  seedanceCreateVideo: (body: Record<string, unknown>) =>
-    request<unknown>('/api/capabilities/seedance/video', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    }),
-
-  seedanceGetVideo: (generationId: string) =>
-    request<unknown>(
-      `/api/capabilities/seedance/video?generationId=${encodeURIComponent(generationId)}`,
-    ),
 };

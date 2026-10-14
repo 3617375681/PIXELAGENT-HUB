@@ -1,5 +1,5 @@
 import { Agent, AgentConfig, Task, TaskResult, Message, MessageBus } from './types.js';
-import { LLMProvider } from './llm/provider.js';
+import { LLMProvider, NO_LLM_PROVIDER_MESSAGE } from './llm/provider.js';
 
 export abstract class BaseAgent implements Agent {
   config: AgentConfig;
@@ -53,7 +53,7 @@ export abstract class BaseAgent implements Agent {
     resultStatus: (output: T) => TaskResult['status'] = () => 'success'
   ): Promise<TaskResult> {
     if (!this.llmProvider) {
-      return this.createResult(task.id, 'failed', null, 'No LLM provider configured; select mock explicitly for a demo');
+      return this.createResult(task.id, 'failed', null, NO_LLM_PROVIDER_MESSAGE);
     }
 
     try {

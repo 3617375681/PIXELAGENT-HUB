@@ -57,7 +57,7 @@ export OPENAI_API_KEY=sk-...
 - **成本可见**：每次运行返回 LLM 调用次数、token 用量、估算 USD 成本
 - **开发者体验**：示例可运行、后端 API 可直接接前端、结构清晰
 - **多模型支持**：OpenAI / Anthropic / DeepSeek / Kimi / Ollama 自由切换
-- **真实工具集成**：Brave/Tavily 搜索、Slack/Discord 消息、飞书 API
+- **真实网页搜索**：DuckDuckGo / SearXNG 免 key，可选 Brave / Tavily
 
 ## 对比定位
 
@@ -98,15 +98,14 @@ cp .env.example .env
 ```
 
 核心变量：
-- `LLM_PROVIDER`：LLM 提供商（openai/anthropic/deepseek/kimi/ollama）
+- `LLM_PROVIDER`：LLM 提供商（mock/openai/anthropic/deepseek/kimi/ollama）；未设置且无密钥时报告“未配置”，不会静默选用某个厂商
 - `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` / `KIMI_API_KEY` 等
 - `RECORDS_API_PORT`：API 端口，默认 `3100`
 - `RECORDS_API_KEY`：鉴权密钥（生产必填，≥16 字符）
 - `ALLOW_UNAUTH_IN_DEV`：开发环境是否放开鉴权
 - `ALLOWED_ORIGINS`：CORS 允许的前端来源
 - `RUN_TIMEOUT_MS` / `MAX_RUN_CONCURRENCY` / `RUN_RATE_LIMIT_PER_MINUTE`
-- `SEARCH_PROVIDER`：搜索引擎（brave/tavily）
-- `FEISHU_APP_ID` / `FEISHU_APP_SECRET`：飞书集成
+- `SEARCH_PROVIDER`：搜索引擎（duckduckgo/searxng/brave/tavily）
 
 完整列表见 [`.env.example`](./.env.example)。
 
@@ -118,10 +117,12 @@ pixelagent-hub/
 │   ├── core/           # Orchestrator / Router / Bus / LLM 抽象层
 │   ├── agents/         # 8 个预置 Agent
 │   ├── web/            # 记录 API（鉴权、限流、健康检查）
-│   ├── intelligence/   # 情报流水线（采集→分析→决策→执行→监控）
+│   ├── studio/         # Software Studio（生成、编译、浏览器检查、版本）
+│   ├── tools/          # 网页搜索
 │   └── factory.ts      # Agent 组装工厂
 ├── examples/           # 可直接运行的演示脚本
-├── config/             # 工作流配置与 eval 数据
+├── dashboard/          # React Studio 工作台
+├── config/             # Studio 基准用例
 └── records/            # 执行记录输出
 ```
 
@@ -138,9 +139,9 @@ npm test                            # 测试
 - [x] 后端基础治理：鉴权、限流、并发/超时、健康探针
 - [x] 统一错误码与结构化日志
 - [x] 多 LLM 提供商抽象层（OpenAI/Anthropic/DeepSeek/Kimi/Ollama）
-- [x] 真实工具集成（搜索、消息、飞书）
+- [x] 真实网页搜索
 - [x] 安全加固（CORS、env 泄漏、静默错误修复）
-- [ ] 可视化观测面板
+- [x] Studio 可视化工作台
 - [ ] npm 包发布
 - [ ] 场景级基准测试与对比报告
 

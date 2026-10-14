@@ -18,6 +18,10 @@ export function studioConfigurationChecks(env: NodeJS.ProcessEnv, nodeVersion: s
     const name = `model:${agent}`;
     try {
       const provider = readAgentLlmEnv(agent, env).llmProvider ?? detectProviderId(env);
+      if (!provider) {
+        add(name, 'fail', 'No LLM provider configured: set LLM_PROVIDER (mock for an offline demo) and the matching API key.');
+        continue;
+      }
       if (provider === 'mock') {
         add(name, 'warn', 'mock: offline workflow demonstration; not real model generation.');
         continue;

@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Removed
+- Intelligence pipeline (collector/analyst/decision/executor/monitor agents, workflow YAML, approvals, self-improve) and its `/api/intelligence/*` routes
+- `/api/knowledge/*`, `/api/chat` and Seedance video routes; Slack/Discord and Feishu providers
+- WeChat miniprogram client
+- Dashboard pages other than Studio (home graph, live, ops console, archives, session detail), unused shadcn components and template dependencies (tRPC, Drizzle, Hono, MySQL)
+- The full feature set is preserved at git tag `v1.1-full`
+
+### Changed
+- Web search providers moved to `src/tools/search.ts`
+- With no provider and no API key, LLM selection now reports "No LLM provider configured" instead of silently selecting Kimi; `.env.example` defaults to `LLM_PROVIDER=mock` and disables the Ollama embedding retriever
+
 ## [1.1.0] — 2025-05-10
 
 ### Added

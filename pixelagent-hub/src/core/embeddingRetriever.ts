@@ -38,7 +38,7 @@ type EmbeddingRetrieverOptions = {
   overlap?: number;
   defaultDocuments?: KnowledgeDocument[];
   fetchImpl?: typeof fetch;
-  /** Optional linear rerank weights (JSON), tuned via POST /api/intelligence/self-improve. */
+  /** Optional linear rerank weights (JSON). */
   scorerWeightsPath?: string;
 };
 

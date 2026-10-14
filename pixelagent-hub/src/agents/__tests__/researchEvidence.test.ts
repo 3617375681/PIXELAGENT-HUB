@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { ResearchAgent } from '../ResearchAgent.js';
 import { MessageBusImpl } from '../../core/MessageBus.js';
 import { OpenAIProvider } from '../../core/llm/openai.js';
-import { SearchProvider } from '../../intelligence/tools/search.js';
+import { SearchProvider } from '../../tools/search.js';
 
 const task = { id: 'evidence', type: 'research', description: 'Browser game accessibility' };
 const sources = Array.from({ length: 3 }, (_, i) => ({ id: String(i), title: `Source ${i}`, url: `https://source${i}.org/article`, content: `Original excerpt ${i}`, source: 'test-search' }));

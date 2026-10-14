@@ -1,8 +1,7 @@
 import { BaseAgent } from '../core/BaseAgent.js';
 import { Task, TaskResult, MessageBus } from '../core/types.js';
 import { LLMProvider } from '../core/llm/provider.js';
-import { createSearchProvider, SearchProvider } from '../intelligence/tools/search.js';
-import { CollectedItem } from '../intelligence/core/intelTypes.js';
+import { createSearchProvider, SearchProvider, CollectedItem } from '../tools/search.js';
 import { z } from 'zod';
 
 const reportSchema = z.object({

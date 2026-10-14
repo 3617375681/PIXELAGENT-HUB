@@ -33,13 +33,7 @@ export { ModeratorAgent } from './agents/ModeratorAgent.js';
 // Factory
 export { createOrchestrator } from './factory.js';
 
-// Intelligence pipeline
-export { IntelligencePipelineService } from './intelligence/core/pipelineService.js';
-export type { IntelligencePipelineOptions } from './intelligence/core/pipelineService.js';
-export { WorkflowConfigService } from './intelligence/core/workflowConfig.js';
-export { IntelligenceRunStore } from './intelligence/core/runStore.js';
-
-// Intelligence tools
+// Search tools
 export {
   createSearchProvider,
   MockSearchProvider,
@@ -47,26 +41,8 @@ export {
   SearXNGSearchProvider,
   BraveSearchProvider,
   TavilySearchProvider,
-} from './intelligence/tools/search.js';
-export type { SearchProvider } from './intelligence/tools/search.js';
-
-export {
-  createMessageProvider,
-  MockMessageProvider,
-  SlackWebhookProvider,
-  DiscordWebhookProvider,
-} from './intelligence/tools/messaging.js';
-export type { MessageProvider } from './intelligence/tools/messaging.js';
-
-export {
-  createFeishuProvider,
-  MockFeishuProvider,
-  RealFeishuProvider,
-} from './intelligence/tools/feishu.js';
-export type { FeishuProvider } from './intelligence/tools/feishu.js';
-
-// Intelligence subsystem (all types and agents)
-export * from './intelligence/index.js';
+} from './tools/search.js';
+export type { SearchProvider, CollectedItem } from './tools/search.js';
 
 // Web server
 export { createRecordsWebStack } from './web/recordsWebStack.js';

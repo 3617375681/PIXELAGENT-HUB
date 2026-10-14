@@ -1,5 +1,13 @@
-import { CollectedItem } from '../core/intelTypes.js';
 import { load } from 'cheerio';
+
+export type CollectedItem = {
+  id: string;
+  title: string;
+  url?: string;
+  content: string;
+  publishedAt?: string;
+  source: string;
+};
 
 export interface SearchProvider {
   readonly name: string;

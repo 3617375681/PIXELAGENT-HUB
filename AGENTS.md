@@ -5,11 +5,12 @@
 The application lives in `pixelagent-hub/`; run npm commands there unless specified otherwise.
 
 - `src/core/`: orchestration, message bus, queues, and LLM providers.
-- `src/agents/`: specialized agent implementations; `src/intelligence/`: tools and knowledge workflows.
+- `src/agents/`: specialized agent implementations.
 - `src/web/`: Records API, runtime management, and HTTP clients.
 - `dashboard/src/`: React interface, components, hooks, pages, and styles.
-- `miniprogram/`: WeChat client; `examples/`: runnable workflows.
-- `config/`, `openapi/`, and `docs/`: workflow configuration, API contract, and operational documentation.
+- `src/studio/`: Software Studio generation, build, browser checks and versions; `src/tools/`: web search used by the research agent.
+- `examples/`: runnable workflows.
+- `config/`, `openapi/`, and `docs/`: Studio benchmark cases, API contracts, and operational documentation.
 - Tests live beside source files or in `__tests__/`. Demo assets are in `demo-assets/`; repository-level screenshots are in `portfolio-screenshots/`.
 
 ## Build, Test, and Development Commands

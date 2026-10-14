@@ -1,5 +1,8 @@
 import { LLMMessage, LLMResponse } from './types.js';
 
+/** Reported when no provider is selected and no API key is available. */
+export const NO_LLM_PROVIDER_MESSAGE = 'No LLM provider configured; set LLM_PROVIDER=mock for an offline demo or configure a provider API key.';
+
 export interface LLMProvider {
   /** Provider identifier (e.g. "openai", "anthropic") */
   readonly name: string;
