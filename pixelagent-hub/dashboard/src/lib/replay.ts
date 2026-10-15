@@ -5,7 +5,7 @@ import type { StudioEvent } from '../types/studio';
  * GET requests read files recorded by `scripts/export-replay.ts`; writes are refused.
  */
 export const REPLAY = import.meta.env.VITE_REPLAY === '1';
-export const REPLAY_READ_ONLY = '这是静态回放演示，只能查看。创建、返修和检查需要在本地运行完整版本。';
+export const REPLAY_READ_ONLY = 'This is a read-only replay. Clone the repo and run it locally to build your own.';
 export type ReplayCase = { projectId: string; kind: 'mock' | 'real-model'; title: string; note: string };
 export type ReplayManifest = { recordedAt: string; hero: string; cases: ReplayCase[] };
 
@@ -18,7 +18,7 @@ export function replayFileUrl(apiPath: string): string {
 
 let manifest: Promise<ReplayManifest> | undefined;
 export const loadReplayManifest = () => (manifest ??= fetch(`${import.meta.env.BASE_URL}replay/manifest.json`).then((res) => {
-  if (!res.ok) throw new Error(`回放数据缺失（HTTP ${res.status}）`);
+  if (!res.ok) throw new Error(`Replay data missing (HTTP ${res.status})`);
   return res.json() as Promise<ReplayManifest>;
 }));
 
@@ -29,7 +29,7 @@ const sleep = (ms: number, signal: AbortSignal) => new Promise<void>((resolve, r
 
 async function recordedEvents(projectId: string, signal?: AbortSignal) {
   const res = await fetch(replayFileUrl(`/api/studio/projects/${encodeURIComponent(projectId)}/events`), { signal });
-  if (!res.ok) throw new Error(`回放事件缺失（HTTP ${res.status}）`);
+  if (!res.ok) throw new Error(`Replay events missing (HTTP ${res.status})`);
   return res.json() as Promise<{ events: StudioEvent[]; derived: boolean }>;
 }
 

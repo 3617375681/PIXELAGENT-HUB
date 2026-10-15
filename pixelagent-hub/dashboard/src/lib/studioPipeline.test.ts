@@ -34,9 +34,9 @@ it('sends the real compiler error back to the Coder until a later build passes',
 it('marks the interrupted stage when a run is cancelled or fails', () => {
   const cancelled = reducePipeline([...repairRun.slice(0, 4), ev('cancelled', undefined, { stoppedPhase: 'coding' })]);
   expect(cancelled.terminal).toBe('cancelled');
-  expect(cancelled.stages[1]).toMatchObject({ state: 'failed', label: '已取消' });
+  expect(cancelled.stages[1]).toMatchObject({ state: 'failed', label: 'Cancelled' });
   const interrupted = reducePipeline([ev('queued'), ev('failed', undefined, { stoppedPhase: 'planning', interrupted: true })]);
-  expect(interrupted.stages[0]).toMatchObject({ state: 'failed', label: '已中断' });
+  expect(interrupted.stages[0]).toMatchObject({ state: 'failed', label: 'Interrupted' });
 });
 
 it('shows coder-only runs without inventing a Manager plan', () => {
@@ -46,15 +46,15 @@ it('shows coder-only runs without inventing a Manager plan', () => {
 it('follows Tester planning and browser checks, sending a failed check back as feedback', () => {
   const ready = [...repairRun, ev('build_passed', 1), ev('ready_for_review', 1)];
   const checking = reducePipeline([...ready, ev('test_plan_started'), ev('test_plan_ready', undefined, { checks: 2 }), ev('browser_run_started', undefined, { checks: 2 }), ev('browser_check', undefined, { name: 'Increment', passed: false, actual: '2' })]);
-  expect(checking.stages[3]).toMatchObject({ state: 'active', label: '浏览器检查 1/2' });
-  expect(checking.feedback).toEqual({ from: 'tester', message: 'Increment：实际为 "2"' });
+  expect(checking.stages[3]).toMatchObject({ state: 'active', label: 'Testing 1/2' });
+  expect(checking.feedback).toEqual({ from: 'tester', message: 'Increment: got "2"' });
   const finished = reducePipeline([...ready, ev('browser_run_started', undefined, { checks: 2 }), ev('browser_check', undefined, { name: 'A', passed: true }), ev('browser_check', undefined, { name: 'B', passed: true }), ev('browser_run_finished', undefined, { status: 'passed', passed: 2, failed: 0 })]);
-  expect(finished.stages[3]).toMatchObject({ state: 'done', label: '检查通过 2/2' });
+  expect(finished.stages[3]).toMatchObject({ state: 'done', label: 'All checks passed 2/2' });
   expect(finished.feedback).toBeNull();
 });
 
 it('flags timelines rebuilt from old records and describes every event', () => {
   expect(reducePipeline([ev('failed', undefined, { derived: true })]).derived).toBe(true);
-  expect(describeEvent(repairRun[6])).toBe('第 1 轮 · 编译失败：app.js:3:103: ERROR: Expected ")" but found ";"');
-  expect(describeEvent(ev('browser_check', undefined, { name: 'B', passed: false, actual: 'x' }))).toBe('✗ B（实际 "x"）');
+  expect(describeEvent(repairRun[6])).toBe('R1 · Build failed: app.js:3:103: ERROR: Expected ")" but found ";"');
+  expect(describeEvent(ev('browser_check', undefined, { name: 'B', passed: false, actual: 'x' }))).toBe('FAIL B (got "x")');
 });

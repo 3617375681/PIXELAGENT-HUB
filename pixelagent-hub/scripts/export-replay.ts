@@ -24,7 +24,7 @@ import { stageRepairEvidence } from './lib/evidence.mjs';
 const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
 const out = resolve(argument('--out') || 'dashboard/public/replay');
 const browser = process.argv.includes('--browser');
-const MOCK_DESCRIPTION = '制作一个像素风计数器：+1、-1 和重置按钮，显示当前数值。';
+const MOCK_DESCRIPTION = 'Make a pixel-style counter with +1, -1 and Reset buttons that shows the current value.';
 
 const temp = await mkdtemp(join(tmpdir(), 'pixelagent-replay-'));
 const studioRoot = join(temp, 'studio');
@@ -95,8 +95,8 @@ try {
     recordedAt: new Date().toISOString(),
     hero: mock.projectId,
     cases: [
-      { projectId: mock.projectId, kind: 'mock', title: '离线 mock 模型 · 真实编译与返修流程', note: 'Manager/Coder/Tester 使用离线 mock 模型；第 1 轮故意含语法错误，esbuild 报错真实回灌，第 2 轮修复。事件时间为录制时的真实间隔。' },
-      ...evidence.map(({ stage, projectId }) => ({ projectId, kind: 'real-model', title: { baseline: '真实模型 · 初始计数器', fault: '真实模型 · 注入故障（+2）', repaired: '真实模型 · 依据浏览器证据返修' }[stage], note: '2026-10-09 真实模型（DeepSeek）实验记录；时间线由保存的记录推算，只有起止时间真实。' })),
+      { projectId: mock.projectId, kind: 'mock', title: 'Offline mock model: real compile, repair and browser test', note: 'Agents use the offline mock model. Round 1 contains a deliberate syntax error; the real esbuild error goes back to the Coder and round 2 fixes it. Event timing is as recorded.' },
+      ...evidence.map(({ stage, projectId }) => ({ projectId, kind: 'real-model', title: { baseline: 'Real model: counter', fault: 'Real model: injected +2 bug caught by the browser test', repaired: 'Real model: repaired from the browser evidence' }[stage], note: 'Saved 2026-10-09 run with DeepSeek. The timeline is rebuilt from the saved record; only start and finish times are real.' })),
     ],
   };
   await save('manifest.json', JSON.stringify(manifest, null, 2));

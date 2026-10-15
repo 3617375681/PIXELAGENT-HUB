@@ -15,10 +15,10 @@ export type PipelineView = {
 
 export const STAGE_ORDER: StageId[] = ['manager', 'coder', 'builder', 'tester'];
 const STAGES: Record<StageId, Omit<PipelineStage, 'state' | 'label'>> = {
-  manager: { id: 'manager', name: 'Manager', icon: '👾', color: '#00d4ff', detail: '需求与规划' },
-  coder: { id: 'coder', name: 'Coder', icon: '⌨️', color: '#22c55e', detail: '生成真实源码' },
-  builder: { id: 'builder', name: 'Builder', icon: '🔧', color: '#a855f7', detail: '编译与错误返修' },
-  tester: { id: 'tester', name: 'Tester', icon: '🧪', color: '#f59e0b', detail: '浏览器交互检查' },
+  manager: { id: 'manager', name: 'Manager', icon: '👾', color: '#00d4ff', detail: 'Plans the work' },
+  coder: { id: 'coder', name: 'Coder', icon: '⌨️', color: '#22c55e', detail: 'Writes the code' },
+  builder: { id: 'builder', name: 'Builder', icon: '🔧', color: '#a855f7', detail: 'Compiles it' },
+  tester: { id: 'tester', name: 'Tester', icon: '🧪', color: '#f59e0b', detail: 'Clicks through it' },
 };
 const PHASE_STAGE: Record<string, StageId> = { planning: 'manager', coding: 'coder', building: 'builder' };
 
@@ -35,7 +35,7 @@ export const firstLine = (value: string, max = 140) => {
 
 /** Pure reduction of the server's event log into what the pixel pipeline shows. */
 export function reducePipeline(events: StudioEvent[]): PipelineView {
-  const state = Object.fromEntries(STAGE_ORDER.map((id) => [id, { state: 'idle' as StageState, label: '等待' }])) as Record<StageId, { state: StageState; label: string }>;
+  const state = Object.fromEntries(STAGE_ORDER.map((id) => [id, { state: 'idle' as StageState, label: 'Waiting' }])) as Record<StageId, { state: StageState; label: string }>;
   const set = (id: StageId, next: StageState, label: string) => { state[id] = { state: next, label }; };
   let round = 0;
   let feedback: PipelineFeedback | null = null;
@@ -44,57 +44,57 @@ export function reducePipeline(events: StudioEvent[]): PipelineView {
 
   for (const event of events) {
     switch (event.type) {
-      case 'queued': set('manager', 'idle', '排队中'); break;
+      case 'queued': set('manager', 'idle', 'Queued'); break;
       case 'phase': {
         const stage = PHASE_STAGE[text(event.data?.phase)];
         if (!stage) break;
         if (stage === 'coder') {
           round = event.round ?? round + 1;
-          if (state.manager.state === 'idle') set('manager', 'skipped', '本次未规划');
-          set('builder', 'idle', '等待');
+          if (state.manager.state === 'idle') set('manager', 'skipped', 'No plan this run');
+          set('builder', 'idle', 'Waiting');
         }
-        set(stage, 'active', stage === 'manager' ? '规划中' : stage === 'coder' ? `第 ${round} 轮编码` : `第 ${round} 轮编译`);
+        set(stage, 'active', stage === 'manager' ? 'Planning…' : stage === 'coder' ? `Writing code · round ${round}` : `Compiling · round ${round}`);
         break;
       }
-      case 'plan_ready': set('manager', 'done', '计划完成'); break;
-      case 'code_ready': set('coder', 'done', `${Number(event.data?.files) || 0} 个文件`); break;
+      case 'plan_ready': set('manager', 'done', 'Plan ready'); break;
+      case 'code_ready': set('coder', 'done', `${Number(event.data?.files) || 0} files written`); break;
       case 'build_failed': {
         const errors = Array.isArray(event.data?.errors) ? event.data.errors.map(text) : [];
-        set('builder', 'failed', `第 ${event.round ?? round} 轮编译失败`);
-        feedback = { from: 'builder', round: event.round, message: firstLine(errors[0] || '编译失败') };
+        set('builder', 'failed', `Build failed · round ${event.round ?? round}`);
+        feedback = { from: 'builder', round: event.round, message: firstLine(errors[0] || 'Build failed') };
         break;
       }
-      case 'build_passed': set('builder', 'done', '编译通过'); feedback = null; break;
-      case 'ready_for_review': terminal = 'ready_for_review'; set('tester', 'idle', '可生成检查'); break;
+      case 'build_passed': set('builder', 'done', 'Build passed'); feedback = null; break;
+      case 'ready_for_review': terminal = 'ready_for_review'; set('tester', 'idle', 'Ready to test'); break;
       case 'failed':
       case 'cancelled': {
         terminal = event.type;
         const stopped = PHASE_STAGE[text(event.data?.stoppedPhase)];
         const active = STAGE_ORDER.find((id) => state[id].state === 'active');
         const target = active || stopped;
-        if (target) set(target, 'failed', event.type === 'cancelled' ? '已取消' : event.data?.interrupted ? '已中断' : '失败');
+        if (target) set(target, 'failed', event.type === 'cancelled' ? 'Cancelled' : event.data?.interrupted ? 'Interrupted' : 'Failed');
         break;
       }
-      case 'test_plan_started': set('tester', 'active', '生成检查计划'); break;
-      case 'test_plan_ready': set('tester', 'done', `计划就绪 · ${Number(event.data?.checks) || 0} 项`); break;
-      case 'test_plan_failed': set('tester', 'failed', event.data?.status === 'cancelled' ? '计划已取消' : '计划失败'); break;
+      case 'test_plan_started': set('tester', 'active', 'Writing checks…'); break;
+      case 'test_plan_ready': set('tester', 'done', `${Number(event.data?.checks) || 0} checks planned`); break;
+      case 'test_plan_failed': set('tester', 'failed', event.data?.status === 'cancelled' ? 'Plan cancelled' : 'Plan failed'); break;
       case 'browser_run_started':
         checks = { total: Number(event.data?.checks) || 0, passed: 0, failed: 0 };
         feedback = null;
-        set('tester', 'active', `浏览器检查 0/${checks.total}`);
+        set('tester', 'active', `Testing 0/${checks.total}`);
         break;
       case 'browser_check':
         if (event.data?.passed) checks.passed++;
         else {
           checks.failed++;
-          feedback ??= { from: 'tester', message: firstLine(`${text(event.data?.name)}：实际为 ${JSON.stringify(text(event.data?.actual))}`) };
+          feedback ??= { from: 'tester', message: firstLine(`${text(event.data?.name)}: got ${JSON.stringify(text(event.data?.actual))}`) };
         }
-        set('tester', 'active', `浏览器检查 ${checks.passed + checks.failed}/${checks.total || '?'}`);
+        set('tester', 'active', `Testing ${checks.passed + checks.failed}/${checks.total || '?'}`);
         break;
       case 'browser_run_finished': {
         const passed = Number(event.data?.passed) || 0;
         const total = passed + (Number(event.data?.failed) || 0);
-        set('tester', event.data?.status === 'passed' ? 'done' : 'failed', event.data?.status === 'passed' ? `检查通过 ${passed}/${total}` : event.data?.status === 'cancelled' ? '检查已取消' : `检查未通过 ${passed}/${total}`);
+        set('tester', event.data?.status === 'passed' ? 'done' : 'failed', event.data?.status === 'passed' ? `All checks passed ${passed}/${total}` : event.data?.status === 'cancelled' ? 'Checks cancelled' : `Checks failed ${passed}/${total}`);
         if (event.data?.status !== 'passed' && !feedback && text(event.data?.error)) feedback = { from: 'tester', message: firstLine(text(event.data?.error)) };
         break;
       }
@@ -109,23 +109,23 @@ export function reducePipeline(events: StudioEvent[]): PipelineView {
 
 /** One readable line per event for the log beside the graph. */
 export function describeEvent(event: StudioEvent): string {
-  const r = event.round ? `第 ${event.round} 轮 · ` : '';
+  const r = event.round ? `R${event.round} · ` : '';
   const d = event.data || {};
   switch (event.type) {
-    case 'queued': return '任务进入队列';
-    case 'phase': return `${r}${{ planning: 'Manager 开始规划', coding: 'Coder 开始编写源码', building: 'Builder 开始真实编译' }[text(d.phase)] || text(d.phase)}`;
-    case 'plan_ready': return `规划完成${text(d.projectName) ? `：${text(d.projectName)}` : ''}`;
-    case 'code_ready': return `${r}生成 ${Number(d.files) || 0} 个文件`;
-    case 'build_failed': return `${r}编译失败：${firstLine(text((d.errors as unknown[] | undefined)?.[0]) || '未知错误', 200)}`;
-    case 'build_passed': return `${r}编译通过`;
-    case 'ready_for_review': return '构建完成，可以试玩（尚未验收）';
-    case 'failed': return `运行失败${text(d.error) ? `：${firstLine(text(d.error), 200)}` : ''}`;
-    case 'cancelled': return '运行已取消';
-    case 'test_plan_started': return 'Tester 开始生成检查计划';
-    case 'test_plan_ready': return `检查计划就绪，共 ${Number(d.checks) || 0} 项`;
-    case 'test_plan_failed': return d.status === 'cancelled' ? '检查计划已取消' : `检查计划失败${text(d.error) ? `：${firstLine(text(d.error), 200)}` : ''}`;
-    case 'browser_run_started': return `独立浏览器开始执行 ${Number(d.checks) || 0} 项检查`;
-    case 'browser_check': return `${d.passed ? '✓' : '✗'} ${text(d.name)}${d.passed ? '' : `（实际 ${JSON.stringify(text(d.actual))}）`}`;
-    case 'browser_run_finished': return d.status === 'passed' ? `浏览器检查全部通过（${Number(d.passed) || 0} 项）` : `浏览器检查结束：${text(d.status)}，通过 ${Number(d.passed) || 0}，失败 ${Number(d.failed) || 0}`;
+    case 'queued': return 'Mission queued';
+    case 'phase': return `${r}${{ planning: 'Manager is planning', coding: 'Coder is writing code', building: 'Builder is compiling' }[text(d.phase)] || text(d.phase)}`;
+    case 'plan_ready': return `Plan ready${text(d.projectName) ? `: ${text(d.projectName)}` : ''}`;
+    case 'code_ready': return `${r}${Number(d.files) || 0} files written`;
+    case 'build_failed': return `${r}Build failed: ${firstLine(text((d.errors as unknown[] | undefined)?.[0]) || 'unknown error', 200)}`;
+    case 'build_passed': return `${r}Build passed`;
+    case 'ready_for_review': return 'Built. Ready to play';
+    case 'failed': return `Run failed${text(d.error) ? `: ${firstLine(text(d.error), 200)}` : ''}`;
+    case 'cancelled': return 'Run cancelled';
+    case 'test_plan_started': return 'Tester is writing checks';
+    case 'test_plan_ready': return `${Number(d.checks) || 0} checks planned`;
+    case 'test_plan_failed': return d.status === 'cancelled' ? 'Check plan cancelled' : `Check plan failed${text(d.error) ? `: ${firstLine(text(d.error), 200)}` : ''}`;
+    case 'browser_run_started': return `Browser test started · ${Number(d.checks) || 0} checks`;
+    case 'browser_check': return `${d.passed ? 'PASS' : 'FAIL'} ${text(d.name)}${d.passed ? '' : ` (got ${JSON.stringify(text(d.actual))})`}`;
+    case 'browser_run_finished': return d.status === 'passed' ? `All ${Number(d.passed) || 0} checks passed` : `Browser test ${text(d.status)}: ${Number(d.passed) || 0} passed, ${Number(d.failed) || 0} failed`;
   }
 }
