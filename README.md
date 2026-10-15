@@ -1,262 +1,88 @@
-# PixelAgent Hub
+# PixelAgent Hub · 像素 AI 开发小队
 
 [![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
+[![Replay demo](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
-[![node](https://img.shields.io/node/v/pixelagent-hub)](https://nodejs.org/)
 
-**像素风多 Agent 软件工作台**：从需求规划、源码生成和真实编译，到浏览器检查、版本返修与源码交付。底层为 TypeScript 编排框架，提供 6 种协作模式，支持 OpenAI、Anthropic、DeepSeek、Kimi、Ollama、自定义 OpenAI 兼容服务及离线 mock。
+**一句话需求 → 4 个 Agent 规划、写码、真实编译、浏览器验收；失败证据自动回到 Coder 返修。** 每一步都写进事件日志，像素风控制台里看到的每个动画都对应一条真实事件。
 
-## 项目能力
+> A pixel-art AI dev squad: Manager plans, Coder writes an offline web app, esbuild really compiles it, Tester checks it in a sandboxed Chromium, and any compiler error or failed check is sent back to the Coder. Every animation in the console is driven by a recorded server event.
 
-- **可观测性优先**：请求级日志、模式轨迹、会话落盘、健康探针
-- **稳定性优先**：超时、并发限制、幂等冲突保护、限流
-- **用量记录**：Studio 展示生成耗时、返回的角色任务、模型、token 和构建次数；缺失用量明确标注，实际货币成本尚未计算
-- **轻量运行时**：LLM 调用使用原生 `fetch`，软件构建使用 esbuild
-- **联网检索**：DuckDuckGo 网页搜索、SearXNG，以及可选的 Brave/Tavily
-- **自带工作台**：像素风 React Studio 界面，查看生成阶段、试玩作品、源码、检查记录与版本
+**▶ [在线回放演示](https://3617375681.github.io/PIXELAGENT-HUB/)**（只读、无需后端或密钥） · [本地运行](#本地运行) · [作品集说明](pixelagent-hub/docs/portfolio/README.md)
 
-## Software Studio
+![编译失败：Builder 把真实 esbuild 报错交回 Coder，第 2 轮返修](portfolio-screenshots/studio-pipeline-repair-2026-10-14.png)
 
-新增软件生成命令：Manager 规划、Coder 写入独立工作区、真实编译错误触发返修，成功导出可运行预览和源码 ZIP。
+## 它做什么
 
-工作室支持试玩诊断、按已保存错误返修、追加需求、版本历史、源码对比和候选版本切换。Tester 生成有限的声明式检查计划，独立沙箱浏览器执行点击、输入和断言并保存截图。构建通过、浏览器检查通过和人工批准分别记录。
+| 阶段 | 实际发生的事 |
+| --- | --- |
+| **Manager** 规划 | 把需求拆成计划，交给 Coder |
+| **Coder** 写码 | 生成离线 HTML/CSS/JS 项目，写入隔离工作区 |
+| **Builder** 编译 | esbuild 真实构建；失败时把编译错误作为返修说明交回 Coder，最多 3 轮 |
+| **Tester** 验收 | 生成声明式检查计划，在独立沙箱 Chromium 中点击、输入、断言并截图 |
+| 返修 / 版本 | 浏览器失败证据可直接触发返修，生成新版本；原版本与证据保留，可对比源码 |
+| 人工决定 | 构建通过、浏览器检查通过、人工批准三者分开记录，互不替代 |
 
-```powershell
-cd pixelagent-hub
-npm run studio:create -- "制作像素贪吃蛇，包含暂停、计分和重新开始"
-npm run studio:preview -- <输出的项目UUID>
+![注入故障：浏览器检查发现 +1 实际加了 2，失败证据从 Tester 回到 Coder](portfolio-screenshots/studio-pipeline-browser-failure-2026-10-14.png)
+
+## 可核对的结果
+
+以下来自仓库中保存的真实模型（`deepseek-v4-pro`）记录，均含源码 ZIP、检查计划、浏览器报告与截图：
+
+- **[10 次真实生成](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09/README.md)**（5 个应用 × 2 种策略）全部首次编译通过；原始浏览器检查 6 次通过、4 次失败。其中 2 次失败后来查明是构建器丢失 `defer` 脚本顺序的平台缺陷，已修复并加了真实浏览器回归测试。
+- **[受控故障返修](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md)**：把计数器改成 `+= 2` 后，浏览器检查 2/4 失败；依据失败证据返修只改了 1 行，另外 3 个文件逐字节不变，复测原计划 4/4、额外 7/7 通过。
+- 这些是小样本观察，不代表通用成功率；单 Agent 与多 Agent 的系统对比仍在计划中。
+
+## 工作原理
+
+```mermaid
+flowchart LR
+  R[需求] --> M[Manager 规划] --> C[Coder 写码] --> B[Builder · esbuild]
+  B -- 编译错误 --> C
+  B -- 通过 --> T[Tester · 沙箱 Chromium]
+  T -- 失败证据 --> C
+  T -- 通过 --> H[人工验收]
+  M & C & B & T -. 事件 .-> E[(events.jsonl)] -. SSE .-> UI[像素控制台]
 ```
 
-也可以启动 API 与 dashboard，进入 **STUDIO**，提交需求、查看阶段、试玩、查看源码并下载 ZIP。当前生成范围为离线 HTML/CSS/JS 应用与小游戏；不支持自动生成数据库、登录支付或任意 npm 项目。[运行说明](pixelagent-hub/docs/software-studio/README.md)、[完整 API 契约](pixelagent-hub/openapi/studio-api.yaml)。
-
-![真实模型生成的计数器及浏览器检查](portfolio-screenshots/studio-real-counter-browser-2026-10-09.png)
-
-## 个人项目展示与演示
-
-[作品集介绍和演示步骤](pixelagent-hub/docs/portfolio/README.md)包含技术栈、可验证案例和五分钟演示流程。已有 10 次真实模型生成实测，全部首次编译通过，原始浏览器检查 6 次通过、4 次失败；保留失败及后续修复证据，不将编译成功等同于完整功能验收。
-
-完成下方依赖安装后，可直接回放真实返修实验，无需模型密钥：
-
-```sh
-npm run build:all
-npm run portfolio:demo
-```
-
-打开 `http://127.0.0.1:3131/studio`。演示将保存的原始作品、受控故障、真实模型修复及浏览器报告复制到临时目录；不重新生成或批准作品，不改动原记录。它是历史证据回放，创建按钮使用 mock，不能用于现场真实生成。正常退出清理临时副本，强制终止可能留下系统临时目录。
+- **后端**：TypeScript + Node。`src/studio` 负责生成循环、构建、浏览器检查和版本，状态以原子写入的 JSON 落盘，每次状态变化追加到有序事件日志，经 SSE 推送（`GET /api/studio/projects/:id/events?stream=1`）。HTTP 契约见 [studio-api.yaml](pixelagent-hub/openapi/studio-api.yaml)，由测试用 Ajv 校验真实响应。
+- **前端**：React 19 + Vite。事件经纯函数 reducer 变成 4 个角色的状态，驱动连线、数据包和红色回流边；没有任何模拟进度。
+- **工程**：队列、取消与超时、进程重启后恢复、创建幂等、鉴权与限流；CI 覆盖 Node 18/20/22、Windows、真实浏览器和 Docker 生产启动。
 
 ## 本地运行
 
-```bash
-cd pixelagent-hub
-cp .env.example .env
-npm ci
-npm --prefix dashboard ci
-npm run build
-npm run smoke:package
-npm test
-```
-
-无需 API Key 的演示需要显式启用 mock 模式：
-```bash
-LLM_PROVIDER=mock npx tsx examples/company-mode.ts
-```
-
-启动 API 服务 + 可视化面板：
-```bash
-npm run records:api       # 后端 API → http://localhost:3100
-npm run ui:dev            # 前端面板 → http://localhost:3000
-```
-
-构建后的本地工作台也可单服务启动：在 `pixelagent-hub/` 执行 `npm run build:all`、`npm start`，打开 `http://127.0.0.1:3100/studio`。页面、API 和健康检查共用端口，支持刷新深层链接。首次配置及验证命令见 [同源本地启动](pixelagent-hub/docs/software-studio/local-start.md)。
-
-## Docker 本机部署
-
-1. 准备环境文件：`cp pixelagent-hub/.env.example pixelagent-hub/.env`，至少填写 `RECORDS_API_KEY`（生产勿用默认占位符）。
-2. 可选：在 `.env` 中设置 `LLM_PROVIDER=mock` 做无外网演示；或配置各厂商 API Key。
-3. 在仓库根目录执行：
-
-```bash
-docker compose up --build
-```
-
-- **前端**：`http://localhost:8080`（nginx 托管静态资源，并将 `/api`、`/health` 反代到后端）
-- **后端直连**：`http://localhost:3100`（Records API）
-- **会话落盘**：宿主机目录 `pixelagent-hub/records` 挂载到容器内 `/app/records`（与默认 `records/company-mode` 路径一致）
-
-Compose 默认只向本机开放端口，强制生产鉴权；复制示例文件后必须替换 API Key。打开前端顶部“API 连接”，输入该 Key 即可，无需把密钥打入镜像。首次运行、保留数据、容器检查范围和浏览器限制见 [Docker 部署说明](pixelagent-hub/docs/software-studio/docker-start.md)。
-
-## 6 种协作模式
-
-| 模式 | 说明 | 适用场景 |
-|------|------|----------|
-| **Pipeline** | 顺序流水线 | 内容创作、代码评审 |
-| **Parallel** | 多 Agent 并行 | 多视角分析 |
-| **Debate** | 结构化多轮辩论 | 决策探讨 |
-| **Vote** | 加权投票 | 共识达成 |
-| **Roundtable** | 主持人引导圆桌讨论 | 深度分析+证据检索 |
-| **Company** | 一人公司层级流程 | 完整生产工作流 |
-
-## 架构
-
-### 核心模型
-
-```
-Task → Orchestrator → RunQueue(FIFO,5并发,50排队) → Agent.execute(LLM) → TaskResult
-                              ↕
-                        MessageBus (进程内 pub/sub)
-```
-
-**Orchestrator**（`src/core/Orchestrator.ts`）是唯一调度入口。所有模式（Pipeline / Parallel / Debate / Vote / Roundtable / Company）最终都调用 `runTask(task, agentId)` → `Agent.execute(task)`。
-
-**RunQueue**（`src/core/RunQueue.ts`）是一个纯内存 FIFO 队列：最多 N 个并发槽位 + M 个排队位，超排直接拒绝。没有优先级、没有重试、没有持久化。
-
-**MessageBus**（`src/core/MessageBus.ts`）是进程内的事件总线，Agent 之间通过它订阅 / 发布消息，不经过网络。
-
-**Agent**（`src/core/BaseAgent.ts`）是抽象基类。每个 Agent 本质是一个异步函数：接收 `Task`（含 id / type / description / context），调用 LLM，返回 `TaskResult`（含 output / reasoning / status / agentId）。Agent 自身无状态，不持数据库连接，不启动子进程。
-
-### 执行模型：按 Round 推进
-
-6 种模式共享一个执行原语：
-
-| 模式 | 推进方式 | 单轮并发度 |
-|------|---------|-----------|
-| Pipeline | 串行链：A→B→C，前一个 output 塞入下一个 context | 1 |
-| Parallel | 所有 Agent 同时执行同一 Task，结果汇总 | N |
-| Debate | 多轮：每轮所有 Agent 并发，上一轮结果作为下一轮 context | N |
-| Vote | 一次并发，按加权分数选出胜者 | N |
-| Roundtable | 主持人分配发言顺序，串行推进 | 1 |
-| Company | 自定义层级流水线（Writer→Reviewer→Editor） | 可配 |
-
-每一步都会产生一个 **Round**（`{ roundNumber, agents, messages }`），整个执行过程是一个 `Round[]` 数组，全部持久化到 `records/` 下的 session.json。
-
-### 数据流（以 Company 模式为例）
-
-```
-UI / API POST → Orchestrator.runCompany(task)
-  → WriterAgent.execute(task)           → draft + reasoning
-  → SeniorEditorAgent.execute(draft)    → review + score
-  → records/session.json 落盘
-```
-
-上游 Agent 的输出直接拼入下游 Agent 的 `task.context` 中，是**全量上下文传递**，没有外部共享存储。
-
-### 前端与协作模式
-
-前端（`dashboard/`）只提供 Software Studio 工作台。六种协作模式通过 REST API（`/api/run/*`）和 `examples/` 使用，执行记录落盘到 `records/`，可经 `GET /api/sessions/:id` 读取。
-
----
-
-## 多 LLM 提供商
-
-| 提供商 | 环境变量 | 默认模型 |
-|--------|----------|----------|
-| OpenAI | `OPENAI_API_KEY` | `gpt-4o` |
-| Anthropic | `ANTHROPIC_API_KEY` | `claude-sonnet-4-6` |
-| DeepSeek | `DEEPSEEK_API_KEY` | `deepseek-chat` |
-| Kimi | `KIMI_API_KEY` | `kimi-k2p5` |
-| Ollama | _(本地无需 key)_ | `qwen3:14b` |
-| Mock（离线） | `LLM_PROVIDER=mock` 或 `OFFLINE=true` | `mock-echo` |
-| 自定义 | `LLM_BASE_URL` + `LLM_API_KEY` | 任意 |
-
-**按 Agent 路由（可选）**：`AGENT_<AGENTID>_LLM_PROVIDER` / `AGENT_<AGENTID>_LLM_MODEL`（ID 大写且非字母数字转为 `_`，例如 `AGENT_REVIEWER_LLM_PROVIDER=ollama`、`AGENT_WRITER_LLM_PROVIDER=deepseek`）。
-
-```bash
-export LLM_PROVIDER=openai
-export OPENAI_API_KEY=sk-...
-```
-
-## Studio 工作台
-
-`dashboard/` 是 React + Vite 的像素风 Studio 界面：提交需求、查看规划/编码/构建阶段、沙箱试玩、查看源码与差异、管理版本、运行浏览器检查并下载 ZIP。
+需要 Node 22.12+。默认使用离线 mock 模型：生成一个真实可编译的像素计数器，第 1 轮故意带语法错误，用来演示真实的编译 → 返修流程。
 
 ```bash
 cd pixelagent-hub
+cp .env.example .env          # LLM_PROVIDER=mock；真实生成改为所选模型并填写密钥
+npm ci && npm --prefix dashboard ci
 npm run build:all
-npm start          # http://127.0.0.1:3100/studio
+npm start                     # http://127.0.0.1:3100/studio
 ```
 
-## 项目结构
+- 想看清每一步：在 `.env` 加 `MOCK_LLM_DELAY_MS=1500`。
+- 浏览器检查：`npx playwright install chromium`，并设置 `ENABLE_STUDIO_BROWSER_CHECKS=true`。
+- 回放真实模型实验：`npm run portfolio:demo`；导出静态回放：`npm run replay:export -- --browser`。
+- Docker：在仓库根目录 `docker compose up --build`，见 [Docker 部署说明](pixelagent-hub/docs/software-studio/docker-start.md)。
+- 测试：`npm test`（后端）、`npm --prefix dashboard test`（前端）。
 
-```text
-pixelagent-hub/
-├── src/
-│   ├── core/              # Orchestrator / MessageBus / TaskRouter / RunQueue / LLM 抽象层
-│   ├── agents/            # 8 个预置 Agent（调研、写作、审阅、编码等）
-│   ├── web/               # REST API（鉴权、限流、健康检查、运行时管理）
-│   ├── studio/            # Software Studio：生成、编译、浏览器检查、版本
-│   ├── tools/             # 网页搜索（调研 Agent 使用）
-│   └── factory.ts         # 一键组装 Orchestrator
-├── dashboard/             # React Studio 工作台
-├── examples/              # 可直接运行的演示脚本
-├── config/                # Studio 基准用例
-└── records/               # 执行记录落盘
-```
+## 已知限制
 
-## REST API
+- 生成范围限于离线 HTML/CSS/JS 小应用与小游戏，不生成数据库、登录、支付或 npm 依赖项目。
+- Tester 的检查由模型生成，只覆盖计划里写到的行为；页面编译成功或检查通过都不等于人工验收。
+- 用量记录 token 与耗时，不计算实际费用。
+- 单进程运行，不是分布式调度平台。
 
-```bash
-npm run records:api   # 默认 http://localhost:3100
-```
+## 开发方式
 
-健康检查：`GET /health` · `/health/liveness` · `/health/readiness`
+项目起点是 Kimi 生成的像素风多 Agent 控制台原型（假数据驱动，见提交 `14a030e`）。后端、Studio 生成与验收流程在 GPT 的协助下实现；之后用 Claude Code 收敛范围、恢复原版视觉、加入事件时间线和静态回放。作者负责方向、取舍和验收标准；所有改动都经过测试与 CI 约束。
 
-运行模式：
-- `POST /api/run/pipeline` · `/parallel` · `/debate` · `/vote` · `/roundtable` · `/company`
+## 更多文档
 
-支持 `?async=1` 异步任务和 `?stream=1` SSE 流式响应。
-
-响应中 `artifacts.observability` 包含模型调用次数、token 用量、按模型分组统计、估算 USD 成本。
-
-## 定位与局限
-
-**这是一个本地单进程多 Agent 编排原型**，不是分布式调度平台。
-
-| ✅ 能做 | ❌ 做不了 |
-|---------|-----------|
-| 6 种协作模式的 LLM 编排 | 分布式 Agent 注册 / 心跳 / 租约管理 |
-| 进程内 RunQueue 并发控制 (FIFO, 5 并发, 50 排队) | 100 任务并发调度 + 负载均衡 |
-| session.json 完整落盘 + 交互回放 | 7×24 连续运行无内存泄漏 |
-| 原生 fetch 调用 6 家 LLM, 零额外依赖 | Agent 进程独立启动 / 动态扩缩容 |
-| 参数化治理 (超时/限流/并发/CORS/鉴权) | 网络分区容错 / 故障自动转移 |
-| 可观测性 (token 计数 / $ 成本 / 结构日志) | Prometheus 指标 / 分布式 tracing |
-| Studio 阶段、试玩、版本与浏览器检查界面 | Agent 间 100MB 中间数据传递 |
-| 通过 Records API 做异步任务 + 查询 | 图结构循环依赖检测 |
-| 嵌入式知识库检索 (Ollama 向量 + 余弦相似度) | RAG-as-a-Service |
-
-### 对比
-
-| 维度 | PixelAgent Hub | LangGraph / CrewAI |
-|------|---------------|-------------------|
-| 依赖数 | 3 (npm prod) | 20+ |
-| 语言 | TypeScript 原生 | Python 为主 |
-| 调度模型 | 进程内 Round 推进 | 状态图 / 图遍历 |
-| 运行时治理 | 鉴权、限流、超时、并发 | 需自行搭建 |
-| 可视化 | 自带 React 面板 | 需对接 LangSmith/AG2 |
-| 故障转移 | 无 | LangGraph 有 checkpoint 恢复 |
-| 适用规模 | 本地开发 / 教学 / 原型 | 生产级 Agent 工作流 |
-
-如果你需要的是企业级分布式 Agent 平台（心跳注册、故障转移、100+ 并发、优先级队列、图环检测、7×24 稳定、完整可交付文档），PixelAgent Hub **不是那个产品**；请参考 LangGraph Platform / Temporal / Prefect / AWS Bedrock Agents。
-
-如果你需要的是一个**轻量、零依赖、开箱即跑的 TS 多 Agent 编排 + 可视化原型**，PixelAgent Hub 非常适合。
-
-## 路线图
-
-- [x] 多 LLM 提供商抽象层（OpenAI / Anthropic / DeepSeek / Kimi / Ollama）
-- [x] 6 种协作模式 + 消息总线路由
-- [x] 后端治理：鉴权、限流、并发/超时、健康探针
-- [x] 真实网页搜索（DuckDuckGo / SearXNG / Brave / Tavily）
-- [x] 嵌入向量知识库检索（Ollama 向量 + 余弦相似度）
-- [x] 结构化日志、可观测性、成本追踪
-- [x] React 像素风 Studio 工作台
-- [x] RunQueue 并发控制
-- [ ] npm 包发布
-- [ ] 场景级基准测试与对比报告
-
-## 参与贡献
-
-- 贡献指南见 [CONTRIBUTING.md](pixelagent-hub/CONTRIBUTING.md)
-- 漏洞报告见 [SECURITY.md](pixelagent-hub/SECURITY.md)
-- 行为准则见 [CODE_OF_CONDUCT.md](pixelagent-hub/CODE_OF_CONDUCT.md)
+- [Software Studio 运行说明](pixelagent-hub/docs/software-studio/README.md) · [API 集成](pixelagent-hub/docs/software-studio/api-integration.md) · [同源本地启动](pixelagent-hub/docs/software-studio/local-start.md)
+- [底层多 Agent 框架](pixelagent-hub/README.md)：6 种协作模式（Pipeline / Parallel / Debate / Vote / Roundtable / Company）、多模型提供商、Records API
+- [贡献指南](pixelagent-hub/CONTRIBUTING.md) · [安全策略](pixelagent-hub/SECURITY.md) · [更新记录](pixelagent-hub/CHANGELOG.md)
 
 ## License
 
