@@ -632,7 +632,9 @@ for (const scenario of ['cancel', 'timeout'] as const) {
       assert.equal(project.status, scenario === 'cancel' ? 'cancelled' : 'failed');
       assert.equal(project.rounds.length, 0);
       assert.equal((await fetch(`${base}${accepted.projectUrl}/archive`)).status, 409);
-    }, provider, scenario === 'timeout' ? 100 : 5000);
+      // The fixture blocks until aborted, so the timeout always fires mid-generation; 1 s leaves slow
+      // CI runners time for the record and event writes that precede the first model call.
+    }, provider, scenario === 'timeout' ? 1000 : 5000);
   });
 }
 

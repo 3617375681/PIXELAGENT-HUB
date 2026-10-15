@@ -345,6 +345,21 @@ test('POST run with stream=1 returns SSE done', async () => {
   });
 });
 
+test('POST run rejects async=1 combined with stream=1 before writing any stream headers', async () => {
+  await withTempStack(async ({ baseUrl }) => {
+    const res = await fetch(`${baseUrl}/api/run/pipeline?stream=1&async=1`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': 'integration-test-api-key' },
+      body: JSON.stringify({ id: 'sse-async-conflict', description: 'conflict' }),
+    });
+    assert.equal(res.status, 400);
+    assert.match(res.headers.get('content-type') || '', /application\/json/);
+    const body = await res.json();
+    assert.equal(body.error.code, 'BAD_REQUEST');
+    assert.match(body.error.message, /async=1 with stream=1/);
+  });
+});
+
 test('GET /api/runtime/jobs/:jobId returns job record', async () => {
   await withTempStack(async ({ baseUrl }) => {
     const runRes = await fetch(`${baseUrl}/api/run/pipeline`, {

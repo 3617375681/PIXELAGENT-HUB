@@ -11,6 +11,7 @@
 - The mock provider now produces a buildable Studio app (first attempt deliberately fails to compile, exercising the repair loop) and fixed browser checks; optional `MOCK_LLM_DELAY_MS` slows it for live demos
 
 ### Fixed
+- `/api/run/:mode?async=1&stream=1` now returns a clean 400 instead of failing after SSE headers were written; run SSE responses use the configured CORS origin instead of `*`
 - Studio JSON responses now carry the configured CORS origin like other API routes
 
 ### Removed
@@ -21,6 +22,7 @@
 - The full feature set is preserved at git tag `v1.1-full`
 
 ### Changed
+- `recordsWebStack.ts` split from a ~1000-line request handler into route groups (`src/web/routes/`), a session store, a mode runner and shared HTTP helpers; API behavior is unchanged apart from the fixes above
 - Web search providers moved to `src/tools/search.ts`
 - With no provider and no API key, LLM selection now reports "No LLM provider configured" instead of silently selecting Kimi; `.env.example` defaults to `LLM_PROVIDER=mock` and disables the Ollama embedding retriever
 
