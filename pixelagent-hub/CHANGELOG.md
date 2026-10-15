@@ -22,6 +22,7 @@
 - The full feature set is preserved at git tag `v1.1-full`
 
 ### Changed
+- Studio redesigned as one English-only pixel page: pitch and prompt, the four-agent squad, PLAY/CODE result, and a collapsed MORE TOOLS section; stage cards regain the original particles, status bursts, typewriter labels and 8-bit sounds (toggle in the header), driven by real events
 - `recordsWebStack.ts` split from a ~1000-line request handler into route groups (`src/web/routes/`), a session store, a mode runner and shared HTTP helpers; API behavior is unchanged apart from the fixes above
 - Web search providers moved to `src/tools/search.ts`
 - With no provider and no API key, LLM selection now reports "No LLM provider configured" instead of silently selecting Kimi; `.env.example` defaults to `LLM_PROVIDER=mock` and disables the Ollama embedding retriever

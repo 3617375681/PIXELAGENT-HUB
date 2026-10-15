@@ -27,7 +27,7 @@ function currentApiKey(): string {
 export async function connectRecordsApi(key: string): Promise<void> {
   const candidate = key.trim();
   if (!candidate || candidate.length > 4096 || /[^\x21-\x7e]/.test(candidate)) {
-    throw new Error('请输入有效的 API Key（不含空格或控制字符）。');
+    throw new Error('Enter a valid API key (no spaces or control characters).');
   }
   const res = await fetch(`${API_BASE}/api/sessions`, {
     headers: { 'X-API-Key': candidate },
@@ -35,9 +35,9 @@ export async function connectRecordsApi(key: string): Promise<void> {
     signal: AbortSignal.timeout(10000),
   });
   if (!res.ok) throw new Error(res.status === 401 || res.status === 403
-    ? 'API Key 无效或没有访问权限。' : `连接检查失败（HTTP ${res.status}）。`);
+    ? 'API key rejected or not authorized.' : `Connection check failed (HTTP ${res.status}).`);
   const body = await res.json();
-  if (!Array.isArray(body.sessions)) throw new Error('服务返回的内容不是 Records API。');
+  if (!Array.isArray(body.sessions)) throw new Error('That server is not a Records API.');
   window.sessionStorage.setItem(CONNECTION_STORAGE_KEY, candidate);
 }
 
@@ -84,7 +84,7 @@ export async function fetchRecordsBinary(path: string): Promise<Blob> {
   const base = new URL(`${API_BASE}/`, window.location.origin);
   const target = new URL(url, window.location.origin);
   if (target.origin !== base.origin || !target.pathname.startsWith(`${base.pathname}api/`) || target.username || target.password) {
-    throw new Error('只能下载当前 Records API 的文件。');
+    throw new Error('Downloads are limited to the configured Records API.');
   }
   const res = await fetch(target.href, { headers: authHeaders(), redirect: 'error' });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
@@ -102,7 +102,7 @@ export class ApiError extends Error {
     this.status = status;
   }
 }
-export const OFFLINE_MESSAGE = '本地 API 未连接：请在 pixelagent-hub 目录运行 npm start（或 npm run records:api）。';
+export const OFFLINE_MESSAGE = 'Local API not reachable. Run npm start in pixelagent-hub.';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (REPLAY) {
@@ -131,7 +131,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     if (body === undefined && res.status >= 500) throw new ApiError(OFFLINE_MESSAGE, 'offline', res.status);
     throw new ApiError(normalizeError(body, res.status), res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
   }
-  if (body === undefined) throw new ApiError('服务返回的不是 Records API 数据：请确认 API 地址正确。', 'invalid', res.status);
+  if (body === undefined) throw new ApiError('The server did not return Records API data. Check the API address.', 'invalid', res.status);
   return body as T;
 }
 
@@ -142,7 +142,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export async function streamStudioEvents(projectId: string, after: number, onEvent: (event: StudioEvent) => void, signal: AbortSignal): Promise<void> {
   if (REPLAY) return replayEventStream(projectId, after, onEvent, signal);
   const res = await fetch(`${API_BASE}/api/studio/projects/${encodeURIComponent(projectId)}/events?stream=1&after=${after}`, { headers: authHeaders(), redirect: 'error', signal });
-  if (!res.ok || !res.body) throw new ApiError(`事件流不可用（HTTP ${res.status}）`, res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
+  if (!res.ok || !res.body) throw new ApiError(`Event stream unavailable (HTTP ${res.status})`, res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
   const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
   let buffer = '';
   for (;;) {

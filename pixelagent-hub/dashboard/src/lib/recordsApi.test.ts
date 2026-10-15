@@ -36,7 +36,7 @@ it('sends the explicit creation key with authentication on repeated requests', a
 it('verifies a candidate before saving and keeps the old connection after rejection', async () => {
   const api = await import('./recordsApi');
   fetchMock.mockResolvedValueOnce(new Response('{}', { status: 401 }));
-  await expect(api.connectRecordsApi('wrong-fixture-key')).rejects.toThrow('无效');
+  await expect(api.connectRecordsApi('wrong-fixture-key')).rejects.toThrow('rejected');
   expect(storage.size).toBe(0);
   fetchMock.mockResolvedValueOnce(Response.json({ projects: [] }));
   await api.studioApi.list();
@@ -75,7 +75,7 @@ it('scopes credentials to the configured API and blocks external or non-API down
   vi.stubEnv('VITE_RECORDS_API_URL', 'https://records.example/service');
   const api = await import('./recordsApi');
   for (const path of ['https://other.example/api/file', 'https://records.example/api/file', '/api/../private', '/private', 'https://user:pass@records.example/service/api/file']) {
-    await expect(api.fetchRecordsBinary(path)).rejects.toThrow('当前 Records API');
+    await expect(api.fetchRecordsBinary(path)).rejects.toThrow('configured Records API');
   }
   expect(fetchMock).not.toHaveBeenCalled();
   fetchMock.mockResolvedValueOnce(new Response('image'));
@@ -93,10 +93,10 @@ it('scopes credentials to the configured API and blocks external or non-API down
 
 it('rejects invalid keys and unexpected service responses without storing credentials', async () => {
   const api = await import('./recordsApi');
-  for (const key of ['', 'bad\r\nkey', 'a'.repeat(4097)]) await expect(api.connectRecordsApi(key)).rejects.toThrow('有效');
+  for (const key of ['', 'bad\r\nkey', 'a'.repeat(4097)]) await expect(api.connectRecordsApi(key)).rejects.toThrow('valid API key');
   expect(fetchMock).not.toHaveBeenCalled();
   fetchMock.mockResolvedValueOnce(Response.json({ ok: true }));
-  await expect(api.connectRecordsApi('fixture-key')).rejects.toThrow('不是 Records API');
+  await expect(api.connectRecordsApi('fixture-key')).rejects.toThrow('not a Records API');
   expect(storage.size).toBe(0);
 });
 

@@ -6,7 +6,7 @@ const Studio = lazy(() => import('./pages/Studio'))
 export default function App() {
   return (
     <>
-    <Suspense fallback={<main role="status" className="min-h-screen flex items-center justify-center pixel-font-body">正在加载工作区…</main>}>
+    <Suspense fallback={<main role="status" className="min-h-screen flex items-center justify-center pixel-font-body">LOADING…</main>}>
     <Routes>
       <Route path="/" element={<Navigate to="/studio" replace />} />
       <Route path="/studio" element={<Studio />} />
