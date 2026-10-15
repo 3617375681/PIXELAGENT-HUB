@@ -2,15 +2,16 @@ import type React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { Code2, Download, Hammer, Play, Plus, Radio, RefreshCw, Square, Terminal, Zap } from 'lucide-react';
-import { studioApi } from '../lib/recordsApi';
+import { OFFLINE_MESSAGE, studioApi } from '../lib/recordsApi';
 import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan } from '../types/studio';
 import { readCheckResults, type BrowserCheckResult } from '../lib/studioChecks';
 import { prepareStudioPreview, readPreviewMessage } from '../lib/studioPreview';
 import './Studio.css';
 import StudioReviewPanel from '../components/StudioReviewPanel';
 import StudioBrowserPanel from '../components/StudioBrowserPanel';
-import { studioStages } from '../lib/studioStages';
-import StudioStageCard from '../components/StudioStageCard';
+import StudioPipeline from '../components/StudioPipeline';
+import { reducePipeline } from '../lib/studioPipeline';
+import { useStudioEvents } from '../hooks/useStudioEvents';
 import ApiConnection from '../components/ApiConnection';
 
 const statusText = { queued: '排队中', running: '团队工作中', ready_for_review: '构建完成 · 等待验收', failed: '运行失败', cancelled: '已取消' };
@@ -144,6 +145,8 @@ export default function Studio() {
   }, [projectId, refreshKey]);
 
   const running = project?.status === 'queued' || project?.status === 'running';
+  const timeline = useStudioEvents(projectId, refreshKey);
+  const pipeline = useMemo(() => reducePipeline(timeline.events), [timeline.events]);
   const current = project?.rounds.at(-1);
   const files = current?.code.output?.files || [];
   const selectedFile = files.find((file) => file.path === filePath) || files[0];
@@ -258,7 +261,7 @@ export default function Studio() {
         </Link>
         <div className="studio-header-status pixel-font">
           <span><Radio size={10} className={running ? 'animate-pulse' : ''} style={{ color: running ? '#f59e0b' : '#22c55e' }} />{running ? 'RUNNING' : 'READY'}</span>
-          <span><Terminal size={10} style={{ color: '#a855f7' }} />3 AGENTS</span>
+          <span><Terminal size={10} style={{ color: '#a855f7' }} />4 AGENTS</span>
           <span>{projects.length} PROJECTS</span>
         </div>
         <div className="studio-header-actions">
@@ -284,15 +287,13 @@ export default function Studio() {
           </section>
         </aside>
         <section className="studio-workspace" aria-label="作品工作区">
-          {error && <div className="studio-error" role="alert">{error}<button onClick={() => setRefreshKey((key) => key + 1)}>重试</button></div>}
+          {error && <div className={`studio-error ${error === OFFLINE_MESSAGE ? 'offline' : ''}`} role="alert">{error}<button onClick={() => setRefreshKey((key) => key + 1)}>重试</button></div>}
           <div className="studio-workspace-heading"><div><span className="studio-kicker pixel-font">WORKSPACE</span><h2>{project?.plan?.output?.projectName || (project?.strategy === 'coder-only' ? '单 Agent 对照作品' : project ? running ? '正在准备你的项目' : '你的创作任务' : '你的作品，从这里开始')}</h2></div>{project && <span className={`studio-status ${project.status}`} role="status">{projectStatus(project)}</span>}</div>
           {project && <details className="studio-requirements"><summary>本次需求</summary><p>{project.description}</p></details>}
           {project?.retry && <p className="studio-hint">这是重新生成的新版本。<Link to={`/studio/${project.retry.parentProjectId}`}>查看原失败或取消记录</Link>。</p>}
           {project?.revision && <p className="studio-hint">本次修改：{project.revision.changeRequest} · <Link to={`/studio/${project.revision.parentProjectId}`}>查看基础版本</Link></p>}
           {project?.repair && <p className="studio-hint">本次依据保存的失败证据返修。<Link to={`/studio/${project.repair.parentProjectId}`}>查看原项目</Link> · {project.repair.browserRunId ? `独立浏览器报告 ${project.repair.browserRunId}` : `客户端诊断 ${project.repair.diagnosticId}`}。构建通过后仍需复测。</p>}
-          <ol className="studio-team" aria-label="团队执行阶段">
-            {studioStages(project).map((stage) => <StudioStageCard key={stage.name} stage={stage} />)}
-          </ol>
+          <StudioPipeline view={pipeline} events={timeline.events} live={running} />
           {running && <div className="studio-progress" role="status"><Hammer size={16} />{phaseText[project?.phase || 'queued']}{current && ` · 第 ${current.round} 轮`}<button onClick={() => void cancel()} disabled={busy}><Square size={12} />取消</button></div>}
           {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
           {project && ['failed', 'cancelled'].includes(project.status) && <section className="studio-tester" aria-label="重新生成作品"><h3>保留本次记录，重新生成</h3><p className="studio-hint">沿用原需求、追加修改和返修上下文，从头执行并创建新版本。点击后会重新调用模型并产生用量；原错误和记录继续保留。</p><button disabled={busy} onClick={() => void retry()}>重新生成新版本（调用模型）</button></section>}

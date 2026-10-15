@@ -50,7 +50,7 @@ Use `LLM_PROVIDER=mock` (or `OFFLINE=true`) for offline work; `.env.example` def
 
 **Search (`src/tools/search.ts`).** Web search providers used by `ResearchAgent`. The former intelligence pipeline, chat, video and miniprogram code was removed; it survives only in the `v1.1-full` git tag.
 
-**Dashboard (`dashboard/src`).** React + Vite; `lib/recordsApi.ts` is the API client, `pages/Studio.tsx` is the only page (`/` redirects to `/studio`). `AgentFlow` / `AgentCard` / `PixelAvatar` / `effects/` are the original pixel node-graph kit, kept to be driven by Studio events. The collaboration modes have no UI; use the API or `examples/`. It connects to an authenticated API at runtime (no rebuild needed to change the key).
+**Dashboard (`dashboard/src`).** React + Vite; `lib/recordsApi.ts` is the API client, `pages/Studio.tsx` is the only page (`/` redirects to `/studio`). `components/StudioPipeline.tsx` renders the pixel team graph purely from server events: `hooks/useStudioEvents.ts` (JSON then SSE via fetch, polling fallback) → `lib/studioPipeline.ts` (pure reducer, unit-tested) → stage cards, connectors and the red feedback edge. Every animation must correspond to a real event; don't add simulated progress. The visual language comes from the original Kimi prototype (git `14a030e`). The collaboration modes have no UI; use the API or `examples/`. It connects to an authenticated API at runtime (no rebuild needed to change the key).
 
 ## Testing notes
 

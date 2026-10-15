@@ -114,3 +114,29 @@ it('fails closed when session storage is unavailable', async () => {
   fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));
   await expect(api.connectRecordsApi('fixture-key')).rejects.toThrow('storage unavailable');
 });
+
+it('reports an unreachable or non-JSON API as offline instead of a JSON parse error', async () => {
+  const api = await import('./recordsApi');
+  fetchMock.mockRejectedValueOnce(new TypeError('Failed to fetch'));
+  await expect(api.studioApi.list()).rejects.toMatchObject({ kind: 'offline' });
+  fetchMock.mockResolvedValueOnce(new Response('', { status: 502 }));
+  await expect(api.studioApi.list()).rejects.toMatchObject({ kind: 'offline', status: 502 });
+  fetchMock.mockResolvedValueOnce(new Response('<!doctype html><html></html>', { status: 200 }));
+  await expect(api.studioApi.list()).rejects.toMatchObject({ kind: 'invalid' });
+  fetchMock.mockResolvedValueOnce(Response.json({ error: { message: 'Unauthorized' } }, { status: 401 }));
+  await expect(api.studioApi.list()).rejects.toMatchObject({ kind: 'unauthorized', status: 401, message: 'Unauthorized' });
+  fetchMock.mockResolvedValueOnce(Response.json({ error: { message: 'Project not found' } }, { status: 404 }));
+  await expect(api.studioApi.list()).rejects.toMatchObject({ kind: 'http', status: 404 });
+});
+
+it('parses SSE events split across network chunks and sends the credential', async () => {
+  const api = await import('./recordsApi');
+  const encoder = new TextEncoder();
+  const chunks = ['id: 1\nevent: studio\ndata: {"seq":1,"at":"t","type":"queued"}\n\n: ping\n\nid: 2\nevent: stu', 'dio\ndata: {"seq":2,"at":"t","type":"ready_for_review"}\n\n'];
+  fetchMock.mockResolvedValueOnce(new Response(new ReadableStream({ start(controller) { for (const chunk of chunks) controller.enqueue(encoder.encode(chunk)); controller.close(); } }), { headers: { 'content-type': 'text/event-stream' } }));
+  const received: number[] = [];
+  await api.streamStudioEvents('fixture', 0, (event) => received.push(event.seq), new AbortController().signal);
+  expect(received).toEqual([1, 2]);
+  expect(fetchMock.mock.lastCall?.[0]).toBe('/api/studio/projects/fixture/events?stream=1&after=0');
+  expect(fetchMock.mock.lastCall?.[1].headers['X-API-Key']).toBe('legacy-fixture-key');
+});
