@@ -13,7 +13,7 @@
 - **用量记录**：Studio 展示生成耗时、返回的角色任务、模型、token 和构建次数；缺失用量明确标注，实际货币成本尚未计算
 - **轻量运行时**：LLM 调用使用原生 `fetch`，软件构建使用 esbuild
 - **联网检索**：DuckDuckGo 网页搜索、SearXNG，以及可选的 Brave/Tavily
-- **自带可视化**：React 前端面板，查看 Agent 状态、消息、执行摘要和输出
+- **自带工作台**：像素风 React Studio 界面，查看生成阶段、试玩作品、源码、检查记录与版本
 
 ## Software Studio
 
@@ -33,7 +33,7 @@ npm run studio:preview -- <输出的项目UUID>
 
 ## 个人项目展示与演示
 
-[作品集介绍、接单文案和演示步骤](pixelagent-hub/docs/portfolio/README.md)包含技术栈、可验证案例和交付范围。已有 10 次真实模型生成实测，全部首次编译通过，原始浏览器检查 6 次通过、4 次失败；保留失败及后续修复证据，不将编译成功等同于完整功能验收。
+[作品集介绍和演示步骤](pixelagent-hub/docs/portfolio/README.md)包含技术栈、可验证案例和五分钟演示流程。已有 10 次真实模型生成实测，全部首次编译通过，原始浏览器检查 6 次通过、4 次失败；保留失败及后续修复证据，不将编译成功等同于完整功能验收。
 
 完成下方依赖安装后，可直接回放真实返修实验，无需模型密钥：
 
@@ -140,9 +140,9 @@ UI / API POST → Orchestrator.runCompany(task)
 
 上游 Agent 的输出直接拼入下游 Agent 的 `task.context` 中，是**全量上下文传递**，没有外部共享存储。
 
-### 可视化面板如何消费
+### 前端与协作模式
 
-前端 React 面板（`dashboard/`）通过 Records API (`GET /api/sessions/:id`) 读取落盘的 session.json，经 `sessionJsonToWorkflow` 映射为 `Workflow → Round[] → Agent[]` 结构，驱动 AgentFlow 拓扑图、ThinkingDrawer 思维链、ChatPanel 消息面板、ExportPanel 导出。
+前端（`dashboard/`）只提供 Software Studio 工作台。六种协作模式通过 REST API（`/api/run/*`）和 `examples/` 使用，执行记录落盘到 `records/`，可经 `GET /api/sessions/:id` 读取。
 
 ---
 
@@ -165,21 +165,14 @@ export LLM_PROVIDER=openai
 export OPENAI_API_KEY=sk-...
 ```
 
-## 可视化监控面板
+## Studio 工作台
 
-`dashboard/` 提供完整的 React 可视化控制台：
-
-- **Agent 拓扑图**：d3-force 力导向布局，可拖拽、缩放、折叠
-- **实时状态**：idle → thinking → done/error 状态流转
-- **思维链抽屉**：点击 Agent 卡片查看逐步推理过程
-- **消息面板**：Agent 间对话实时展示
-- **像素风 UI**：CRT 扫描线、8-bit 音效、4 套配色主题
-- **快捷键**：R=运行 E=导出 C=聊天 M=静音 +/-缩放
+`dashboard/` 是 React + Vite 的像素风 Studio 界面：提交需求、查看规划/编码/构建阶段、沙箱试玩、查看源码与差异、管理版本、运行浏览器检查并下载 ZIP。
 
 ```bash
-cd dashboard
-npm install
-npm run dev
+cd pixelagent-hub
+npm run build:all
+npm start          # http://127.0.0.1:3100/studio
 ```
 
 ## 项目结构
@@ -190,11 +183,12 @@ pixelagent-hub/
 │   ├── core/              # Orchestrator / MessageBus / TaskRouter / RunQueue / LLM 抽象层
 │   ├── agents/            # 8 个预置 Agent（调研、写作、审阅、编码等）
 │   ├── web/               # REST API（鉴权、限流、健康检查、运行时管理）
-│   ├── intelligence/      # 情报流水线（采集→分析→决策→执行→监控）
+│   ├── studio/            # Software Studio：生成、编译、浏览器检查、版本
+│   ├── tools/             # 网页搜索（调研 Agent 使用）
 │   └── factory.ts         # 一键组装 Orchestrator
-├── dashboard/             # React 可视化监控面板
+├── dashboard/             # React Studio 工作台
 ├── examples/              # 可直接运行的演示脚本
-├── config/                # 工作流配置与 eval 数据
+├── config/                # Studio 基准用例
 └── records/               # 执行记录落盘
 ```
 
@@ -225,7 +219,7 @@ npm run records:api   # 默认 http://localhost:3100
 | 原生 fetch 调用 6 家 LLM, 零额外依赖 | Agent 进程独立启动 / 动态扩缩容 |
 | 参数化治理 (超时/限流/并发/CORS/鉴权) | 网络分区容错 / 故障自动转移 |
 | 可观测性 (token 计数 / $ 成本 / 结构日志) | Prometheus 指标 / 分布式 tracing |
-| AgentFlow 拓扑图 / ThinkingDrawer 思维链 | Agent 间 100MB 中间数据传递 |
+| Studio 阶段、试玩、版本与浏览器检查界面 | Agent 间 100MB 中间数据传递 |
 | 通过 Records API 做异步任务 + 查询 | 图结构循环依赖检测 |
 | 嵌入式知识库检索 (Ollama 向量 + 余弦相似度) | RAG-as-a-Service |
 
@@ -250,10 +244,10 @@ npm run records:api   # 默认 http://localhost:3100
 - [x] 多 LLM 提供商抽象层（OpenAI / Anthropic / DeepSeek / Kimi / Ollama）
 - [x] 6 种协作模式 + 消息总线路由
 - [x] 后端治理：鉴权、限流、并发/超时、健康探针
-- [x] 真实工具集成（搜索、消息、飞书）
-- [x] 嵌入向量知识库检索（Ollama 向量 + 余弦相似度 + 自优化评分器）
+- [x] 真实网页搜索（DuckDuckGo / SearXNG / Brave / Tavily）
+- [x] 嵌入向量知识库检索（Ollama 向量 + 余弦相似度）
 - [x] 结构化日志、可观测性、成本追踪
-- [x] React 可视化监控面板（Agent 拓扑图、思维链、实时消息）
+- [x] React 像素风 Studio 工作台
 - [x] RunQueue 并发控制
 - [ ] npm 包发布
 - [ ] 场景级基准测试与对比报告

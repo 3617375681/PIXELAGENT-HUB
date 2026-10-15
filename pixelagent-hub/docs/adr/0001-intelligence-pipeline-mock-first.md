@@ -1,7 +1,7 @@
 # ADR 0001: Intelligence Pipeline uses mock-first execution adapters
 
 ## Status
-Accepted
+Superseded — the intelligence pipeline was removed when the project refocused on Software Studio. The code remains available at the `v1.1-full` git tag.
 
 ## Context
 

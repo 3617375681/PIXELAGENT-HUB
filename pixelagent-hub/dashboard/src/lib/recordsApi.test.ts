@@ -38,8 +38,8 @@ it('verifies a candidate before saving and keeps the old connection after reject
   fetchMock.mockResolvedValueOnce(new Response('{}', { status: 401 }));
   await expect(api.connectRecordsApi('wrong-fixture-key')).rejects.toThrow('无效');
   expect(storage.size).toBe(0);
-  fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));
-  await api.recordsApi.listSessions();
+  fetchMock.mockResolvedValueOnce(Response.json({ projects: [] }));
+  await api.studioApi.list();
   expect(fetchMock.mock.calls[1][1].headers['X-API-Key']).toBe('legacy-fixture-key');
   fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));
   await api.connectRecordsApi('new-fixture-key');
@@ -49,14 +49,12 @@ it('verifies a candidate before saving and keeps the old connection after reject
   expect([...storage.values()]).toEqual(['new-fixture-key']);
 });
 
-it('uses the runtime credential for JSON, streaming and binary then clears even a bundled key', async () => {
+it('uses the runtime credential for JSON and binary then clears even a bundled key', async () => {
   const api = await import('./recordsApi');
   fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));
   await api.connectRecordsApi('session-fixture-key');
   fetchMock.mockResolvedValueOnce(Response.json({ projects: [] }));
   await api.studioApi.list();
-  fetchMock.mockResolvedValueOnce(new Response('data: done', { headers: { 'content-type': 'text/event-stream' } }));
-  await api.recordsApi.postRun('pipeline', {}, { stream: true });
   fetchMock.mockResolvedValueOnce(new Response('zip'));
   await api.studioApi.archive('fixture');
   for (const call of fetchMock.mock.calls.slice(1)) {
@@ -88,8 +86,8 @@ it('scopes credentials to the configured API and blocks external or non-API down
   vi.resetModules();
   vi.stubEnv('VITE_RECORDS_API_URL', 'https://other.example');
   const other = await import('./recordsApi');
-  fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));
-  await other.recordsApi.listSessions();
+  fetchMock.mockResolvedValueOnce(Response.json({ projects: [] }));
+  await other.studioApi.list();
   expect(fetchMock.mock.lastCall?.[1].headers['X-API-Key']).toBe('legacy-fixture-key');
 });
 
@@ -109,8 +107,8 @@ it('fails closed when session storage is unavailable', async () => {
   } });
   const api = await import('./recordsApi');
   expect(api.hasRecordsCredential()).toBe(false);
-  fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));
-  await api.recordsApi.listSessions();
+  fetchMock.mockResolvedValueOnce(Response.json({ projects: [] }));
+  await api.studioApi.list();
   expect(fetchMock.mock.lastCall?.[1].headers).not.toHaveProperty('X-API-Key');
   expect(() => api.disconnectRecordsApi()).toThrow('storage unavailable');
   fetchMock.mockResolvedValueOnce(Response.json({ sessions: [] }));

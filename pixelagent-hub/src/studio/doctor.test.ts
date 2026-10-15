@@ -11,6 +11,7 @@ const check = (env: NodeJS.ProcessEnv, name: string) => studioConfigurationCheck
 test('doctor uses runtime routing, key precedence and per-agent overrides without echoing secrets', () => {
   const secret = 'DO-NOT-PRINT-secret';
   assert.equal(check({}, 'model:coder').status, 'fail');
+  assert.match(check({}, 'model:coder').message, /No LLM provider configured/);
   assert.equal(check({ KIMI_API_KEY: 'replace-with-kimi-api-key' }, 'model:coder').status, 'fail');
   assert.match(check({ KIMI_API_KEY: secret, OPENAI_API_KEY: secret }, 'model:coder').message, /^openai:/);
   assert.equal(check({ LLM_PROVIDER: 'deepseek', DEEPSEEK_API_KEY: secret, LLM_API_KEY: 'replace-with-generic-key' }, 'model:coder').status, 'fail');

@@ -248,7 +248,7 @@ export default function Studio() {
   return (
     <main className="studio">
       <header className="studio-header">
-        <Link to="/" className="studio-home"><ArrowLeft size={16} />控制台</Link>
+        <Link to="/studio" className="studio-home"><ArrowLeft size={16} />新建作品</Link>
         <div className="studio-brand"><span className="studio-mark" aria-hidden="true">▦</span><div><span className="pixel-font">PIXEL / STUDIO</span><small>把需求变成可以试玩的作品</small></div></div>
         <button onClick={() => setRefreshKey((key) => key + 1)} aria-label="刷新项目"><RefreshCw size={16} /></button>
       </header>

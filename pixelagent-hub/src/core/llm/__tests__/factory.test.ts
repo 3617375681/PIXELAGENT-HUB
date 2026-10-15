@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { createLLMProvider } from '../factory.js';
+import { createLLMProvider, detectProviderId, NO_LLM_PROVIDER_MESSAGE } from '../factory.js';
 
 describe('LLMFactory', () => {
   it('should return null when no provider is configured', () => {
@@ -17,6 +17,13 @@ describe('LLMFactory', () => {
     assert.equal(provider, null);
 
     process.env = prev;
+  });
+
+  it('should not silently pick a vendor when nothing is configured', () => {
+    assert.equal(detectProviderId({}), null);
+    assert.equal(detectProviderId({ KIMI_API_KEY: 'sk-test-kimi-key-1234567890' }), 'kimi');
+    assert.equal(detectProviderId({ OFFLINE: 'true' }), 'mock');
+    assert.match(NO_LLM_PROVIDER_MESSAGE, /LLM_PROVIDER=mock/);
   });
 
   it('should select MockProvider when LLM_PROVIDER=mock', () => {

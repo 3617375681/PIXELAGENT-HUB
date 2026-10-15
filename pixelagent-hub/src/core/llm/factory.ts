@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { LLMProvider } from './provider.js';
+import { LLMProvider, NO_LLM_PROVIDER_MESSAGE } from './provider.js';
 import { LLMProviderId, LLMProviderOptions } from './types.js';
 import { OpenAIProvider } from './openai.js';
 import { AnthropicProvider } from './anthropic.js';
@@ -39,7 +39,8 @@ export function readAgentLlmEnv(agentId: string, env: NodeJS.ProcessEnv = proces
   return { llmProvider, llmModel: mRaw || undefined };
 }
 
-export function detectProviderId(env: NodeJS.ProcessEnv = process.env): LLMProviderId {
+/** Returns null when nothing is configured, so callers report it instead of silently picking a vendor. */
+export function detectProviderId(env: NodeJS.ProcessEnv = process.env): LLMProviderId | null {
   const explicit = env.LLM_PROVIDER?.trim().toLowerCase();
   if (explicit === 'mock') return 'mock';
   if (env.OFFLINE === 'true' || env.OFFLINE === '1') return 'mock';
@@ -61,7 +62,16 @@ export function detectProviderId(env: NodeJS.ProcessEnv = process.env): LLMProvi
   if (env.OLLAMA_MODEL || env.OLLAMA_BASE_URL) return 'ollama';
   if (env.LLM_BASE_URL) return 'custom-openai-compat';
 
-  return 'kimi'; // default
+  return null;
+}
+
+let warnedNoProvider = false;
+function reportNoProvider(): null {
+  if (!warnedNoProvider && process.env.NODE_ENV !== 'test') {
+    warnedNoProvider = true;
+    console.warn(`[LLMFactory] ${NO_LLM_PROVIDER_MESSAGE}`);
+  }
+  return null;
 }
 
 function providerOptions(model?: string): LLMProviderOptions {
@@ -113,6 +123,7 @@ export function createLLMProviderFor(spec: { id: string; llmProvider?: LLMProvid
   const model = spec.llmModel ?? env.llmModel;
   if (!id && !model) return createLLMProvider();
   const resolvedId = id ?? detectProviderId();
+  if (!resolvedId) return reportNoProvider();
   return instantiateLlmProvider(resolvedId, model);
 }
 
@@ -123,7 +134,7 @@ export function createLLMProviderFor(spec: { id: string; llmProvider?: LLMProvid
  *
  * Set `LLM_PROVIDER` to one of: `openai`, `anthropic`, `deepseek`, `kimi`, `ollama`, `custom-openai-compat`, `mock`.
  * Set `OFFLINE=true` (or `LLM_PROVIDER=mock`) for deterministic local responses without API keys.
- * If not set, auto-detects from available API keys.
+ * If not set, auto-detects from available API keys; with none present it returns null and logs {@link NO_LLM_PROVIDER_MESSAGE}.
  *
  * ## Configuration
  *
@@ -141,7 +152,9 @@ export function createLLMProviderFor(spec: { id: string; llmProvider?: LLMProvid
  */
 export function createLLMProvider(): LLMProvider | null {
   const id = detectProviderId();
+  if (!id) return reportNoProvider();
   return instantiateLlmProvider(id, undefined);
 }
 
+export { NO_LLM_PROVIDER_MESSAGE };
 export { OpenAIProvider, AnthropicProvider, DeepSeekProvider, KimiProvider, OllamaProvider, MockProvider };
