@@ -31,6 +31,12 @@
 
 ![真实模型修复后保留原样式](../software-studio/benchmark-results/2026-10-09-real-repair-source-context/repaired/fixed/initial.png)
 
+## 静态回放（无需后端）
+
+`npm run replay:export -- --browser` 在进程内运行真实 Studio API：用离线 mock 模型生成一个新项目（真实 esbuild 编译、第 1 轮编译失败后返修、真实浏览器检查，事件间隔为录制时的真实时间），并载入下方真实模型返修实验的保存记录，把页面需要的全部 GET 响应写成静态文件。随后用 `VITE_REPLAY=1` 构建 dashboard，即得到只读站点：时间线按录制节奏播放，创建与返修按钮被禁用，顶部常驻 REPLAY 说明并标明每个案例使用的是 mock 还是真实模型。
+
+`.github/workflows/pages.yml` 在每个 PR 上构建该站点；启用仓库的 GitHub Pages（Source: GitHub Actions）并把仓库变量 `ENABLE_PAGES_DEPLOY` 设为 `true` 后，main 分支会自动部署。
+
 ## 五分钟演示
 
 使用 Node 22.12+，在 `pixelagent-hub/` 执行：

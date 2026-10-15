@@ -50,7 +50,7 @@ export function reducePipeline(events: StudioEvent[]): PipelineView {
         if (!stage) break;
         if (stage === 'coder') {
           round = event.round ?? round + 1;
-          if (state.manager.state === 'idle') set('manager', 'skipped', '对照组未规划');
+          if (state.manager.state === 'idle') set('manager', 'skipped', '本次未规划');
           set('builder', 'idle', '等待');
         }
         set(stage, 'active', stage === 'manager' ? '规划中' : stage === 'coder' ? `第 ${round} 轮编码` : `第 ${round} 轮编译`);

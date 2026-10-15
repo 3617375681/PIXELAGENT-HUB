@@ -1,0 +1,67 @@
+name: Replay demo (GitHub Pages)
+
+# Builds the static, read-only Studio replay: a fresh offline-mock generation recorded with real
+# esbuild builds and real browser checks, plus the saved real-model repair evidence.
+# Pull requests only build it; pushes to main also deploy once Pages is enabled for the repository
+# (Settings → Pages → Source: GitHub Actions) and the variable ENABLE_PAGES_DEPLOY is "true".
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build replay site
+    # Same pinned image as the Studio browser job: Chromium's sandbox needs user namespaces.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ./pixelagent-hub
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            pixelagent-hub/package-lock.json
+            pixelagent-hub/dashboard/package-lock.json
+      - run: npm ci
+      - run: npm --prefix dashboard ci
+      - run: npx playwright install --with-deps chromium
+      - name: Record replay data
+        run: npm run replay:export -- --browser
+      - name: Build replay dashboard
+        run: npm --prefix dashboard run build
+        env:
+          VITE_REPLAY: '1'
+          VITE_BASE: /${{ github.event.repository.name }}/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: pixelagent-hub/dashboard/dist/public
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.ENABLE_PAGES_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
