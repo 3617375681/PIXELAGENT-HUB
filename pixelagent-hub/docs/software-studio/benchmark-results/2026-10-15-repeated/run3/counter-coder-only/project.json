@@ -1,0 +1,74 @@
+{
+  "projectId": "b4828930-ca14-44d0-bf0d-e460431699b0",
+  "strategy": "coder-only",
+  "ownerPid": 76596,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create an offline pixel-style counter with initial integer 0, button IDs increase/decrease/reset, and an output element ID count showing only the integer. Click adds one, subtracts one, or resets to zero. Support negative numbers. Include labeled keyboard-accessible buttons and README. Use HTML/CSS/JS only, no dependencies or storage. Keep total source under 200 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:41:33.710Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "b4828930-ca14-44d0-bf0d-e460431699b0-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Counter</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"container\">\n    <h1 class=\"pixel-title\">PIXEL COUNTER</h1>\n    <output id=\"count\" class=\"pixel-display\" aria-live=\"polite\">0</output>\n    <div class=\"controls\">\n      <button id=\"decrease\" class=\"pixel-btn\" type=\"button\" aria-label=\"Decrease count\">-1</button>\n      <button id=\"reset\" class=\"pixel-btn\" type=\"button\" aria-label=\"Reset count\">RESET</button>\n      <button id=\"increase\" class=\"pixel-btn\" type=\"button\" aria-label=\"Increase count\">+1</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+              "description": "Root HTML page with labeled, keyboard-accessible counter buttons and output element."
+            },
+            {
+              "path": "style.css",
+              "content": "* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: #2b2b2b;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: \"Courier New\", monospace;\n}\n\n.container {\n  text-align: center;\n}\n\n.pixel-title {\n  color: #ffd700;\n  text-shadow: 3px 3px 0 #000;\n  margin-bottom: 24px;\n}\n\n.pixel-display {\n  display: block;\n  min-width: 8ch;\n  margin: 0 auto 24px;\n  padding: 16px 8px;\n  background: #111;\n  color: #0f0;\n  font-size: 3rem;\n  text-align: center;\n  border: 4px solid #000;\n  box-shadow: 6px 6px 0 #000;\n  image-rendering: pixelated;\n}\n\n.controls {\n  display: flex;\n  gap: 16px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\n.pixel-btn {\n  font-family: inherit;\n  font-size: 1.25rem;\n  padding: 12px 16px;\n  background: #f0f0f0;\n  color: #000;\n  border: 4px solid #000;\n  box-shadow: 4px 4px 0 #000;\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\n.pixel-btn:active {\n  transform: translate(4px, 4px);\n  box-shadow: none;\n}\n\n.pixel-btn:focus-visible {\n  outline: 3px dashed #ffd700;\n  outline-offset: 2px;\n}\n",
+              "description": "Pixel-style CSS with hard shadows, monospace font, and visible keyboard focus."
+            },
+            {
+              "path": "script.js",
+              "content": "let count = 0;\n\nconst output = document.getElementById('count');\nconst increase = document.getElementById('increase');\nconst decrease = document.getElementById('decrease');\nconst reset = document.getElementById('reset');\n\nfunction updateDisplay() {\n  output.textContent = count;\n}\n\nincrease.addEventListener('click', () => {\n  count += 1;\n  updateDisplay();\n});\n\ndecrease.addEventListener('click', () => {\n  count -= 1;\n  updateDisplay();\n});\n\nreset.addEventListener('click', () => {\n  count = 0;\n  updateDisplay();\n});\n",
+              "description": "Plain JavaScript counter logic using addEventListener for increase, decrease, and reset."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Counter\n\nAn offline pixel-style counter app with no dependencies or storage.\n\n## Features\n\n- Starts at 0.\n- Increase by 1 with the **+1** button.\n- Decrease by 1 with the **-1** button, including negative numbers.\n- Reset to 0 with the **RESET** button.\n- Keyboard-accessible native buttons.\n\n## Usage\n\nOpen `index.html` in any modern browser.\n",
+              "description": "Project README with usage instructions and feature summary."
+            }
+          ],
+          "explanation": "A small offline pixel-style counter built with HTML, CSS, and vanilla JavaScript. It uses native buttons with addEventListener for accessible interaction, displays only the integer count in an output element, and supports negative values.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 319,
+            "completion_tokens": 2989,
+            "total_tokens": 3308
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:42:14.016Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "style.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:42:14.104Z"
+}

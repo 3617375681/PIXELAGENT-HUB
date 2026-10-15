@@ -1,0 +1,74 @@
+{
+  "projectId": "1383ad26-f094-4cf2-8cde-164d14339b50",
+  "strategy": "coder-only",
+  "ownerPid": 48224,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create a pixel-style temperature converter. Text input ID temperature, select ID direction values c-to-f/f-to-c, button ID convert, output ID result initially --. Convert C to F with x*9/5+32, F to C with (x-32)*5/9. Output numeric value with exactly two decimals, without units. Empty or invalid/non-finite input produces exact Error. Include labels, formulas and README. Offline HTML/CSS/JS only, no storage/packages, under 200 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:12:13.978Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "1383ad26-f094-4cf2-8cde-164d14339b50-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Temperature Converter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"converter\">\n    <h1>PIXEL TEMP</h1>\n    <p class=\"formula\">°C → °F: x*9/5+32<br>°F → °C: (x-32)*5/9</p>\n    <label for=\"temperature\">Temperature</label>\n    <input id=\"temperature\" type=\"text\" inputmode=\"decimal\" placeholder=\"e.g. 100\">\n    <label for=\"direction\">Direction</label>\n    <select id=\"direction\">\n      <option value=\"c-to-f\">Celsius to Fahrenheit</option>\n      <option value=\"f-to-c\">Fahrenheit to Celsius</option>\n    </select>\n    <button id=\"convert\" type=\"button\">Convert</button>\n    <label for=\"result\">Result</label>\n    <output id=\"result\">--</output>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+              "description": "Main page with labeled controls and formula display."
+            },
+            {
+              "path": "styles.css",
+              "content": ":root {\n  --bg: #1a1c2c;\n  --panel: #29366f;\n  --border: #fff1e8;\n  --text: #fff1e8;\n  --accent: #ff004d;\n  --input-bg: #0f1022;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  background: var(--bg);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-family: monospace;\n  color: var(--text);\n  image-rendering: pixelated;\n}\n\n.converter {\n  background: var(--panel);\n  border: 4px solid var(--border);\n  box-shadow: 8px 8px 0 #000;\n  padding: 28px;\n  width: min(360px, 90vw);\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\nh1 {\n  margin: 0;\n  font-size: 28px;\n  text-align: center;\n  letter-spacing: 2px;\n  text-shadow: 3px 3px #000;\n}\n\n.formula {\n  margin: 0;\n  background: var(--input-bg);\n  border: 2px solid var(--border);\n  padding: 8px;\n  font-size: 12px;\n  line-height: 1.5;\n  text-align: center;\n}\n\nlabel {\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\ninput,\nselect,\noutput,\nbutton {\n  width: 100%;\n  font-family: inherit;\n  font-size: 16px;\n  border: 3px solid var(--border);\n  background: var(--input-bg);\n  color: var(--text);\n  padding: 10px;\n  outline: none;\n}\n\ninput:focus-visible,\nselect:focus-visible,\nbutton:focus-visible,\noutput:focus-visible {\n  outline: 3px dashed var(--accent);\n  outline-offset: 3px;\n}\n\nbutton {\n  background: var(--accent);\n  color: #fff;\n  cursor: pointer;\n  font-weight: bold;\n  text-transform: uppercase;\n  box-shadow: 4px 4px 0 #000;\n}\n\nbutton:active {\n  transform: translate(4px, 4px);\n  box-shadow: none;\n}\n\noutput {\n  display: block;\n  text-align: center;\n  font-size: 24px;\n  min-height: 52px;\n  font-weight: bold;\n}",
+              "description": "Retro pixel styling with accessible focus states."
+            },
+            {
+              "path": "script.js",
+              "content": "const tempInput = document.getElementById('temperature');\nconst direction = document.getElementById('direction');\nconst convertBtn = document.getElementById('convert');\nconst result = document.getElementById('result');\n\nfunction convertTemperature(raw, selectedDirection) {\n  if (raw.trim() === '') return 'Error';\n  const value = Number(raw);\n  if (!Number.isFinite(value)) return 'Error';\n  const converted = selectedDirection === 'c-to-f'\n    ? (value * 9) / 5 + 32\n    : ((value - 32) * 5) / 9;\n  return converted.toFixed(2);\n}\n\nconvertBtn.addEventListener('click', () => {\n  result.textContent = convertTemperature(tempInput.value, direction.value);\n});\n\n[tempInput, direction].forEach((element) => {\n  element.addEventListener('keydown', (event) => {\n    if (event.key === 'Enter') {\n      event.preventDefault();\n      convertBtn.click();\n    }\n  });\n});",
+              "description": "Validation and conversion logic."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Temperature Converter\n\nAn offline HTML/CSS/JS app that converts temperatures with a retro pixel look.\n\n## Usage\n1. Open `index.html` in any modern browser.\n2. Enter a numeric temperature.\n3. Choose conversion direction.\n4. Click **Convert** or press Enter.\n\n## Formulas\n- Celsius to Fahrenheit: `x * 9 / 5 + 32`\n- Fahrenheit to Celsius: `(x - 32) * 5 / 9`\n\n## Validation\n- Empty, non-numeric, or non-finite input shows `Error`.\n- Valid results use exactly two decimal places.",
+              "description": "Usage and formula documentation."
+            }
+          ],
+          "explanation": "Offline pixel-style temperature converter with strict validation, exact two-decimal output, keyboard support, and no dependencies.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 349,
+            "completion_tokens": 7658,
+            "total_tokens": 8007
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:13:50.330Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:13:50.388Z"
+}

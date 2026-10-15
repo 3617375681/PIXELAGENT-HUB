@@ -1,0 +1,74 @@
+{
+  "projectId": "9f277b45-fbb0-43e0-8524-77102bae8c24",
+  "strategy": "coder-only",
+  "ownerPid": 76596,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create a pixel-style temperature converter. Text input ID temperature, select ID direction values c-to-f/f-to-c, button ID convert, output ID result initially --. Convert C to F with x*9/5+32, F to C with (x-32)*5/9. Output numeric value with exactly two decimals, without units. Empty or invalid/non-finite input produces exact Error. Include labels, formulas and README. Offline HTML/CSS/JS only, no storage/packages, under 200 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:53:49.624Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "9f277b45-fbb0-43e0-8524-77102bae8c24-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Temperature Converter</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"panel\">\n    <h1>PIXEL TEMP CONVERTER</h1>\n    <form id=\"converter\">\n      <label for=\"temperature\">Temperature</label>\n      <input id=\"temperature\" type=\"number\" step=\"any\" placeholder=\"0.00\" autocomplete=\"off\">\n      <label for=\"direction\">Convert</label>\n      <select id=\"direction\">\n        <option value=\"c-to-f\">Celsius to Fahrenheit</option>\n        <option value=\"f-to-c\">Fahrenheit to Celsius</option>\n      </select>\n      <button id=\"convert\" type=\"submit\">Convert</button>\n    </form>\n    <p class=\"formulas\">°F = °C × 9/5 + 32<br>°C = (°F − 32) × 5/9</p>\n    <output id=\"result\" aria-live=\"polite\">--</output>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+              "description": "Pixel-style temperature converter page with labeled input, select, button, formulas, and accessible output."
+            },
+            {
+              "path": "style.css",
+              "content": ":root {\n  color-scheme: dark;\n}\n* {\n  box-sizing: border-box;\n}\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  background: #1a1c2c;\n  color: #fff;\n  font-family: \"Courier New\", monospace;\n}\n.panel {\n  width: min(90vw, 360px);\n  background: #29366f;\n  border: 4px solid #fff;\n  box-shadow: 6px 6px 0 #000;\n  padding: 20px;\n}\nh1 {\n  margin: 0 0 16px;\n  font-size: 1.2rem;\n  text-align: center;\n  letter-spacing: 2px;\n  text-shadow: 2px 2px 0 #000;\n}\nlabel {\n  display: block;\n  margin: 12px 0 4px;\n  font-size: 0.85rem;\n  text-transform: uppercase;\n}\ninput,\nselect,\nbutton {\n  width: 100%;\n  padding: 8px;\n  font: inherit;\n  color: #fff;\n  background: #111;\n  border: 3px solid #fff;\n  border-radius: 0;\n  box-shadow: 3px 3px 0 #000;\n}\ninput:focus,\nselect:focus,\nbutton:focus {\n  outline: 3px solid #f3d34c;\n  outline-offset: 2px;\n}\nbutton {\n  margin-top: 16px;\n  cursor: pointer;\n  background: #e43b78;\n}\nbutton:active {\n  transform: translate(2px, 2px);\n  box-shadow: 1px 1px 0 #000;\n}\n.formulas {\n  margin: 14px 0;\n  padding: 8px;\n  font-size: 0.7rem;\n  line-height: 1.5;\n  background: #111;\n  border: 2px solid #fff;\n}\n#result {\n  display: block;\n  margin-top: 14px;\n  padding: 10px;\n  font-size: 2rem;\n  text-align: center;\n  background: #000;\n  border: 3px solid #fff;\n  box-shadow: inset 3px 3px 0 #444;\n}\n",
+              "description": "Pixel-style CSS with high-contrast borders, blocky shadows, monospace fonts, and keyboard focus states."
+            },
+            {
+              "path": "script.js",
+              "content": "const form = document.getElementById('converter');\nconst temperature = document.getElementById('temperature');\nconst direction = document.getElementById('direction');\nconst result = document.getElementById('result');\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n\n  const raw = temperature.value.trim();\n  const value = Number(raw);\n\n  if (raw === '' || !Number.isFinite(value)) {\n    result.textContent = 'Error';\n    return;\n  }\n\n  const converted = direction.value === 'c-to-f'\n    ? value * 9 / 5 + 32\n    : (value - 32) * 5 / 9;\n\n  result.textContent = converted.toFixed(2);\n});\n",
+              "description": "Plain JavaScript conversion logic using addEventListener; displays exactly two decimals or Error."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Temperature Converter\n\nA tiny offline converter built with plain HTML, CSS, and JavaScript.\n\n## Files\n- index.html - page structure and labels\n- style.css - pixel-style layout\n- script.js - conversion logic\n\n## Usage\nOpen `index.html` in any modern browser. Enter a temperature, choose a conversion direction, and press Convert or Enter.\n\n## Rules\n- `°F = °C × 9/5 + 32`\n- `°C = (°F − 32) × 5/9`\n- Result is shown with exactly two decimal places and no unit.\n- Empty or invalid input shows `Error`.\n- No external assets, packages, storage, or network usage.\n",
+              "description": "README with usage, formulas, and offline/no-dependency notes."
+            }
+          ],
+          "explanation": "The app uses a form submit listener for keyboard-accessible conversion. It validates input with Number.isFinite, shows exactly two decimal places via toFixed(2), and displays the exact string Error for empty, invalid, or non-finite input. All styling is offline pixel CSS, with no dependencies or external assets.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 349,
+            "completion_tokens": 4442,
+            "total_tokens": 4791
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:54:49.469Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "style.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:54:49.532Z"
+}

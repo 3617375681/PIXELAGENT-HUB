@@ -1,0 +1,74 @@
+{
+  "projectId": "c5351f2b-e192-45ae-95d3-5176f3c9cd46",
+  "strategy": "coder-only",
+  "ownerPid": 80412,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create a pixel-style temperature converter. Text input ID temperature, select ID direction values c-to-f/f-to-c, button ID convert, output ID result initially --. Convert C to F with x*9/5+32, F to C with (x-32)*5/9. Output numeric value with exactly two decimals, without units. Empty or invalid/non-finite input produces exact Error. Include labels, formulas and README. Offline HTML/CSS/JS only, no storage/packages, under 200 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:32:06.626Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "c5351f2b-e192-45ae-95d3-5176f3c9cd46-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang='en'>\n<head>\n  <meta charset='UTF-8'>\n  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n  <title>Pixel Temperature Converter</title>\n  <link rel='stylesheet' href='styles.css'>\n</head>\n<body>\n  <main class='pixel-card'>\n    <h1>Pixel Temperature Converter</h1>\n    <div class='field'>\n      <label for='temperature'>Temperature</label>\n      <input id='temperature' type='number' inputmode='decimal' placeholder='0'>\n    </div>\n    <div class='field'>\n      <label for='direction'>Direction</label>\n      <select id='direction'><option value='c-to-f'>Celsius to Fahrenheit</option><option value='f-to-c'>Fahrenheit to Celsius</option></select>\n    </div>\n    <button id='convert' type='button'>Convert</button>\n    <div class='result' aria-live='polite'><span class='result-label'>Result</span><output id='result'>--</output></div>\n    <p class='formulas'>C→F: x*9/5+32 &nbsp;·&nbsp; F→C: (x-32)*5/9</p>\n  </main>\n  <script src='script.js'></script>\n</body>\n</html>",
+              "description": "Semantic HTML structure with labeled controls and output"
+            },
+            {
+              "path": "styles.css",
+              "content": ":root { --ink:#1a1a24; --card:#f5f5dc; --accent:#e4572e; --highlight:#ffd23f; }\n* { box-sizing: border-box; }\nbody { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background-color:#2b2b3a; background-image:linear-gradient(45deg,#3a3a4c 25%,transparent 25%),linear-gradient(-45deg,#3a3a4c 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#3a3a4c 75%),linear-gradient(-45deg,transparent 75%,#3a3a4c 75%); background-size:20px 20px; font-family:'Courier New',Courier,monospace; color:var(--ink); padding:16px; }\n.pixel-card { background:var(--card); border:4px solid var(--ink); box-shadow:8px 8px 0 #000; padding:24px; width:min(420px,100%); image-rendering:pixelated; }\nh1 { margin:0 0 20px; font-size:1.6rem; text-transform:uppercase; text-align:center; text-shadow:2px 2px 0 var(--highlight); }\n.field { margin-bottom:16px; }\nlabel { display:block; margin-bottom:6px; font-weight:bold; font-size:.95rem; }\ninput,select { width:100%; padding:10px; border:3px solid var(--ink); background:#fff; font:inherit; color:var(--ink); outline:none; box-shadow:3px 3px 0 #000; }\ninput:focus-visible,select:focus-visible,button:focus-visible { outline:3px dashed var(--accent); outline-offset:2px; }\nbutton { display:block; width:100%; margin:20px 0 16px; padding:12px; border:3px solid var(--ink); background:var(--accent); color:#fff; font:inherit; font-weight:bold; text-transform:uppercase; letter-spacing:1px; cursor:pointer; box-shadow:4px 4px 0 #000; }\nbutton:active { transform:translate(4px,4px); box-shadow:0 0 0 #000; }\n.result { background:#fff; border:3px solid var(--ink); box-shadow:3px 3px 0 #000; padding:10px; font-size:1.3rem; display:flex; justify-content:space-between; align-items:center; gap:10px; }\n.result-label { font-weight:bold; font-size:.9rem; }\n#result { font-weight:bold; color:var(--accent); word-break:break-all; }\n.formulas { margin:16px 0 0; font-size:.85rem; text-align:center; background:rgba(255,255,255,.5); padding:8px; border:2px dashed var(--ink); }\n",
+              "description": "Pixel-style layout with keyboard focus indicators"
+            },
+            {
+              "path": "script.js",
+              "content": "'use strict';\nconst temperatureInput = document.getElementById('temperature');\nconst directionSelect = document.getElementById('direction');\nconst convertButton = document.getElementById('convert');\nconst resultOutput = document.getElementById('result');\nfunction convertTemperature() {\n  const rawValue = temperatureInput.value.trim();\n  if (rawValue === '') {\n    resultOutput.textContent = 'Error';\n    return;\n  }\n  const value = Number(rawValue);\n  if (!Number.isFinite(value)) {\n    resultOutput.textContent = 'Error';\n    return;\n  }\n  const direction = directionSelect.value;\n  let converted;\n  if (direction === 'c-to-f') {\n    converted = (value * 9) / 5 + 32;\n  } else {\n    converted = ((value - 32) * 5) / 9;\n  }\n  resultOutput.textContent = converted.toFixed(2);\n}\nconvertButton.addEventListener('click', convertTemperature);\ntemperatureInput.addEventListener('keydown', (event) => {\n  if (event.key === 'Enter') {\n    event.preventDefault();\n    convertTemperature();\n  }\n});\ndirectionSelect.addEventListener('keydown', (event) => {\n  if (event.key === 'Enter') {\n    event.preventDefault();\n    convertTemperature();\n  }\n});\n",
+              "description": "Temperature conversion logic with validation and event listeners"
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Temperature Converter\n\nAn offline, keyboard-accessible temperature converter with a chunky pixel look.\n\n## How to run\nOpen `index.html` in any modern browser.\n\n## Features\n- Enter a numeric temperature and choose a conversion direction.\n- Click **Convert** or press **Enter** while the input or select is focused.\n- Results use exactly two decimal places and no units.\n- Empty, invalid, or non-finite input shows exactly `Error`.\n\n## Formulas\n- C to F: `x * 9 / 5 + 32`\n- F to C: `(x - 32) * 5 / 9`\n\n## Files\n- `index.html` - semantic structure and labels\n- `styles.css` - pixel-style layout and focus states\n- `script.js` - conversion logic and event listeners\n\nNo packages, storage, network access, or external assets are used.\n",
+              "description": "Project documentation and usage instructions"
+            }
+          ],
+          "explanation": "Offline pixel-style temperature converter built with HTML, CSS, and plain JavaScript. It uses labeled, keyboard-accessible controls, addEventListener-based interactions, exact two-decimal output, and Error for invalid input.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 349,
+            "completion_tokens": 9095,
+            "total_tokens": 9444
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:34:01.423Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:34:01.497Z"
+}

@@ -1,0 +1,67 @@
+{
+  "id": "a00dc88f-1bf0-41c3-ab6b-3f1420d1a05f",
+  "projectId": "0feac0fe-6c1b-419a-a5b2-9b889e740185",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "benchmark-fixed-a00dc88f-1bf0-41c3-ab6b-3f1420d1a05f",
+  "status": "ready",
+  "startedAt": "2026-10-15T07:19:37.351Z",
+  "finishedAt": "2026-10-15T07:19:37.351Z",
+  "result": {
+    "taskId": "a00dc88f-1bf0-41c3-ab6b-3f1420d1a05f",
+    "agentId": "benchmark",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initial zero",
+          "actions": [],
+          "selector": "#count",
+          "expected": "0"
+        },
+        {
+          "name": "Increase",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#increase"
+            }
+          ],
+          "selector": "#count",
+          "expected": "1"
+        },
+        {
+          "name": "Negative count",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#decrease"
+            },
+            {
+              "type": "click",
+              "selector": "#decrease"
+            }
+          ],
+          "selector": "#count",
+          "expected": "-1"
+        },
+        {
+          "name": "Reset",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#reset"
+            }
+          ],
+          "selector": "#count",
+          "expected": "0"
+        }
+      ],
+      "limitations": [
+        "Native keyboard behavior and pixel appearance require separate review."
+      ],
+      "llmProvider": "benchmark",
+      "llmModel": "fixed-checks"
+    },
+    "reasoning": "Fixed benchmark checks; no Tester model call"
+  }
+}

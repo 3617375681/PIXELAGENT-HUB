@@ -1,0 +1,74 @@
+{
+  "projectId": "c9098879-4b7b-406f-8500-3689e84ec7ef",
+  "strategy": "coder-only",
+  "ownerPid": 48224,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create a pixel-style two-number calculator. Inputs IDs left/right; select ID operation with values add/subtract/multiply/divide; button ID calculate; output ID result initially 0. Output only the numeric result, no label in the output. Reject empty/non-finite numbers and division by zero with exact text Error. Support negative inputs. Labels and README required. Offline HTML/CSS/JS, no packages/storage, under 200 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:09:07.452Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "c9098879-4b7b-406f-8500-3689e84ec7ef-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang='en'>\n<head>\n  <meta charset='UTF-8'>\n  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n  <title>Pixel Two-Number Calculator</title>\n  <link rel='stylesheet' href='style.css'>\n</head>\n<body>\n  <main class='calculator'>\n    <h1>PIXEL CALC</h1>\n    <div class='field'>\n      <label for='left'>Left operand</label>\n      <input id='left' type='number' step='any' autocomplete='off' placeholder='-2.5'>\n    </div>\n    <div class='field'>\n      <label for='operation'>Operation</label>\n      <select id='operation'>\n        <option value='add'>Add (+)</option>\n        <option value='subtract'>Subtract (−)</option>\n        <option value='multiply'>Multiply (×)</option>\n        <option value='divide'>Divide (÷)</option>\n      </select>\n    </div>\n    <div class='field'>\n      <label for='right'>Right operand</label>\n      <input id='right' type='number' step='any' autocomplete='off' placeholder='4'>\n    </div>\n    <button id='calculate' type='button'>Calculate</button>\n    <div class='result-panel'>\n      <output id='result' aria-live='polite'>0</output>\n    </div>\n  </main>\n  <script src='script.js'></script>\n</body>\n</html>",
+              "description": "Main HTML structure with labeled inputs, select, button, and output."
+            },
+            {
+              "path": "style.css",
+              "content": ":root {\n  --pixel-border: #1a1a1a;\n  --accent: #ff6b6b;\n}\n* { box-sizing: border-box; }\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  background: #7a8cff;\n  font-family: 'Courier New', monospace;\n  image-rendering: pixelated;\n}\n.calculator {\n  background: #f5f5f5;\n  padding: 2rem;\n  border: 6px solid var(--pixel-border);\n  box-shadow: 10px 10px 0 #000;\n  width: min(90%, 360px);\n}\nh1 {\n  text-align: center;\n  font-size: 1.8rem;\n  margin-top: 0;\n  letter-spacing: 4px;\n  text-shadow: 3px 3px 0 #ff6b6b;\n}\n.field { margin-bottom: 1rem; }\nlabel { display: block; margin-bottom: 0.25rem; font-weight: bold; }\ninput, select, button {\n  width: 100%;\n  padding: 0.6rem;\n  font: inherit;\n  border: 3px solid var(--pixel-border);\n  background: #fff;\n  box-shadow: 4px 4px 0 #000;\n  border-radius: 0;\n  outline: none;\n}\ninput:focus, select:focus, button:focus {\n  outline: 3px dashed #fff;\n  outline-offset: 2px;\n  background: #fffeca;\n}\nbutton {\n  margin-top: 0.5rem;\n  cursor: pointer;\n  background: var(--accent);\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n}\n.result-panel {\n  margin-top: 1.5rem;\n  background: #111;\n  padding: 0.75rem;\n  border: 3px solid var(--pixel-border);\n  box-shadow: inset 4px 4px 0 #000;\n}\noutput {\n  display: block;\n  min-height: 2.5rem;\n  color: #0f0;\n  text-align: right;\n  font-size: 1.6rem;\n  font-weight: bold;\n  overflow-wrap: anywhere;\n  background: #222;\n  padding: 0.5rem;\n  border: 2px solid #0f0;\n}\n",
+              "description": "Pixel-style CSS for layout, controls, focus states, and result display."
+            },
+            {
+              "path": "script.js",
+              "content": "'use strict';\n\nconst leftInput = document.getElementById('left');\nconst rightInput = document.getElementById('right');\nconst operationSelect = document.getElementById('operation');\nconst calculateButton = document.getElementById('calculate');\nconst resultOutput = document.getElementById('result');\n\nfunction readNumber(input) {\n  if (input.value.trim() === '') return null;\n  const number = Number(input.value);\n  return Number.isFinite(number) ? number : null;\n}\n\nfunction setError() {\n  resultOutput.textContent = 'Error';\n}\n\ncalculateButton.addEventListener('click', () => {\n  const left = readNumber(leftInput);\n  const right = readNumber(rightInput);\n\n  if (left === null || right === null) {\n    setError();\n    return;\n  }\n\n  let result;\n  switch (operationSelect.value) {\n    case 'add':\n      result = left + right;\n      break;\n    case 'subtract':\n      result = left - right;\n      break;\n    case 'multiply':\n      result = left * right;\n      break;\n    case 'divide':\n      if (right === 0) {\n        setError();\n        return;\n      }\n      result = left / right;\n      break;\n    default:\n      setError();\n      return;\n  }\n\n  if (!Number.isFinite(result)) {\n    setError();\n    return;\n  }\n\n  resultOutput.textContent = String(result);\n});\n",
+              "description": "Calculator logic with input validation and exact Error output."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Two-Number Calculator\n\nA tiny offline calculator with a retro pixel look. It accepts two numeric inputs, applies an operation, and shows only the numeric result.\n\n## How to run\nOpen `index.html` in any modern browser. No build tools or network access needed.\n\n## Features\n- Supports negative and decimal inputs\n- Add, subtract, multiply, divide\n- Division by zero, empty inputs, and non-finite numbers display `Error`\n- Pixel-style UI and keyboard-accessible controls\n\n## Files\n- `index.html` - structure and labeled controls\n- `style.css` - pixel styling\n- `script.js` - calculation logic\n",
+              "description": "Project README with run instructions and features."
+            }
+          ],
+          "explanation": "A complete offline pixel-style calculator with labeled controls, exact Error handling, and keyboard focus states.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 338,
+            "completion_tokens": 10236,
+            "total_tokens": 10574
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:10:58.435Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "style.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:10:58.528Z"
+}
