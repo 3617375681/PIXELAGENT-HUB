@@ -202,7 +202,9 @@ export function createStudioApi(options: {
           if (!/^\d{1,9}$/.test(afterRaw || '0') || !Number.isSafeInteger(after)) { json(res, 400, { error: { message: 'after must be a non-negative integer' } }); return; }
           const logged = await readStudioEvents(options.root, projectId);
           // Projects finished before event logs existed get a coarse timeline rebuilt from the record.
-          const derived = !logged.length && !['queued', 'running'].includes(record.status) ? deriveEventsFromRecord(record) : null;
+          const derived = !logged.length && !['queued', 'running'].includes(record.status)
+            ? deriveEventsFromRecord(record, { testPlans: await listTestPlans(options.root, projectId), browserRuns: await listBrowserRuns(options.root, projectId) })
+            : null;
           if (query.get('stream') === '1') { await streamEvents(req, res, record, after, derived); return; }
           json(res, 200, { events: (derived || logged).filter((event) => event.seq > after), derived: !!derived }); return;
         }

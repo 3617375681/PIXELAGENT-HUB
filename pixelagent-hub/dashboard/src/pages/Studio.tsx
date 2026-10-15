@@ -13,6 +13,8 @@ import StudioPipeline from '../components/StudioPipeline';
 import { reducePipeline } from '../lib/studioPipeline';
 import { useStudioEvents } from '../hooks/useStudioEvents';
 import ApiConnection from '../components/ApiConnection';
+import ReplayBanner from '../components/ReplayBanner';
+import { REPLAY, loadReplayManifest } from '../lib/replay';
 
 const statusText = { queued: '排队中', running: '团队工作中', ready_for_review: '构建完成 · 等待验收', failed: '运行失败', cancelled: '已取消' };
 const phaseText: Record<string, string> = { queued: '等待执行', planning: 'Manager 正在规划', coding: 'Coder 正在生成源码', building: '正在实际编译', ready_for_review: '可以试玩与检查', failed: '执行已停止', cancelled: '执行已取消' };
@@ -144,13 +146,19 @@ export default function Studio() {
     return () => { controller.abort(); clearTimeout(timer); };
   }, [projectId, refreshKey]);
 
-  const running = project?.status === 'queued' || project?.status === 'running';
   const timeline = useStudioEvents(projectId, refreshKey);
   const pipeline = useMemo(() => reducePipeline(timeline.events), [timeline.events]);
+  // In the static replay the saved record is already final; show it as running until its timeline has played.
+  const replaying = REPLAY && !!project && !pipeline.terminal;
+  const running = replaying || project?.status === 'queued' || project?.status === 'running';
   const current = project?.rounds.at(-1);
   const files = current?.code.output?.files || [];
   const selectedFile = files.find((file) => file.path === filePath) || files[0];
-  const ready = project?.status === 'ready_for_review';
+  const ready = !replaying && project?.status === 'ready_for_review';
+  useEffect(() => {
+    if (!REPLAY || projectId) return;
+    void loadReplayManifest().then((manifest) => navigate(`/studio/${manifest.hero}`, { replace: true })).catch((error) => setError(error instanceof Error ? error.message : String(error)));
+  }, [projectId, navigate]);
   const generationMetrics = project?.generationMetrics;
   useEffect(() => {
     setVersions(null);
@@ -253,6 +261,7 @@ export default function Studio() {
 
   return (
     <main className="studio pixel-grid-bg">
+      {REPLAY && <ReplayBanner projectId={projectId} />}
       <div className="studio-crt scanline" aria-hidden="true" />
       <header className="studio-header">
         <Link to="/studio" className="studio-brand" aria-label="PixelAgent Hub · 新建作品">
@@ -265,9 +274,11 @@ export default function Studio() {
           <span>{projects.length} PROJECTS</span>
         </div>
         <div className="studio-header-actions">
-          <Link to="/studio" className="studio-pill pixel-font" style={{ '--pill': '#22c55e' } as React.CSSProperties}><Plus size={12} />NEW</Link>
+          {REPLAY
+            ? <button className="studio-pill pixel-font" style={{ '--pill': '#f59e0b' } as React.CSSProperties} onClick={() => setRefreshKey((key) => key + 1)}><Play size={12} />REPLAY</button>
+            : <Link to="/studio" className="studio-pill pixel-font" style={{ '--pill': '#22c55e' } as React.CSSProperties}><Plus size={12} />NEW</Link>}
           <button className="studio-icon-button" onClick={() => setRefreshKey((key) => key + 1)} aria-label="刷新项目" title="刷新项目"><RefreshCw size={12} /></button>
-          <ApiConnection />
+          {!REPLAY && <ApiConnection />}
         </div>
       </header>
       <div className="studio-layout">
@@ -277,8 +288,8 @@ export default function Studio() {
             <h1>让团队做出<br /><em>你的下一件作品。</em></h1>
             <label htmlFor="studio-description">新的创作任务</label>
             <textarea id="studio-description" value={description} onChange={(event) => setDescription(event.target.value)} maxLength={4000} rows={6} disabled={busy || running} />
-            <p className="studio-hint">离线网页与像素小游戏。规划、写码、构建会留下实际记录。</p>
-            <button className="studio-create pixel-font" aria-label="开始创作" onClick={() => void create()} disabled={busy || running || !description.trim()}><Play size={14} />{busy ? 'WORKING…' : 'START'}</button>
+            <p className="studio-hint">{REPLAY ? '静态回放演示不能创建项目；克隆仓库后运行 npm start 可以离线现场生成。' : '离线网页与像素小游戏。规划、写码、构建会留下实际记录。'}</p>
+            <button className="studio-create pixel-font" aria-label="开始创作" onClick={() => void create()} disabled={REPLAY || busy || running || !description.trim()}><Play size={14} />{busy ? 'WORKING…' : 'START'}</button>
           </section>
           <section className="studio-projects">
             <span className="studio-kicker pixel-font">02 / PROJECTS</span>
@@ -288,13 +299,13 @@ export default function Studio() {
         </aside>
         <section className="studio-workspace" aria-label="作品工作区">
           {error && <div className={`studio-error ${error === OFFLINE_MESSAGE ? 'offline' : ''}`} role="alert">{error}<button onClick={() => setRefreshKey((key) => key + 1)}>重试</button></div>}
-          <div className="studio-workspace-heading"><div><span className="studio-kicker pixel-font">WORKSPACE</span><h2>{project?.plan?.output?.projectName || (project?.strategy === 'coder-only' ? '单 Agent 对照作品' : project ? running ? '正在准备你的项目' : '你的创作任务' : '你的作品，从这里开始')}</h2></div>{project && <span className={`studio-status ${project.status}`} role="status">{projectStatus(project)}</span>}</div>
+          <div className="studio-workspace-heading"><div><span className="studio-kicker pixel-font">WORKSPACE</span><h2>{project?.plan?.output?.projectName || (project?.strategy === 'coder-only' ? '单 Agent 对照作品' : project ? running ? '正在准备你的项目' : '你的创作任务' : '你的作品，从这里开始')}</h2></div>{project && <span className={`studio-status ${replaying ? 'running' : project.status}`} role="status">{replaying ? '回放中' : projectStatus(project)}</span>}</div>
           {project && <details className="studio-requirements"><summary>本次需求</summary><p>{project.description}</p></details>}
           {project?.retry && <p className="studio-hint">这是重新生成的新版本。<Link to={`/studio/${project.retry.parentProjectId}`}>查看原失败或取消记录</Link>。</p>}
           {project?.revision && <p className="studio-hint">本次修改：{project.revision.changeRequest} · <Link to={`/studio/${project.revision.parentProjectId}`}>查看基础版本</Link></p>}
           {project?.repair && <p className="studio-hint">本次依据保存的失败证据返修。<Link to={`/studio/${project.repair.parentProjectId}`}>查看原项目</Link> · {project.repair.browserRunId ? `独立浏览器报告 ${project.repair.browserRunId}` : `客户端诊断 ${project.repair.diagnosticId}`}。构建通过后仍需复测。</p>}
           <StudioPipeline view={pipeline} events={timeline.events} live={running} />
-          {running && <div className="studio-progress" role="status"><Hammer size={16} />{phaseText[project?.phase || 'queued']}{current && ` · 第 ${current.round} 轮`}<button onClick={() => void cancel()} disabled={busy}><Square size={12} />取消</button></div>}
+          {running && !REPLAY && <div className="studio-progress" role="status"><Hammer size={16} />{phaseText[project?.phase || 'queued']}{current && ` · 第 ${current.round} 轮`}<button onClick={() => void cancel()} disabled={busy}><Square size={12} />取消</button></div>}
           {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
           {project && ['failed', 'cancelled'].includes(project.status) && <section className="studio-tester" aria-label="重新生成作品"><h3>保留本次记录，重新生成</h3><p className="studio-hint">沿用原需求、追加修改和返修上下文，从头执行并创建新版本。点击后会重新调用模型并产生用量；原错误和记录继续保留。</p><button disabled={busy} onClick={() => void retry()}>重新生成新版本（调用模型）</button></section>}
           <div className="studio-tabs" role="tablist" aria-label="查看作品">
@@ -304,7 +315,7 @@ export default function Studio() {
           </div>
           <div className="studio-panel" id="studio-panel" role="tabpanel" aria-labelledby={`studio-tab-${tab}`}>
             {tab === 'changes' && <div className="studio-changes"><h3>版本前后的实际源码</h3>{changesError && <p role="alert">{changesError}</p>}{!changes && !changesError && <p>{project?.repair || project?.revision ? '正在读取源码差异…' : '该项目没有基础版本。'}</p>}{changes && <><p>{changes.files.length} 个文件有变化，{changes.unchanged} 个文件内容未变。差异不代表功能验收通过。</p><p className="studio-hint">原项目 {changes.parentProjectId} / {changes.fromPreview} → 当前项目 {changes.projectId} / {changes.toPreview}</p>{changes.files.length === 0 && <p>源码没有变化，请复测保存的错误是否仍存在。</p>}{changes.files.map((file) => <details key={file.path} open={changes.files.length === 1}><summary>{file.path} · {{ added: '新增', removed: '删除', modified: '修改' }[file.status]}</summary><div className="studio-change-columns"><section><h4>原源码</h4><pre><code>{file.before === undefined ? '原项目没有此文件' : file.before}</code></pre></section><section><h4>当前源码</h4><pre><code>{file.after === undefined ? '返修项目已删除此文件' : file.after}</code></pre></section></div></details>)}</>}</div>}
-            {tab === 'preview' && (html ? <><iframe ref={previewFrame} title="生成作品试玩" srcDoc={preview.html} sandbox="allow-scripts allow-forms" referrerPolicy="no-referrer" /><p className="studio-preview-note">{runtimeErrors.length ? `试玩发现 ${runtimeErrors.length} 条运行异常，请查看验证记录。` : previewLoaded ? '页面已加载。请实际试玩；页面加载和编译成功不代表功能验收完成。' : '正在加载试玩页面…'}</p></> : <div className="studio-empty"><span aria-hidden="true">▦</span><h3>{running ? '团队正在制作你的作品' : project?.status === 'failed' || project?.status === 'cancelled' ? '本次运行未生成可试玩版本' : '先给团队一个创作任务'}</h3><p>{running ? '每个阶段会自动更新，完成后可以在这里试玩。' : '成功构建后，作品、源码与检查记录会出现在这里。'}</p></div>)}
+            {tab === 'preview' && (html && !replaying ? <><iframe ref={previewFrame} title="生成作品试玩" srcDoc={preview.html} sandbox="allow-scripts allow-forms" referrerPolicy="no-referrer" /><p className="studio-preview-note">{runtimeErrors.length ? `试玩发现 ${runtimeErrors.length} 条运行异常，请查看验证记录。` : previewLoaded ? '页面已加载。请实际试玩；页面加载和编译成功不代表功能验收完成。' : '正在加载试玩页面…'}</p></> : <div className="studio-empty"><span aria-hidden="true">▦</span><h3>{running ? '团队正在制作你的作品' : project?.status === 'failed' || project?.status === 'cancelled' ? '本次运行未生成可试玩版本' : '先给团队一个创作任务'}</h3><p>{running ? '每个阶段会自动更新，完成后可以在这里试玩。' : '成功构建后，作品、源码与检查记录会出现在这里。'}</p></div>)}
             {tab === 'source' && (files.length ? <div className="studio-source"><label htmlFor="studio-file">项目文件</label><select id="studio-file" value={selectedFile?.path || ''} onChange={(event) => setFilePath(event.target.value)}>{files.map((file) => <option key={file.path} value={file.path}>{file.path}</option>)}</select><pre><code>{selectedFile?.content}</code></pre></div> : <div className="studio-empty"><h3>源码尚未生成</h3><p>Coder 完成后会显示实际文件内容。</p></div>)}
             {tab === 'evidence' && <div className="studio-evidence"><h3>实际执行记录</h3><article><h4>本次试玩运行诊断</h4><p>{runtimeErrors.length ? `已捕获 ${runtimeErrors.length} 条异常` : previewLoaded ? '页面曾加载，当前未捕获运行异常' : '尚未观察到页面加载'}</p>{runtimeErrors.map((message, index) => <pre key={index}>{message}</pre>)}<p className="studio-hint">实时记录刷新后清空；可保存到项目供后续查看，不代表功能测试通过。</p><button disabled={!ready || busy || (!previewLoaded && !runtimeErrors.length) || savedSnapshot === diagnosticSnapshot} onClick={() => void saveDiagnostic()}>{savedSnapshot === diagnosticSnapshot ? '当前诊断已保存' : '保存本次诊断'}</button></article><article><h4>已保存的试玩诊断</h4>{history.reports.length === 0 && <p>暂无保存记录。</p>}{history.reports.map((report) => <section key={report.id}><h5>{new Date(report.savedAt).toLocaleString()} · {report.previewFile}</h5><p>来源：浏览器客户端观察 · 页面{report.loaded ? '已加载' : '未观察到加载'} · {report.errors.length} 条异常</p>{report.errors.map((message, index) => <pre key={index}>{message}</pre>)}{report.checks && <p>检查计划 {report.testPlanId}：{report.checks.filter((check) => check.status === 'passed').length} / {report.checks.length} 项通过</p>}<button disabled={!ready || busy || !report.errors.length || report.previewFile !== project?.previewFile} onClick={() => void repair(report.id)}>依据此诊断返修</button></section>)}<p className="studio-hint">保存的是客户端观察，不是可信的自动功能测试或人工批准。</p></article>{project?.plan && <p>规划：{project.plan.status} · {project.plan.output?.llmProvider || '未调用成功'} / {project.plan.output?.llmModel || '—'}</p>}{project?.rounds.map((round) => <article key={round.round}><h4>第 {round.round} 轮</h4><p>代码生成：{round.code.status} · {round.code.output?.llmProvider || '—'} / {round.code.output?.llmModel || '—'}</p><p>实际构建：{round.build?.status || '尚未执行'}</p>{round.build?.errors.map((error, index) => <pre key={index}>{error}</pre>)}{round.build?.checkedFiles && <p>已检查文件：{round.build.checkedFiles.join('、')}</p>}{round.code.status === 'failed' && <pre>{round.code.reasoning}</pre>}</article>)}<p className="studio-hint">独立浏览器检查按 Tester 计划执行；人工决定单独记录，不改写构建和检查结果。</p>{project && <small>项目 {project.projectId}</small>}</div>}
           </div>

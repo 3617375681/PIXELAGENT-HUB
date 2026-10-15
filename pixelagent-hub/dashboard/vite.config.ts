@@ -7,6 +7,8 @@ const RECORDS_API_TARGET = process.env.VITE_DEV_PROXY_TARGET || "http://127.0.0.
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages serves the replay build from /<repo>/; local and Docker builds stay at /.
+  base: process.env.VITE_BASE || "/",
   plugins: [react()],
   server: {
     port: 3000,

@@ -1,48 +1,14 @@
-import { mkdtemp, mkdir, readFile, writeFile, copyFile, rm, access } from 'node:fs/promises';
+import { mkdtemp, rm, access } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
-import { unzipSync } from 'fflate';
+import { stageRepairEvidence } from './lib/evidence.mjs';
 
 const app = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const evidence = join(app, 'docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context');
-const digest = (value) => createHash('sha256').update(value).digest('hex');
 const root = await mkdtemp(join(tmpdir(), 'pixelagent-portfolio-'));
 try {
-  for (const stage of ['baseline', 'fault', 'repaired']) {
-    const source = join(evidence, stage);
-    const recordBytes = await readFile(join(source, 'project.json'));
-    const record = JSON.parse(recordBytes);
-    if (!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(record.projectId) || record.previewFile !== 'v1/dist/index.html') throw new Error('Unexpected evidence layout');
-    const directory = join(root, 'studio', record.projectId);
-    const archive = await readFile(join(source, 'source.zip'));
-    const preview = unzipSync(archive)['preview/index.html'];
-    if (!preview) throw new Error('Evidence archive has no preview');
-    await mkdir(join(directory, 'v1/dist'), { recursive: true });
-    await writeFile(join(directory, 'project.json'), recordBytes);
-    await writeFile(join(directory, 'source.zip'), archive);
-    await writeFile(join(directory, record.previewFile), preview);
-    for (const suite of stage === 'repaired' ? ['fixed', 'additional'] : ['fixed']) {
-      const suiteRoot = join(source, suite);
-      const planBytes = await readFile(join(suiteRoot, 'test-plan.json'));
-      const runBytes = await readFile(join(suiteRoot, 'browser-run.json'));
-      const plan = JSON.parse(planBytes);
-      const run = JSON.parse(runBytes);
-      if (run.projectId !== record.projectId || plan.projectId !== record.projectId || run.testPlanId !== plan.id
-        || run.previewHash !== digest(preview) || run.planHash !== digest(JSON.stringify(plan.result.output))) throw new Error('Evidence identity or content hash mismatch');
-      await mkdir(join(directory, 'test-plans'), { recursive: true });
-      await mkdir(join(directory, 'browser-runs', run.id), { recursive: true });
-      await writeFile(join(directory, 'test-plans', `${plan.id}.json`), planBytes);
-      await writeFile(join(directory, 'browser-runs', `${run.id}.json`), runBytes);
-      for (const image of run.screenshots) {
-        if (!['initial.png', 'final.png'].includes(image)) throw new Error('Unexpected evidence screenshot');
-        await copyFile(join(suiteRoot, image), join(directory, 'browser-runs', run.id, image));
-      }
-    }
-    console.log(`${stage}: /studio/${record.projectId}`);
-  }
+  for (const { stage, projectId } of await stageRepairEvidence(join(root, 'studio'))) console.log(`${stage}: /studio/${projectId}`);
   console.log('Historical evidence replay: original model results, injected fault and saved browser reports. No new model calls or new approval.');
   if (!process.argv.includes('--check')) {
     await access(join(app, 'dist/src/web/server.js'));

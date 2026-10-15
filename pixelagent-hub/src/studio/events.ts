@@ -1,6 +1,8 @@
 import { appendFile, mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { StudioRecord } from './softwareStudio.js';
+import type { TestPlanRecord } from './testPlans.js';
+import type { BrowserRun } from './browserRuns.js';
 
 export type StudioEventType =
   | 'queued' | 'phase' | 'plan_ready' | 'code_ready' | 'build_failed' | 'build_passed'
@@ -80,8 +82,39 @@ export function subscribeStudioEvents(root: string, projectId: string, listener:
 
 export const studioEventListenerCount = (root: string, projectId: string) => listeners.get(logFile(root, projectId))?.size || 0;
 
-/** Coarse timeline for records created before event logs existed. Timestamps are only start and finish. */
-export function deriveEventsFromRecord(record: StudioRecord): StudioEvent[] {
+/**
+ * Coarse timeline for records created before event logs existed: the generation (timestamps are only
+ * its start and finish), then any saved test plans and browser runs at their own recorded times.
+ */
+export function deriveEventsFromRecord(record: StudioRecord, saved: { testPlans?: TestPlanRecord[]; browserRuns?: BrowserRun[] } = {}): StudioEvent[] {
+  const generation = deriveGeneration(record);
+  const derived = { derived: true };
+  const later: (StudioEventInput & { at: string })[] = [];
+  const activity = [
+    ...(saved.testPlans || []).map((plan) => ({ at: plan.startedAt, plan })),
+    ...(saved.browserRuns || []).map((run) => ({ at: run.startedAt, run })),
+  ].sort((a, b) => a.at.localeCompare(b.at));
+  for (const item of activity) {
+    if ('plan' in item) {
+      const { plan } = item;
+      later.push({ at: plan.startedAt, type: 'test_plan_started', data: { ...derived, planId: plan.id } });
+      if (plan.status === 'ready') later.push({ at: plan.finishedAt || plan.startedAt, type: 'test_plan_ready', data: { ...derived, planId: plan.id, checks: plan.result?.output?.checks?.length ?? 0 } });
+      else if (plan.status === 'failed' || plan.status === 'cancelled') later.push({ at: plan.finishedAt || plan.startedAt, type: 'test_plan_failed', data: { ...derived, planId: plan.id, status: plan.status, error: plan.error?.slice(0, 300) } });
+      continue;
+    }
+    const { run } = item;
+    const end = run.finishedAt || run.startedAt;
+    later.push({ at: run.startedAt, type: 'browser_run_started', data: { ...derived, runId: run.id, testPlanId: run.testPlanId, checks: run.checks.length } });
+    for (const check of run.checks) later.push({ at: end, type: 'browser_check', data: { ...derived, runId: run.id, name: check.name, passed: check.status === 'passed', actual: check.actual } });
+    if (['passed', 'failed', 'cancelled'].includes(run.status)) {
+      const passed = run.checks.filter((check) => check.status === 'passed').length;
+      later.push({ at: end, type: 'browser_run_finished', data: { ...derived, runId: run.id, status: run.status, passed, failed: run.checks.length - passed, error: run.error?.slice(0, 300) } });
+    }
+  }
+  return [...generation, ...later].map((event, index) => ({ ...event, seq: index + 1 }));
+}
+
+function deriveGeneration(record: StudioRecord): (StudioEventInput & { at: string })[] {
   const events: StudioEventInput[] = [];
   const derived = { derived: true };
   if (record.plan) events.push({ type: 'phase', data: { ...derived, phase: 'planning' } }, ...(record.plan.status === 'success' ? [{ type: 'plan_ready' as const, data: { ...derived, projectName: record.plan.output?.projectName } }] : []));
@@ -98,7 +131,7 @@ export function deriveEventsFromRecord(record: StudioRecord): StudioEvent[] {
   const last = record.rounds.at(-1)?.round;
   if (record.status === 'ready_for_review') events.push({ type: 'ready_for_review', round: last, data: { ...derived, previewFile: record.previewFile } });
   if (record.status === 'failed' || record.status === 'cancelled') events.push({ type: record.status, data: { ...derived, stoppedPhase: record.stoppedPhase, error: record.error?.slice(0, 300) } });
-  return events.map((event, index) => ({ seq: index + 1, at: index === events.length - 1 && record.finishedAt ? record.finishedAt : record.startedAt, ...event }));
+  return events.map((event, index) => ({ at: index === events.length - 1 && record.finishedAt ? record.finishedAt : record.startedAt, ...event }));
 }
 
 /** Keeps compiler output readable in an event: first three errors, 300 characters each. */

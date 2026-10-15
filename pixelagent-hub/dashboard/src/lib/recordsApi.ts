@@ -1,4 +1,5 @@
 import type { ApiErrorShape } from '@/types/recordsApi';
+import { REPLAY, REPLAY_READ_ONLY, replayEventPage, replayEventStream, replayFileUrl } from './replay';
 import type { StudioChanges, StudioDiagnostic, StudioEvent, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview, StudioBrowserRun } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
@@ -74,6 +75,11 @@ export function getRecordsApiBaseUrl(): string {
 }
 
 export async function fetchRecordsBinary(path: string): Promise<Blob> {
+  if (REPLAY) {
+    const res = await fetch(replayFileUrl(path));
+    if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
+    return res.blob();
+  }
   const url = path.startsWith('http') ? path : `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
   const base = new URL(`${API_BASE}/`, window.location.origin);
   const target = new URL(url, window.location.origin);
@@ -99,9 +105,14 @@ export class ApiError extends Error {
 export const OFFLINE_MESSAGE = '本地 API 未连接：请在 pixelagent-hub 目录运行 npm start（或 npm run records:api）。';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  if (REPLAY) {
+    if ((init?.method || 'GET') !== 'GET') throw new ApiError(REPLAY_READ_ONLY, 'http', 405);
+    const events = path.match(/^\/api\/studio\/projects\/([^/]+)\/events\?after=(\d+)$/);
+    if (events) return replayEventPage(decodeURIComponent(events[1]), Number(events[2]), init?.signal || undefined) as Promise<T>;
+  }
   let res: Response;
   try {
-    res = await fetch(`${API_BASE}${path}`, {
+    res = await fetch(REPLAY ? replayFileUrl(path) : `${API_BASE}${path}`, {
       ...init,
       redirect: 'error',
       headers: {
@@ -129,6 +140,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
  * Resolves when the server closes the stream, i.e. after the generation's terminal event.
  */
 export async function streamStudioEvents(projectId: string, after: number, onEvent: (event: StudioEvent) => void, signal: AbortSignal): Promise<void> {
+  if (REPLAY) return replayEventStream(projectId, after, onEvent, signal);
   const res = await fetch(`${API_BASE}/api/studio/projects/${encodeURIComponent(projectId)}/events?stream=1&after=${after}`, { headers: authHeaders(), redirect: 'error', signal });
   if (!res.ok || !res.body) throw new ApiError(`事件流不可用（HTTP ${res.status}）`, res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
   const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();

@@ -60,3 +60,14 @@ test('legacy records produce a coarse derived timeline', () => {
   assert.equal((events[5].data!.errors as string[])[0].length, 300);
   assert.equal(events.at(-1)!.at, '2026-10-09T00:01:00.000Z');
 });
+
+test('derived timelines append saved test plans and browser runs at their own times', () => {
+  const record = { projectId: randomUUID(), description: 'Legacy', status: 'ready_for_review', startedAt: '2026-10-09T00:00:00.000Z', finishedAt: '2026-10-09T00:01:00.000Z', previewFile: 'v1/dist/index.html', rounds: [] } as never;
+  const plan = { id: 'p1', projectId: 'x', previewFile: 'v1/dist/index.html', jobId: 'j', status: 'ready', startedAt: '2026-10-09T00:02:00.000Z', finishedAt: '2026-10-09T00:02:30.000Z', result: { output: { checks: [{}, {}] } } } as never;
+  const run = { id: 'r1', projectId: 'x', testPlanId: 'p1', status: 'failed', startedAt: '2026-10-09T00:03:00.000Z', finishedAt: '2026-10-09T00:03:20.000Z', checks: [{ name: 'Start', status: 'passed', actual: '0' }, { name: 'Increment', status: 'failed', actual: '2' }] } as never;
+  const events = deriveEventsFromRecord(record, { testPlans: [plan], browserRuns: [run] });
+  assert.deepEqual(events.map((event) => event.type), ['ready_for_review', 'test_plan_started', 'test_plan_ready', 'browser_run_started', 'browser_check', 'browser_check', 'browser_run_finished']);
+  assert.deepEqual(events.map((event) => event.seq), [1, 2, 3, 4, 5, 6, 7]);
+  assert.equal(events[2].at, '2026-10-09T00:02:30.000Z');
+  assert.deepEqual(events.at(-1)!.data, { derived: true, runId: 'r1', status: 'failed', passed: 1, failed: 1, error: undefined });
+});
