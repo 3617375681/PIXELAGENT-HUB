@@ -1,0 +1,74 @@
+{
+  "projectId": "c2d3277d-b00e-41df-a3f6-746c741cd441",
+  "strategy": "coder-only",
+  "ownerPid": 48224,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create an offline pixel-style counter with initial integer 0, button IDs increase/decrease/reset, and an output element ID count showing only the integer. Click adds one, subtracts one, or resets to zero. Support negative numbers. Include labeled keyboard-accessible buttons and README. Use HTML/CSS/JS only, no dependencies or storage. Keep total source under 200 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:01:11.595Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "c2d3277d-b00e-41df-a3f6-746c741cd441-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel Counter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"counter\" aria-label=\"Pixel counter\">\n    <output id=\"count\" class=\"count\" aria-live=\"polite\">0</output>\n    <div class=\"controls\">\n      <button type=\"button\" id=\"decrease\">Decrease</button>\n      <button type=\"button\" id=\"reset\">Reset</button>\n      <button type=\"button\" id=\"increase\">Increase</button>\n    </div>\n  </main>\n  <script src=\"script.js\" defer></script>\n</body>\n</html>",
+              "description": "Main HTML document with accessible counter output and labeled buttons."
+            },
+            {
+              "path": "styles.css",
+              "content": ":root {\n  --pixel-bg: #1a1c2c;\n  --pixel-fg: #f4f4f4;\n  --pixel-accent: #ffcd75;\n  --pixel-shadow: #000;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  background: var(--pixel-bg);\n  color: var(--pixel-fg);\n  font-family: \"Courier New\", monospace;\n  image-rendering: pixelated;\n}\n\n.counter {\n  background: #2a2e40;\n  border: 4px solid var(--pixel-fg);\n  box-shadow: 8px 8px 0 var(--pixel-shadow);\n  padding: 2rem;\n  text-align: center;\n  width: min(90vw, 22rem);\n}\n\n.count {\n  display: block;\n  font-size: 5rem;\n  line-height: 1;\n  margin-bottom: 1.5rem;\n  background: var(--pixel-bg);\n  border: 4px solid var(--pixel-accent);\n  padding: 0.5rem 0.25rem;\n  color: var(--pixel-accent);\n  text-shadow: 3px 3px 0 var(--pixel-shadow);\n}\n\n.controls {\n  display: flex;\n  gap: 1rem;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\nbutton {\n  font: inherit;\n  font-weight: bold;\n  padding: 0.75rem 1rem;\n  min-width: 5.5rem;\n  background: var(--pixel-fg);\n  color: var(--pixel-bg);\n  border: 4px solid var(--pixel-accent);\n  box-shadow: 4px 4px 0 var(--pixel-shadow);\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\nbutton:active {\n  transform: translate(4px, 4px);\n  box-shadow: 0 0 0 var(--pixel-shadow);\n}\n\nbutton:focus-visible {\n  outline: 3px dashed var(--pixel-accent);\n  outline-offset: 4px;\n}",
+              "description": "Pixel-style CSS for layout, output, and focus-visible button states."
+            },
+            {
+              "path": "script.js",
+              "content": "const count = document.getElementById('count');\nconst increase = document.getElementById('increase');\nconst decrease = document.getElementById('decrease');\nconst reset = document.getElementById('reset');\n\nlet value = 0;\n\nfunction update() {\n  count.textContent = value;\n}\n\nincrease.addEventListener('click', () => {\n  value += 1;\n  update();\n});\n\ndecrease.addEventListener('click', () => {\n  value -= 1;\n  update();\n});\n\nreset.addEventListener('click', () => {\n  value = 0;\n  update();\n});\n\nupdate();",
+              "description": "Plain JavaScript counter logic using addEventListener and textContent updates."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Counter\n\nAn offline pixel-style counter built with HTML, CSS, and vanilla JavaScript.\n\n## Run\nOpen `index.html` in a browser. No build step or dependencies required.\n\n## Controls\n- **Increase** (`#increase`) adds 1\n- **Decrease** (`#decrease`) subtracts 1\n- **Reset** (`#reset`) sets the count to 0\n- The current integer is shown in `<output id=\"count\">`\n\n## Features\n- Initial value is 0\n- Supports negative numbers\n- Keyboard-accessible buttons (tab to focus, Enter/Space to press)\n- No storage, network requests, or external assets",
+              "description": "README with run instructions, controls, and features."
+            }
+          ],
+          "explanation": "The app is an offline pixel-style counter. index.html provides a semantic output element with aria-live and three buttons with required IDs. styles.css creates a blocky pixel-inspired aesthetic with a focus-visible style. script.js keeps an integer variable and updates textContent on click events for increase, decrease, and reset. No external resources or storage are used.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 319,
+            "completion_tokens": 6613,
+            "total_tokens": 6932
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:02:28.450Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:02:28.531Z"
+}

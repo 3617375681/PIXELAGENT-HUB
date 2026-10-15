@@ -8,6 +8,8 @@
 npm run studio:benchmark -- --list
 npm run studio:benchmark -- --cases counter,todo --strategy both --timeout-ms 240000
 npm run studio:benchmark:report -- <运行UUID>
+npm run studio:benchmark:browser -- <运行UUID> [...]      # 经生产接口执行独立浏览器检查，不调用模型
+npm run studio:benchmark:series -- <输出.json> <运行UUID> [...]   # 合并多轮重复运行
 ```
 
 默认运行 `config/studio-benchmark.json` 中全部五类应用：计数器、任务列表、计算器、温度转换器和问答。`manager-coder` 先规划再写码，`coder-only` 直接写码；两者使用相同需求、模型配置和最多三轮真实编译预算。固定检查由案例文件定义，保存为 `benchmark / fixed-checks` 计划，不调用 Tester 模型。
@@ -25,6 +27,10 @@ npm run studio:benchmark:report -- <运行UUID>
 此统计不调用模型、不启动浏览器，也不修改原作品或自动批准。返修版本不替换原始案例的失败结果；视觉外观、完整需求覆盖和模型优劣仍需另外评测。
 
 2026-10-09 验证：28 项浏览器及 API 回归全部通过，包含真实浏览器执行固定计划后读取报告。普通测试为 135 项通过、4 项浏览器测试跳过。只读汇总原始中断运行时，Manager/Coder 的五项与单 Coder 的四项均计为浏览器未运行，原有客户端通过数仍分别为四项与三项；没有补造独立浏览器成功或覆盖原记录。
+
+## 2026-10-15 重复对比
+
+同一干净提交上连续运行三轮（5 个案例 × 2 种策略），再统一执行独立浏览器检查。先规划再写码 13/15 完整通过，直接写码 12/15；完成的 28 次生成全部首次编译通过，两种策略各有一次 Coder 180 秒超时。规划没有带来可测优势，平均多约 1,200 token。失败逐条及全部证据见 [2026-10-15 记录](benchmark-results/2026-10-15-repeated/README.md)。
 
 ## 2026-10-09 实际记录
 

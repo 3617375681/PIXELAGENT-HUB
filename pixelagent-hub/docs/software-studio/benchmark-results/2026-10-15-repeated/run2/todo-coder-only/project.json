@@ -1,0 +1,74 @@
+{
+  "projectId": "eb9a5d6d-b7af-477b-b710-8d066bb57919",
+  "strategy": "coder-only",
+  "ownerPid": 80412,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create an offline pixel-style task list. Input ID todo-input, add button ID todo-add. Show integer-only total task count in #todo-total and incomplete task count in #remaining, both initially 0. First task gets text span #todo-text-1, checkbox #todo-check-1, and delete button #todo-delete-1. Adding trims text; blank input adds nothing. Toggling checkbox updates incomplete count; deleting removes task and updates both counts. New tasks get increasing numeric IDs. Keep all state in memory, no storage. Include labels and README. HTML/CSS/JS only, under 240 source lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:22:43.238Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "eb9a5d6d-b7af-477b-b710-8d066bb57919-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Tasks</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"app\">\n    <h1>Pixel Tasks</h1>\n    <form id=\"todo-form\">\n      <label for=\"todo-input\" class=\"visually-hidden\">New task</label>\n      <input id=\"todo-input\" type=\"text\" autocomplete=\"off\" placeholder=\"Add a task...\">\n      <button id=\"todo-add\" type=\"submit\">Add</button>\n    </form>\n    <div class=\"stats\" aria-live=\"polite\">\n      <p>Total: <span id=\"todo-total\">0</span></p>\n      <p>Remaining: <span id=\"remaining\">0</span></p>\n    </div>\n    <ul id=\"todo-list\" aria-label=\"Task list\"></ul>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+              "description": "Main HTML page with labeled form controls, empty task list container, and initial zero counts."
+            },
+            {
+              "path": "styles.css",
+              "content": "* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: #2b2b2b;\n  background-image:\n    linear-gradient(45deg, #3a3a3a 25%, transparent 25%),\n    linear-gradient(-45deg, #3a3a3a 25%, transparent 25%),\n    linear-gradient(45deg, transparent 75%, #3a3a3a 75%),\n    linear-gradient(-45deg, transparent 75%, #3a3a3a 75%);\n  background-size: 8px 8px;\n  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;\n  color: #fff;\n  font-family: 'Courier New', monospace;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0;\n  image-rendering: pixelated;\n}\n\n.app {\n  background: #4a4a4a;\n  border: 4px solid #fff;\n  box-shadow: 8px 8px 0 #000;\n  padding: 20px;\n  width: min(92%, 480px);\n}\n\nh1 {\n  margin: 0 0 16px;\n  font-size: 2rem;\n  text-transform: uppercase;\n  color: #f9f871;\n  text-shadow: 3px 3px #000;\n}\n\n#todo-form {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 16px;\n}\n\n#todo-input {\n  flex: 1;\n  padding: 10px;\n  background: #1e1e1e;\n  color: #fff;\n  border: 3px solid #fff;\n  font: inherit;\n  outline: none;\n}\n\n#todo-input:focus-visible {\n  outline: 3px dashed #f9f871;\n  outline-offset: 2px;\n}\n\n#todo-add {\n  padding: 10px 14px;\n  background: #00b8b8;\n  color: #000;\n  border: 3px solid #fff;\n  font: inherit;\n  font-weight: bold;\n  cursor: pointer;\n}\n\n#todo-add:active {\n  transform: translate(2px, 2px);\n}\n\n.stats {\n  display: flex;\n  justify-content: space-between;\n  background: #2a2a2a;\n  border: 2px dashed #fff;\n  padding: 8px 12px;\n  margin-bottom: 16px;\n}\n\n.stats p {\n  margin: 0;\n}\n\n#todo-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\n#todo-list li {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  background: #3a3a3a;\n  border: 2px solid #fff;\n  padding: 8px;\n  margin-bottom: 8px;\n}\n\n#todo-list li.task-done {\n  opacity: 0.65;\n}\n\n#todo-list li.task-done span {\n  text-decoration: line-through;\n}\n\n#todo-list input[type=checkbox] {\n  width: 20px;\n  height: 20px;\n  accent-color: #f9f871;\n  cursor: pointer;\n}\n\n#todo-list span {\n  flex: 1;\n  overflow-wrap: anywhere;\n}\n\n#todo-list button {\n  background: #e63946;\n  color: #fff;\n  border: 2px solid #fff;\n  padding: 4px 8px;\n  font: inherit;\n  cursor: pointer;\n}\n\n#todo-list button:active {\n  transform: translate(1px, 1px);\n}\n\nbutton:focus-visible,\ninput[type=checkbox]:focus-visible {\n  outline: 3px dashed #f9f871;\n  outline-offset: 2px;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n}",
+              "description": "Pixel-style CSS with high-contrast borders, dark blocks, visible focus states, and visually hidden labels."
+            },
+            {
+              "path": "script.js",
+              "content": "(() => {\n  'use strict';\n\n  const form = document.getElementById('todo-form');\n  const input = document.getElementById('todo-input');\n  const list = document.getElementById('todo-list');\n  const totalEl = document.getElementById('todo-total');\n  const remainingEl = document.getElementById('remaining');\n\n  let nextId = 1;\n  let total = 0;\n  let remaining = 0;\n\n  const updateCounts = () => {\n    totalEl.textContent = String(total);\n    remainingEl.textContent = String(remaining);\n  };\n\n  const addTask = (text) => {\n    const id = nextId++;\n    const li = document.createElement('li');\n    li.id = `todo-item-${id}`;\n\n    const checkbox = document.createElement('input');\n    checkbox.type = 'checkbox';\n    checkbox.id = `todo-check-${id}`;\n    checkbox.setAttribute('aria-label', `Task ${id} completed`);\n\n    const span = document.createElement('span');\n    span.id = `todo-text-${id}`;\n    span.textContent = text;\n\n    const del = document.createElement('button');\n    del.type = 'button';\n    del.id = `todo-delete-${id}`;\n    del.textContent = 'Delete';\n    del.setAttribute('aria-label', `Delete task ${id}`);\n\n    li.append(checkbox, span, del);\n    list.appendChild(li);\n\n    total += 1;\n    remaining += 1;\n    updateCounts();\n\n    checkbox.addEventListener('change', () => {\n      const isChecked = checkbox.checked;\n      remaining += isChecked ? -1 : 1;\n      li.classList.toggle('task-done', isChecked);\n      updateCounts();\n    });\n\n    del.addEventListener('click', () => {\n      li.remove();\n      total -= 1;\n      if (!checkbox.checked) {\n        remaining -= 1;\n      }\n      updateCounts();\n    });\n  };\n\n  form.addEventListener('submit', (event) => {\n    event.preventDefault();\n    const text = input.value.trim();\n    if (text === '') return;\n    addTask(text);\n    input.value = '';\n    input.focus();\n  });\n\n  updateCounts();\n})();",
+              "description": "In-memory task list logic: add trimmed tasks, assign sequential IDs, toggle completion, delete tasks, and update counters."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Tasks\n\nAn offline pixel-style task list built with plain HTML, CSS, and JavaScript.\n\n## Features\n- Add tasks with the input and **Add** button.\n- Task IDs increase with each added task.\n- Checkbox toggles a task complete and updates the remaining count.\n- Delete removes a task and updates total/remaining counts.\n- Counts stay in memory only; no storage or network needed.\n\n## Files\n- `index.html` - page structure\n- `styles.css` - pixel-style appearance\n- `script.js` - task state and DOM behavior\n\n## Usage\nOpen `index.html` in any modern browser. Works fully offline.",
+              "description": "Usage and feature overview for the offline pixel task list."
+            }
+          ],
+          "explanation": "The app uses plain HTML for structure, CSS for a chunky pixel-style look, and vanilla JavaScript for all DOM interactions and in-memory state. It satisfies the required IDs, initial zero counts, sequential task IDs, label/aria accessibility, and offline constraint.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 372,
+            "completion_tokens": 12535,
+            "total_tokens": 12907
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:25:05.469Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:25:05.551Z"
+}

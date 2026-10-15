@@ -31,7 +31,8 @@
 
 - **[10 次真实生成](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09/README.md)**（5 个应用 × 2 种策略）全部首次编译通过；原始浏览器检查 6 次通过、4 次失败。其中 2 次失败后来查明是构建器丢失 `defer` 脚本顺序的平台缺陷，已修复并加了真实浏览器回归测试。
 - **[受控故障返修](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md)**：把计数器改成 `+= 2` 后，浏览器检查 2/4 失败；依据失败证据返修只改了 1 行，另外 3 个文件逐字节不变，复测原计划 4/4、额外 7/7 通过。
-- 这些是小样本观察，不代表通用成功率；单 Agent 与多 Agent 的系统对比仍在计划中。
+- **[单 Agent vs 多 Agent 重复对比](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-15-repeated/README.md)**（5 个应用 × 2 种策略 × 3 次，共 30 次真实生成）：先规划再写码 13/15 完整通过，直接写码 12/15，**没有可测优势**；规划平均多花约 1,200 token。完成的 28 次生成全部首次编译通过；3 次检查失败（计分不变、违反“文本输入”要求）和 2 次超时都已逐条记录。
+- 这些是小样本观察，不代表通用成功率。
 
 ## 工作原理
 

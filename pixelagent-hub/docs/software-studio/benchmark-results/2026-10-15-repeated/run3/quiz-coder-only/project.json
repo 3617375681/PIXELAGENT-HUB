@@ -1,0 +1,74 @@
+{
+  "projectId": "c2adeeb6-c4ed-4a51-a5ea-f64db9e4ab72",
+  "strategy": "coder-only",
+  "ownerPid": 76596,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create an offline pixel-style two-question quiz. #question initially has exact text 2 + 2 = ?. Buttons #answer-a/#answer-b display 4/5 for first question. Clicking one answer locks answers and increments integer-only #score once if correct; score initially 0. #next advances to second question exact 3 + 3 = ?, answer-a is 5 and answer-b is 6. After answering second, #next sets #question to Finished. #restart resets first question and score. Include labels and README. HTML/CSS/JS only, no storage/packages, under 230 lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:57:09.183Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "c2adeeb6-c4ed-4a51-a5ea-f64db9e4ab72-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Quiz</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"quiz\">\n    <h1>Pixel Math Quiz</h1>\n    <p id=\"question\" class=\"question-box\" aria-live=\"polite\">2 + 2 = ?</p>\n    <div class=\"answers\">\n      <button id=\"answer-a\" class=\"pixel-btn\" type=\"button\">4</button>\n      <button id=\"answer-b\" class=\"pixel-btn\" type=\"button\">5</button>\n    </div>\n    <div class=\"score-row\">\n      <label for=\"score\">Score:</label>\n      <output id=\"score\" aria-live=\"polite\">0</output>\n    </div>\n    <div class=\"controls\">\n      <button id=\"next\" class=\"pixel-btn\" type=\"button\">Next</button>\n      <button id=\"restart\" class=\"pixel-btn\" type=\"button\">Restart</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+              "description": "Main HTML page with pixel quiz structure, labeled score output, and buttons."
+            },
+            {
+              "path": "styles.css",
+              "content": "* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #2b2b3a;\n  background-image:\n    linear-gradient(#444 1px, transparent 1px),\n    linear-gradient(90deg, #444 1px, transparent 1px);\n  background-size: 20px 20px;\n  font-family: \"Courier New\", monospace;\n  image-rendering: pixelated;\n}\n\n.quiz {\n  background: #f5e9d0;\n  border: 4px solid #111;\n  box-shadow: 8px 8px 0 #111;\n  padding: 24px;\n  width: min(90vw, 420px);\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 16px;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n}\n\n.question-box {\n  background: #fff;\n  border: 3px solid #111;\n  padding: 16px;\n  font-size: 1.8rem;\n  font-weight: bold;\n  margin-bottom: 20px;\n}\n\n.answers {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  margin-bottom: 20px;\n}\n\n.pixel-btn {\n  background: #f7d44a;\n  border: 3px solid #111;\n  box-shadow: 4px 4px 0 #111;\n  padding: 12px 20px;\n  font: inherit;\n  font-size: 1.4rem;\n  font-weight: bold;\n  cursor: pointer;\n  text-transform: uppercase;\n}\n\n.pixel-btn:active {\n  transform: translate(4px, 4px);\n  box-shadow: 0 0 0 #111;\n}\n\n.pixel-btn:disabled {\n  opacity: 0.55;\n  cursor: not-allowed;\n  transform: none;\n  box-shadow: 4px 4px 0 #111;\n}\n\n.score-row {\n  font-size: 1.2rem;\n  margin-bottom: 20px;\n}\n\n.score-row output {\n  font-weight: bold;\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n}",
+              "description": "Pixel-style CSS using grid background, blocky borders, and pressed button effects."
+            },
+            {
+              "path": "script.js",
+              "content": "const qEl = document.getElementById('question');\nconst aBtn = document.getElementById('answer-a');\nconst bBtn = document.getElementById('answer-b');\nconst scoreEl = document.getElementById('score');\nconst nextBtn = document.getElementById('next');\nconst restartBtn = document.getElementById('restart');\n\nconst questions = [\n  { text: '2 + 2 = ?', answers: ['4', '5'], correct: 0 },\n  { text: '3 + 3 = ?', answers: ['5', '6'], correct: 1 }\n];\n\nlet current = 0;\nlet score = 0;\nlet answered = false;\n\nfunction updateQuestion() {\n  if (current < questions.length) {\n    const q = questions[current];\n    qEl.textContent = q.text;\n    aBtn.textContent = q.answers[0];\n    bBtn.textContent = q.answers[1];\n    aBtn.disabled = false;\n    bBtn.disabled = false;\n    nextBtn.disabled = !answered;\n  } else {\n    qEl.textContent = 'Finished';\n    aBtn.disabled = true;\n    bBtn.disabled = true;\n    nextBtn.disabled = true;\n  }\n}\n\nfunction handleAnswer(index) {\n  if (answered || current >= questions.length) return;\n  answered = true;\n  aBtn.disabled = true;\n  bBtn.disabled = true;\n  if (questions[current].correct === index) {\n    score += 1;\n    scoreEl.textContent = score;\n  }\n  nextBtn.disabled = false;\n}\n\naBtn.addEventListener('click', () => handleAnswer(0));\nbBtn.addEventListener('click', () => handleAnswer(1));\n\nnextBtn.addEventListener('click', () => {\n  if (!answered || current >= questions.length) return;\n  current += 1;\n  answered = false;\n  if (current < questions.length) {\n    nextBtn.disabled = true;\n  }\n  updateQuestion();\n});\n\nrestartBtn.addEventListener('click', () => {\n  current = 0;\n  score = 0;\n  answered = false;\n  scoreEl.textContent = score;\n  updateQuestion();\n});\n\nupdateQuestion();",
+              "description": "Quiz state and event listeners. Answers lock after a choice, score updates once if correct, Next advances, Restart resets."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Quiz\n\nAn offline, pixel-style two-question quiz built with plain HTML, CSS, and JavaScript.\n\n## How to Run\n\nOpen `index.html` in any modern browser. No build tools, packages, network access, or storage are required.\n\n## How to Play\n\n1. Read the question.\n2. Click one of the two answer buttons. Your answer is locked and score updates if correct.\n3. Click **Next** to continue to the next question.\n4. After the second question, click **Next** to show **Finished**.\n5. Click **Restart** to reset to the first question with a score of 0.\n\nAll buttons are keyboard accessible by tabbing and pressing Enter or Space.",
+              "description": "README with run and play instructions."
+            }
+          ],
+          "explanation": "A self-contained offline quiz app. The page uses semantic, labeled controls and event listeners. State is kept in memory only, with Next disabled until an answer is chosen and Restart returning the app to the first question and zero score.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 373,
+            "completion_tokens": 8870,
+            "total_tokens": 9243
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:59:08.292Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:59:08.359Z"
+}
