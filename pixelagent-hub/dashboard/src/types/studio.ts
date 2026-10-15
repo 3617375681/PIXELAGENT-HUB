@@ -16,3 +16,6 @@ export type StudioProject = StudioSummary & {
   rounds: { round: number; code: { status: string; output?: { files?: { path: string; content: string }[]; llmProvider?: string; llmModel?: string }; reasoning?: string }; build?: { status: 'passed' | 'failed'; errors: string[]; checkedFiles: string[]; browserVerified: boolean } }[];
   previewFile?: string; archiveFile?: string;
 };
+export type StudioEventType = 'queued' | 'phase' | 'plan_ready' | 'code_ready' | 'build_failed' | 'build_passed' | 'ready_for_review' | 'failed' | 'cancelled' | 'test_plan_started' | 'test_plan_ready' | 'test_plan_failed' | 'browser_run_started' | 'browser_check' | 'browser_run_finished';
+/** Mirrors src/studio/events.ts on the server; served by GET /api/studio/projects/:id/events. */
+export type StudioEvent = { seq: number; at: string; type: StudioEventType; round?: number; data?: Record<string, unknown> };

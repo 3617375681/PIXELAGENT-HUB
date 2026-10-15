@@ -46,7 +46,7 @@
 .studio-project-link strong { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 18px; line-height: 1.4; font-weight: normal; }
 .studio-project-link small { display: block; margin-top: 6px; font-size: 15px; color: var(--k-muted); }
 
-.studio-workspace { min-width: 0; padding: 24px 28px 40px; }
+.studio-workspace { min-width: 0; padding: 24px 28px 40px; container-type: inline-size; }
 .studio-workspace-heading { display: flex; gap: 18px; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .studio h2 { margin-top: 8px; font-size: 32px; line-height: 1.2; overflow-wrap: anywhere; }
 .studio-status { flex-shrink: 0; padding: 4px 10px; font-size: 18px; line-height: 1.3; color: var(--k-cyan); border: 1px solid currentColor; background: rgba(34, 211, 238, 0.12); }
@@ -59,7 +59,33 @@
 .studio-requirements p { margin-top: 10px; padding: 12px; line-height: 1.5; background: var(--k-card); border: 1px solid var(--k-line); }
 
 /* Agent stage cards (StudioStageCard), matching AgentCard. */
-.studio-team { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 22px; padding: 0; }
+/* Event-driven pipeline (StudioPipeline): cards in a row, SVG connectors and the red feedback edge behind them. */
+.studio-pipeline { margin: 0 0 18px; }
+.studio-pipeline-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; font-size: 8px; color: rgba(255, 255, 255, 0.55); }
+.studio-pipeline-head .studio-live { color: var(--k-amber); animation: blink 1s step-end infinite; }
+.studio-pipeline-head .studio-derived { padding: 2px 5px; color: var(--k-cyan); border: 1px solid currentColor; cursor: help; }
+.studio-pipeline-graph { position: relative; }
+.studio-pipeline-graph.has-feedback { padding-bottom: 76px; }
+.studio-pipeline-edges { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.studio-feedback-path { animation: studio-dash 0.8s linear infinite; }
+@keyframes studio-dash { to { stroke-dashoffset: -22; } }
+.studio-team { position: relative; z-index: 2; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; margin: 0; padding: 0; }
+.studio-stage-round { padding: 2px 4px; font-size: 7px; line-height: 1.4; color: var(--k-bg); background: var(--k-amber); }
+.studio-feedback { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; margin: 10px 0 0; padding: 10px 12px; font-size: 18px; color: #fca5a5; background: rgba(239, 68, 68, 0.08); border: 2px dashed rgba(239, 68, 68, 0.6); }
+.studio-feedback .pixel-font { font-size: 8px; color: var(--k-red); }
+.studio-feedback code { flex-basis: 100%; font-family: ui-monospace, monospace; font-size: 13px; color: #fecaca; overflow-wrap: anywhere; }
+.studio-event-log { margin-top: 10px; font-size: 17px; }
+.studio-event-log summary { color: var(--k-muted); }
+.studio-event-log ol { list-style: none; margin: 8px 0 0; padding: 10px 12px; max-height: 220px; overflow: auto; background: var(--k-inset); border: 1px solid var(--k-line); }
+.studio-event-log li { display: flex; gap: 10px; padding: 2px 0; overflow-wrap: anywhere; }
+.studio-event-log time { flex-shrink: 0; color: rgba(255, 255, 255, 0.35); }
+.studio-event-log .event-build_failed, .studio-event-log .event-failed, .studio-event-log .event-test_plan_failed { color: #fca5a5; }
+.studio-event-log .event-build_passed, .studio-event-log .event-ready_for_review { color: var(--k-primary); }
+@container (max-width: 760px) {
+  .studio-team { grid-template-columns: 1fr; gap: 26px; }
+  .studio-pipeline-graph.has-feedback { padding-bottom: 0; }
+  .studio-pipeline-graph.has-feedback .studio-team { margin-right: 72px; }
+}
 .studio-stage { padding: 10px; transition: border-color 0.3s, background 0.3s; }
 .studio-stage-head { display: flex; align-items: center; gap: 10px; }
 .studio-stage-text { flex: 1; min-width: 0; }
@@ -76,6 +102,7 @@
 .studio-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 10px 14px; color: var(--k-amber); background: rgba(245, 158, 11, 0.08); border: 2px solid rgba(245, 158, 11, 0.6); box-shadow: var(--k-shadow); }
 .studio-progress button { margin-left: auto; }
 .studio-error { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; padding: 12px 14px; color: #fca5a5; background: rgba(239, 68, 68, 0.1); border: 2px solid rgba(239, 68, 68, 0.6); box-shadow: var(--k-shadow); overflow-wrap: anywhere; }
+.studio-error.offline { color: var(--k-cyan); background: rgba(34, 211, 238, 0.08); border-color: rgba(34, 211, 238, 0.5); }
 
 /* Content sections share the pixel-card treatment. */
 .studio-tester, .studio-review, .studio-version-history, .studio-revision-brief { position: relative; margin: 16px 0; padding: 16px; background: var(--k-card); border: 2px solid hsl(var(--border)); box-shadow: var(--k-shadow); }
@@ -135,7 +162,6 @@
 @media (max-width: 1050px) {
   .studio-layout { grid-template-columns: 270px minmax(0, 1fr); }
   .studio-workspace { padding: 20px 16px 32px; }
-  .studio-team { gap: 8px; }
   .studio-workspace-heading { flex-direction: column; align-items: flex-start; }
   .studio-header-status { display: none; }
 }
@@ -146,7 +172,6 @@
   .studio-sidebar { padding: 20px 16px; border-right: 0; border-bottom: 1px solid var(--k-line); }
   .studio h1 { font-size: 28px; }
   .studio-projects { max-height: 240px; margin-top: 22px; overflow: auto; }
-  .studio-team { grid-template-columns: 1fr; }
   .studio-tabs button.studio-download { margin-left: 0; }
   .studio-change-columns { grid-template-columns: 1fr; }
 }

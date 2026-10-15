@@ -17,4 +17,4 @@ npm run build    # outputs dist/public, served by `npm start` in the parent pack
 
 - `src/pages/Studio.tsx` — the Studio workspace (`/studio`, `/studio/:projectId`).
 - `src/lib/recordsApi.ts` — API client. Same-origin by default; set `VITE_RECORDS_API_URL` for a separate host. The API key is entered at runtime through `ApiConnection` and kept in `sessionStorage`.
-- `src/components/AgentFlow.tsx`, `AgentCard.tsx`, `PixelAvatar.tsx`, `effects/` — the pixel node-graph kit from the original prototype, to be driven by Studio events.
+- `src/components/StudioPipeline.tsx` — the Manager → Coder → Builder → Tester graph. It is driven only by server events (`hooks/useStudioEvents.ts` reads the SSE stream, `lib/studioPipeline.ts` reduces events to stage states). A failed build or browser check draws a red edge back to the Coder with the real error.

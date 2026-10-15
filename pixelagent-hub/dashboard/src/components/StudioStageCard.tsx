@@ -1,20 +1,21 @@
 import type React from 'react';
 import { PixelAvatar } from './PixelAvatar';
-import type { StudioStage } from '../lib/studioStages';
+import type { PipelineStage } from '../lib/studioPipeline';
 
 // Same status palette and labels as AgentCard, so Studio reads as part of the original console.
 const statusColors = { idle: '#6b7280', thinking: '#f59e0b', done: '#22c55e', error: '#ef4444', skipped: '#6b7280' };
 const statusLabels = { idle: 'IDLE', thinking: 'THINKING', done: 'DONE', error: 'ERROR', skipped: 'SKIP' };
 
-const stageStatus = (state: StudioStage['state']) =>
+const stageStatus = (state: PipelineStage['state']) =>
   state === 'active' ? 'thinking' : state === 'done' ? 'done' : state === 'failed' ? 'error' : state === 'skipped' ? 'skipped' : 'idle';
 
-export default function StudioStageCard({ stage }: { stage: StudioStage }) {
+export default function StudioStageCard({ stage, badge, ref }: { stage: PipelineStage; badge?: string; ref?: React.Ref<HTMLLIElement> }) {
   const status = stageStatus(stage.state);
   const statusColor = statusColors[status];
   const progress = status === 'done' || status === 'error' ? 100 : 0;
   return (
     <li
+      ref={ref}
       className={`studio-stage pixel-card agent-bloom ${status === 'thinking' ? 'active glow-border' : ''}`}
       style={{
         borderColor: status === 'idle' || status === 'skipped' ? undefined : status === 'thinking' ? stage.color : statusColor + '80',
@@ -27,6 +28,7 @@ export default function StudioStageCard({ stage }: { stage: StudioStage }) {
         <div className="studio-stage-text">
           <div className="studio-stage-title">
             <h3 className="pixel-font" style={{ color: stage.color }}>{stage.name}</h3>
+            {badge && <span className="pixel-font studio-stage-round">{badge}</span>}
             <span className={`pixel-font studio-stage-badge ${status === 'thinking' ? 'cursor-blink' : ''}`} style={{ color: statusColor, borderColor: statusColor, backgroundColor: statusColor + '30' }}>{statusLabels[status]}</span>
           </div>
           <p>{stage.detail}</p>

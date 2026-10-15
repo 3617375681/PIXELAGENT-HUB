@@ -1,5 +1,5 @@
 import type { ApiErrorShape } from '@/types/recordsApi';
-import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview, StudioBrowserRun } from '@/types/studio';
+import type { StudioChanges, StudioDiagnostic, StudioEvent, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview, StudioBrowserRun } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
 const RAW_API_BASE = import.meta.env.VITE_RECORDS_API_URL as string | undefined;
@@ -85,18 +85,65 @@ export async function fetchRecordsBinary(path: string): Promise<Blob> {
   return res.blob();
 }
 
+/** `offline`: no API reachable (network error, or a proxy/static host answering without JSON). */
+export type ApiErrorKind = 'offline' | 'unauthorized' | 'http' | 'invalid';
+export class ApiError extends Error {
+  readonly kind: ApiErrorKind;
+  readonly status?: number;
+  constructor(message: string, kind: ApiErrorKind, status?: number) {
+    super(message);
+    this.kind = kind;
+    this.status = status;
+  }
+}
+export const OFFLINE_MESSAGE = '本地 API 未连接：请在 pixelagent-hub 目录运行 npm start（或 npm run records:api）。';
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    redirect: 'error',
-    headers: {
-      ...jsonHeaders(),
-      ...(init?.headers || {}),
-    },
-  });
-  const body = await res.json();
-  if (!res.ok) throw Object.assign(new Error(normalizeError(body, res.status)), { status: res.status });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      ...init,
+      redirect: 'error',
+      headers: {
+        ...jsonHeaders(),
+        ...(init?.headers || {}),
+      },
+    });
+  } catch (error) {
+    if (init?.signal?.aborted) throw error;
+    throw new ApiError(OFFLINE_MESSAGE, 'offline');
+  }
+  const raw = await res.text();
+  let body: unknown;
+  try { body = raw ? JSON.parse(raw) : undefined; } catch { body = undefined; }
+  if (!res.ok) {
+    if (body === undefined && res.status >= 500) throw new ApiError(OFFLINE_MESSAGE, 'offline', res.status);
+    throw new ApiError(normalizeError(body, res.status), res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
+  }
+  if (body === undefined) throw new ApiError('服务返回的不是 Records API 数据：请确认 API 地址正确。', 'invalid', res.status);
   return body as T;
+}
+
+/**
+ * Reads the Studio SSE stream with fetch (EventSource cannot send X-API-Key).
+ * Resolves when the server closes the stream, i.e. after the generation's terminal event.
+ */
+export async function streamStudioEvents(projectId: string, after: number, onEvent: (event: StudioEvent) => void, signal: AbortSignal): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/studio/projects/${encodeURIComponent(projectId)}/events?stream=1&after=${after}`, { headers: authHeaders(), redirect: 'error', signal });
+  if (!res.ok || !res.body) throw new ApiError(`事件流不可用（HTTP ${res.status}）`, res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
+  const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+  let buffer = '';
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) return;
+    buffer += value;
+    for (let end = buffer.indexOf('\n\n'); end >= 0; end = buffer.indexOf('\n\n')) {
+      const block = buffer.slice(0, end);
+      buffer = buffer.slice(end + 2);
+      const data = block.split('\n').filter((line) => line.startsWith('data: ')).map((line) => line.slice(6)).join('\n');
+      if (data) onEvent(JSON.parse(data));
+    }
+  }
 }
 
 export const studioApi = {
@@ -122,5 +169,6 @@ export const studioApi = {
   changes: (projectId: string, signal?: AbortSignal) => request<{ changes: StudioChanges }>(`/api/studio/projects/${encodeURIComponent(projectId)}/changes`, { signal }),
   versions: (projectId: string, signal?: AbortSignal) => request<StudioVersions>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { signal }),
   selectVersion: (projectId: string, target: string) => request<{ selectedProjectId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/versions`, { method: 'POST', body: JSON.stringify({ projectId: target }) }),
+  events: (projectId: string, after = 0, signal?: AbortSignal) => request<{ events: StudioEvent[]; derived: boolean }>(`/api/studio/projects/${encodeURIComponent(projectId)}/events?after=${after}`, { signal }),
   revise: (projectId: string, changeRequest: string) => request<{ projectId: string; jobId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/revise`, { method: 'POST', body: JSON.stringify({ changeRequest }) }),
 };
