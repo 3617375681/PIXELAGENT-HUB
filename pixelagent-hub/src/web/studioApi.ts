@@ -16,6 +16,13 @@ import { parentVersion, versionFamily } from '../studio/versions.js';
 import { listReviews, reviewInput, saveReview } from '../studio/reviews.js';
 import { summarizeGeneration } from '../studio/generationMetrics.js';
 import { createStudioRequest, StudioRequestConflict } from './studioRequests.js';
+import { appendStudioEvent, deriveEventsFromRecord, isTerminalStudioEvent, readStudioEvents, subscribeStudioEvents, type StudioEvent } from '../studio/events.js';
+
+const SSE_HEARTBEAT_MS = 15_000;
+const corsHeaders = (res: ServerResponse): Record<string, string> => {
+  const origin = (res as ServerResponse & { _corsOrigin?: string })._corsOrigin;
+  return origin ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' } : {};
+};
 
 export function createStudioApi(options: {
   root: string; runtime: RunRuntime; timeoutMs: number;
@@ -41,13 +48,41 @@ export function createStudioApi(options: {
         record.error = job?.error || 'Generation was interrupted; create a new project to retry';
         record.finishedAt = job?.finishedAt || new Date().toISOString();
         await saveStudioRecord(options.root, record);
+        await appendStudioEvent(options.root, projectId, { type: record.status, data: { stoppedPhase: record.stoppedPhase, error: record.error.slice(0, 300), interrupted: true } });
       }
     }
     return record;
   };
   const json = (res: ServerResponse, status: number, body: unknown) => {
-    res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+    res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...corsHeaders(res) });
     res.end(JSON.stringify(body));
+  };
+  /** Replays events after `after`, then forwards live ones until the generation ends or the client leaves. */
+  const streamEvents = async (req: IncomingMessage, res: ServerResponse, record: StudioRecord, after: number, derived: StudioEvent[] | null) => {
+    res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no', ...corsHeaders(res) });
+    let last = after;
+    let done = false;
+    let replaying = true;
+    const buffered: StudioEvent[] = [];
+    const deliver = (event: StudioEvent) => {
+      if (done || event.seq <= last) return;
+      last = event.seq;
+      res.write(`id: ${event.seq}\nevent: studio\ndata: ${JSON.stringify(event)}\n\n`);
+      if (isTerminalStudioEvent(event)) finish();
+    };
+    // Subscribe before reading the log so nothing appended in between is lost; replay de-duplicates by seq.
+    const unsubscribe = derived ? () => {} : subscribeStudioEvents(options.root, record.projectId, (event) => replaying ? buffered.push(event) : deliver(event));
+    const heartbeat = setInterval(() => res.write(': ping\n\n'), SSE_HEARTBEAT_MS);
+    function finish() {
+      if (done) return;
+      done = true; unsubscribe(); clearInterval(heartbeat); res.end();
+    }
+    req.on('close', finish);
+    for (const event of derived || await readStudioEvents(options.root, record.projectId, after)) deliver(event);
+    replaying = false;
+    for (const event of buffered.sort((a, b) => a.seq - b.seq)) deliver(event);
+    // A finished project whose log lacks a terminal event has nothing more to send.
+    if (!['queued', 'running'].includes(record.status)) finish();
   };
   const sourceForPreview = (record: StudioRecord, previewFile?: string): SourceFile[] => {
     if (!previewFile || !/^v[1-3]\/dist\/index.html$/.test(previewFile)) throw new Error('Invalid source preview reference');
@@ -91,6 +126,7 @@ export function createStudioApi(options: {
     const jobId = `studio-${projectId}`;
     const record: StudioRecord = { projectId, jobId, description: description.trim(), repair, revision, retry, strategy, status: 'queued', phase: 'queued', startedAt: new Date().toISOString(), rounds: [] };
     await saveStudioRecord(options.root, record);
+    await appendStudioEvent(options.root, projectId, { type: 'queued', data: { strategy: strategy || 'manager-coder', repair: !!repair, revision: !!revision, retry: !!retry } });
     options.runtime.submitBackground({
       jobId, taskId: projectId, mode: 'studio', maxRetries: 0,
       run: async ({ signal }) => {
@@ -153,10 +189,23 @@ export function createStudioApi(options: {
           const data = await readFile(join(options.root, projectId, 'browser-runs', runId, name));
           res.writeHead(200, { 'Content-Type': 'image/png', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); res.end(data); return;
         }
-        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|retry|versions|test-plans|reviews|browser-runs))?$/);
+        const match = pathname.match(/^\/api\/studio\/projects\/([^/]+)(?:\/(preview|archive|cancel|diagnostics|repair|changes|revise|retry|versions|test-plans|reviews|browser-runs|events))?$/);
         if (!match) { json(res, 404, { error: { message: 'Studio route not found' } }); return; }
         const [, projectId, action] = match;
         const record = await read(projectId);
+        if (action === 'events') {
+          if (req.method !== 'GET') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
+          const query = new URL(req.url || pathname, 'http://studio.local').searchParams;
+          const lastEventId = req.headers['last-event-id'];
+          const afterRaw = query.get('after') ?? (typeof lastEventId === 'string' ? lastEventId : '0');
+          const after = Number(afterRaw || '0');
+          if (!/^\d{1,9}$/.test(afterRaw || '0') || !Number.isSafeInteger(after)) { json(res, 400, { error: { message: 'after must be a non-negative integer' } }); return; }
+          const logged = await readStudioEvents(options.root, projectId);
+          // Projects finished before event logs existed get a coarse timeline rebuilt from the record.
+          const derived = !logged.length && !['queued', 'running'].includes(record.status) ? deriveEventsFromRecord(record) : null;
+          if (query.get('stream') === '1') { await streamEvents(req, res, record, after, derived); return; }
+          json(res, 200, { events: (derived || logged).filter((event) => event.seq > after), derived: !!derived }); return;
+        }
         if (action === 'browser-runs') {
           const runs = await listBrowserRuns(options.root, projectId);
           for (const run of runs.filter((run) => ['queued', 'running'].includes(run.status))) {
@@ -194,6 +243,7 @@ export function createStudioApi(options: {
           const id = randomUUID();
           const run: BrowserRun = { id, projectId, testPlanId, previewFile: record.previewFile, previewHash: contentHash(html), planHash: contentHash(JSON.stringify(checks.data)), jobId: `studio-browser-${id}`, source: 'server-browser', status: 'queued', startedAt: new Date().toISOString(), viewport: { width: 1280, height: 720 }, checks: [], errors: [], blockedRequests: [], screenshots: [] };
           await saveBrowserRun(options.root, run);
+          await appendStudioEvent(options.root, projectId, { type: 'browser_run_started', data: { runId: id, testPlanId, checks: checks.data.checks.length } });
           options.runtime.submitBackground({ jobId: run.jobId, taskId: id, mode: 'studio-browser', maxRetries: 0, run: async ({ signal }) => {
             const result = await executeBrowserRun({ root: options.root, run, html, plan: checks.data, signal, executablePath: options.browserChecks?.executablePath });
             if (result.status !== 'passed') throw new Error(result.error || 'Independent browser checks failed; see saved report');
@@ -249,7 +299,9 @@ export function createStudioApi(options: {
             const plan = plans.find((plan) => plan.id === cancelPlanId);
             if (!plan || !['queued', 'running'].includes(plan.status) || !options.runtime.cancelJob(plan.jobId)) { json(res, 409, { error: { message: 'No running test plan with this ID' } }); return; }
             plan.status = 'cancelled'; plan.error = 'User cancelled test planning'; plan.finishedAt = new Date().toISOString();
-            await saveTestPlan(options.root, plan); json(res, 200, { plan }); return;
+            await saveTestPlan(options.root, plan);
+            await appendStudioEvent(options.root, projectId, { type: 'test_plan_failed', data: { planId: plan.id, status: 'cancelled', error: plan.error } });
+            json(res, 200, { plan }); return;
           }
           if (record.status !== 'ready_for_review' || !record.previewFile) { json(res, 409, { error: { message: 'Test planning requires a successful preview' } }); return; }
           const files = sourceForPreview(record, record.previewFile);
@@ -257,6 +309,7 @@ export function createStudioApi(options: {
           const id = randomUUID();
           const plan: TestPlanRecord = { id, projectId, previewFile: record.previewFile, jobId: `studio-tests-${id}`, status: 'queued', startedAt: new Date().toISOString() };
           await saveTestPlan(options.root, plan);
+          await appendStudioEvent(options.root, projectId, { type: 'test_plan_started', data: { planId: id } });
           options.runtime.submitBackground({ jobId: plan.jobId, taskId: id, mode: 'studio-tests', maxRetries: 0, run: async ({ signal }) => {
             plan.status = 'running'; await saveTestPlan(options.root, plan);
             try {
@@ -264,9 +317,12 @@ export function createStudioApi(options: {
               plan.result = await orchestrator.runTask({ id, type: 'browser_test_plan', description: record.description, context: { files, changeRequests: requests, repair: record.repair } }, 'tester', { signal });
               if (plan.result.status !== 'success') throw new Error(plan.result.reasoning || 'Test planning failed');
               signal.throwIfAborted(); plan.status = 'ready';
+              await appendStudioEvent(options.root, projectId, { type: 'test_plan_ready', data: { planId: id, checks: plan.result.output?.checks?.length ?? 0 } });
               return { mode: 'studio-tests', task: { id, type: 'browser_test_plan', description: record.description }, status: 'success', final: { planId: id }, raw: plan, trace: { mode: 'studio-tests', startedAt: plan.startedAt, finishedAt: new Date().toISOString(), actions: [] } };
             } catch (error) {
-              plan.status = signal.aborted ? 'cancelled' : 'failed'; plan.error = error instanceof Error ? error.message : String(error); throw error;
+              plan.status = signal.aborted ? 'cancelled' : 'failed'; plan.error = error instanceof Error ? error.message : String(error);
+              await appendStudioEvent(options.root, projectId, { type: 'test_plan_failed', data: { planId: id, status: plan.status, error: plan.error.slice(0, 300) } });
+              throw error;
             } finally { plan.finishedAt = new Date().toISOString(); await saveTestPlan(options.root, plan); }
           } });
           json(res, 202, { planId: id, jobId: plan.jobId }); return;
@@ -359,6 +415,7 @@ export function createStudioApi(options: {
           record.error = 'User cancelled generation';
           record.finishedAt = new Date().toISOString();
           await saveStudioRecord(options.root, record);
+          await appendStudioEvent(options.root, projectId, { type: 'cancelled', data: { stoppedPhase: record.stoppedPhase, error: record.error } });
           json(res, 200, { project: record }); return;
         }
         if (req.method !== 'GET') { json(res, 405, { error: { message: 'Method not allowed' } }); return; }
@@ -382,6 +439,7 @@ export function createStudioApi(options: {
         }
         json(res, 404, { error: { message: 'Studio route not found' } });
       } catch (error) {
+        if (res.headersSent) { res.end(); return; } // e.g. a failure while streaming events
         const code = (error as NodeJS.ErrnoException)?.code;
         const status = code === 'ENOENT' ? 404 : error instanceof Error && error.message === 'Invalid project ID' ? 400 : 500;
         json(res, status, { error: { message: status === 404 ? 'Project not found' : error instanceof Error ? error.message : String(error) } });

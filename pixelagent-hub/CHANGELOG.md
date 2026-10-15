@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+- Studio event timeline: each project appends ordered events (phases, coding rounds, real build results with compiler errors, terminal state, test plans, browser checks) to `events.jsonl`
+- `GET /api/studio/projects/:id/events` returns the timeline as JSON or, with `?stream=1`, as Server-Sent Events with `after`/`Last-Event-ID` resume; older projects get a derived timeline
+- The mock provider now produces a buildable Studio app (first attempt deliberately fails to compile, exercising the repair loop) and fixed browser checks; optional `MOCK_LLM_DELAY_MS` slows it for live demos
+
+### Fixed
+- Studio JSON responses now carry the configured CORS origin like other API routes
+
 ### Removed
 - Intelligence pipeline (collector/analyst/decision/executor/monitor agents, workflow YAML, approvals, self-improve) and its `/api/intelligence/*` routes
 - `/api/knowledge/*`, `/api/chat` and Seedance video routes; Slack/Discord and Feishu providers

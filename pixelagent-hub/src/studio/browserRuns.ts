@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import type { Browser } from 'playwright';
 import { testPlanSchema, type TestPlanRecord } from './testPlans.js';
 import { writeJsonSnapshot } from './atomicJson.js';
+import { appendStudioEvent } from './events.js';
 
 export type BrowserRun = {
   id: string; projectId: string; testPlanId: string; previewFile: string; previewHash: string; planHash: string;
@@ -115,6 +116,8 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         controller.signal.throwIfAborted();
         run.checks.push({ name: check.name, status: 'failed', actual: actual.slice(0, 300), error: (error instanceof Error ? error.message : String(error)).slice(0, 2000) });
       }
+      const result = run.checks.at(-1)!;
+      await appendStudioEvent(root, run.projectId, { type: 'browser_check', data: { runId: run.id, name: result.name, passed: result.status === 'passed', actual: result.actual } });
     }
     await screenshot('final.png');
     controller.signal.throwIfAborted();
@@ -128,6 +131,8 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
     close(); await closing;
     run.finishedAt = new Date().toISOString();
     await saveBrowserRun(root, run);
+    const passed = run.checks.filter((check) => check.status === 'passed').length;
+    await appendStudioEvent(root, run.projectId, { type: 'browser_run_finished', data: { runId: run.id, status: run.status, passed, failed: run.checks.length - passed, error: run.error?.slice(0, 300) } });
   }
   return run;
 }
