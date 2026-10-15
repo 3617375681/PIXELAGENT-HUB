@@ -37,6 +37,8 @@
 
 `.github/workflows/pages.yml` 在每个 PR 上构建该站点；启用仓库的 GitHub Pages（Source: GitHub Actions）并把仓库变量 `ENABLE_PAGES_DEPLOY` 设为 `true` 后，main 分支会自动部署。
 
+![静态回放结束：四个角色完成、浏览器检查 4/4、作品可试玩](../../../portfolio-screenshots/studio-replay-complete-2026-10-14.png)
+
 ## 五分钟演示
 
 使用 Node 22.12+，在 `pixelagent-hub/` 执行：
