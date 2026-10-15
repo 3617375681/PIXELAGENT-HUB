@@ -1,0 +1,112 @@
+{
+  "id": "f542a306-e07d-4d23-b6a2-98d4fb7ce8ab",
+  "projectId": "ab441b05-1c29-4ffe-a5d6-77dc3522d84e",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "benchmark-fixed-f542a306-e07d-4d23-b6a2-98d4fb7ce8ab",
+  "status": "ready",
+  "startedAt": "2026-10-15T07:39:46.353Z",
+  "finishedAt": "2026-10-15T07:39:46.353Z",
+  "result": {
+    "taskId": "f542a306-e07d-4d23-b6a2-98d4fb7ce8ab",
+    "agentId": "benchmark",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initial question",
+          "actions": [],
+          "selector": "#question",
+          "expected": "2 + 2 = ?"
+        },
+        {
+          "name": "Correct first answer",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#answer-a"
+            }
+          ],
+          "selector": "#score",
+          "expected": "1"
+        },
+        {
+          "name": "First answer locked",
+          "actions": [],
+          "selector": "#answer-a",
+          "expected": "true",
+          "assertion": "disabled"
+        },
+        {
+          "name": "Other answer locked",
+          "actions": [],
+          "selector": "#answer-b",
+          "expected": "true",
+          "assertion": "disabled"
+        },
+        {
+          "name": "Second question",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#next"
+            }
+          ],
+          "selector": "#question",
+          "expected": "3 + 3 = ?"
+        },
+        {
+          "name": "Wrong second answer",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#answer-a"
+            }
+          ],
+          "selector": "#score",
+          "expected": "1"
+        },
+        {
+          "name": "Finish",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#next"
+            }
+          ],
+          "selector": "#question",
+          "expected": "Finished"
+        },
+        {
+          "name": "Restart score",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "#restart"
+            }
+          ],
+          "selector": "#score",
+          "expected": "0"
+        },
+        {
+          "name": "Restart question",
+          "actions": [],
+          "selector": "#question",
+          "expected": "2 + 2 = ?"
+        },
+        {
+          "name": "Restart enables answers",
+          "actions": [],
+          "selector": "#answer-a",
+          "expected": "false",
+          "assertion": "disabled"
+        }
+      ],
+      "limitations": [
+        "Second correct answer path, skipping questions, the second answer state after restart, native keyboard and visual appearance need separate review."
+      ],
+      "llmProvider": "benchmark",
+      "llmModel": "fixed-checks"
+    },
+    "reasoning": "Fixed benchmark checks; no Tester model call"
+  }
+}

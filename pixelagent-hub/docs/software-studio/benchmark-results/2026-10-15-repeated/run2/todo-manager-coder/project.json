@@ -1,0 +1,159 @@
+{
+  "projectId": "8be42753-520d-4a49-b170-accb1774b4c4",
+  "strategy": "manager-coder",
+  "ownerPid": 80412,
+  "ownerHost": "LAPTOP-MSBOMN9V",
+  "description": "Create an offline pixel-style task list. Input ID todo-input, add button ID todo-add. Show integer-only total task count in #todo-total and incomplete task count in #remaining, both initially 0. First task gets text span #todo-text-1, checkbox #todo-check-1, and delete button #todo-delete-1. Adding trims text; blank input adds nothing. Toggling checkbox updates incomplete count; deleting removes task and updates both counts. New tasks get increasing numeric IDs. Keep all state in memory, no storage. Include labels and README. HTML/CSS/JS only, under 240 source lines.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-15T07:20:38.421Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "8be42753-520d-4a49-b170-accb1774b4c4-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang='en'>\n<head>\n  <meta charset='UTF-8'>\n  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n  <title>Offline Pixel Task List</title>\n  <link rel='stylesheet' href='styles.css'>\n</head>\n<body>\n  <main class='app'>\n    <h1>Pixel Tasks</h1>\n    <div class='counts'>\n      <p>Total tasks: <span id='todo-total'>0</span></p>\n      <p>Remaining: <span id='remaining'>0</span></p>\n    </div>\n    <div class='add-row'>\n      <label for='todo-input'>New task</label>\n      <input id='todo-input' type='text' autocomplete='off'>\n      <button id='todo-add' type='button'>Add</button>\n    </div>\n    <ul id='todo-list' aria-label='Task list'></ul>\n  </main>\n  <script src='script.js' defer></script>\n</body>\n</html>",
+              "description": "Root page with labeled input, add button, counters, and task list container."
+            },
+            {
+              "path": "styles.css",
+              "content": ":root {\n  --pixel-black: #111;\n  --pixel-white: #f8f8f8;\n  --pixel-accent: #ffcc00;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  background: #b8c0c8;\n  font-family: 'Courier New', Courier, monospace;\n  color: var(--pixel-black);\n}\n\n.app {\n  width: min(92vw, 420px);\n  background: #e8e8e8;\n  border: 3px solid #111;\n  box-shadow: 6px 6px 0 #111;\n  padding: 16px;\n}\n\nh1 {\n  font-size: 1.6rem;\n  margin: 0 0 14px;\n  text-align: center;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n}\n\n.counts p {\n  display: inline-block;\n  margin: 0 12px 12px 0;\n  font-weight: bold;\n}\n\n.add-row {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-bottom: 14px;\n}\n\n.add-row label {\n  font-weight: bold;\n}\n\ninput[type='text'] {\n  flex: 1 1 140px;\n  padding: 8px;\n  border: 2px solid #111;\n  background: #fff;\n  font: inherit;\n}\n\nbutton {\n  font: inherit;\n  font-weight: bold;\n  text-transform: uppercase;\n  padding: 8px 10px;\n  border: 2px solid #111;\n  background: #ddd;\n  box-shadow: 3px 3px 0 #111;\n  cursor: pointer;\n}\n\nbutton:active {\n  transform: translate(2px, 2px);\n  box-shadow: 1px 1px 0 #111;\n}\n\ninput[type='text']:focus-visible,\nbutton:focus-visible,\ninput[type='checkbox']:focus-visible {\n  outline: 3px solid var(--pixel-accent);\n  outline-offset: 2px;\n}\n\n#todo-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  display: grid;\n  gap: 10px;\n}\n\n.todo-item {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 8px;\n  background: #f8f8f8;\n  border: 2px solid #111;\n  box-shadow: 3px 3px 0 #111;\n}\n\n.todo-item.done span {\n  text-decoration: line-through;\n  opacity: 0.6;\n}\n\n.todo-item span {\n  flex: 1;\n  word-break: break-word;\n}\n\ninput[type='checkbox'] {\n  width: 18px;\n  height: 18px;\n  accent-color: #111;\n}",
+              "description": "Retro pixel-style layout with accessible focus states and task item styling."
+            },
+            {
+              "path": "script.js",
+              "content": "const input = document.getElementById('todo-input');\nconst addBtn = document.getElementById('todo-add');\nconst list = document.getElementById('todo-list');\nconst totalEl = document.getElementById('todo-total');\nconst remainingEl = document.getElementById('remaining');\n\nlet tasks = [];\nlet nextId = 1;\n\nfunction updateCounts() {\n  totalEl.textContent = tasks.length;\n  remainingEl.textContent = tasks.filter(task => !task.completed).length;\n}\n\nfunction render() {\n  list.innerHTML = '';\n\n  tasks.forEach(task => {\n    const li = document.createElement('li');\n    li.className = 'todo-item' + (task.completed ? ' done' : '');\n\n    const checkbox = document.createElement('input');\n    checkbox.type = 'checkbox';\n    checkbox.id = `todo-check-${task.id}`;\n    checkbox.checked = task.completed;\n    checkbox.setAttribute('aria-label', 'Mark task complete');\n\n    const text = document.createElement('span');\n    text.id = `todo-text-${task.id}`;\n    text.textContent = task.text;\n\n    const deleteBtn = document.createElement('button');\n    deleteBtn.type = 'button';\n    deleteBtn.id = `todo-delete-${task.id}`;\n    deleteBtn.textContent = 'Delete';\n    deleteBtn.setAttribute('aria-label', 'Delete task');\n\n    checkbox.addEventListener('change', () => {\n      task.completed = checkbox.checked;\n      li.classList.toggle('done', task.completed);\n      updateCounts();\n    });\n\n    deleteBtn.addEventListener('click', () => {\n      tasks = tasks.filter(t => t.id !== task.id);\n      render();\n    });\n\n    li.append(checkbox, text, deleteBtn);\n    list.appendChild(li);\n  });\n\n  updateCounts();\n}\n\nfunction addTask() {\n  const text = input.value.trim();\n  if (!text) return;\n\n  tasks.push({ id: nextId, text, completed: false });\n  nextId += 1;\n  input.value = '';\n  render();\n}\n\naddBtn.addEventListener('click', addTask);\ninput.addEventListener('keydown', (event) => {\n  if (event.key === 'Enter') {\n    event.preventDefault();\n    addTask();\n  }\n});",
+              "description": "In-memory task state, add/toggle/delete logic, increasing IDs, and counter updates."
+            },
+            {
+              "path": "README.md",
+              "content": "# Offline Pixel Task List\n\nA lightweight, offline task list with retro pixel styling. No packages, no storage, no network requests.\n\n## Run\nOpen `index.html` in any modern browser.\n\n## Features\n- Add tasks with `#todo-input` and `#todo-add`\n- Blank input adds nothing; text is trimmed\n- First task receives IDs `#todo-text-1`, `#todo-check-1`, `#todo-delete-1`\n- New tasks increment numeric IDs; IDs are never reused\n- Total task count in `#todo-total`, incomplete count in `#remaining`\n- Toggling checkboxes updates incomplete count\n- Deleting a task removes it and updates both counts\n- All state is kept in memory only\n\n## Acceptance\n- Open index.html\n- Initially both counts show `0`\n- Add `  ` -> nothing added\n- Add `Paint fence` -> total 1, remaining 1\n- Toggle checkbox -> total 1, remaining 0\n- Add `Write docs` -> total 2, remaining 1\n- Delete first task -> total 1, remaining 0 (if second unchecked)",
+              "description": "Usage instructions and acceptance checks."
+            }
+          ],
+          "explanation": "Offline pixel-style task list using only HTML, CSS, and plain JavaScript. Open index.html directly. Tasks are stored in memory only; entering blank text adds nothing. New tasks use increasing numeric IDs starting at 1. Total and remaining counts update on add, toggle, and delete.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 939,
+            "completion_tokens": 8510,
+            "total_tokens": 9449
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-15T07:22:43.139Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "plan": {
+    "taskId": "8be42753-520d-4a49-b170-accb1774b4c4",
+    "agentId": "manager",
+    "status": "success",
+    "output": {
+      "projectName": "Offline Pixel Task List",
+      "goal": "Build an offline pixel-style task list using only HTML, CSS, and plain JavaScript, with add, toggle, delete, and dynamic in-memory counters, in under 240 source lines and including a README.",
+      "phases": [
+        {
+          "id": "p1",
+          "name": "Project Setup & HTML Structure",
+          "tasks": [
+            "Create root index.html with semantic structure and relative paths",
+            "Add labeled input #todo-input, add button #todo-add, total count #todo-total, remaining count #remaining, and task list container",
+            "Initialize #todo-total and #remaining to 0",
+            "Create README.md outline with usage and acceptance notes"
+          ],
+          "assignee": "Frontend Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p2",
+          "name": "Pixel-Style CSS",
+          "tasks": [
+            "Create styles.css with retro pixel-style visual design",
+            "Style input, button, task items, checkboxes, and delete buttons",
+            "Ensure focus indicators and keyboard-accessible controls",
+            "Keep layout responsive and lightweight"
+          ],
+          "assignee": "UI Developer",
+          "priority": "medium"
+        },
+        {
+          "id": "p3",
+          "name": "JavaScript State & Interactions",
+          "tasks": [
+            "Maintain in-memory task array without storage or external calls",
+            "Add task on button click: trim text, ignore blank input, assign increasing numeric ID",
+            "Render first task as #todo-text-1, #todo-check-1, #todo-delete-1 with later tasks incrementing IDs",
+            "Update #todo-total on add and delete",
+            "Toggle completion to update #remaining count",
+            "Delete task to remove item and update both total and remaining counts",
+            "Use addEventListener only, no inline HTML event handlers"
+          ],
+          "assignee": "JavaScript Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p4",
+          "name": "Integration, QA & Documentation",
+          "tasks": [
+            "Verify total source lines under 240 across HTML, CSS, and JS",
+            "Test blank input adds nothing, valid input adds with incremented IDs",
+            "Test toggling updates remaining count correctly",
+            "Test deletion updates total and remaining counts correctly",
+            "Check keyboard accessibility for all controls",
+            "Finalize README with run instructions and acceptance evidence",
+            "Package runnable source archive with relative paths"
+          ],
+          "assignee": "QA Engineer",
+          "priority": "high"
+        }
+      ],
+      "estimatedRounds": 4,
+      "risks": [
+        "Source line count may exceed 240 during styling or feature implementation",
+        "Pixel-style CSS may reduce accessibility or readability",
+        "In-memory ID generation or deletion may cause count mismatch bugs",
+        "Edge cases such as rapid add/delete or duplicate IDs may break counters",
+        "Keyboard accessibility may be overlooked while styling"
+      ],
+      "llmUsage": {
+        "prompt_tokens": 430,
+        "completion_tokens": 1263,
+        "total_tokens": 1693
+      },
+      "llmModel": "deepseek-v4-pro",
+      "llmProvider": "deepseek"
+    },
+    "reasoning": "Generated by deepseek/deepseek-v4-pro",
+    "metadata": {
+      "executedAt": "2026-10-15T07:21:00.212Z",
+      "agentName": "Manager"
+    }
+  },
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-15T07:22:43.219Z"
+}

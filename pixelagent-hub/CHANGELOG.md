@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- Repeated real-model strategy comparison (2026-10-15, 30 generations) with full evidence; `studio:benchmark:browser` runs fixed plans through the production browser endpoint and `studio:benchmark:series` combines repeated runs
 - Event-driven pixel team graph in Studio (Manager → Coder → Builder → Tester) with a red feedback edge carrying real compiler or browser-check failures
 - Static read-only replay build (`VITE_REPLAY=1`) recorded by `npm run replay:export`, plus a GitHub Pages workflow that builds it on every PR
 - Studio event timeline: each project appends ordered events (phases, coding rounds, real build results with compiler errors, terminal state, test plans, browser checks) to `events.jsonl`
