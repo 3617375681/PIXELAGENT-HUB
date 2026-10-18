@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
-import { Code2, Download, Play, Plus, Radio, RefreshCw, RotateCcw, Square, Terminal, Volume2, VolumeX, Zap } from 'lucide-react';
+import { Code2, Download, Play, Plus, Radio, RefreshCw, RotateCcw, Share2, Square, Terminal, Volume2, VolumeX, Zap } from 'lucide-react';
 import { OFFLINE_MESSAGE, studioApi } from '../lib/recordsApi';
 import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan } from '../types/studio';
 import { readCheckResults, type BrowserCheckResult } from '../lib/studioChecks';
@@ -17,7 +17,7 @@ import ReplayBanner from '../components/ReplayBanner';
 import ReplayGallery from '../components/ReplayGallery';
 import ReplayShowcase from '../components/ReplayShowcase';
 import { REPLAY, loadReplayManifest } from '../lib/replay';
-import { isLiveProject } from '../lib/live/studio';
+import { isLiveRun, isSharedProject, shareLink } from '../lib/live/studio';
 import { liveCredentials } from '../lib/live/key';
 import LiveKeyDialog from '../components/LiveKeyDialog';
 import { soundEngine } from '../lib/soundEngine';
@@ -38,6 +38,7 @@ export default function Studio() {
   const [description, setDescription] = useState(EXAMPLES[0].text);
   const [edited, setEdited] = useState(false);
   const [keyDialog, setKeyDialog] = useState(false);
+  const [shareState, setShareState] = useState<{ projectId?: string; url?: string; copied?: boolean }>({});
   const [sound, setSound] = useState(() => { try { return localStorage.getItem('pixelagent:sound') !== 'off'; } catch { return true; } });
   useEffect(() => {
     soundEngine.setEnabled(sound);
@@ -164,8 +165,11 @@ export default function Studio() {
 
   const timeline = useStudioEvents(projectId, refreshKey);
   const pipeline = useMemo(() => reducePipeline(timeline.events), [timeline.events]);
+  const sharedOutput = project?.rounds.at(-1)?.code.output;
+  const sharedModel = [sharedOutput?.llmProvider, sharedOutput?.llmModel].filter(Boolean).join(' · ');
   // PLAY LIVE runs in this tab; every other project in the static build is a read-only recording.
-  const live = REPLAY && isLiveProject(projectId);
+  const live = REPLAY && isLiveRun(projectId);
+  const shared = REPLAY && isSharedProject(projectId);
   const readOnly = REPLAY && !live;
   // A recording's saved record is already final; show it as running until its timeline has played.
   const replaying = readOnly && !!project && !pipeline.terminal;
@@ -225,6 +229,15 @@ export default function Studio() {
     if (!projectId) return;
     const accepted = await studioApi.retry(projectId);
     navigate(`/studio/${accepted.projectId}`); setTab('preview'); setRefreshKey((key) => key + 1);
+  });
+  const share = () => action(async () => {
+    if (!projectId) return;
+    soundEngine.click();
+    const url = await shareLink(projectId);
+    let copied = false;
+    try { await navigator.clipboard.writeText(url); copied = true; } catch { /* show the link to copy by hand */ }
+    setShareState({ projectId, url, copied });
+    if (copied) soundEngine.success();
   });
   const download = () => action(async () => {
     if (!projectId) return;
@@ -290,7 +303,7 @@ export default function Studio() {
 
   return (
     <main className="studio pixel-grid-bg">
-      {REPLAY && <ReplayBanner projectId={projectId} live={live} />}
+      {REPLAY && <ReplayBanner projectId={projectId} live={live} sharedBy={shared ? sharedModel : undefined} />}
       {REPLAY && <LiveKeyDialog open={keyDialog} onOpenChange={setKeyDialog} onSaved={() => { setKeyDialog(false); void create(); }} />}
       <div className="studio-crt scanline" aria-hidden="true" />
       <header className="studio-header">
@@ -346,8 +359,10 @@ export default function Studio() {
         <section className="studio-result" aria-label="Result">
           <div className="studio-tabs" role="tablist" aria-label="Result view">
             {([{ key: 'preview', label: 'PLAY', icon: Play }, { key: 'source', label: 'CODE', icon: Code2 }] as const).map(({ key, label, icon: Icon }) => <button key={key} id={`studio-tab-${key}`} className="pixel-font" role="tab" aria-selected={tab === key} aria-controls="studio-panel" disabled={qaRunning} onClick={() => { soundEngine.click(); setTab(key); }}><Icon size={14} />{label}</button>)}
+            {live && ready && <button className="studio-share pixel-font" onClick={() => void share()} disabled={busy}><Share2 size={14} />{shareState.projectId === projectId && shareState.copied ? 'LINK COPIED' : 'SHARE'}</button>}
             <button className="studio-download pixel-font" onClick={() => void download()} disabled={!ready || busy}><Download size={14} />ZIP</button>
           </div>
+          {shareState.projectId === projectId && shareState.url && !shareState.copied && <label className="studio-share-link"><span className="pixel-font">COPY THIS LINK</span><input readOnly value={shareState.url} onFocus={(event) => event.currentTarget.select()} /></label>}
           <div className="studio-panel" id="studio-panel" role="tabpanel" aria-labelledby={`studio-tab-${tab}`}>
             {tab === 'preview' && (html && !replaying
               ? <><iframe ref={previewFrame} title="The built app" srcDoc={preview.html} sandbox="allow-scripts allow-forms" referrerPolicy="no-referrer" /><p className="studio-preview-note">{runtimeErrors.length ? `${runtimeErrors.length} runtime errors seen. See MORE TOOLS.` : previewLoaded ? 'Live and playable. Built is not the same as accepted: check it against the idea.' : 'Loading…'}</p></>

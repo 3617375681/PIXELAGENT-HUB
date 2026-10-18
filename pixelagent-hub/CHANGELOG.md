@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- SHARE for finished PLAY LIVE runs: the whole run (request, events, built app, source) is deflated into the URL fragment; `#/s/<payload>` replays it read-only with recorded timing, validated as untrusted input; `smoke:live` covers build → share → replay in a fresh browser context
 - PLAY LIVE takes keys for DeepSeek, Anthropic (official SDK, refusal fallbacks), OpenAI, OpenRouter, Qwen, Zhipu GLM and SiliconFlow
 - PLAY LIVE runs the Tester's checks before finishing and gives the Coder one repair round when a check fails
 - Test plans can request `isolation: "fresh"` (the Tester now does): every check starts on a freshly loaded page, on the server and in the browser; in-page checks wait up to 2 s like server checks

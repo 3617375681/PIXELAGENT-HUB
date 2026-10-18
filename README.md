@@ -39,6 +39,7 @@ A Manager plans, a Coder writes a small offline web app, a Builder really compil
   3. The Tester plans independent checks.
   4. The checks run, each on a freshly loaded page.
   5. If a check fails, the Coder gets **one repair round**, and the same checks run again.
+- **SHARE** a finished run: the link carries the whole run in its URL fragment (request, timeline, app and source), so anyone can replay it and play the app, with no server and no key.
 - **Cost:** typically 20k–40k tokens per run. Claude runs use server-side refusal fallbacks.
 - **Limitation:** in-browser checks run inside the app's own page, so a hostile app could forge them. Independent sandboxed-Chromium checks need the local server.
 
