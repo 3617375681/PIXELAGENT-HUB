@@ -6,7 +6,21 @@ import { prepareStudioPreview, readPreviewMessage } from '../studioPreview';
  * (scripts only, no same-origin access) using the same bridge as the dashboard's Quick checks.
  * These are in-page checks, not the server's independent Chromium runs.
  */
-export async function runInPageChecks(html: string, checks: BrowserCheck[], signal?: AbortSignal, timeoutMs = 20_000): Promise<{ results: BrowserCheckResult[]; errors: string[] }> {
+type InPageRun = { results: BrowserCheckResult[]; errors: string[] };
+
+/** Fresh isolation (the Tester's default) loads the app anew for every check, as the server does. */
+export async function runInPageChecks(html: string, checks: BrowserCheck[], signal?: AbortSignal, isolation: 'shared' | 'fresh' = 'shared'): Promise<InPageRun> {
+  if (isolation === 'shared') return runInFrame(html, checks, signal);
+  const run: InPageRun = { results: [], errors: [] };
+  for (const check of checks) {
+    const { results, errors } = await runInFrame(html, [check], signal, 10_000);
+    run.results.push(...results);
+    for (const error of errors) if (run.errors.length < 20 && !run.errors.includes(error)) run.errors.push(error);
+  }
+  return run;
+}
+
+async function runInFrame(html: string, checks: BrowserCheck[], signal?: AbortSignal, timeoutMs = 30_000): Promise<InPageRun> {
   const nonce = crypto.randomUUID();
   const frame = document.createElement('iframe');
   frame.setAttribute('sandbox', 'allow-scripts allow-forms');

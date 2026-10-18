@@ -66,13 +66,16 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
     page.on('dialog', (dialog) => void dialog.dismiss().catch(() => {}));
     page.setDefaultTimeout(2000);
     // Opaque sandbox prevents generated code accessing the trusted parent document.
-    await page.setContent('<style>html,body{margin:0}iframe{border:0;width:100vw;height:100vh}</style><iframe id="app" sandbox="allow-scripts allow-forms"></iframe>');
-    await page.locator('#app').evaluate((element, html) => new Promise<void>((resolve) => {
-      element.addEventListener('load', () => resolve(), { once: true });
-      (element as HTMLIFrameElement).srcdoc = html;
-    }), options.html);
+    const loadApp = async () => {
+      await page.setContent('<style>html,body{margin:0}iframe{border:0;width:100vw;height:100vh}</style><iframe id="app" sandbox="allow-scripts allow-forms"></iframe>');
+      await page.locator('#app').evaluate((element, html) => new Promise<void>((resolve) => {
+        element.addEventListener('load', () => resolve(), { once: true });
+        (element as HTMLIFrameElement).srcdoc = html;
+      }), options.html);
+      await frame.locator('css=body').waitFor();
+    };
     const frame = page.frameLocator('#app');
-    await frame.locator('css=body').waitFor();
+    await loadApp();
     const directory = join(root, run.projectId, 'browser-runs', run.id);
     await mkdir(directory, { recursive: true });
     const screenshot = async (name: 'initial.png' | 'final.png') => {
@@ -80,8 +83,10 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
       run.screenshots.push(name);
     };
     await screenshot('initial.png');
-    for (const check of plan.checks) {
+    for (const [index, check] of plan.checks.entries()) {
       controller.signal.throwIfAborted();
+      // Fresh isolation: every check starts from a newly loaded app, independent of earlier checks.
+      if (plan.isolation === 'fresh' && index > 0) await loadApp();
       let actual = '';
       try {
         for (const action of check.actions) {

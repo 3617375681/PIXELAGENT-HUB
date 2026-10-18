@@ -129,3 +129,16 @@ test('real browser uses click, fill and key actions, captures screenshots and de
     } finally { clearTimeout(cancelTimer); }
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('fresh isolation reloads the app before every check; shared plans keep their state', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-isolation-'));
+  try {
+    const content = '<html><body><button id="mode">Focus</button><script>document.querySelector("#mode").addEventListener("click",e=>e.target.textContent=e.target.textContent==="Focus"?"Break":"Focus")</script></body></html>';
+    const toggle = { name: 'Toggle to break', actions: [{ type: 'click', selector: '#mode' }], selector: '#mode', expected: 'Break' };
+    const checks = (isolation?: 'fresh') => ({ checks: [toggle, { ...toggle, name: 'Toggle again from a fresh page' }], limitations: [], ...(isolation ? { isolation } : {}) });
+    const fresh = await executeBrowserRun({ root, run: makeRun(content, checks('fresh')), html: content, plan: checks('fresh'), signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.deepEqual(fresh.checks.map((check) => check.status), ['passed', 'passed'], JSON.stringify(fresh));
+    const shared = await executeBrowserRun({ root, run: makeRun(content, checks()), html: content, plan: checks(), signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.deepEqual(shared.checks.map((check) => check.actual), ['Break', 'Focus']);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

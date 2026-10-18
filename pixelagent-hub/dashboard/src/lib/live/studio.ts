@@ -224,7 +224,7 @@ async function runChecks(entry: Entry, checks: BrowserCheck[], signal: AbortSign
   const runId = crypto.randomUUID();
   project.phase = 'testing';
   emit(entry, 'browser_run_started', { runId, testPlanId: entry.plan?.id, checks: checks.length, source: 'in-page' });
-  const { results, errors } = await runInPageChecks(entry.html!, checks, signal);
+  const { results, errors } = await runInPageChecks(entry.html!, checks, signal, entry.plan?.result?.output.isolation ?? 'shared');
   for (const result of results) emit(entry, 'browser_check', { runId, name: result.name, passed: result.status === 'passed', actual: result.actual });
   const passed = results.filter((result) => result.status === 'passed').length;
   const failed = passed !== results.length || errors.length > 0;

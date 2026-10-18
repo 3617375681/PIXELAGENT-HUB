@@ -25,7 +25,8 @@ const action = z.discriminatedUnion('type', [
 ]);
 export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, expected: z.string().max(300), assertion: z.enum(['text', 'disabled']).optional() }).strict()
   .refine((check) => check.assertion !== 'disabled' || ['true', 'false'].includes(check.expected), 'Disabled assertions require expected "true" or "false"');
-export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min(1).max(10), limitations: z.array(z.string().max(300)).max(10) }).strict().refine((plan) => new Set(plan.checks.map((check) => check.name)).size === plan.checks.length, 'Check names must be unique');
+// isolation: 'shared' (default; saved and fixed plans) runs checks in order on one page; 'fresh' reloads the app before each check.
+export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min(1).max(10), limitations: z.array(z.string().max(300)).max(10), isolation: z.enum(['shared', 'fresh']).optional() }).strict().refine((plan) => new Set(plan.checks.map((check) => check.name)).size === plan.checks.length, 'Check names must be unique');
 
 export const filesSchema = z.array(z.object({ path: z.string(), content: z.string() })).min(1).max(40);
 export type SourceFile = z.infer<typeof filesSchema>[number];
