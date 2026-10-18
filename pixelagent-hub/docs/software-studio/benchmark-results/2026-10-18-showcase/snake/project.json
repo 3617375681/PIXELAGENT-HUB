@@ -1,0 +1,158 @@
+{
+  "projectId": "9b613671-87bf-4edc-834c-91c62622cc56",
+  "jobId": "studio-9b613671-87bf-4edc-834c-91c62622cc56",
+  "strategy": "manager-coder",
+  "description": "A pixel snake game: arrow keys to move, a score, pause/resume, restart and a game-over screen. Start paused and show how to play.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-18T01:55:08.667Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "9b613671-87bf-4edc-834c-91c62622cc56-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang='en'>\n<head>\n  <meta charset='UTF-8'>\n  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n  <title>Pixel Snake Game</title>\n  <link rel='stylesheet' href='styles.css'>\n</head>\n<body>\n  <main class='game-card' aria-labelledby='title'>\n    <h1 id='title'>Pixel Snake</h1>\n    <div class='scoreboard'>\n      <span>Score</span>\n      <span id='score' aria-live='polite'>0</span>\n    </div>\n    <div class='board-wrap'>\n      <canvas id='gameCanvas' width='400' height='400' aria-label='Snake game board'></canvas>\n      <div id='overlay' class='overlay' role='dialog' aria-describedby='overlayText'>\n        <h2 id='overlayTitle'></h2>\n        <p id='overlayText'></p>\n        <button id='startBtn' class='btn primary' type='button'>Start Game</button>\n      </div>\n    </div>\n    <div class='controls' aria-label='Game controls'>\n      <button id='pauseBtn' class='btn' type='button'>Pause</button>\n      <button id='restartBtn' class='btn' type='button'>Restart</button>\n    </div>\n    <p class='hint'>Arrow keys move · Space or P pauses/resumes · R restarts</p>\n  </main>\n  <script src='game.js'></script>\n</body>\n</html>\n",
+              "description": "Main HTML structure for the pixel snake game"
+            },
+            {
+              "path": "styles.css",
+              "content": ":root {\n  --bg: #1a1c2c;\n  --card: #262a40;\n  --card-inner: #22243a;\n  --text: #f7f7ff;\n  --muted: #b9bcd1;\n  --accent: #4ade80;\n  --accent-dark: #22c55e;\n  --food: #f87171;\n  --control: #3d405b;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  background: radial-gradient(circle at 20% 15%, #232746, var(--bg) 70%);\n  color: var(--text);\n  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;\n  font-size: 16px;\n}\n\n.game-card {\n  width: min(100%, 520px);\n  background: var(--card);\n  border: 1px solid #343852;\n  border-radius: 18px;\n  padding: 24px;\n  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);\n  text-align: center;\n}\n\nh1 {\n  margin: 0 0 18px;\n  font-size: 2rem;\n  letter-spacing: 1px;\n}\n\n.scoreboard {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  background: var(--card-inner);\n  padding: 12px 16px;\n  border-radius: 12px;\n  margin-bottom: 16px;\n  font-size: 1.25rem;\n  font-weight: 600;\n}\n\n.board-wrap {\n  position: relative;\n  width: 100%;\n  border-radius: 14px;\n  overflow: hidden;\n  background: var(--card-inner);\n}\n\ncanvas {\n  display: block;\n  width: 100%;\n  height: auto;\n  background: var(--card-inner);\n  image-rendering: pixelated;\n}\n\n.overlay {\n  position: absolute;\n  inset: 0;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n  padding: 20px;\n  background: rgba(20, 22, 35, 0.92);\n  text-align: center;\n}\n\n.overlay.hidden {\n  display: none;\n}\n\n.overlay h2 {\n  margin: 0;\n  font-size: 1.7rem;\n  color: var(--accent);\n}\n\n.overlay p {\n  margin: 0;\n  max-width: 320px;\n  line-height: 1.5;\n  color: var(--muted);\n}\n\n.controls {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n  justify-content: center;\n  margin-top: 18px;\n}\n\n.btn {\n  border: none;\n  border-radius: 999px;\n  padding: 12px 22px;\n  font-size: 1rem;\n  font-weight: 600;\n  cursor: pointer;\n  color: var(--text);\n  background: var(--control);\n  transition: transform 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;\n}\n\n.btn:hover {\n  background: #4a4e6e;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.96);\n}\n\n.btn.primary {\n  background: var(--accent);\n  color: #17201b;\n}\n\n.btn.primary:hover {\n  background: #6ee7b7;\n}\n\n.btn:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n  transform: none;\n}\n\n.hint {\n  margin: 18px 0 0;\n  font-size: 0.9rem;\n  color: var(--muted);\n}\n\n@media (max-width: 420px) {\n  .game-card {\n    padding: 16px;\n  }\n\n  h1 {\n    font-size: 1.7rem;\n  }\n\n  .btn {\n    flex: 1;\n    padding: 11px 8px;\n  }\n}\n",
+              "description": "Responsive themed styling for the game board and controls"
+            },
+            {
+              "path": "game.js",
+              "content": "(() => {\n  'use strict';\n\n  const canvas = document.getElementById('gameCanvas');\n  const ctx = canvas.getContext('2d');\n  const scoreEl = document.getElementById('score');\n  const overlay = document.getElementById('overlay');\n  const overlayTitle = document.getElementById('overlayTitle');\n  const overlayText = document.getElementById('overlayText');\n  const startBtn = document.getElementById('startBtn');\n  const pauseBtn = document.getElementById('pauseBtn');\n  const restartBtn = document.getElementById('restartBtn');\n\n  const COLS = 20;\n  const ROWS = 20;\n  const CELL = 20;\n  const STEP_MS = 150;\n\n  let snake;\n  let food;\n  let direction;\n  let nextDirection;\n  let score;\n  let state;\n  let lastTime = 0;\n  let accumulator = 0;\n\n  function resetGame() {\n    snake = [\n      { x: 8, y: 10 },\n      { x: 7, y: 10 },\n      { x: 6, y: 10 },\n    ];\n    direction = { x: 1, y: 0 };\n    nextDirection = { x: 1, y: 0 };\n    score = 0;\n    scoreEl.textContent = '0';\n    food = createFood();\n  }\n\n  function createFood() {\n    let pos;\n    do {\n      pos = {\n        x: Math.floor(Math.random() * COLS),\n        y: Math.floor(Math.random() * ROWS),\n      };\n    } while (snake.some(segment => segment.x === pos.x && segment.y === pos.y));\n    return pos;\n  }\n\n  function update() {\n    direction = { ...nextDirection };\n    const head = snake[0];\n    const newHead = {\n      x: head.x + direction.x,\n      y: head.y + direction.y,\n    };\n\n    if (newHead.x < 0 || newHead.x >= COLS || newHead.y < 0 || newHead.y >= ROWS) {\n      gameOver();\n      return;\n    }\n\n    const willEat = newHead.x === food.x && newHead.y === food.y;\n    const bodyToCheck = willEat ? snake : snake.slice(0, -1);\n\n    if (bodyToCheck.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {\n      gameOver();\n      return;\n    }\n\n    snake.unshift(newHead);\n    if (willEat) {\n      score += 10;\n      scoreEl.textContent = String(score);\n      food = createFood();\n    } else {\n      snake.pop();\n    }\n  }\n\n  function gameOver() {\n    state = 'gameover';\n    showOverlay('Game Over', `Your score: ${score}`);\n    startBtn.textContent = 'Play Again';\n    pauseBtn.disabled = true;\n    pauseBtn.textContent = 'Pause';\n  }\n\n  function startGame() {\n    if (state === 'gameover') {\n      resetGame();\n    }\n    state = 'running';\n    hideOverlay();\n    pauseBtn.disabled = false;\n    pauseBtn.textContent = 'Pause';\n    lastTime = performance.now();\n    accumulator = 0;\n  }\n\n  function togglePause() {\n    if (state === 'running') {\n      state = 'paused';\n      showOverlay('Paused', 'Press Space or click Resume to continue.');\n      startBtn.textContent = 'Resume';\n      pauseBtn.textContent = 'Resume';\n    } else if (state === 'paused') {\n      state = 'running';\n      hideOverlay();\n      pauseBtn.textContent = 'Pause';\n      lastTime = performance.now();\n      accumulator = 0;\n    }\n  }\n\n  function restartGame() {\n    resetGame();\n    state = 'running';\n    hideOverlay();\n    pauseBtn.disabled = false;\n    pauseBtn.textContent = 'Pause';\n    lastTime = performance.now();\n    accumulator = 0;\n  }\n\n  function showOverlay(title, text) {\n    overlayTitle.textContent = title;\n    overlayText.textContent = text;\n    overlay.classList.remove('hidden');\n  }\n\n  function hideOverlay() {\n    overlay.classList.add('hidden');\n  }\n\n  function changeDirection(x, y) {\n    if (state !== 'running' && state !== 'paused') return;\n    if (direction.x === -x && direction.y === -y) return;\n    nextDirection = { x, y };\n  }\n\n  function handleSpaceOrP() {\n    if (state === 'running' || state === 'paused') {\n      togglePause();\n    } else if (state === 'ready') {\n      startGame();\n    } else if (state === 'gameover') {\n      startGame();\n    }\n  }\n\n  function handleKeydown(event) {\n    const key = event.key;\n\n    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {\n      event.preventDefault();\n      if (key === 'ArrowUp') changeDirection(0, -1);\n      if (key === 'ArrowDown') changeDirection(0, 1);\n      if (key === 'ArrowLeft') changeDirection(-1, 0);\n      if (key === 'ArrowRight') changeDirection(1, 0);\n      return;\n    }\n\n    if (key === ' ' || key === 'Spacebar' || key === 'p' || key === 'P') {\n      const activeTag = document.activeElement?.tagName;\n      if (key === ' ' || key === 'Spacebar') {\n        if (activeTag !== 'BUTTON') {\n          event.preventDefault();\n          handleSpaceOrP();\n        }\n      } else {\n        event.preventDefault();\n        handleSpaceOrP();\n      }\n      return;\n    }\n\n    if (key === 'r' || key === 'R') {\n      event.preventDefault();\n      restartGame();\n    }\n  }\n\n  function draw() {\n    ctx.fillStyle = '#22243a';\n    ctx.fillRect(0, 0, canvas.width, canvas.height);\n\n    ctx.strokeStyle = 'rgba(255,255,255,0.04)';\n    ctx.lineWidth = 1;\n    for (let i = 0; i <= COLS; i++) {\n      ctx.beginPath();\n      ctx.moveTo(i * CELL, 0);\n      ctx.lineTo(i * CELL, canvas.height);\n      ctx.stroke();\n    }\n    for (let i = 0; i <= ROWS; i++) {\n      ctx.beginPath();\n      ctx.moveTo(0, i * CELL);\n      ctx.lineTo(canvas.width, i * CELL);\n      ctx.stroke();\n    }\n\n    ctx.fillStyle = '#f87171';\n    ctx.fillRect(food.x * CELL + 2, food.y * CELL + 2, CELL - 4, CELL - 4);\n\n    snake.forEach((segment, index) => {\n      ctx.fillStyle = index === 0 ? '#6ee7b7' : '#4ade80';\n      ctx.fillRect(segment.x * CELL + 1, segment.y * CELL + 1, CELL - 2, CELL - 2);\n    });\n  }\n\n  function loop(time) {\n    if (state === 'running') {\n      accumulator += time - lastTime;\n      if (accumulator >= STEP_MS) {\n        accumulator -= STEP_MS;\n        update();\n      }\n    }\n    lastTime = time;\n    draw();\n    requestAnimationFrame(loop);\n  }\n\n  startBtn.addEventListener('click', startGame);\n  pauseBtn.addEventListener('click', togglePause);\n  restartBtn.addEventListener('click', restartGame);\n  document.addEventListener('keydown', handleKeydown);\n\n  resetGame();\n  state = 'ready';\n  pauseBtn.disabled = true;\n  pauseBtn.textContent = 'Pause';\n  showOverlay('How to Play', 'Use the arrow keys to move the snake. Eat the red food to grow and earn points. Avoid walls and your own tail.');\n  startBtn.textContent = 'Start Game';\n  lastTime = performance.now();\n  requestAnimationFrame(loop);\n})();\n",
+              "description": "Game logic, rendering, controls, and state management"
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Snake Game\n\nAn offline browser-based snake game built with plain HTML, CSS, and JavaScript. No packages or network access are needed.\n\n## Run\n\nOpen `index.html` in any modern browser.\n\n## Controls\n\n- Arrow keys: move the snake\n- Space or P: pause/resume\n- R: restart\n- Buttons: Start/Resume, Pause/Resume, Restart\n\n## Behavior\n\n- The game starts paused and shows a how-to-play overlay.\n- Eat red food to grow and earn 10 points per food.\n- Hitting a wall or yourself ends the game and shows a final score.\n- Restart begins a new game immediately.\n\n## Files\n\n- `index.html` — page structure\n- `styles.css` — responsive visual theme\n- `game.js` — game logic and rendering\n",
+              "description": "Run instructions, controls, and behavior notes"
+            }
+          ],
+          "explanation": "A complete offline pixel snake game with a centered themed card, canvas rendering, arrow-key movement, score tracking, pause/resume, restart, game-over screen, and a start-paused how-to-play overlay. The layout is responsive from 360px and includes visible keyboard-accessible controls.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 872,
+            "completion_tokens": 12495,
+            "total_tokens": 13367
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-18T01:57:05.069Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "game.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "plan": {
+    "taskId": "9b613671-87bf-4edc-834c-91c62622cc56",
+    "agentId": "manager",
+    "status": "success",
+    "output": {
+      "projectName": "Pixel Snake Game",
+      "goal": "Build an offline, responsive browser-based snake game using HTML, CSS, and plain JavaScript with arrow-key controls, score, pause/resume, restart, and a game-over screen that starts paused and shows how to play.",
+      "phases": [
+        {
+          "id": "p1",
+          "name": "Setup and game board",
+          "tasks": [
+            "Create root index.html, styles.css, game.js, and README.md with relative paths.",
+            "Define centered game board or canvas on themed background with a cohesive 3-5 color palette.",
+            "Add semantic structure with labeled controls and accessible instructions."
+          ],
+          "assignee": "Frontend Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p2",
+          "name": "Core game mechanics",
+          "tasks": [
+            "Implement snake movement with arrow key listeners.",
+            "Add collision detection, food spawning, score tracking, and game loop.",
+            "Render snake, food, and score using canvas or CSS pixel grid."
+          ],
+          "assignee": "Frontend Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p3",
+          "name": "Game states and controls",
+          "tasks": [
+            "Implement start paused state with how-to-play overlay.",
+            "Add pause/resume and restart controls with keyboard accessible labeled buttons.",
+            "Show game-over screen with final score and restart action."
+          ],
+          "assignee": "Frontend Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p4",
+          "name": "Styling and responsive polish",
+          "tasks": [
+            "Apply system fonts at 16px or larger and generous spacing.",
+            "Add visible hover, focus, and pressed states on all controls.",
+            "Ensure layout works from 360px wide and looks finished."
+          ],
+          "assignee": "UI Developer",
+          "priority": "medium"
+        },
+        {
+          "id": "p5",
+          "name": "Verification and documentation",
+          "tasks": [
+            "Write README with run instructions, controls, and behavior notes.",
+            "Verify no imports, packages, network requests, external assets, iframes, or server code.",
+            "Test keyboard controls, pause/resume, restart, game-over flow, and responsive layout."
+          ],
+          "assignee": "QA Engineer",
+          "priority": "medium"
+        }
+      ],
+      "estimatedRounds": 4,
+      "risks": [
+        "Game loop timing may feel inconsistent across devices without requestAnimationFrame tuning.",
+        "Keyboard focus and button control conflicts could interfere with arrow key movement.",
+        "Canvas rendering may need fallback or adjustments for very small screens.",
+        "Scope creep from adding extra features beyond required snake mechanics."
+      ],
+      "llmUsage": {
+        "prompt_tokens": 406,
+        "completion_tokens": 1626,
+        "total_tokens": 2032
+      },
+      "llmModel": "deepseek-v4-pro",
+      "llmProvider": "deepseek"
+    },
+    "reasoning": "Generated by deepseek/deepseek-v4-pro",
+    "metadata": {
+      "executedAt": "2026-10-18T01:55:22.771Z",
+      "agentName": "Manager"
+    }
+  },
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-18T01:57:05.348Z"
+}

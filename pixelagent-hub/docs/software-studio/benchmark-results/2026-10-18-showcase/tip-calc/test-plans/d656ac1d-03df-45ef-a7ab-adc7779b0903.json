@@ -1,0 +1,207 @@
+{
+  "id": "d656ac1d-03df-45ef-a7ab-adc7779b0903",
+  "projectId": "1ab6108a-3918-437d-ae9d-8d3f745ce5ce",
+  "previewFile": "v1/dist/index.html",
+  "jobId": "studio-tests-d656ac1d-03df-45ef-a7ab-adc7779b0903",
+  "status": "ready",
+  "startedAt": "2026-10-18T02:02:13.809Z",
+  "result": {
+    "taskId": "d656ac1d-03df-45ef-a7ab-adc7779b0903",
+    "agentId": "tester",
+    "status": "success",
+    "output": {
+      "checks": [
+        {
+          "name": "Initial tip amount zero",
+          "actions": [],
+          "selector": "#tip-amount",
+          "expected": "$0.00"
+        },
+        {
+          "name": "Initial total per person zero",
+          "actions": [],
+          "selector": "#total-per-person",
+          "expected": "$0.00"
+        },
+        {
+          "name": "15% tip amount calculation",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "100"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "2"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='15']"
+            }
+          ],
+          "selector": "#tip-amount",
+          "expected": "$15.00"
+        },
+        {
+          "name": "15% total per person calculation",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "100"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "2"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='15']"
+            }
+          ],
+          "selector": "#total-per-person",
+          "expected": "$57.50"
+        },
+        {
+          "name": "10% tip amount calculation",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "100"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "2"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='10']"
+            }
+          ],
+          "selector": "#tip-amount",
+          "expected": "$10.00"
+        },
+        {
+          "name": "10% total per person calculation",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "100"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "2"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='10']"
+            }
+          ],
+          "selector": "#total-per-person",
+          "expected": "$55.00"
+        },
+        {
+          "name": "20% tip amount calculation",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "200"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "4"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='20']"
+            }
+          ],
+          "selector": "#tip-amount",
+          "expected": "$40.00"
+        },
+        {
+          "name": "20% total per person calculation",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "200"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "4"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='20']"
+            }
+          ],
+          "selector": "#total-per-person",
+          "expected": "$60.00"
+        },
+        {
+          "name": "People count change updates total per person",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "200"
+            },
+            {
+              "type": "input",
+              "selector": "#people-count",
+              "value": "2"
+            },
+            {
+              "type": "click",
+              "selector": ".tip-button[data-tip='20']"
+            }
+          ],
+          "selector": "#total-per-person",
+          "expected": "$120.00"
+        },
+        {
+          "name": "Invalid bill resets tip amount",
+          "actions": [
+            {
+              "type": "input",
+              "selector": "#bill-amount",
+              "value": "0"
+            }
+          ],
+          "selector": "#tip-amount",
+          "expected": "$0.00"
+        }
+      ],
+      "limitations": [
+        "Cannot assert aria-pressed, class, or visual styling; selected tip state is inferred only from calculation outputs.",
+        "Cannot simulate trusted browser keyboard input or handle canvas/pixel rendering assertions.",
+        "Each check compares only a single element's trimmed text content or native disabled state.",
+        "Input values are not directly asserted; they are verified indirectly through calculation outputs."
+      ],
+      "llmUsage": {
+        "prompt_tokens": 3125,
+        "completion_tokens": 5336,
+        "total_tokens": 8461
+      },
+      "llmModel": "deepseek-v4-pro",
+      "llmProvider": "deepseek"
+    },
+    "reasoning": "Generated by deepseek/deepseek-v4-pro",
+    "metadata": {
+      "executedAt": "2026-10-18T02:02:57.545Z",
+      "agentName": "Tester"
+    }
+  },
+  "finishedAt": "2026-10-18T02:02:57.551Z"
+}

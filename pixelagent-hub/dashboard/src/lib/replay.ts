@@ -9,9 +9,11 @@ export const REPLAY_READ_ONLY = 'This is a read-only replay. Clone the repo and 
 export type ReplayCase = {
   projectId: string; kind: 'mock' | 'real-model'; title: string; note: string;
   /** `featured`: the demo and repair story; `series`: one generation of the 2026-10-15 strategy comparison. */
-  group?: 'featured' | 'series';
+  group?: 'featured' | 'series' | 'showcase';
   caseId?: string; strategy?: 'manager-coder' | 'coder-only'; run?: number;
   outcome?: 'passed' | 'checks-failed' | 'not-built'; checks?: string;
+  /** API path of the final browser screenshot (showcase cards). */
+  screenshot?: string;
 };
 export type ReplayManifest = { recordedAt: string; hero: string; cases: ReplayCase[] };
 

@@ -1,0 +1,155 @@
+{
+  "projectId": "ebe30c78-9c7e-4ad8-9147-b6b3d7c1a275",
+  "jobId": "studio-ebe30c78-9c7e-4ad8-9147-b6b3d7c1a275",
+  "strategy": "manager-coder",
+  "description": "A pixel memory-match game with 8 pairs of colored cards: flip two at a time, matched pairs stay open, count moves, show a win message and a New game button.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-18T02:05:18.258Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "ebe30c78-9c7e-4ad8-9147-b6b3d7c1a275-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Memory Match</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"script.js\" defer></script>\n</head>\n<body>\n  <main class=\"game-shell\">\n    <header>\n      <h1>Pixel Memory</h1>\n      <p class=\"subtitle\">Match all 8 color pairs</p>\n    </header>\n    <section class=\"status-bar\" aria-label=\"Game status\">\n      <p class=\"moves\">Moves: <span id=\"move-count\">0</span></p>\n      <button type=\"button\" id=\"new-game\">New Game</button>\n    </section>\n    <p id=\"win-message\" class=\"win-message\" role=\"status\" aria-live=\"polite\"></p>\n    <div id=\"game-board\" class=\"game-board\" aria-label=\"Memory card game board\"></div>\n  </main>\n</body>\n</html>",
+              "description": "Main HTML document with game shell, status bar, new game button, win message, and board container."
+            },
+            {
+              "path": "styles.css",
+              "content": ":root {\n  --bg: #191b2e;\n  --surface: #262a44;\n  --surface-alt: #313656;\n  --text: #f5f3ff;\n  --accent: #ffd166;\n  color-scheme: dark;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  background:\n    radial-gradient(circle at top left, rgba(255, 209, 102, 0.14), transparent 45%),\n    radial-gradient(circle at bottom right, rgba(255, 209, 102, 0.08), transparent 40%),\n    var(--bg);\n}\n\n.game-shell {\n  width: 100%;\n  max-width: 560px;\n  background: var(--surface);\n  border-radius: 20px;\n  padding: 24px;\n  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n}\n\nh1 {\n  margin: 0;\n  font-size: 2rem;\n  letter-spacing: 0.03em;\n  text-align: center;\n  color: var(--accent);\n  text-shadow: 0 0 12px rgba(255, 209, 102, 0.35);\n}\n\n.subtitle {\n  margin: 8px 0 20px;\n  text-align: center;\n  opacity: 0.82;\n}\n\n.status-bar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n  flex-wrap: wrap;\n  margin-bottom: 16px;\n}\n\n.moves {\n  margin: 0;\n  font-weight: 700;\n  font-size: 1.1rem;\n}\n\n#move-count {\n  display: inline-block;\n  min-width: 2ch;\n  padding: 4px 10px;\n  text-align: center;\n  background: var(--surface-alt);\n  border-radius: 999px;\n}\n\n#new-game {\n  background: var(--accent);\n  color: #191b2e;\n  border: none;\n  border-radius: 999px;\n  padding: 10px 18px;\n  cursor: pointer;\n  font-weight: 800;\n  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;\n  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);\n}\n\n#new-game:hover {\n  filter: brightness(1.05);\n  transform: translateY(-2px);\n  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.3);\n}\n\n#new-game:active {\n  transform: translateY(1px);\n  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);\n}\n\n#new-game:focus-visible,\n.card:focus-visible {\n  outline: 3px solid #ffffff;\n  outline-offset: 3px;\n}\n\n.win-message {\n  min-height: 1.5em;\n  margin: 0 0 12px;\n  text-align: center;\n  font-weight: 800;\n  color: var(--accent);\n  opacity: 0;\n  transform: translateY(-4px);\n  transition: opacity 0.2s ease, transform 0.2s ease;\n}\n\n.win-message.visible {\n  opacity: 1;\n  transform: translateY(0);\n}\n\n.game-board {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: clamp(10px, 2.5vw, 16px);\n  max-width: 480px;\n  margin: 0 auto;\n}\n\n.card {\n  position: relative;\n  aspect-ratio: 3 / 4;\n  padding: 0;\n  border: 0;\n  border-radius: 14px;\n  background: transparent;\n  cursor: pointer;\n  perspective: 800px;\n}\n\n.card-inner {\n  position: absolute;\n  inset: 0;\n  transform-style: preserve-3d;\n  transition: transform 0.45s cubic-bezier(0.2, 0.75, 0.25, 1);\n}\n\n.card.flipped .card-inner,\n.card.matched .card-inner {\n  transform: rotateY(180deg);\n}\n\n.card:not(.flipped):not(.matched):hover .card-inner {\n  transform: scale(1.03);\n}\n\n.card:not(.flipped):not(.matched):active .card-inner {\n  transform: scale(0.96);\n}\n\n.card-face {\n  position: absolute;\n  inset: 0;\n  display: grid;\n  place-items: center;\n  border-radius: 14px;\n  backface-visibility: hidden;\n  -webkit-backface-visibility: hidden;\n  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);\n}\n\n.card-back {\n  background: var(--surface-alt);\n  background-image: repeating-linear-gradient(\n    45deg,\n    rgba(255, 255, 255, 0.04) 0 8px,\n    transparent 8px 16px\n  );\n  color: var(--text);\n  font-size: 1.8rem;\n}\n\n.card-front {\n  background: var(--card-color);\n  transform: rotateY(180deg);\n  box-shadow:\n    inset 0 0 0 2px rgba(255, 255, 255, 0.18),\n    0 8px 18px rgba(0, 0, 0, 0.25);\n}\n\n.card.matched .card-front {\n  box-shadow:\n    inset 0 0 0 3px var(--accent),\n    0 0 16px rgba(255, 209, 102, 0.45);\n  animation: pop 0.25s ease;\n}\n\n@keyframes pop {\n  0% {\n    transform: rotateY(180deg) scale(0.85);\n  }\n  100% {\n    transform: rotateY(180deg) scale(1);\n  }\n}\n\n@media (max-width: 480px) {\n  body {\n    padding: 12px 8px;\n  }\n\n  .game-shell {\n    padding: 18px;\n  }\n\n  h1 {\n    font-size: 1.7rem;\n  }\n\n  .subtitle {\n    font-size: 1rem;\n  }\n\n  .status-bar {\n    gap: 10px;\n  }\n\n  .game-board {\n    gap: 8px;\n  }\n}\n",
+              "description": "Responsive styles for the centered game board, card flip animation, accessible focus states, and mobile layout from 360px."
+            },
+            {
+              "path": "script.js",
+              "content": "(() => {\n  'use strict';\n\n  const board = document.getElementById('game-board');\n  const moveCount = document.getElementById('move-count');\n  const winMessage = document.getElementById('win-message');\n  const newGameBtn = document.getElementById('new-game');\n\n  const pairColors = [\n    { id: 0, name: 'red', color: '#ef476f' },\n    { id: 1, name: 'orange', color: '#f78c6b' },\n    { id: 2, name: 'yellow', color: '#ffd166' },\n    { id: 3, name: 'green', color: '#06d6a0' },\n    { id: 4, name: 'teal', color: '#118ab2' },\n    { id: 5, name: 'blue', color: '#457b9d' },\n    { id: 6, name: 'purple', color: '#b388eb' },\n    { id: 7, name: 'pink', color: '#f15bb5' },\n  ];\n\n  let cards = [];\n  let firstCard = null;\n  let secondCard = null;\n  let lockBoard = false;\n  let moves = 0;\n  let matchedPairs = 0;\n  let timeoutId = null;\n\n  function shuffle(array) {\n    const arr = [...array];\n    for (let i = arr.length - 1; i > 0; i -= 1) {\n      const j = Math.floor(Math.random() * (i + 1));\n      [arr[i], arr[j]] = [arr[j], arr[i]];\n    }\n    return arr;\n  }\n\n  function createCardData() {\n    const deck = [];\n    pairColors.forEach((pair) => {\n      deck.push({ pairId: pair.id, name: pair.name, color: pair.color, matched: false });\n      deck.push({ pairId: pair.id, name: pair.name, color: pair.color, matched: false });\n    });\n    return shuffle(deck);\n  }\n\n  function renderBoard() {\n    if (timeoutId) {\n      clearTimeout(timeoutId);\n      timeoutId = null;\n    }\n\n    board.innerHTML = '';\n    cards = createCardData();\n    firstCard = null;\n    secondCard = null;\n    lockBoard = false;\n    moves = 0;\n    matchedPairs = 0;\n    updateMoveDisplay();\n    winMessage.textContent = '';\n    winMessage.classList.remove('visible');\n\n    cards.forEach((card, index) => {\n      const button = document.createElement('button');\n      button.type = 'button';\n      button.className = 'card';\n      button.dataset.index = String(index);\n      button.style.setProperty('--card-color', card.color);\n      button.setAttribute('aria-label', `Card ${index + 1}: face down`);\n      button.setAttribute('aria-pressed', 'false');\n\n      const inner = document.createElement('span');\n      inner.className = 'card-inner';\n\n      const back = document.createElement('span');\n      back.className = 'card-face card-back';\n      back.setAttribute('aria-hidden', 'true');\n      back.textContent = '?';\n\n      const front = document.createElement('span');\n      front.className = 'card-face card-front';\n      front.setAttribute('aria-hidden', 'true');\n\n      inner.appendChild(back);\n      inner.appendChild(front);\n      button.appendChild(inner);\n      button.addEventListener('click', () => handleCardClick(button, card));\n      board.appendChild(button);\n    });\n  }\n\n  function updateMoveDisplay() {\n    moveCount.textContent = String(moves);\n  }\n\n  function flipCard(button, card) {\n    button.classList.add('flipped');\n    button.setAttribute('aria-pressed', 'true');\n    button.setAttribute('aria-label', `Card ${Number(button.dataset.index) + 1}: ${card.name}`);\n  }\n\n  function unflipCard(button) {\n    button.classList.remove('flipped');\n    button.setAttribute('aria-pressed', 'false');\n    button.setAttribute('aria-label', `Card ${Number(button.dataset.index) + 1}: face down`);\n  }\n\n  function markMatched(button, card) {\n    button.classList.add('matched');\n    button.setAttribute('aria-pressed', 'true');\n    button.setAttribute('aria-label', `Card ${Number(button.dataset.index) + 1}: ${card.name}, matched`);\n  }\n\n  function handleCardClick(button, card) {\n    if (lockBoard) return;\n    if (button.classList.contains('flipped') || card.matched) return;\n    if (firstCard && firstCard.button === button) return;\n\n    if (!firstCard) {\n      firstCard = { button, card };\n      flipCard(button, card);\n      return;\n    }\n\n    secondCard = { button, card };\n    flipCard(button, card);\n    moves += 1;\n    updateMoveDisplay();\n\n    if (firstCard.card.pairId === secondCard.card.pairId) {\n      firstCard.card.matched = true;\n      secondCard.card.matched = true;\n      markMatched(firstCard.button, firstCard.card);\n      markMatched(secondCard.button, secondCard.card);\n      matchedPairs += 1;\n      firstCard = null;\n      secondCard = null;\n\n      if (matchedPairs === pairColors.length) {\n        winMessage.textContent = `You won in ${moves} moves!`;\n        winMessage.classList.add('visible');\n      }\n    } else {\n      lockBoard = true;\n      const first = firstCard;\n      const second = secondCard;\n      timeoutId = setTimeout(() => {\n        unflipCard(first.button);\n        unflipCard(second.button);\n        firstCard = null;\n        secondCard = null;\n        lockBoard = false;\n        timeoutId = null;\n      }, 800);\n      firstCard = null;\n      secondCard = null;\n    }\n  }\n\n  function startNewGame() {\n    renderBoard();\n    newGameBtn.focus();\n  }\n\n  newGameBtn.addEventListener('click', startNewGame);\n  document.addEventListener('DOMContentLoaded', renderBoard);\n})();\n",
+              "description": "Core game logic: shuffling 8 color pairs, flipping two cards, matching, move counting, win detection, and new game reset."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Memory Match\n\nA simple offline memory game built with HTML, CSS, and vanilla JavaScript.\n\n## How to run\nOpen `index.html` in any modern browser. No server, install, or network connection required.\n\n## How to play\n- Click or tap a card to flip it.\n- Flip two cards at a time.\n- If the colors match, the pair stays open.\n- If they do not match, they flip back after a short delay.\n- The move counter goes up after each pair of flips.\n- Match all 8 pairs to see the win message.\n- Use the **New Game** button to shuffle and restart.\n\n## Keyboard access\n- Press `Tab` to move between the New Game button and cards.\n- Press `Enter` or `Space` to activate buttons.\n- Each card has an accessible label announcing its position and color.\n",
+              "description": "Project overview, offline run instructions, gameplay rules, and keyboard accessibility notes."
+            }
+          ],
+          "explanation": "A complete offline memory-match game in plain JavaScript. The app uses native buttons for accessible cards, CSS 3D flips for card faces, and responsive grid styling. It tracks moves, keeps matched pairs open, announces the win message, and resets via the New Game button.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 901,
+            "completion_tokens": 16906,
+            "total_tokens": 17807
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-18T02:07:24.297Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "styles.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "plan": {
+    "taskId": "ebe30c78-9c7e-4ad8-9147-b6b3d7c1a275",
+    "agentId": "manager",
+    "status": "success",
+    "output": {
+      "projectName": "Pixel Memory-Match Game",
+      "goal": "Build an offline browser memory-match game with 8 pairs of colored cards, flip-two-at-a-time matching, move counting, win message, and a New game button using only HTML, CSS, and plain JavaScript.",
+      "phases": [
+        {
+          "id": "p1",
+          "name": "Foundation & structure",
+          "tasks": [
+            "Create root index.html with centered game board container and accessible control regions",
+            "Create styles.css with a cohesive 3-5 color palette and base layout",
+            "Create script.js with DOMContentLoaded initialization",
+            "Write README.md with project overview, run instructions, and keyboard usage"
+          ],
+          "assignee": "Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p2",
+          "name": "Core game logic",
+          "tasks": [
+            "Implement 8 pairs of colored cards and shuffle them on load",
+            "Handle flipping two cards at a time and comparing matches",
+            "Keep matched pairs open and reset non-matches after a short delay",
+            "Track move count and detect win condition after all pairs are matched",
+            "Show win message and implement New game button reset behavior"
+          ],
+          "assignee": "Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p3",
+          "name": "UI styling & responsive layout",
+          "tasks": [
+            "Style centered card/game board on a themed background",
+            "Draw card graphics with CSS or canvas, including color pairs",
+            "Add visible hover, focus, and pressed states for controls",
+            "Ensure layout works from 360px wide using system fonts at 16px or larger",
+            "Polish visual hierarchy, spacing, and finished appearance"
+          ],
+          "assignee": "UI Developer",
+          "priority": "medium"
+        },
+        {
+          "id": "p4",
+          "name": "Accessibility, acceptance & final checks",
+          "tasks": [
+            "Add keyboard-accessible labeled controls and manage focus order",
+            "Verify addEventListener is used instead of inline HTML event handlers",
+            "Test offline browser behavior at desktop and mobile widths",
+            "Confirm all file paths are relative and use .html, .css, .js, .md extensions",
+            "Validate win message, move count, and New game button against acceptance criteria"
+          ],
+          "assignee": "QA/Developer",
+          "priority": "high"
+        }
+      ],
+      "estimatedRounds": 4,
+      "risks": [
+        "Rapid card clicks may cause state desynchronization or allow more than two flipped cards",
+        "Styling could accidentally hide required card text, IDs, or keyboard focus indicators",
+        "Responsive card sizing may fail at exactly 360px if dimensions are too rigid",
+        "Keyboard accessibility may be missed without manual testing",
+        "Keeping all graphics internal with CSS/canvas may increase implementation time"
+      ],
+      "llmUsage": {
+        "prompt_tokens": 411,
+        "completion_tokens": 1522,
+        "total_tokens": 1933
+      },
+      "llmModel": "deepseek-v4-pro",
+      "llmProvider": "deepseek"
+    },
+    "reasoning": "Generated by deepseek/deepseek-v4-pro",
+    "metadata": {
+      "executedAt": "2026-10-18T02:05:32.872Z",
+      "agentName": "Manager"
+    }
+  },
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-18T02:07:24.476Z"
+}
