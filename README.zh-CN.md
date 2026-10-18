@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml)
 [![在线演示](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://jiarong-song233.github.io/PIXELAGENT-HUB/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **输入一个想法，看 4 个 AI Agent 在你的浏览器里规划、写码、编译、逐项测试，然后直接玩。**
 
@@ -38,7 +38,7 @@
 | 硅基流动 | `deepseek-ai/DeepSeek-V3` | | **自定义 / 本地** | Ollama、LM Studio、vLLM 等上的任意模型（[见下文](#本地模型)） |
 
 - **模型**：模型名可以自由填写，你的 key 能用的任何模型都可以。
-- **key 的去向**：只发给你选的提供商，默认只保存在当前标签页。生成的应用运行在没有同源权限的 iframe 里，读不到你的 key（见 [安全说明](pixelagent-hub/SECURITY.md)）。
+- **key 的去向**：只发给你选的提供商，默认只保存在当前标签页。生成的应用运行在没有同源权限的 iframe 里，读不到你的 key（见 [安全说明](SECURITY.md)）。
 - **每次运行的流程**：
   1. Manager 规划；
   2. Coder 写码，最多 3 轮编译，编译错误会交回 Coder；
@@ -130,4 +130,4 @@ npm start                     # http://127.0.0.1:3100/studio
 
 项目的起点是 Kimi 生成的像素风多 Agent 控制台原型，当时由假数据驱动（提交 `14a030e`）。后端和 Studio 生成流程在 GPT 的协助下实现。之后用 Claude Code 收敛了范围、恢复了原版视觉，并加入了事件时间线、静态回放、PLAY LIVE 和各项实验。作者负责方向、取舍和验收标准，所有改动都经过测试与 CI。
 
-[贡献指南](pixelagent-hub/CONTRIBUTING.md) · [安全策略](pixelagent-hub/SECURITY.md) · [更新记录](pixelagent-hub/CHANGELOG.md) · [底层框架文档](pixelagent-hub/README.md) · MIT 许可（[LICENSE](pixelagent-hub/LICENSE)）。
+[贡献指南](CONTRIBUTING.md) · [安全策略](SECURITY.md) · [更新记录](pixelagent-hub/CHANGELOG.md) · [底层框架文档](pixelagent-hub/README.md) · MIT 许可（[LICENSE](LICENSE)）。

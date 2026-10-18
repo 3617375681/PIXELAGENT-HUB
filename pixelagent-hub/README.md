@@ -147,9 +147,9 @@ npm test                            # 测试
 
 ## 参与贡献与安全
 
-- 贡献指南见 [CONTRIBUTING.md](CONTRIBUTING.md)
-- 漏洞报告见 [SECURITY.md](SECURITY.md)
-- 行为准则见 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- 贡献指南见 [CONTRIBUTING.md](../CONTRIBUTING.md)
+- 漏洞报告见 [SECURITY.md](../SECURITY.md)
+- 行为准则见 [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md)
 
 ## License
 
