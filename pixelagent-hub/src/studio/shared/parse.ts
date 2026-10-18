@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { codeSchema, planSchema, testPlanSchema } from './schemas.js';
+import { codeSchema, planSchema, testPlanSchema, testerReviewSchema } from './schemas.js';
 
 /** A model reply as one JSON object: the first fenced block if present, otherwise the whole reply. */
 export function parseModelObject(raw: string): Record<string, unknown> {
@@ -36,3 +36,16 @@ const normaliseLimitations = (object: unknown) => {
 };
 
 export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema, normaliseLimitations(object), 'test plan');
+
+/**
+ * Tester review: keeps only verdicts for checks that actually failed; a "check-wrong" verdict counts
+ * only with a valid corrected check of the same name (otherwise the failure stands).
+ */
+export const parseTesterReview = (object: unknown, failing: readonly string[]) => {
+  const { verdicts } = parseWith(testerReviewSchema, object, 'test review');
+  return failing.map((name) => {
+    const verdict = verdicts.find((item) => item.name === name);
+    const corrected = verdict?.verdict === 'check-wrong' && verdict.check?.name === name ? verdict.check : undefined;
+    return { name, verdict: corrected ? 'check-wrong' as const : 'app-wrong' as const, reason: verdict?.reason || '', check: corrected };
+  });
+};

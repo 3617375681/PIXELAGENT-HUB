@@ -66,3 +66,16 @@ test('only real package names count as unsupported dependencies', async () => {
   assert.deepEqual(unsupportedDependencies(['react', 'none', 'lodash@4']), ['react', 'lodash@4']);
   assert.match(dependencyNote(['react']), /Unsupported dependencies: react\..*"dependencies": \[\]/);
 });
+
+test('a Tester review only revises a failing check with a valid corrected check of the same name', async () => {
+  const { parseTesterReview } = await import('./parse.js');
+  const fixed = { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' };
+  const verdicts = parseTesterReview({ verdicts: [
+    { name: 'Adds one', verdict: 'check-wrong', reason: 'never clicked', check: fixed },
+    { name: 'Resets', verdict: 'check-wrong', reason: 'no corrected check given' },
+    { name: 'Renamed', verdict: 'check-wrong', reason: 'x', check: { ...fixed, name: 'Something else' } },
+    { name: 'Not failing', verdict: 'check-wrong', reason: 'ignored', check: { ...fixed, name: 'Not failing' } },
+  ] }, ['Adds one', 'Resets', 'Renamed', 'Missing']);
+  assert.deepEqual(verdicts.map((item) => item.verdict), ['check-wrong', 'app-wrong', 'app-wrong', 'app-wrong']);
+  assert.deepEqual(verdicts[0].check, fixed);
+});
