@@ -66,7 +66,25 @@ try {
   assert.deepEqual(await page.evaluate(() => Object.keys(localStorage).filter((key) => key.startsWith('pixelagent:live'))), []);
   for (const host of external) assert.ok(['api.deepseek.com', 'fonts.googleapis.com', 'fonts.gstatic.com'].includes(host), `unexpected request to ${host}`);
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ ok: true, stages, external: [...external] }));
+
+  // SHARE: the link carries the whole run; a different visitor (fresh context) replays it.
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], { origin });
+  await page.getByRole('button', { name: /^SHARE$/ }).click();
+  await page.getByRole('button', { name: /LINK COPIED/ }).waitFor({ timeout: 10_000 });
+  const link = await page.evaluate(() => navigator.clipboard.readText());
+  assert.match(link, /#\/s\/[A-Za-z0-9_-]{100,}$/);
+  assert.ok(!link.includes(TEST_KEY), 'the share link never contains the key');
+  const visitor = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage();
+  const visitorErrors: string[] = [];
+  visitor.on('pageerror', (error) => visitorErrors.push(error.message));
+  visitor.on('request', (request) => assert.ok(!request.url().startsWith('https://api.'), `a shared replay calls no model API: ${request.url()}`));
+  await visitor.goto(link);
+  await visitor.waitForURL(/studio\/shared-/, { timeout: 15_000 });
+  assert.match(await visitor.locator('.studio-replay').innerText(), /SHARED/);
+  await visitor.waitForFunction(() => /All checks passed 4\/4/.test(document.body.innerText), null, { timeout: 60_000 });
+  assert.match(await visitor.frameLocator('iframe[title="The built app"]').locator('body').innerText(), /MOCK PIXEL COUNTER/);
+  assert.deepEqual(visitorErrors, []);
+  console.log(JSON.stringify({ ok: true, stages, external: [...external], shareLinkChars: link.length }));
 } finally {
   await browser.close();
   server.close();

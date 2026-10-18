@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router'
 import { lazy, Suspense } from 'react'
 
 const Studio = lazy(() => import('./pages/Studio'))
+const SharedRun = lazy(() => import('./pages/SharedRun'))
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <Route path="/" element={<Navigate to="/studio" replace />} />
       <Route path="/studio" element={<Studio />} />
       <Route path="/studio/:projectId" element={<Studio />} />
+      <Route path="/s/:payload" element={<SharedRun />} />
       <Route path="*" element={<Navigate to="/studio" replace />} />
     </Routes>
     </Suspense>

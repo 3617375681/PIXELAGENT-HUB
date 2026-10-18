@@ -8,6 +8,7 @@ import { liveChat, liveProvider, type LlmUsage } from './llm';
 import { buildInBrowser } from './build';
 import { runInPageChecks } from './checks';
 import { liveCredentials } from './key';
+import { decodeSharedRun, encodeSharedRun, shareId, type SharedRun } from './share';
 
 /**
  * PLAY LIVE: the Studio loop of src/studio/softwareStudio.ts, run in the visitor's browser with
@@ -15,7 +16,11 @@ import { liveCredentials } from './key';
  * panels work unchanged. Projects are stored per visitor in IndexedDB (best effort).
  */
 export const LIVE_PREFIX = 'live-';
-export const isLiveProject = (projectId?: string) => !!projectId?.startsWith(LIVE_PREFIX);
+export const SHARED_PREFIX = 'shared-';
+/** Runs started in this tab (live-) or opened from a share link (shared-): answered in the browser. */
+export const isLiveProject = (projectId?: string) => !!projectId && (projectId.startsWith(LIVE_PREFIX) || projectId.startsWith(SHARED_PREFIX));
+export const isLiveRun = (projectId?: string) => !!projectId?.startsWith(LIVE_PREFIX);
+export const isSharedProject = (projectId?: string) => !!projectId?.startsWith(SHARED_PREFIX);
 export const LIVE_CODER_TIMEOUT_MS = 300_000;
 const AGENT_TIMEOUT_MS = 180_000;
 const TERMINAL = new Set<StudioEventType>(['ready_for_review', 'failed', 'cancelled']);
@@ -253,24 +258,76 @@ const summary = ({ project }: Entry): StudioSummary => ({ projectId: project.pro
 /** Live projects for the project list, newest first. */
 export async function liveSummaries(): Promise<StudioSummary[]> {
   await ready();
-  return [...entries.values()].map(summary).sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+  return [...entries.values()].filter((entry) => isLiveRun(entry.project.projectId)).map(summary).sort((a, b) => b.startedAt.localeCompare(a.startedAt));
 }
 
 /** Answers a dashboard API call for live projects; `undefined` means "not a live request". */
+async function findEntry(projectId: string): Promise<Entry> {
+  await ready();
+  let entry = entries.get(projectId);
+  if (!entry && isSharedProject(projectId)) {
+    try {
+      const encoded = sessionStorage.getItem(`pixelagent:shared:${projectId}`);
+      if (encoded) { importSharedRun(encoded); entry = entries.get(projectId); }
+    } catch { /* fall through to 404 */ }
+  }
+  if (!entry) throw httpError(isSharedProject(projectId) ? 'Open the original share link again to view this run.' : 'This live run is not stored in this browser.', 404);
+  return entry;
+}
+
+// ---- share links ----
+/** A link that replays this finished run anywhere: everything travels in the URL fragment. */
+export async function shareLink(projectId: string, origin = `${location.origin}${location.pathname}`): Promise<string> {
+  const entry = await findEntry(projectId);
+  const { project } = entry;
+  if (project.status !== 'ready_for_review' || !entry.html || !entry.files) throw httpError('Only a finished run can be shared.', 409);
+  const queued = entry.events.find((event) => event.type === 'queued')?.data || {};
+  const round = Number(project.previewFile?.match(/^v(\d+)\//)?.[1]) || project.rounds.length || 1;
+  const run: SharedRun = {
+    v: 1, description: project.description, provider: String(queued.provider || 'model'), model: String(queued.model || ''),
+    projectName: project.plan?.output?.projectName, startedAt: project.startedAt, finishedAt: project.finishedAt, round,
+    events: entry.events, html: entry.html, files: entry.files.map(({ path, content }) => ({ path, content })),
+    checks: entry.plan?.result?.output.checks,
+  };
+  return `${origin}#/s/${encodeSharedRun(run)}`;
+}
+
+/** Opens a share link as a read-only recorded run; returns its project id. */
+export function importSharedRun(encoded: string): string {
+  const run = decodeSharedRun(encoded);
+  const projectId = `${SHARED_PREFIX}${shareId(encoded)}`;
+  try { sessionStorage.setItem(`pixelagent:shared:${projectId}`, encoded); } catch { /* this tab only */ }
+  const previewFile = `v${run.round}/dist/index.html`;
+  entries.set(projectId, {
+    project: {
+      projectId, description: run.description, status: 'ready_for_review', phase: 'ready_for_review', startedAt: run.startedAt, finishedAt: run.finishedAt,
+      strategy: 'manager-coder', plan: { status: 'success', output: { projectName: run.projectName } }, previewFile, archiveFile: 'source.zip',
+      rounds: [{ round: run.round, code: { status: 'success', output: { files: run.files, llmProvider: run.provider, llmModel: run.model } }, build: { status: 'passed', errors: [], checkedFiles: run.files.map((file) => file.path), browserVerified: false } }],
+    },
+    events: run.events as StudioEvent[], html: run.html, files: run.files, diagnostics: [],
+    plan: run.checks ? { id: `${projectId}-plan`, projectId, previewFile, jobId: projectId, status: 'ready', result: { status: 'success', output: { checks: run.checks as unknown as BrowserCheck[], limitations: [] } } } : undefined,
+  });
+  return projectId;
+}
+
+const pause = (ms: number, signal: AbortSignal) => new Promise<void>((resolve) => {
+  const timer = setTimeout(resolve, ms);
+  signal.addEventListener('abort', () => { clearTimeout(timer); resolve(); }, { once: true });
+});
+
 export async function liveRequest(method: string, path: string, body?: string): Promise<unknown> {
   if (method === 'POST' && path === '/api/studio/projects') return start(JSON.parse(body || '{}').description || '');
   const match = path.match(/^\/api\/studio\/projects\/([^/?]+)(?:\/([a-z-]+))?(?:\?(.*))?$/);
   if (!match || !isLiveProject(decodeURIComponent(match[1]))) return undefined;
-  await ready();
   const projectId = decodeURIComponent(match[1]);
-  const entry = entries.get(projectId);
-  if (!entry) throw httpError('This live run is not stored in this browser.', 404);
+  const entry = await findEntry(projectId);
   const action = match[2] || '';
   const route = `${method} ${action}`;
   switch (route) {
     case 'GET ': return { project: entry.project };
     case 'GET events': {
       const after = Number(new URLSearchParams(match[3] || '').get('after') || 0);
+      if (isSharedProject(projectId) && after === 0) return { events: [], derived: false };
       return { events: entry.events.filter((event) => event.seq > after), derived: false };
     }
     case 'GET preview': if (!entry.html) throw httpError('No preview yet', 409); return { html: entry.html };
@@ -287,9 +344,18 @@ export async function liveRequest(method: string, path: string, body?: string): 
 
 /** Live counterpart of the SSE stream: replays events after `after`, then follows until the run ends. */
 export async function liveEventStream(projectId: string, after: number, onEvent: (event: StudioEvent) => void, signal: AbortSignal): Promise<void> {
-  await ready();
-  const entry = entries.get(projectId);
-  if (!entry) throw httpError('This live run is not stored in this browser.', 404);
+  const entry = await findEntry(projectId);
+  if (isSharedProject(projectId)) {
+    // Recorded gaps, clamped to 0.25–1.6 s like the static replay, so a shared run is watchable.
+    let previous: StudioEvent | undefined;
+    for (const event of entry.events.filter((item) => item.seq > after)) {
+      await pause(previous ? Math.min(1600, Math.max(250, Date.parse(event.at) - Date.parse(previous.at))) : 400, signal);
+      if (signal.aborted) return;
+      onEvent(event);
+      previous = event;
+    }
+    return;
+  }
   for (const event of entry.events.filter((item) => item.seq > after)) onEvent(event);
   if (entry.events.some((event) => TERMINAL.has(event.type))) return;
   await new Promise<void>((resolve) => {
@@ -304,9 +370,8 @@ export async function liveEventStream(projectId: string, after: number, onEvent:
 
 /** Same layout as the server's source.zip. */
 export async function liveArchive(projectId: string): Promise<Blob> {
-  await ready();
-  const entry = entries.get(projectId);
-  if (!entry?.html || !entry.files) throw httpError('No build to download yet', 409);
+  const entry = await findEntry(projectId);
+  if (!entry.html || !entry.files) throw httpError('No build to download yet', 409);
   const build = entry.project.rounds.find((round) => `v${round.round}/dist/index.html` === entry.project.previewFile)?.build;
   const zip: Record<string, Uint8Array> = {};
   for (const file of entry.files) zip[`source/${file.path}`] = strToU8(file.content);
