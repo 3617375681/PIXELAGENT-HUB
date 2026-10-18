@@ -17,6 +17,8 @@ For development, run `npm run records:api` and `npm run ui:dev` in two terminals
 
 ## Where things live
 
+Paths are inside `pixelagent-hub/`.
+
 | You want to change… | Look in |
 | --- | --- |
 | What the agents are asked, how replies are validated, how apps are bundled | `src/studio/shared/` (prompts, schemas, parse, inline, repair). Shared by the server **and** PLAY LIVE, so change it here, not in the agents. |
@@ -58,7 +60,7 @@ npm run smoke:live -- dashboard/dist/public /PIXELAGENT-HUB/
 3. In the description, say what changed and why, and how you checked it. For API changes, note compatibility.
 4. For big or breaking changes, open an issue first.
 
-The [PR template](../.github/pull_request_template.md) has the checklist. Good starting points are labelled [`good first issue`](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/labels/good%20first%20issue).
+The [PR template](.github/pull_request_template.md) has the checklist. Good starting points are labelled [`good first issue`](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/labels/good%20first%20issue).
 
 ## Experiments and evidence
 
