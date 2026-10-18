@@ -47,6 +47,8 @@ jobs:
         env:
           VITE_REPLAY: '1'
           VITE_BASE: /${{ github.event.repository.name }}/
+      - name: Smoke test the built site (replay + PLAY LIVE with a mock model)
+        run: npm run smoke:live -- dashboard/dist/public /${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: pixelagent-hub/dashboard/dist/public

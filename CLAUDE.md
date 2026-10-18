@@ -34,7 +34,7 @@ npm test -- --test-name-pattern="some name"   # extra args are forwarded before 
 
 Real-browser Studio tests are skipped unless `RUN_STUDIO_BROWSER_TESTS=1` (needs `npx playwright install chromium`); CI runs them serially with `--test-concurrency=1`.
 
-Other scripts: `npm run studio:create -- "<description>"`, `studio:preview -- <projectId>`, `studio:doctor`, `studio:benchmark`, `smoke:package`, `smoke:dashboard`, `portfolio:demo`, and `example:*` (pipeline, code-review, debate, vote, company).
+Other scripts: `npm run studio:create -- "<description>"`, `studio:preview -- <projectId>`, `studio:doctor`, `studio:benchmark`, `smoke:package`, `smoke:dashboard`, `smoke:live` (built static site + PLAY LIVE in Chromium, mock model; on Git Bash set `MSYS_NO_PATHCONV=1` before passing a `/BASE/`), `portfolio:demo`, and `example:*` (pipeline, code-review, debate, vote, company).
 
 Use `LLM_PROVIDER=mock` (or `OFFLINE=true`) for offline work; `.env.example` defaults to mock. With no provider and no API key, `detectProviderId` returns `null` and agents fail with `NO_LLM_PROVIDER_MESSAGE` — there is deliberately no silent vendor or mock fallback.
 
