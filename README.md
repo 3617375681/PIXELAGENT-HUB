@@ -59,6 +59,7 @@ All with real models; see the [evidence index](pixelagent-hub/docs/evidence/READ
   - Every failure is listed.
 - **[Showcase](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-showcase/README.md):** 6 ideas, 10 attempts. 5 ideas ended with every check passing; the pixel pet never built (3 attempts). One failure came from the Tester's plan, not the app, which led to fresh per-check isolation.
 - **[Controlled fault repair](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md):** a counter was broken to `+= 2`. The browser check caught it; the repair changed one line and left three files byte-identical.
+- The write-up (in Chinese): [I had four agents split the work, ran it 30 times, and it did no better than one](pixelagent-hub/docs/articles/multi-agent-not-better.zh-CN.md).
 - These are small samples, not general success rates. Browse all 40 replayable runs in the demo's gallery.
 
 ## How it works

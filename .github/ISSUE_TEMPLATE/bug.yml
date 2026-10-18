@@ -1,0 +1,33 @@
+name: Bug report
+description: Something in PixelAgent Hub (demo, Studio server, dashboard) does not work
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options:
+        - Online demo (GitHub Pages)
+        - Local server (npm start)
+        - Docker
+        - Agent framework / API
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. …\n2. …"
+  - type: input
+    id: env
+    attributes:
+      label: Browser / OS / Node version
+  - type: markdown
+    attributes:
+      value: Security problems (for example a way for a generated app to read the API key) go to the private channel in SECURITY.md, not here.

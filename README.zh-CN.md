@@ -65,6 +65,7 @@ Builder 会把真实的 esbuild 报错交给 Coder（第 1 轮 → 第 2 轮）�
   - 每一次失败都逐条列出。
 - **[真实模型展示](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-showcase/README.md)**：6 个想法共 10 次尝试，其中 5 个最终全部检查通过；像素宠物 3 次都没能生成出来。有一次失败的原因是 Tester 写错了计划，而不是应用本身有问题，这促成了"每项检查重新加载页面"的改进。
 - **[受控故障返修](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md)**：把计数器故意改成 `+= 2`，浏览器检查发现了这个故障；返修只改了 1 行，另外 3 个文件逐字节不变。
+- 完整复盘：[我让 4 个 AI Agent 分工写代码，测了 30 次，结果并不比 1 个强](pixelagent-hub/docs/articles/multi-agent-not-better.zh-CN.md)。
 - 这些都是小样本观察，不代表通用成功率。在线演示的画廊里可以回放其中 40 次。
 
 ## 工作原理

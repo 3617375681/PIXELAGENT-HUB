@@ -22,6 +22,11 @@
 - 修改、重试与恢复：[modification-verification.md](../software-studio/modification-verification.md) · [manual-retry-verification.md](../software-studio/manual-retry-verification.md) · [recovery.md](../software-studio/recovery.md)
 - 数据来源说明：[data-provenance.md](../software-studio/data-provenance.md)
 
+## 文章
+
+- [我让 4 个 AI Agent 分工写代码，测了 30 次，结果并不比 1 个强](../articles/multi-agent-not-better.zh-CN.md)
+- [发布文案草稿（Show HN / Reddit / V2EX）](../articles/launch-posts.md)
+
 ## 截图
 
 界面截图在仓库根目录的 [`portfolio-screenshots/`](../../../portfolio-screenshots/)，文件名带拍摄日期。`studio-demo.gif` 是 README 顶部那张动图，从静态回放录制而成。
