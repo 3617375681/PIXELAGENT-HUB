@@ -4,13 +4,17 @@
 [![Replay demo](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
 
+中文 · [English](README.en.md)
+
 **一句话需求 → 4 个 Agent 规划、写码、真实编译、浏览器验收；失败证据自动回到 Coder 返修。** 每一步都写进事件日志，像素风控制台里看到的每个动画都对应一条真实事件。
 
-> A pixel-art AI dev squad: Manager plans, Coder writes an offline web app, esbuild really compiles it, Tester checks it in a sandboxed Chromium, and any compiler error or failed check is sent back to the Coder. Every animation in the console is driven by a recorded server event.
+**▶ [在线回放演示](https://3617375681.github.io/PIXELAGENT-HUB/)**（只读、无需后端或密钥） · [本地运行](#本地运行) · [证据索引](pixelagent-hub/docs/evidence/README.md) · [作品集说明](pixelagent-hub/docs/portfolio/README.md)
 
-**▶ [在线回放演示](https://3617375681.github.io/PIXELAGENT-HUB/)**（只读、无需后端或密钥） · [本地运行](#本地运行) · [作品集说明](pixelagent-hub/docs/portfolio/README.md)
+![输入需求 → Manager 规划 → 第 1 轮编译失败，红线把报错交回 Coder → 第 2 轮通过 → 浏览器检查 4/4 → 可以直接玩](portfolio-screenshots/studio-demo.gif)
 
-![编译失败：Builder 把真实 esbuild 报错交回 Coder，第 2 轮返修](portfolio-screenshots/studio-pipeline-repair-2026-10-14.png)
+| **30** 次真实模型生成 | **13/15 vs 12/15** 多 Agent 没有可测优势 | **0** 个模拟动画 |
+| :---: | :---: | :---: |
+| 每次都留有源码、事件日志和浏览器报告 | 先规划再写码 vs 直接写码，结果如实公开 | 界面上每个动画都对应一条服务器事件 |
 
 ## 它做什么
 
@@ -22,6 +26,8 @@
 | **Tester** 验收 | 生成声明式检查计划，在独立沙箱 Chromium 中点击、输入、断言并截图 |
 | 返修 / 版本 | 浏览器失败证据可直接触发返修，生成新版本；原版本与证据保留，可对比源码 |
 | 人工决定 | 构建通过、浏览器检查通过、人工批准三者分开记录，互不替代 |
+
+![编译失败：Builder 把真实 esbuild 报错交回 Coder，第 2 轮返修](portfolio-screenshots/studio-pipeline-repair-2026-10-14.png)
 
 ![注入故障：浏览器检查发现 +1 实际加了 2，失败证据从 Tester 回到 Coder](portfolio-screenshots/studio-pipeline-browser-failure-2026-10-14.png)
 
