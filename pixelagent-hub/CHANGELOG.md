@@ -3,10 +3,13 @@
 ## [Unreleased]
 
 ### Added
+- PLAY LIVE benchmark (2026-10-18): `scripts/benchmark-live.ts` runs the fixed cases through the built site in Chromium; 8/15 → 11/15 full passes after the Tester fixes below, with every failure traced to the Tester's plan
 - PLAY LIVE "Custom / local" provider: any OpenAI-compatible server (Ollama, LM Studio, vLLM, gateways), key optional, https or localhost-only http, 20-minute agent limits for local servers; verified end to end with qwen3:4b on a CPU-only laptop
 - `#/studio?idea=…` links prefill the prompt box (kept through the redirect to the hero replay), so posts can link straight to an idea to build
 
 ### Fixed
+- The Tester sets every input and select a check depends on and chooses `<select>` options with input actions; malformed `limitations` are normalised instead of failing a plan
+- Text assertions collapse whitespace (server browser runs and in-page checks), so a double space no longer fails a check
 - Non-package entries in a Coder reply's `dependencies` ("none", "HTML5"…) no longer end a run; real packages become a revision note for the Coder (server and PLAY LIVE)
 - Reasoning models' leading `<think>` blocks are ignored when parsing replies
 

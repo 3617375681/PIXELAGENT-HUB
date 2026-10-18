@@ -1,0 +1,659 @@
+{
+  "caseId": "calculator",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "8/10",
+  "finalChecks": "8/10",
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 42,
+  "reportedTokens": 13856,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-18T13:18:56.548Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-18T13:18:56.548Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-18T13:18:59.569Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Two-Number Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-18T13:18:59.569Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-18T13:19:06.795Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-18T13:19:06.795Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-18T13:19:07.348Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-18T13:19:07.349Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "65c15604-0245-4245-b64a-acb6c1c13573"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-18T13:19:10.197Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "65c15604-0245-4245-b64a-acb6c1c13573",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-18T13:19:10.197Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "testPlanId": "65c15604-0245-4245-b64a-acb6c1c13573",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Initial result is 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Addition with positive numbers",
+        "passed": true,
+        "actual": "12"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Subtraction with negative inputs",
+        "passed": false,
+        "actual": "-1.5"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Multiplication of negatives",
+        "passed": false,
+        "actual": "-6.5"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Division result",
+        "passed": true,
+        "actual": "2.25"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Division by zero shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Empty left input shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Non-numeric input shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Non-finite input shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "name": "Calculate button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-18T13:19:17.492Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "85f83344-793c-4a49-a67e-f1955dbdd4de",
+        "status": "failed",
+        "passed": 8,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-18T13:19:17.497Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-18T13:19:26.513Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-18T13:19:26.513Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-18T13:19:26.537Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-18T13:19:26.538Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "testPlanId": "65c15604-0245-4245-b64a-acb6c1c13573",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Initial result is 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Addition with positive numbers",
+        "passed": true,
+        "actual": "12"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Subtraction with negative inputs",
+        "passed": false,
+        "actual": "-1.5"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Multiplication of negatives",
+        "passed": false,
+        "actual": "-6.5"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Division result",
+        "passed": true,
+        "actual": "2.25"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Division by zero shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Empty left input shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Non-numeric input shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Non-finite input shows Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "name": "Calculate button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-18T13:19:33.826Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "9aaae52a-4edb-4048-ad15-3438045d2a6c",
+        "status": "failed",
+        "passed": 8,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-18T13:19:33.829Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial result is 0",
+        "actions": [],
+        "selector": "#result",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Addition with positive numbers",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "7"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "5"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "12",
+        "assertion": "text"
+      },
+      {
+        "name": "Subtraction with negative inputs",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "-3.5"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "-5.5",
+        "assertion": "text"
+      },
+      {
+        "name": "Multiplication of negatives",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "-4"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "-2.5"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "10",
+        "assertion": "text"
+      },
+      {
+        "name": "Division result",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "9"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "4"
+          },
+          {
+            "type": "input",
+            "selector": "#operation",
+            "value": "divide"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "2.25",
+        "assertion": "text"
+      },
+      {
+        "name": "Division by zero shows Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#operation",
+            "value": "divide"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty left input shows Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error",
+        "assertion": "text"
+      },
+      {
+        "name": "Non-numeric input shows Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "abc"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error",
+        "assertion": "text"
+      },
+      {
+        "name": "Non-finite input shows Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#left",
+            "value": "Infinity"
+          },
+          {
+            "type": "input",
+            "selector": "#right",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error",
+        "assertion": "text"
+      },
+      {
+        "name": "Calculate button is enabled",
+        "actions": [],
+        "selector": "#calculate",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "Pixel/retro visual styling (fonts, colors, shadows) is not verified; only functional behavior is checked.",
+      "Label presence and README content are not asserted by these DOM checks.",
+      "Enter-key calculation is not tested because DOM key events are synthetic and may not reflect trusted browser input.",
+      "No check verifies that no network requests, storage, or packages are used; offline behavior is not observable through element assertions.",
+      "The under-200-lines constraint is not verified.",
+      "Scientific-notation display for very large results is not tested.",
+      "Only the listed operations and one representative value per check are covered; other numeric edge cases (e.g., overflow) are not exhaustively tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 2510,
+      "completion_tokens": 742,
+      "total_tokens": 3252,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 2254
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Calculator</h1>\n    <div class=\"field\">\n      <label for=\"left\">Left number</label>\n      <input id=\"left\" type=\"text\" inputmode=\"decimal\" placeholder=\"e.g. -3.5\" autocomplete=\"off\">\n    </div>\n    <div class=\"field\">\n      <label for=\"right\">Right number</label>\n      <input id=\"right\" type=\"text\" inputmode=\"decimal\" placeholder=\"e.g. 2\" autocomplete=\"off\">\n    </div>\n    <div class=\"field\">\n      <label for=\"operation\">Operation</label>\n      <select id=\"operation\">\n        <option value=\"add\">Add (+)</option>\n        <option value=\"subtract\">Subtract (−)</option>\n        <option value=\"multiply\">Multiply (×)</option>\n        <option value=\"divide\">Divide (÷)</option>\n      </select>\n    </div>\n    <button id=\"calculate\" type=\"button\">Calculate</button>\n    <output id=\"result\" for=\"left right operation\">0</output>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with required IDs and labels"
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #2d2f45;\n  --text: #f4f4f4;\n  --accent: #ffcd75;\n  --accent-dark: #e0a800;\n  --error: #ff6b6b;\n  --border: #5a5c7a;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;\n  font-size: 18px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--card);\n  padding: 28px 24px;\n  border: 4px solid var(--border);\n  border-radius: 0;\n  box-shadow: 8px 8px 0 rgba(0,0,0,0.4);\n  width: 100%;\n  max-width: 380px;\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n}\n\nh1 {\n  margin: 0 0 6px;\n  font-size: 24px;\n  text-align: center;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n\n.field {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\nlabel {\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--accent);\n}\n\ninput, select {\n  font: inherit;\n  padding: 10px 12px;\n  border: 3px solid var(--border);\n  border-radius: 0;\n  background: var(--bg);\n  color: var(--text);\n  outline: none;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\n\ninput:focus, select:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(255,205,117,0.3);\n}\n\nbutton {\n  font: inherit;\n  font-weight: 700;\n  padding: 12px;\n  border: 3px solid var(--accent-dark);\n  border-radius: 0;\n  background: var(--accent);\n  color: var(--bg);\n  cursor: pointer;\n  transition: background 0.15s, transform 0.05s;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\nbutton:hover { background: var(--accent-dark); }\nbutton:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }\nbutton:active { transform: translate(2px, 2px); }\n\noutput {\n  display: block;\n  text-align: center;\n  font-size: 28px;\n  font-weight: 700;\n  padding: 14px;\n  border: 3px solid var(--border);\n  background: var(--bg);\n  color: var(--accent);\n  word-break: break-all;\n  min-height: 60px;\n}\n\noutput.error { color: var(--error); }\n\n@media (max-width: 360px) {\n  body { padding: 8px; }\n  .card { padding: 20px 16px; gap: 14px; }\n  h1 { font-size: 20px; }\n  output { font-size: 24px; }\n}",
+      "description": "Pixel-style theme and responsive layout"
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var left = document.getElementById('left');\n  var right = document.getElementById('right');\n  var operation = document.getElementById('operation');\n  var calculate = document.getElementById('calculate');\n  var result = document.getElementById('result');\n\n  function showError() {\n    result.textContent = 'Error';\n    result.classList.add('error');\n  }\n\n  function showValue(value) {\n    result.textContent = String(value);\n    result.classList.remove('error');\n  }\n\n  function parseNumber(input) {\n    var raw = input.value.trim();\n    if (raw === '') return NaN;\n    var num = Number(raw);\n    return isFinite(num) ? num : NaN;\n  }\n\n  function compute() {\n    var a = parseNumber(left);\n    var b = parseNumber(right);\n    if (isNaN(a) || isNaN(b)) {\n      showError();\n      return;\n    }\n    var op = operation.value;\n    var out;\n    if (op === 'add') {\n      out = a + b;\n    } else if (op === 'subtract') {\n      out = a - b;\n    } else if (op === 'multiply') {\n      out = a * b;\n    } else if (op === 'divide') {\n      if (b === 0) {\n        showError();\n        return;\n      }\n      out = a / b;\n    } else {\n      showError();\n      return;\n    }\n    if (!isFinite(out)) {\n      showError();\n      return;\n    }\n    showValue(out);\n  }\n\n  calculate.addEventListener('click', compute);\n\n  [left, right, operation].forEach(function (el) {\n    el.addEventListener('keydown', function (e) {\n      if (e.key === 'Enter') {\n        e.preventDefault();\n        compute();\n      }\n    });\n  });\n})();",
+      "description": "Validation and calculation logic"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Two-Number Calculator\n\nA retro pixel-styled calculator that performs basic arithmetic on two numbers.\n\n## Features\n\n- Inputs: `left` and `right` (support negative and decimal values)\n- Operation selector: add, subtract, multiply, divide\n- Calculate button (`calculate`)\n- Output (`result`) shows only the numeric result, initialized to `0`\n- Invalid input (empty, non-finite) or division by zero displays exactly `Error`\n- Keyboard accessible: labels, focus states, Enter to calculate\n- Fully responsive from 360px wide\n- Offline: no packages, storage, network requests, or external assets\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter a number in each input field.\n3. Choose an operation from the dropdown.\n4. Click **Calculate** (or press Enter in an input).\n5. The result appears in the output box.\n\n## Files\n\n- `index.html` – structure and required IDs\n- `styles.css` – pixel-style theme and responsive layout\n- `script.js` – validation and calculation logic\n\n## Limitations\n\n- No history or memory functions.\n- Very large results may display in scientific notation.\n- Division by zero and invalid inputs intentionally show `Error`.",
+      "description": "Project documentation and usage instructions"
+    }
+  ]
+}

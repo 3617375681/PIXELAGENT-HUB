@@ -1,0 +1,135 @@
+{
+  "caseId": "todo",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": null,
+  "finalChecks": null,
+  "repairTriggered": false,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 17,
+  "reportedTokens": 8156,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-18T13:17:09.982Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-18T13:17:09.983Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-18T13:17:13.444Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Offline Pixel-Style Task List"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-18T13:17:13.444Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-18T13:17:21.266Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-18T13:17:21.266Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-18T13:17:21.825Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-18T13:17:21.825Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "bfd3093b-7938-4d8a-916d-de7da90d7618"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-18T13:17:24.655Z",
+      "type": "test_plan_failed",
+      "data": {
+        "planId": "bfd3093b-7938-4d8a-916d-de7da90d7618",
+        "status": "failed",
+        "error": "The test plan did not match the expected format: ✖ Invalid input; → at limitations; ✖ Invalid input; → at limitations"
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-18T13:17:24.655Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Task List</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Tasks</h1>\n    <form id=\"todo-form\" class=\"input-row\">\n      <label for=\"todo-input\" class=\"sr-only\">New task</label>\n      <input id=\"todo-input\" type=\"text\" placeholder=\"Add a task...\" autocomplete=\"off\">\n      <button id=\"todo-add\" type=\"submit\">Add</button>\n    </form>\n    <div class=\"counts\">\n      <span>Total: <span id=\"todo-total\">0</span></span>\n      <span>Remaining: <span id=\"remaining\">0</span></span>\n    </div>\n    <ul id=\"todo-list\" class=\"task-list\" aria-live=\"polite\"></ul>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --muted: #a0a0b0;\n  --border: #0f3460;\n}\n* { box-sizing: border-box; margin: 0; padding: 0; }\nbody {\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n.card {\n  width: min(100%, 480px);\n  background: var(--card);\n  border: 4px solid var(--border);\n  border-radius: 0;\n  padding: 24px;\n  box-shadow: 8px 8px 0 rgba(0,0,0,0.4);\n}\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 16px;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 16px;\n}\ninput[type=\"text\"] {\n  flex: 1;\n  padding: 12px;\n  font-size: 1rem;\n  background: var(--bg);\n  border: 2px solid var(--border);\n  color: var(--text);\n  border-radius: 0;\n  min-width: 0;\n}\ninput[type=\"text\"]:focus {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\nbutton {\n  padding: 12px 20px;\n  font-size: 1rem;\n  font-weight: bold;\n  background: var(--accent);\n  color: #fff;\n  border: 2px solid var(--accent);\n  border-radius: 0;\n  cursor: pointer;\n  text-transform: uppercase;\n  transition: background 0.1s, transform 0.1s;\n}\nbutton:hover { background: #c73650; }\nbutton:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }\nbutton:active { transform: translate(2px, 2px); }\n.counts {\n  display: flex;\n  justify-content: space-between;\n  padding: 8px 0;\n  border-bottom: 2px solid var(--border);\n  margin-bottom: 12px;\n  color: var(--muted);\n  font-size: 0.95rem;\n}\n.counts span span { color: var(--text); font-weight: bold; }\n.task-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }\n.task-list li {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 10px;\n  background: var(--bg);\n  border: 2px solid var(--border);\n}\n.task-list li span { flex: 1; word-break: break-word; }\n.task-list li.done span { text-decoration: line-through; color: var(--muted); }\n.task-list input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  accent-color: var(--accent);\n  cursor: pointer;\n  flex-shrink: 0;\n}\n.task-list input[type=\"checkbox\"]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }\n.delete-btn {\n  padding: 6px 10px;\n  font-size: 0.8rem;\n  background: transparent;\n  border: 2px solid var(--accent);\n  color: var(--accent);\n}\n.delete-btn:hover { background: var(--accent); color: #fff; }\n.sr-only {\n  position: absolute; width: 1px; height: 1px;\n  padding: 0; margin: -1px; overflow: hidden;\n  clip: rect(0,0,0,0); border: 0;\n}\n@media (max-width: 400px) {\n  .card { padding: 16px; }\n  .input-row { flex-direction: column; }\n  button { width: 100%; }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const tasks = [];\nlet nextId = 1;\n\nconst input = document.getElementById('todo-input');\nconst addBtn = document.getElementById('todo-add');\nconst form = document.getElementById('todo-form');\nconst list = document.getElementById('todo-list');\nconst totalEl = document.getElementById('todo-total');\nconst remainingEl = document.getElementById('remaining');\n\nfunction updateCounts() {\n  totalEl.textContent = tasks.length;\n  remainingEl.textContent = tasks.filter(t => !t.done).length;\n}\n\nfunction addTask() {\n  const text = input.value.trim();\n  if (!text) return;\n\n  const id = nextId++;\n  const task = { id, text, done: false };\n  tasks.push(task);\n\n  const li = document.createElement('li');\n  li.id = `todo-item-${id}`;\n\n  const checkbox = document.createElement('input');\n  checkbox.type = 'checkbox';\n  checkbox.id = `todo-check-${id}`;\n  checkbox.setAttribute('aria-label', `Mark \"${text}\" as done`);\n  checkbox.addEventListener('change', () => {\n    task.done = checkbox.checked;\n    li.classList.toggle('done', task.done);\n    updateCounts();\n  });\n\n  const span = document.createElement('span');\n  span.id = `todo-text-${id}`;\n  span.textContent = text;\n\n  const del = document.createElement('button');\n  del.id = `todo-delete-${id}`;\n  del.className = 'delete-btn';\n  del.textContent = 'Delete';\n  del.setAttribute('aria-label', `Delete \"${text}\"`);\n  del.addEventListener('click', () => {\n    const idx = tasks.indexOf(task);\n    if (idx > -1) tasks.splice(idx, 1);\n    li.remove();\n    updateCounts();\n  });\n\n  li.append(checkbox, span, del);\n  list.appendChild(li);\n  input.value = '';\n  input.focus();\n  updateCounts();\n}\n\nform.addEventListener('submit', (e) => {\n  e.preventDefault();\n  addTask();\n});\n\naddBtn.addEventListener('click', addTask);\n\nupdateCounts();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Task List\n\nAn offline, pixel-style task list built with only HTML, CSS, and plain JavaScript.\n\n## How to Run\n\nOpen `index.html` in any modern browser. No server, build step, or network connection is required.\n\n## Features\n\n- Add tasks by typing and pressing Enter or clicking **Add**.\n- Blank or whitespace-only input is ignored.\n- Each task gets a unique increasing numeric ID.\n- Checkboxes toggle completion; completed tasks are struck through.\n- Delete buttons remove tasks.\n- Live counts: **Total** and **Remaining** (incomplete) update automatically.\n- All state is kept in memory only — refreshing the page resets everything.\n- Fully keyboard accessible with visible focus states.\n- Responsive layout down to 360px wide.\n\n## Required IDs\n\n| Element | ID |\n|---|---|\n| Text input | `todo-input` |\n| Add button | `todo-add` |\n| Total count | `todo-total` |\n| Remaining count | `remaining` |\n| Task text (nth task) | `todo-text-{id}` |\n| Task checkbox (nth task) | `todo-check-{id}` |\n| Task delete button (nth task) | `todo-delete-{id}` |\n\n## Constraints\n\n- No external assets, imports, packages, network requests, iframes, or server code.\n- Uses `addEventListener` only — no inline event handlers.\n- Source files: `index.html`, `styles.css`, `app.js`, `README.md`.\n- Under 240 total source lines.",
+      "description": ""
+    }
+  ]
+}

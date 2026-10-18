@@ -27,4 +27,12 @@ export const parseCodeOutput = (object: unknown) => {
   return { language, files, explanation, dependencies };
 };
 
-export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema, object, 'test plan');
+/** `limitations` is descriptive: normalise it (strings, ≤300 chars, ≤10 items) rather than reject a usable plan. */
+const normaliseLimitations = (object: unknown) => {
+  if (!object || typeof object !== 'object' || Array.isArray(object)) return object;
+  const { limitations, ...rest } = object as Record<string, unknown>;
+  const list = Array.isArray(limitations) ? limitations : limitations === undefined || limitations === null ? [] : [limitations];
+  return { ...rest, limitations: list.map((item) => (typeof item === 'string' ? item : JSON.stringify(item)).slice(0, 300)).slice(0, 10) };
+};
+
+export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema, normaliseLimitations(object), 'test plan');

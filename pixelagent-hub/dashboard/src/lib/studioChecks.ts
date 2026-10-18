@@ -27,13 +27,16 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
       const target = element(check.selector);
-      const read = () => check.assertion === 'disabled' ? String(target.matches(':disabled')) : (target.textContent || '').trim();
-      // Like the server's browser runs: wait up to 2 s for the expected value (timers, transitions).
+      // Same rules as the server's browser runs: text with runs of whitespace as one space,
+      // and up to 2 s for the expected value to appear (timers, transitions).
+      const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
+      const expected = check.assertion === 'disabled' ? check.expected : collapse(check.expected);
+      const read = () => check.assertion === 'disabled' ? String(target.matches(':disabled')) : collapse(target.textContent || '');
       let observed = read();
-      for (const deadline = Date.now() + 2000; observed !== check.expected && Date.now() < deadline; observed = read()) await new Promise((resolve) => setTimeout(resolve, 50));
+      for (const deadline = Date.now() + 2000; observed !== expected && Date.now() < deadline; observed = read()) await new Promise((resolve) => setTimeout(resolve, 50));
       actual = observed.slice(0, 300);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
-      if (observed !== check.expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
+      if (observed !== expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
       results.push({ name: check.name, status: 'passed', actual });
     } catch (error) {
       results.push({ name: check.name, status: 'failed', actual, error: (error instanceof Error ? error.message : String(error)).slice(0, 2000) });

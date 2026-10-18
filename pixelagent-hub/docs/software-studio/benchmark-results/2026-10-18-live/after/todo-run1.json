@@ -1,0 +1,631 @@
+{
+  "caseId": "todo",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "10/10",
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 35,
+  "reportedTokens": 17231,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-18T13:25:43.400Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-18T13:25:43.401Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-18T13:25:47.326Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Offline Pixel-Style Task List"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-18T13:25:47.326Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-18T13:25:56.895Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-18T13:25:56.895Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-18T13:25:57.388Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-18T13:25:57.389Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "15664a95-203f-4c42-9d78-b9cc4978fad4"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-18T13:26:00.361Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "15664a95-203f-4c42-9d78-b9cc4978fad4",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-18T13:26:00.361Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "testPlanId": "15664a95-203f-4c42-9d78-b9cc4978fad4",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-18T13:26:03.627Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Initial counts are zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-18T13:26:03.627Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Initial remaining count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-18T13:26:03.627Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Adding a task creates text span with trimmed text",
+        "passed": true,
+        "actual": "Buy milk"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-18T13:26:03.627Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Adding a task updates total and remaining",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-18T13:26:03.627Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Blank input adds nothing",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-18T13:26:03.628Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Toggling checkbox updates remaining count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-18T13:26:03.628Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Deleting a task updates total count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-18T13:26:03.628Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Second task gets increasing numeric ID",
+        "passed": true,
+        "actual": "Second"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-18T13:26:03.628Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Adding via Enter key works",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-18T13:26:03.628Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "name": "Delete button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-18T13:26:03.628Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "6a14a123-9d27-4623-a774-322f676d55fb",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-18T13:26:03.631Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-18T13:26:12.149Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-18T13:26:12.149Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-18T13:26:12.188Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-18T13:26:12.189Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "testPlanId": "15664a95-203f-4c42-9d78-b9cc4978fad4",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Initial counts are zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Initial remaining count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Adding a task creates text span with trimmed text",
+        "passed": true,
+        "actual": "Buy milk"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Adding a task updates total and remaining",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Blank input adds nothing",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Toggling checkbox updates remaining count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Deleting a task updates total count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Second task gets increasing numeric ID",
+        "passed": true,
+        "actual": "Second"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Adding via Enter key works",
+        "passed": true,
+        "actual": "Keyboard task"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "name": "Delete button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-18T13:26:15.580Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "2430146d-53cd-4e4d-9010-a1a7ebd2d718",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-18T13:26:15.584Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial counts are zero",
+        "actions": [],
+        "selector": "#todo-total",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial remaining count is zero",
+        "actions": [],
+        "selector": "#remaining",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Adding a task creates text span with trimmed text",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "  Buy milk  "
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-text-1",
+        "expected": "Buy milk",
+        "assertion": "text"
+      },
+      {
+        "name": "Adding a task updates total and remaining",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Walk dog"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-total",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Blank input adds nothing",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "   "
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-total",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Toggling checkbox updates remaining count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-check-1"
+          }
+        ],
+        "selector": "#remaining",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Deleting a task updates total count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-delete-1"
+          }
+        ],
+        "selector": "#todo-total",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Second task gets increasing numeric ID",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "First"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          },
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Second"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-text-2",
+        "expected": "Second",
+        "assertion": "text"
+      },
+      {
+        "name": "Adding via Enter key works",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Keyboard task"
+          },
+          {
+            "type": "key",
+            "selector": "#todo-input",
+            "key": "Enter"
+          }
+        ],
+        "selector": "#todo-text-1",
+        "expected": "Keyboard task",
+        "assertion": "text"
+      },
+      {
+        "name": "Delete button is enabled",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-delete-1",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "Cannot verify source line count under 240 or presence of README/labels via DOM assertions.",
+      "Cannot verify in-memory-only state (no storage) or absence of network calls.",
+      "Cannot verify pixel-style visual appearance or CSS styling.",
+      "Enter key is a synthetic DOM keydown event, not trusted browser input; form submission via Enter may not behave identically.",
+      "Cannot assert textContent of dynamically created elements before they exist without relying on prior checks; each check re-adds tasks from fresh state.",
+      "Cannot verify that IDs continue increasing after deletions (gaps) beyond the simple two-task case."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3465,
+      "completion_tokens": 703,
+      "total_tokens": 4168,
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      },
+      "prompt_cache_hit_tokens": 128,
+      "prompt_cache_miss_tokens": 3337
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Tasks</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header class=\"header\">\n      <h1>Pixel Tasks</h1>\n      <p class=\"subtitle\">Offline task list</p>\n    </header>\n\n    <section class=\"counts\" aria-live=\"polite\">\n      <div class=\"count-box\">\n        <span class=\"count-label\">Total</span>\n        <span id=\"todo-total\" class=\"count-value\">0</span>\n      </div>\n      <div class=\"count-box\">\n        <span class=\"count-label\">Remaining</span>\n        <span id=\"remaining\" class=\"count-value\">0</span>\n      </div>\n    </section>\n\n    <form id=\"todo-form\" class=\"add-row\" autocomplete=\"off\">\n      <label for=\"todo-input\" class=\"visually-hidden\">New task</label>\n      <input id=\"todo-input\" type=\"text\" placeholder=\"What needs doing?\" maxlength=\"80\">\n      <button id=\"todo-add\" type=\"submit\">Add</button>\n    </form>\n\n    <ul id=\"todo-list\" class=\"todo-list\"></ul>\n\n    <p id=\"empty-msg\" class=\"empty-msg\">No tasks yet. Add one above.</p>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML markup with required IDs and labels"
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #f4f4f4;\n  --ink: #1a1c2c;\n  --accent: #ffcd75;\n  --accent-dark: #e0a800;\n  --muted: #6b7280;\n  --danger: #ef476f;\n  --line: #1a1c2c;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  padding: 24px 16px;\n  background: var(--bg);\n  background-image: linear-gradient(45deg, #22243a 25%, transparent 25%, transparent 75%, #22243a 75%),\n                    linear-gradient(45deg, #22243a 25%, transparent 25%, transparent 75%, #22243a 75%);\n  background-size: 32px 32px;\n  background-position: 0 0, 16px 16px;\n  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;\n  font-size: 16px;\n  color: var(--ink);\n}\n\n.card {\n  width: 100%;\n  max-width: 480px;\n  background: var(--card);\n  border: 4px solid var(--line);\n  box-shadow: 8px 8px 0 var(--line);\n  padding: 24px 20px;\n}\n\n.header { text-align: center; margin-bottom: 20px; }\n\nh1 {\n  margin: 0;\n  font-size: 1.75rem;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n}\n\n.subtitle { margin: 4px 0 0; color: var(--muted); font-size: 0.95rem; }\n\n.counts {\n  display: flex;\n  gap: 12px;\n  margin-bottom: 20px;\n}\n\n.count-box {\n  flex: 1;\n  border: 3px solid var(--line);\n  padding: 10px;\n  text-align: center;\n  background: #fff;\n}\n\n.count-label {\n  display: block;\n  font-size: 0.8rem;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  color: var(--muted);\n}\n\n.count-value {\n  display: block;\n  font-size: 1.6rem;\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n}\n\n.add-row { display: flex; gap: 8px; margin-bottom: 20px; }\n\n#todo-input {\n  flex: 1;\n  min-width: 0;\n  padding: 10px 12px;\n  font-size: 1rem;\n  font-family: inherit;\n  border: 3px solid var(--line);\n  background: #fff;\n  color: var(--ink);\n}\n\n#todo-input:focus-visible,\nbutton:focus-visible,\ninput[type=\"checkbox\"]:focus-visible {\n  outline: 3px solid var(--accent-dark);\n  outline-offset: 2px;\n}\n\nbutton {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 700;\n  cursor: pointer;\n  border: 3px solid var(--line);\n  background: var(--accent);\n  color: var(--ink);\n  padding: 10px 16px;\n  transition: transform 0.05s, box-shadow 0.05s;\n  box-shadow: 3px 3px 0 var(--line);\n}\n\nbutton:hover { background: var(--accent-dark); }\nbutton:active { transform: translate(3px, 3px); box-shadow: none; }\n\n.todo-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.todo-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  border: 3px solid var(--line);\n  background: #fff;\n  padding: 8px 10px;\n}\n\n.todo-item input[type=\"checkbox\"] {\n  width: 22px;\n  height: 22px;\n  accent-color: var(--accent-dark);\n  cursor: pointer;\n  flex-shrink: 0;\n}\n\n.todo-text {\n  flex: 1;\n  overflow-wrap: anywhere;\n  font-size: 1rem;\n}\n\n.todo-item.done .todo-text {\n  text-decoration: line-through;\n  color: var(--muted);\n}\n\n.todo-delete {\n  padding: 6px 10px;\n  font-size: 0.85rem;\n  background: var(--danger);\n  color: #fff;\n  box-shadow: 2px 2px 0 var(--line);\n}\n\n.todo-delete:hover { background: #d63a5e; }\n\n.empty-msg {\n  text-align: center;\n  color: var(--muted);\n  margin: 12px 0 0;\n  font-size: 0.95rem;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n  border: 0;\n}\n\n@media (max-width: 400px) {\n  .card { padding: 20px 14px; }\n  .add-row { flex-wrap: wrap; }\n  #todo-input { flex-basis: 100%; }\n  #todo-add { width: 100%; }\n}",
+      "description": "Pixel-themed CSS with responsive layout"
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var nextId = 1;\n  var tasks = [];\n\n  var form = document.getElementById('todo-form');\n  var input = document.getElementById('todo-input');\n  var list = document.getElementById('todo-list');\n  var totalEl = document.getElementById('todo-total');\n  var remainingEl = document.getElementById('remaining');\n  var emptyMsg = document.getElementById('empty-msg');\n\n  function updateCounts() {\n    var remaining = 0;\n    for (var i = 0; i < tasks.length; i++) {\n      if (!tasks[i].done) remaining++;\n    }\n    totalEl.textContent = String(tasks.length);\n    remainingEl.textContent = String(remaining);\n    emptyMsg.hidden = tasks.length > 0;\n  }\n\n  function createTaskElement(task) {\n    var li = document.createElement('li');\n    li.className = 'todo-item';\n    li.id = 'todo-item-' + task.id;\n\n    var check = document.createElement('input');\n    check.type = 'checkbox';\n    check.id = 'todo-check-' + task.id;\n    check.checked = task.done;\n    check.setAttribute('aria-label', 'Mark task ' + task.id + ' complete');\n    check.addEventListener('change', function () {\n      task.done = check.checked;\n      li.classList.toggle('done', task.done);\n      updateCounts();\n    });\n\n    var span = document.createElement('span');\n    span.className = 'todo-text';\n    span.id = 'todo-text-' + task.id;\n    span.textContent = task.text;\n\n    var del = document.createElement('button');\n    del.type = 'button';\n    del.className = 'todo-delete';\n    del.id = 'todo-delete-' + task.id;\n    del.textContent = 'Delete';\n    del.setAttribute('aria-label', 'Delete task ' + task.id);\n    del.addEventListener('click', function () {\n      tasks = tasks.filter(function (t) { return t.id !== task.id; });\n      li.remove();\n      updateCounts();\n    });\n\n    li.appendChild(check);\n    li.appendChild(span);\n    li.appendChild(del);\n    return li;\n  }\n\n  function addTask() {\n    var text = input.value.trim();\n    if (!text) return;\n    var task = { id: nextId++, text: text, done: false };\n    tasks.push(task);\n    list.appendChild(createTaskElement(task));\n    input.value = '';\n    input.focus();\n    updateCounts();\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    addTask();\n  });\n\n  // Ensure Enter key in the input triggers add (in case form submit is not fired)\n  input.addEventListener('keydown', function (e) {\n    if (e.key === 'Enter') {\n      e.preventDefault();\n      addTask();\n    }\n  });\n\n  updateCounts();\n})();",
+      "description": "Task logic with Enter key handling"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Tasks\n\nAn offline, pixel-styled task list built with plain HTML, CSS and JavaScript. No storage, no network, no dependencies.\n\n## Features\n\n- Add tasks by typing text and pressing **Add** or **Enter**.\n- Blank or whitespace-only input is ignored.\n- Live **Total** and **Remaining** counts (integers, start at 0).\n- Check a task to mark it complete; remaining count updates.\n- Delete a task to remove it; both counts update.\n- Tasks receive increasing numeric IDs (first task: `todo-text-1`, `todo-check-1`, `todo-delete-1`).\n- All state lives in memory and resets on reload.\n\n## Controls\n\n| Control | ID |\n| --- | --- |\n| Task input | `#todo-input` |\n| Add button | `#todo-add` |\n| Total count | `#todo-total` |\n| Remaining count | `#remaining` |\n| Task text (nth) | `#todo-text-<n>` |\n| Task checkbox (nth) | `#todo-check-<n>` |\n| Task delete (nth) | `#todo-delete-<n>` |\n\n## Run\n\nOpen `index.html` in any modern browser. No build step required.\n\n## Accessibility\n\n- Input and buttons have visible or screen-reader labels.\n- Full keyboard support with visible focus rings.\n- Counts update in a live region.\n\n## Files\n\n- `index.html` - markup\n- `style.css` - pixel theme and responsive layout\n- `app.js` - task logic\n",
+      "description": "Documentation"
+    }
+  ]
+}

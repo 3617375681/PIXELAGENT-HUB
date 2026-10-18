@@ -1,0 +1,90 @@
+/**
+ * PLAY LIVE benchmark: the fixed benchmark cases run through the real built static site in Chromium,
+ * exactly as a visitor would run them (Tester-written plans, fresh isolation, one repair round).
+ * The page holds a test key; requests to api.deepseek.com are forwarded with DEEPSEEK_API_KEY, so the
+ * real key never enters the page. Each run uses a fresh browser profile; its recorded events are saved.
+ *
+ *   npx tsx scripts/benchmark-live.ts <dist> <out-dir> [--runs 3] [--model deepseek-chat] [--only counter,todo]
+ *
+ * Calls the paid model.
+ */
+import { createServer } from 'node:http';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { extname, join, resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { chromium } from 'playwright';
+
+const [distArg, outArg] = process.argv.slice(2);
+if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--runs N] [--model M] [--only ids]');
+const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
+const runs = Number(argument('--runs') || 3);
+const model = argument('--model') || 'deepseek-chat';
+const only = argument('--only')?.split(',');
+const dist = resolve(distArg);
+const out = resolve(outArg);
+const base = '/PIXELAGENT-HUB/';
+const cases = (JSON.parse(await readFile(resolve('config/studio-benchmark.json'), 'utf8')) as { id: string; title: string; description: string }[]).filter((item) => !only || only.includes(item.id));
+const types: Record<string, string> = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.zip': 'application/zip', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.wasm': 'application/wasm' };
+const server = createServer(async (req, res) => {
+  let file = join(dist, decodeURIComponent(new URL(req.url!, 'http://x').pathname).slice(base.length));
+  try { if ((await stat(file)).isDirectory()) file = join(file, 'index.html'); res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream' }).end(await readFile(file)); }
+  catch { res.writeHead(404).end(); }
+});
+await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
+const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+const browser = await chromium.launch();
+type Event = { seq: number; at: string; type: string; round?: number; data?: Record<string, unknown> };
+const results = [];
+await mkdir(out, { recursive: true });
+try {
+  for (const testCase of cases) for (let run = 1; run <= runs; run++) {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await context.newPage();
+    let tokens = 0;
+    await page.route('https://api.deepseek.com/**', async (route) => {
+      const upstream = await fetch('https://api.deepseek.com/chat/completions', { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` }, body: route.request().postData() || '{}' });
+      const body = Buffer.from(await upstream.arrayBuffer());
+      for (const match of body.toString('utf8').matchAll(/"total_tokens":(\d+)/g)) tokens += Number(match[1]);
+      await route.fulfill({ status: upstream.status, headers: { 'content-type': upstream.headers.get('content-type') || 'text/event-stream', 'access-control-allow-origin': '*' }, body });
+    });
+    const started = Date.now();
+    await page.goto(`${origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}`);
+    await page.waitForSelector('.studio-stage');
+    await page.getByRole('button', { name: /BUILD LIVE/ }).click();
+    await page.locator('#live-provider').selectOption('deepseek');
+    await page.locator('#live-key').fill('sk-benchmark-0000000000000000000000000000');
+    await page.locator('#live-model').fill(model);
+    await page.getByRole('button', { name: /SAVE & BUILD/ }).click();
+    await page.waitForURL(/studio\/live-/, { timeout: 15_000 });
+    await page.waitForFunction(() => /Built\. Ready to play|Run failed|Run cancelled/.test(document.body.innerText), null, { timeout: 1_800_000, polling: 1000 });
+    const record = await page.evaluate(async () => {
+      const db = await new Promise<IDBDatabase>((done) => { const request = indexedDB.open('pixelagent-live', 1); request.onsuccess = () => done(request.result); });
+      const all = await new Promise<any[]>((done) => { const request = db.transaction('projects').objectStore('projects').getAll(); request.onsuccess = () => done(request.result); });
+      const entry = all[0];
+      return { project: { status: entry.project.status, error: entry.project.error, rounds: entry.project.rounds.map((round: any) => ({ round: round.round, build: round.build?.status, errors: round.build?.errors })) }, events: entry.events, plan: entry.plan?.result?.output, files: entry.files };
+    });
+    const events = record.events as Event[];
+    const browserRuns = events.filter((event) => event.type === 'browser_run_finished').map((event) => ({ status: String(event.data?.status), passed: Number(event.data?.passed), failed: Number(event.data?.failed) }));
+    const compileFailures = events.filter((event) => event.type === 'build_failed').length;
+    const entry = {
+      caseId: testCase.id, run, model, status: record.project.status, error: record.project.error,
+      coderRounds: record.project.rounds.length, compileFailures,
+      firstChecks: browserRuns[0] ? `${browserRuns[0].passed}/${browserRuns[0].passed + browserRuns[0].failed}` : null,
+      finalChecks: browserRuns.at(-1) ? `${browserRuns.at(-1)!.passed}/${browserRuns.at(-1)!.passed + browserRuns.at(-1)!.failed}` : null,
+      repairTriggered: browserRuns.length > 1,
+      fullPass: record.project.status === 'ready_for_review' && browserRuns.at(-1)?.status === 'passed',
+      rescuedByRepair: browserRuns.length > 1 && browserRuns.at(-1)?.status === 'passed',
+      elapsedSeconds: Math.round((Date.now() - started) / 1000), reportedTokens: tokens,
+    };
+    results.push(entry);
+    console.log(JSON.stringify(entry));
+    await writeFile(join(out, `${testCase.id}-run${run}.json`), JSON.stringify({ ...entry, events, plan: record.plan, rounds: record.project.rounds, files: record.files }, null, 2));
+    await context.close();
+  }
+} finally {
+  await browser.close();
+  server.close();
+  const revision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim() !== '';
+  await writeFile(join(out, 'summary.json'), JSON.stringify({ recordedAt: new Date().toISOString(), sourceRevision: revision, sourceDirty: dirty, model, runsPerCase: runs, results }, null, 2));
+}
