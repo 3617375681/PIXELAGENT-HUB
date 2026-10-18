@@ -30,21 +30,21 @@ export default function StudioReviewPanel({ project, reports, onSaved }: { proje
     } catch (error) { setError(error instanceof Error ? error.message : String(error)); }
     finally { setBusy(false); }
   };
-  return <section className="studio-review" aria-label="人工验收">
-    <h3>人工验收 / 当前版本</h3>
-    <p className="studio-hint">实际试玩并审阅需求后记录决定。新版本或新保存的诊断需要重新确认通过；审阅者名称由填写者提供。</p>
-    <label htmlFor="review-evidence">参考诊断记录</label>
+  return <section className="studio-review" aria-label="Human review">
+    <h3>HUMAN REVIEW</h3>
+    <p className="studio-hint">Play it, compare with the request, then record a decision. New versions or new diagnostics need a fresh approval.</p>
+    <label htmlFor="review-evidence">Evidence</label>
     <select id="review-evidence" value={diagnosticId} onChange={(event) => setDiagnosticId(event.target.value)} disabled={busy}>
-      <option value="">选择已保存的当前版本诊断</option>
-      {evidence.map((report) => <option key={report.id} value={report.id}>{new Date(report.savedAt).toLocaleString()} · {report.errors.length} 条错误{report.checks ? ` · ${report.checks.filter((check) => check.status === 'passed').length}/${report.checks.length} 检查通过` : ''}</option>)}
+      <option value="">Pick a saved observation of this version</option>
+      {evidence.map((report) => <option key={report.id} value={report.id}>{new Date(report.savedAt).toLocaleString()} · {report.errors.length} errors{report.checks ? ` · ${report.checks.filter((check) => check.status === 'passed').length}/${report.checks.length} checks passed` : ''}</option>)}
     </select>
-    {!evidence.length && <p>先实际试玩，再在验证记录中保存诊断；也可保存 Tester 检查结果。</p>}
-    {report && !canApprove && <p>通过需选择最新、已加载且无错误或失败检查的记录；当前可以记录需返修。</p>}
-    <label htmlFor="review-operator">审阅者名称</label><input id="review-operator" value={operator} onChange={(event) => setOperator(event.target.value)} maxLength={80} disabled={busy} />
-    <label htmlFor="review-note">验收说明 / 未满足的需求</label><textarea id="review-note" value={note} onChange={(event) => setNote(event.target.value)} maxLength={2000} rows={3} disabled={busy} />
-    <label className="studio-review-confirm"><input type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy} />我已实际试玩此版本并审阅需求，下面是我的验收决定。</label>
-    <div><button disabled={!canSubmit || !canApprove} onClick={() => void save('approved')}>记录人工通过</button><button disabled={!canSubmit} onClick={() => void save('changes_requested')}>记录需返修</button></div>
+    {!evidence.length && <p>Play the app and save an observation (or Tester results) first.</p>}
+    {report && !canApprove && <p>Approval needs the latest clean observation; you can still request changes.</p>}
+    <label htmlFor="review-operator">Reviewer</label><input id="review-operator" value={operator} onChange={(event) => setOperator(event.target.value)} maxLength={80} disabled={busy} />
+    <label htmlFor="review-note">Notes / what is missing</label><textarea id="review-note" value={note} onChange={(event) => setNote(event.target.value)} maxLength={2000} rows={3} disabled={busy} />
+    <label className="studio-review-confirm"><input type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} disabled={busy} />I played this version and checked it against the request.</label>
+    <div><button disabled={!canSubmit || !canApprove} onClick={() => void save('approved')}>Approve</button><button disabled={!canSubmit} onClick={() => void save('changes_requested')}>Request changes</button></div>
     {error && <p role="alert">{error}</p>}
-    <details><summary>验收历史 · {reviews.length} 条</summary>{reviews.length === 0 && <p>尚无人工验收决定。</p>}{reviews.map((review) => <article key={review.id}><p>{review.decision === 'approved' ? '人工通过' : '需返修'} · {review.operator} · {new Date(review.savedAt).toLocaleString()}</p><p>{review.note}</p><small>诊断 {review.diagnosticId} · {review.previewFile}</small></article>)}</details>
+    <details><summary>Review history · {reviews.length}</summary>{reviews.length === 0 && <p>No decisions yet.</p>}{reviews.map((review) => <article key={review.id}><p>{review.decision === 'approved' ? 'Approved' : 'Changes requested'} · {review.operator} · {new Date(review.savedAt).toLocaleString()}</p><p>{review.note}</p><small>Observation {review.diagnosticId} · {review.previewFile}</small></article>)}</details>
   </section>;
 }

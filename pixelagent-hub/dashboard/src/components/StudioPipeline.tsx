@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { DataPacketAnimation } from './effects/DataPacket';
 import { ScreenFlash } from './ScreenFlash';
+import { TypewriterText } from './effects/TypewriterText';
+import { soundEngine } from '../lib/soundEngine';
 import StudioStageCard from './StudioStageCard';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery';
 import { STAGE_ORDER, describeEvent, type PipelineView, type StageId } from '../lib/studioPipeline';
@@ -51,6 +53,22 @@ export default function StudioPipeline({ view, events, live }: { view: PipelineV
     return { x: side === 'out' ? box.right : box.left, y: (box.top + box.bottom) / 2 };
   };
 
+  // 8-bit cues from the original console, one per real transition (never for the initial load).
+  const heard = useRef<PipelineView | null>(null);
+  useEffect(() => {
+    const before = heard.current;
+    heard.current = view;
+    if (!before) return;
+    view.stages.forEach((stage, index) => {
+      const was = before.stages[index].state;
+      if (stage.state === was) return;
+      if (stage.state === 'active') soundEngine.statusChange('thinking');
+      else if (stage.state === 'failed') soundEngine.error();
+      else if (stage.state === 'done') soundEngine.message();
+    });
+    if (view.terminal === 'ready_for_review' && before.terminal !== 'ready_for_review') soundEngine.success();
+  }, [view]);
+
   // Hand-offs become packets; only transitions seen live animate, never the initial load.
   useEffect(() => {
     const before = previous.current;
@@ -65,7 +83,7 @@ export default function StudioPipeline({ view, events, live }: { view: PipelineV
       const sourceStage = view.stages.find((item) => item.id === source)!;
       if (from && to) added.push({ id: `${stage.id}-${Date.now()}`, from, to, color: source === STAGE_ORDER[index - 1] ? sourceStage.color : '#ef4444', icon: sourceStage.icon });
     });
-    if (added.length) setPackets((current) => [...current.slice(-6), ...added]);
+    if (added.length) { setPackets((current) => [...current.slice(-6), ...added]); soundEngine.packetSend(); }
     if (view.terminal === 'ready_for_review' && before.terminal !== 'ready_for_review') setFlash((value) => value + 1);
     // anchor() reads the latest measured boxes; re-running on box changes would replay packets.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,12 +111,12 @@ export default function StudioPipeline({ view, events, live }: { view: PipelineV
   const running = live && !view.terminal;
 
   return (
-    <section className="studio-pipeline" aria-label="团队执行流程">
+    <section className="studio-pipeline" aria-label="The squad at work">
       <div className="studio-pipeline-head pixel-font">
-        <span>TEAM PIPELINE</span>
+        <span>THE SQUAD</span>
         {view.round > 0 && <span>ROUND {view.round}</span>}
         {running && <span className="studio-live">● LIVE</span>}
-        {view.derived && <span className="studio-derived" title="该项目早于事件日志，时间线由保存的记录推算，只有起止时间是真实的">DERIVED</span>}
+        {view.derived && <span className="studio-derived" title="This project predates event logs; the timeline is rebuilt from its saved record and only start/finish times are real">REBUILT</span>}
       </div>
       <div ref={container} className={`studio-pipeline-graph ${view.feedback ? 'has-feedback' : ''}`}>
         <svg className="studio-pipeline-edges" aria-hidden="true">
@@ -124,17 +142,17 @@ export default function StudioPipeline({ view, events, live }: { view: PipelineV
       {view.feedback && (
         <p className="studio-feedback" role="status">
           <span className="pixel-font">↩ {view.feedback.from === 'builder' ? 'BUILDER' : 'TESTER'} → CODER</span>
-          {view.feedback.round ? `第 ${view.feedback.round} 轮` : ''}{view.feedback.from === 'builder' ? '编译失败，报错已交回 Coder：' : '浏览器检查失败：'}
+          {view.feedback.from === 'builder' ? `Build failed${view.feedback.round ? ` in round ${view.feedback.round}` : ''}. The error goes back to the Coder:` : 'A browser check failed. Back to the Coder:'}
           <code>{view.feedback.message}</code>
         </p>
       )}
       {events.length > 0 && (
-        <details className="studio-event-log" open={running}>
-          <summary>事件日志 · {events.length} 条</summary>
+        <div className="studio-event-log">
+          <span className="pixel-font">LOG · {events.length} EVENTS</span>
           <ol aria-live="polite">
-            {events.slice(-12).map((event) => <li key={event.seq} className={`event-${event.type}`}><time dateTime={event.at}>{time(event.at)}</time>{describeEvent(event)}</li>)}
+            {events.slice(-6).map((event, index, shown) => <li key={event.seq} className={`event-${event.type}`}><time dateTime={event.at}>{time(event.at)}</time>{index === shown.length - 1 && running && !reducedMotion ? <TypewriterText text={describeEvent(event)} speed={18} /> : describeEvent(event)}</li>)}
           </ol>
-        </details>
+        </div>
       )}
       <ScreenFlash color="#22c55e" trigger={flash} />
     </section>
