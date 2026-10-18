@@ -324,7 +324,7 @@ export default function Studio() {
             <button className="studio-create pixel-font" onClick={() => void create()} disabled={busy || building || !promptText.trim()}><Play size={14} />{busy ? 'WAIT…' : REPLAY ? 'BUILD LIVE' : 'BUILD IT'}</button>
           </div>
           <div className="studio-examples"><span className="pixel-font">TRY</span>{EXAMPLES.map((example) => <button key={example.label} className="pixel-font" disabled={busy || building} onClick={() => { soundEngine.click(); setDescription(example.text); setEdited(true); }}>{example.label}</button>)}</div>
-          {REPLAY && <p className="studio-hint">{readOnly ? 'Below is a recorded run. ' : ''}<b>BUILD LIVE</b> runs the squad in this tab with your own DeepSeek key{liveCredentials() ? <> (<button type="button" className="studio-link" onClick={() => setKeyDialog(true)}>change key</button>)</> : ''}, or clone the repo and run <code>npm start</code> to build offline.</p>}
+          {REPLAY && <p className="studio-hint">{readOnly ? 'Below is a recorded run. ' : ''}<b>BUILD LIVE</b> runs the squad in this tab with your own key (DeepSeek, Claude, OpenAI, Qwen, GLM…){liveCredentials() ? <> (<button type="button" className="studio-link" onClick={() => setKeyDialog(true)}>change key</button>)</> : ''}, or clone the repo and run <code>npm start</code> to build offline.</p>}
         </section>
 
         {error && <div className={`studio-error ${error === OFFLINE_MESSAGE ? 'offline' : ''}`} role="alert">{error}<button className="pixel-font" onClick={() => setRefreshKey((key) => key + 1)}>RETRY</button></div>}

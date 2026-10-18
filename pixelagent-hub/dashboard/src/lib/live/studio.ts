@@ -2,7 +2,7 @@ import { strToU8, zipSync } from 'fflate';
 import { coderPrompt, managerPrompt, testerPrompt, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { parseCodeOutput, parseModelObject, parsePlanOutput, parseTestPlanOutput } from '@studio-shared/parse';
 import type { StudioDiagnostic, StudioEvent, StudioEventType, StudioProject, StudioSummary, StudioTestPlan } from '../../types/studio';
-import { streamChat, type LlmUsage } from './llm';
+import { liveChat, liveProvider, type LlmUsage } from './llm';
 import { buildInBrowser } from './build';
 import { runInPageChecks } from './checks';
 import { liveCredentials } from './key';
@@ -84,17 +84,17 @@ function finishFailed(entry: Entry, error: string, status: 'failed' | 'cancelled
 }
 
 // ---- agents ----
-type AgentReply<T> = { output: T & { llmUsage?: LlmUsage; llmModel: string; llmProvider: 'deepseek' } };
+type AgentReply<T> = { output: T & { llmUsage?: LlmUsage; llmModel: string; llmProvider: string } };
 async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) => T, signal: AbortSignal, timeoutMs: number): Promise<AgentReply<T>> {
   const credentials = liveCredentials();
-  if (!credentials) throw new Error('Add your DeepSeek key to build live.');
+  if (!credentials) throw new Error('Add a model key to build live.');
   const controller = new AbortController();
   const stop = () => controller.abort(signal.reason);
   signal.addEventListener('abort', stop, { once: true });
   const timer = setTimeout(() => controller.abort(new Error(`${agent} exceeded its ${timeoutMs / 1000} s limit`)), timeoutMs);
   try {
-    const reply = await streamChat({ apiKey: credentials.key, model: credentials.model, ...prompt, signal: controller.signal });
-    return { output: { ...parse(parseModelObject(reply.content)), llmUsage: reply.usage, llmModel: reply.model, llmProvider: 'deepseek' } };
+    const reply = await liveChat(credentials, prompt, controller.signal);
+    return { output: { ...parse(parseModelObject(reply.content)), llmUsage: reply.usage, llmModel: reply.model, llmProvider: credentials.provider } };
   } catch (error) {
     if (signal.aborted) throw signal.reason;
     if (controller.signal.aborted) throw controller.signal.reason;
@@ -107,7 +107,7 @@ async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) =>
 
 function metrics(entry: Entry): StudioProject['generationMetrics'] {
   const { project } = entry;
-  const tasks = [project.plan, ...project.rounds.map((round) => round.code)].filter(Boolean) as { output?: { llmUsage?: LlmUsage; llmModel?: string } }[];
+  const tasks = [project.plan, ...project.rounds.map((round) => round.code)].filter(Boolean) as { output?: { llmUsage?: LlmUsage; llmModel?: string; llmProvider?: string } }[];
   const usage = tasks.map((task) => task.output?.llmUsage).filter(Boolean) as LlmUsage[];
   return {
     elapsedMs: project.finishedAt ? Date.parse(project.finishedAt) - Date.parse(project.startedAt) : null,
@@ -115,7 +115,7 @@ function metrics(entry: Entry): StudioProject['generationMetrics'] {
     failedBuilds: project.rounds.filter((round) => round.build?.status === 'failed').length,
     agentTasks: tasks.length, reportedUsageTasks: usage.length, missingUsageTasks: tasks.length - usage.length,
     reportedTokens: usage.reduce((sum, item) => sum + (item.total_tokens || 0), 0),
-    models: [...new Set(tasks.map((task) => task.output?.llmModel).filter(Boolean) as string[])].map((model) => `deepseek/${model}`),
+    models: [...new Set(tasks.flatMap((task) => task.output?.llmModel ? [`${task.output.llmProvider || 'model'}/${task.output.llmModel}`] : []))],
     costUsd: null,
   };
 }
@@ -198,13 +198,14 @@ async function test(entry: Entry, signal: AbortSignal) {
 }
 
 function start(description: string): { projectId: string; jobId: string } {
-  if (!liveCredentials()) throw httpError('Add your DeepSeek key to build live.', 401);
+  const credentials = liveCredentials();
+  if (!credentials) throw httpError('Add a model key to build live.', 401);
   const text = description.trim();
   if (!text || text.length > 4000) throw httpError('Provide a project description of 1–4000 characters', 400);
   const projectId = `${LIVE_PREFIX}${crypto.randomUUID()}`;
   const entry: Entry = { project: { projectId, description: text, status: 'queued', startedAt: now(), strategy: 'manager-coder', rounds: [] }, events: [], diagnostics: [] };
   entries.set(projectId, entry);
-  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser' });
+  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser', provider: liveProvider(credentials.provider).label, model: credentials.model });
   const controller = new AbortController();
   controllers.set(projectId, controller);
   void generate(entry, controller.signal).finally(() => { controllers.delete(projectId); void persist(entry); });

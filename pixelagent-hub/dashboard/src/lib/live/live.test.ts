@@ -35,7 +35,7 @@ beforeEach(async () => {
   live = await import('./studio');
   key = await import('./key');
   live.resetLiveStudioForTests();
-  key.saveLiveCredentials('sk-test-key-0123456789abcdef', 'deepseek-chat', false);
+  key.saveLiveCredentials({ provider: 'deepseek', key: 'sk-test-key-0123456789abcdef', model: 'deepseek-chat' }, false);
 });
 afterEach(() => { vi.unstubAllGlobals(); });
 
@@ -104,4 +104,31 @@ it('a rejected key fails the run with a readable message and never echoes the ke
 it('refuses to start without a key', async () => {
   key.forgetLiveCredentials();
   await expect(live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' }))).rejects.toMatchObject({ status: 401 });
+});
+
+it('sends other OpenAI-compatible providers to their own endpoint and redacts keys from errors', async () => {
+  key.saveLiveCredentials({ provider: 'openai', key: 'sk-proj-abcdefghijklmnopqrstuvwxyz', model: 'gpt-missing' }, false);
+  fetchMock.mockResolvedValue(new Response('{"error":{"message":"The model gpt-missing does not exist for key sk-proj-abcdefghijklmnopqrstuvwxyz"}}', { status: 404 }));
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(fetchMock.mock.calls[0][0]).toBe('https://api.openai.com/v1/chat/completions');
+  expect(events[0].data).toMatchObject({ provider: 'OpenAI', model: 'gpt-missing' });
+  expect(String(events.at(-1)?.data?.error)).toContain('OpenAI does not know the model "gpt-missing" (404)');
+  expect(JSON.stringify(events)).not.toContain('abcdefghijklmnop');
+});
+
+it('remembers only what the visitor asked for', async () => {
+  const sessionStore = new Map<string, string>();
+  const localStore = new Map<string, string>();
+  const storage = (map: Map<string, string>) => ({ getItem: (name: string) => map.get(name) ?? null, setItem: (name: string, value: string) => { map.set(name, value); }, removeItem: (name: string) => { map.delete(name); } });
+  vi.stubGlobal('sessionStorage', storage(sessionStore));
+  vi.stubGlobal('localStorage', storage(localStore));
+  key.saveLiveCredentials({ provider: 'anthropic', key: 'sk-ant-test-0000000000000000', model: 'claude-opus-5-5' }, false);
+  expect(sessionStore.get('pixelagent:live-provider')).toBe('anthropic');
+  expect(localStore.size).toBe(0);
+  key.saveLiveCredentials({ provider: 'anthropic', key: 'sk-ant-test-0000000000000000', model: 'claude-opus-5-5' }, true);
+  expect(localStore.get('pixelagent:live-key')).toBe('sk-ant-test-0000000000000000');
+  key.forgetLiveCredentials();
+  expect(sessionStore.size + localStore.size).toBe(0);
+  expect(key.liveCredentials()).toBeNull();
 });

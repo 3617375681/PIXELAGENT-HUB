@@ -15,7 +15,7 @@ export default function ReplayBanner({ projectId, live = false }: { projectId?: 
   return (
     <aside className="studio-replay" aria-label="Replay notice">
       <span className={`pixel-font studio-replay-tag ${live ? 'live' : ''}`}>{live ? 'LIVE' : 'REPLAY'}</span>
-      <span className="studio-replay-text">{live ? 'Your run · your DeepSeek key · running in this browser' : `Recorded run · read-only${current ? ` · ${current.kind === 'mock' ? 'offline mock model' : 'real model (DeepSeek)'}` : ''}`}</span>
+      <span className="studio-replay-text">{live ? 'Your run · your own key · running in this browser' : `Recorded run · read-only${current ? ` · ${current.kind === 'mock' ? 'offline mock model' : 'real model (DeepSeek)'}` : ''}`}</span>
       {manifest && (
         <nav aria-label="Replay cases">
           {featured.map((item, index) => (
