@@ -10,6 +10,11 @@ test('model replies parse from a fenced block or bare JSON, and must be one obje
   assert.throws(() => parseModelObject('[1,2]'), /Expected a JSON object/);
 });
 
+test('a leading <think> block from a reasoning model is ignored', () => {
+  assert.deepEqual(parseModelObject('<think>\nThe user wants {"a": 0}\n</think>\n```json\n{"a":1}\n```'), { a: 1 });
+  assert.deepEqual(parseModelObject('<think></think>{"b":2}'), { b: 2 });
+});
+
 test('code output tolerates omitted descriptive fields but not missing files', () => {
   assert.deepEqual(parseCodeOutput({ language: 'javascript', files: [{ path: 'index.html', content: '<p>hi</p>' }] }),
     { language: 'javascript', files: [{ path: 'index.html', content: '<p>hi</p>', description: '' }], explanation: '', dependencies: [] });

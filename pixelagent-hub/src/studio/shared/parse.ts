@@ -3,7 +3,8 @@ import { codeSchema, planSchema, testPlanSchema } from './schemas.js';
 
 /** A model reply as one JSON object: the first fenced block if present, otherwise the whole reply. */
 export function parseModelObject(raw: string): Record<string, unknown> {
-  const trimmed = raw.trim();
+  // Reasoning models (qwen3, R1-style) may prefix their reply with a <think> block.
+  const trimmed = raw.replace(/^\s*<think>[\s\S]*?<\/think>/, '').trim();
   const object = JSON.parse(trimmed.match(/```(?:json)?\s*([\s\S]*?)```/)?.[1] ?? trimmed);
   if (!object || typeof object !== 'object' || Array.isArray(object)) throw new Error('Expected a JSON object');
   return object;
