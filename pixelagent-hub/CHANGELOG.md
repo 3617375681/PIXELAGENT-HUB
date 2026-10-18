@@ -3,7 +3,12 @@
 ## [Unreleased]
 
 ### Added
+- PLAY LIVE "Custom / local" provider: any OpenAI-compatible server (Ollama, LM Studio, vLLM, gateways), key optional, https or localhost-only http, 20-minute agent limits for local servers; verified end to end with qwen3:4b on a CPU-only laptop
 - `#/studio?idea=…` links prefill the prompt box (kept through the redirect to the hero replay), so posts can link straight to an idea to build
+
+### Fixed
+- Non-package entries in a Coder reply's `dependencies` ("none", "HTML5"…) no longer end a run; real packages become a revision note for the Coder (server and PLAY LIVE)
+- Reasoning models' leading `<think>` blocks are ignored when parsing replies
 
 ## [2.0.0] — 2026-10-18
 
