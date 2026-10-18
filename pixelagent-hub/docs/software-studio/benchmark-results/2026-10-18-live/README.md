@@ -16,14 +16,15 @@ The model is `deepseek-chat`. The page held a test key, and `scripts/benchmark-l
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | [`before/`](before/) | `b5810ee` (clean) | **8/15** | 6 | 0 | 24 s | 146,058 |
 | [`after/`](after/) | `4c4fbde` (clean), Tester prompt fix | **11/15** | 4 | 1 | 20 s | 136,597 |
+| [`review/`](review/) | `5b6401c` (clean), + whitespace fix + Tester review | **14/15** | 0 | 0 | 19 s | 111,641 |
 
-| Case | Before | After |
-| --- | --- | --- |
-| Counter | 3/3 | 2/3 |
-| Task list | 2/3 | 2/3 (one rescued by repair) |
-| Calculator | 0/3 | **3/3** |
-| Converter | 0/3 | **2/3** |
-| Quiz | 3/3 | 2/3 |
+| Case | Before | After | Review |
+| --- | --- | --- | --- |
+| Counter | 3/3 | 2/3 | 3/3 |
+| Task list | 2/3 | 2/3 (one rescued by repair) | 3/3 |
+| Calculator | 0/3 | **3/3** | 3/3 |
+| Converter | 0/3 | **2/3** | 2/3 |
+| Quiz | 3/3 | 2/3 | 3/3 |
 
 Every run compiled on the first attempt.
 
@@ -49,10 +50,20 @@ The repair round sent these correct apps back to the Coder and could not help, w
 
 One run (task list, run 1) failed a check, went through the repair round, and then passed.
 
+## Third round: whitespace fix and Tester review
+
+The third round includes two later changes:
+- text assertions collapse whitespace (`bf98d91`);
+- **the Tester re-examines its failing checks** before the Coder is blamed (`45a3126`). A check it judges wrong is replaced by a corrected check testing the same requirement; failures it stands by still go to the Coder.
+
+**14/15** runs passed fully. Read that carefully: **no run had a failing check, so the review never triggered.** These 15 runs do not measure the review at all. The gain over the second round reflects the whitespace fix and normal run-to-run variance. Unit tests cover the review logic, but its real-world effect is unmeasured.
+
+The one failure (converter, run 1) was again a plan the schema rejected, an action shape that is not allowed; the app shipped without checks. That has happened in 2 of 45 runs, so a rejected plan now goes back to the Tester once with the validation error (`19cf3e0`, after this round; not measured).
+
 ## Reading this honestly
 
 - Fifteen runs per configuration on small fixed cases is a small sample, not a success rate.
-- The Tester is a model too. Its mistakes are now the main reason a correct app is marked as failing, and the only remedy this pipeline has for a failed check is to change the app. A natural next step would be to let the Tester re-examine a failing check before blaming the Coder.
+- The Tester is a model too. Its mistakes are now the main reason a correct app is marked as failing, and the only remedy this pipeline has for a failed check is to change the app. Since the second round, the Tester re-examines a failing check before the Coder is blamed (see the third round); its effect on real runs is not measured yet.
 - In-page checks run inside the app's own page; see the limits in the main README.
 
 ## Files
