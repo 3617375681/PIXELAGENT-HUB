@@ -226,7 +226,19 @@ async function planChecks(entry: Entry, signal: AbortSignal) {
   project.phase = 'testing';
   emit(entry, 'test_plan_started', { planId: plan.id });
   try {
-    const result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [] }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
+    let result;
+    // Like a compile error for the Coder: a plan the schema rejects goes back to the Tester once.
+    for (let attempt = 1; ; attempt++) {
+      try {
+        result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [], ...(plan.error ? { invalidPlanFeedback: `Your previous plan was rejected: ${plan.error} Return a corrected plan; actions may only be {type:"click",selector}, {type:"input",selector,value} or {type:"key",selector,key}.` } : {}) }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
+        if (attempt > 1) plan.error = undefined;
+        break;
+      } catch (error) {
+        const invalid = error instanceof SyntaxError || (error instanceof Error && error.message.startsWith('The test plan did not match'));
+        if (signal.aborted || !invalid || attempt >= 2) throw error;
+        plan.error = error.message.slice(0, 500);
+      }
+    }
     plan.status = 'ready';
     plan.result = { status: 'success', output: result.output };
     emit(entry, 'test_plan_ready', { planId: plan.id, checks: result.output.checks.length });

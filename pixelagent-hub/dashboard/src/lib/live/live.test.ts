@@ -216,3 +216,25 @@ it('a failure the Tester stands by still goes to the Coder', async () => {
   expect(build).toHaveBeenCalledTimes(2);
   expect(events.at(-1)?.type).toBe('ready_for_review');
 });
+
+it('a test plan the schema rejects goes back to the Tester once, with the reason', async () => {
+  let plans = 0;
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const body = JSON.parse(String(init.body));
+    const system: string = body.messages[0].content;
+    if (system.includes('test planner')) {
+      plans++;
+      if (plans === 1) return sse({ checks: [{ name: 'Adds one', actions: [{ type: 'wait', ms: 100 }], selector: '#count', expected: '1' }], limitations: [] });
+      expect(body.messages[1].content).toContain('Your previous plan was rejected');
+      return sse(testPlan);
+    }
+    return sse(system.includes('project manager') ? plan : code);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(plans).toBe(2);
+  expect(events.some((event) => event.type === 'test_plan_failed')).toBe(false);
+  expect(events.find((event) => event.type === 'browser_run_finished')?.data).toMatchObject({ status: 'passed' });
+});
