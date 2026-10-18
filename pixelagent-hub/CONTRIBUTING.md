@@ -1,50 +1,77 @@
 # Contributing
 
-Thanks for improving **PIXELAGENT-HUB**. This document is the short path from clone to merge.
+Thanks for improving **PixelAgent Hub**. This is the short path from clone to merge. 中文贡献者同样欢迎：Issue 和 PR 用中文或英文都可以。
 
-## 开发环境
+## Set up (no API key needed)
 
-- 完整项目使用 Node.js **22.12+**（Dashboard 的 Vite/Vitest 需要较新的 Node）。核心 CI 另外检查 Node 18、20 和 22。
-- 在 `pixelagent-hub/` 复制 `.env.example` 到 `.env`。无密钥演示显式使用 `LLM_PROVIDER=mock`；真实生成需要配置所选 provider 的密钥。
-
-常用命令：
+Use Node **22.12+**. CI also checks the core on Node 18 and 20.
 
 ```bash
-npm ci
-npm --prefix dashboard ci
-npm run studio:doctor
-npm run build
-npm run smoke:package
-npm test
-npm --prefix dashboard run check
-npm --prefix dashboard test
-npm --prefix dashboard run build
+cd pixelagent-hub
+cp .env.example .env            # LLM_PROVIDER=mock: a real, buildable app whose first attempt fails to compile
+npm ci && npm --prefix dashboard ci
+npm run build:all && npm start  # http://127.0.0.1:3100/studio
 ```
 
-完成检查后，两个终端分别运行 `npm run records:api` 和 `npm run ui:dev`，打开 `http://localhost:3000/studio`。Dashboard 开发代理默认连接 API 的 3100 端口；修改 API 端口时同步设置 `VITE_DEV_PROXY_TARGET`。
+For development, run `npm run records:api` and `npm run ui:dev` in two terminals and open `http://localhost:3000/studio`. If the API isn't on port 3100, set `VITE_DEV_PROXY_TARGET`. When something is off with your setup, start with `npm run studio:doctor` (add `-- --browser` to also check Chromium).
 
-PowerShell 离线示例：`$env:LLM_PROVIDER="mock"; node dist/examples/company-mode.js`。Bash：`LLM_PROVIDER=mock node dist/examples/company-mode.js`。mock 用于流程演示，不代表真实模型生成验收。
+## Where things live
 
-本地使用构建后的工作台时，执行 `npm run build:all` 和 `npm start`，打开 `http://127.0.0.1:3100/studio`；页面和 API 共用服务，支持刷新 Studio 深层链接。运行 `npm run smoke:dashboard` 验证实际编译入口。配置和开发模式区别见 [同源启动说明](docs/software-studio/local-start.md)。
+| You want to change… | Look in |
+| --- | --- |
+| What the agents are asked, how replies are validated, how apps are bundled | `src/studio/shared/` (prompts, schemas, parse, inline, repair). Shared by the server **and** PLAY LIVE, so change it here, not in the agents. |
+| The server's Studio loop, versions, browser checks | `src/studio/` (`softwareStudio.ts`, `browserRuns.ts`, `events.ts`) and `src/web/studioApi.ts` |
+| HTTP routes | `src/web/routes/`, composed in `src/web/recordsWebStack.ts`; the contract is `openapi/studio-api.yaml` (update both) |
+| The pixel squad, sounds, effects | `dashboard/src/components/StudioPipeline.tsx`, `StudioStageCard.tsx`, `lib/studioPipeline.ts` (pure reducer), `lib/soundEngine.ts` |
+| PLAY LIVE (in-browser runs) | `dashboard/src/lib/live/`: `llm.ts` and `anthropic.ts` (providers), `build.ts` (esbuild-wasm), `checks.ts` (sandboxed checks), `studio.ts` (runner and API), `share.ts` (share links) |
+| The static replay and its galleries | `scripts/export-replay.ts`, `dashboard/src/lib/replay.ts`, `ReplayGallery.tsx`, `ReplayShowcase.tsx` |
+| Multi-agent framework modes (pipeline, debate, vote…) | `src/core/`, `src/agents/`, `src/factory.ts`, `examples/` |
 
-## Pull Request 流程
+Two rules keep the project honest:
 
-首次启动遇到问题时，查看 [Studio 环境检查](docs/software-studio/environment-check.md)。`npm run studio:doctor -- --browser` 会检查本地 Chromium；不发起模型请求。
+- **Every animation must correspond to a real event.** Don't add simulated progress.
+- **Build passed, checks passed and human approval are separate states.** Don't merge them.
 
-1. 从 `main` 拉分支，命名建议：`fix/…`、`feat/…`、`docs/…`。
-2. 改动保持聚焦；无关格式化、大范围重排请避免混在同一 PR。
-3. 提交前运行上述检查。CI 检查核心编译、编译产物与 CLI、测试，以及 Dashboard 类型、测试和构建；另在 Windows 检查核心，覆盖本地文件保存与进程中断行为。
-4. PR 描述里写清楚：**动机**、**行为变化**、若涉及 HTTP/API 则注明兼容性与风险。
-5. 大功能或破坏性变更，建议先开 Issue 讨论再写代码。
+## Check before you push
 
-## Issue
+```bash
+npm run lint && npm test                                   # backend
+npm --prefix dashboard run check && npm --prefix dashboard run lint && npm --prefix dashboard test
+```
 
-- Bug：请尽量给出复现步骤、环境（OS、Node 版本）、相关日志。
-- Feature：说明使用场景与期望接口/行为，便于维护者判断范围。
+If you touched the replay or PLAY LIVE, also build and smoke-test the static site. It drives a mock-backed live run, sharing and replay in Chromium:
 
-## 代码风格
+```bash
+npm run replay:export -- --browser
+VITE_REPLAY=1 VITE_BASE=/PIXELAGENT-HUB/ npm --prefix dashboard run build
+npm run smoke:live -- dashboard/dist/public /PIXELAGENT-HUB/
+```
 
-- 与现有文件保持一致：模块路径、错误处理方式、日志字段命名。
-- 不增加与改动无关的长篇注释或文档；README / ADR 类变更在确实需要用户可见时再写。
+- Playwright's Chromium is needed: `npx playwright install chromium`.
+- Real-browser server tests run with `RUN_STUDIO_BROWSER_TESTS=1`.
+- In Git Bash on Windows, prefix commands that pass `/PIXELAGENT-HUB/` with `MSYS_NO_PATHCONV=1`.
 
-再次感谢你的贡献。
+## Pull requests
+
+1. Branch from `main`: `feat/…`, `fix/…`, `docs/…`.
+2. Keep each PR focused, with no unrelated reformatting.
+3. In the description, say what changed and why, and how you checked it. For API changes, note compatibility.
+4. For big or breaking changes, open an issue first.
+
+The [PR template](../.github/pull_request_template.md) has the checklist. Good starting points are labelled [`good first issue`](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/labels/good%20first%20issue).
+
+## Experiments and evidence
+
+Benchmark and showcase results live in `docs/software-studio/benchmark-results/` (index: `docs/evidence/README.md`). If you add a run:
+
+- **commit its raw records** so others can check it;
+- **report every outcome**, failures included;
+- **state the commit**, and whether the tree was clean.
+
+Changing prompts or check semantics makes new runs not directly comparable with old ones; say so in the write-up.
+
+## Code style
+
+Match the file you're editing: its naming, error handling and comment density. Use conventional commits (`feat(dashboard): …`, `fix(studio): …`).
+
+Security issues go to the private channel in [SECURITY.md](SECURITY.md), not a public issue.
