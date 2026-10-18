@@ -65,7 +65,11 @@ export function reducePipeline(events: StudioEvent[]): PipelineView {
         break;
       }
       case 'build_passed': set('builder', 'done', 'Build passed'); feedback = null; break;
-      case 'ready_for_review': terminal = 'ready_for_review'; set('tester', 'idle', 'Ready to test'); break;
+      case 'ready_for_review':
+        terminal = 'ready_for_review';
+        // PLAY LIVE checks before this event; keep their result instead of resetting the Tester.
+        if (state.tester.state === 'idle') set('tester', 'idle', 'Ready to test');
+        break;
       case 'failed':
       case 'cancelled': {
         terminal = event.type;

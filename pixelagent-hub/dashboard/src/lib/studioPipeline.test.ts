@@ -58,3 +58,25 @@ it('flags timelines rebuilt from old records and describes every event', () => {
   expect(describeEvent(repairRun[6])).toBe('R1 · Build failed: app.js:3:103: ERROR: Expected ")" but found ";"');
   expect(describeEvent(ev('browser_check', undefined, { name: 'B', passed: false, actual: 'x' }))).toBe('FAIL B (got "x")');
 });
+
+it('a live run that checks before its terminal event keeps the Tester result and shows the browser repair edge', () => {
+  const live = [
+    ev('queued'), ev('phase', undefined, { phase: 'planning' }), ev('plan_ready'),
+    ev('phase', 1, { phase: 'coding' }), ev('code_ready', 1, { files: 3 }), ev('phase', 1, { phase: 'building' }), ev('build_passed', 1),
+    ev('test_plan_started'), ev('test_plan_ready', undefined, { checks: 2 }),
+    ev('browser_run_started', undefined, { checks: 2 }), ev('browser_check', undefined, { name: 'Adds one', passed: false, actual: '2' }), ev('browser_check', undefined, { name: 'Resets', passed: true, actual: '0' }),
+    ev('browser_run_finished', undefined, { status: 'failed', passed: 1, failed: 1 }),
+  ];
+  const failed = reducePipeline(live);
+  expect(failed.feedback).toEqual({ from: 'tester', message: 'Adds one: got "2"' });
+  const repaired = [...live,
+    ev('phase', 2, { phase: 'coding' }), ev('code_ready', 2, { files: 3 }), ev('phase', 2, { phase: 'building' }), ev('build_passed', 2),
+    ev('browser_run_started', undefined, { checks: 2 }), ev('browser_check', undefined, { name: 'Adds one', passed: true, actual: '1' }), ev('browser_check', undefined, { name: 'Resets', passed: true, actual: '0' }),
+    ev('browser_run_finished', undefined, { status: 'passed', passed: 2, failed: 0 }), ev('ready_for_review', 2),
+  ];
+  const view = reducePipeline(repaired);
+  expect(view.terminal).toBe('ready_for_review');
+  expect(view.round).toBe(2);
+  expect(view.feedback).toBeNull();
+  expect(view.stages.find((stage) => stage.id === 'tester')).toMatchObject({ state: 'done', label: 'All checks passed 2/2' });
+});

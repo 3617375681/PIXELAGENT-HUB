@@ -5,6 +5,7 @@ import type { Browser } from 'playwright';
 import { testPlanSchema, type TestPlanRecord } from './testPlans.js';
 import { writeJsonSnapshot } from './atomicJson.js';
 import { appendStudioEvent } from './events.js';
+import { browserFailureNotes } from './shared/repair.js';
 
 export type BrowserRun = {
   id: string; projectId: string; testPlanId: string; previewFile: string; previewHash: string; planHash: string;
@@ -23,14 +24,7 @@ export function browserRepairErrors(run: BrowserRun, plan: TestPlanRecord | unde
     || plan.id !== run.testPlanId || plan.projectId !== run.projectId || plan.previewFile !== run.previewFile
     || run.previewHash !== contentHash(html) || run.planHash !== contentHash(JSON.stringify(parsed.data))
     || run.checks.length !== parsed.data.checks.length || run.checks.some((check, index) => check.name !== parsed.data.checks[index].name)) return [];
-  return [
-    ...run.checks.filter((check) => check.status === 'failed').map((check) => {
-      const planned = parsed.data.checks.find((item) => item.name === check.name)!;
-      return `Browser check ${JSON.stringify(check.name)}: selector=${JSON.stringify(planned.selector)}, assertion=${JSON.stringify(planned.assertion || 'text')}, expected=${JSON.stringify(planned.expected)}, actual=${JSON.stringify(check.actual)}, failure=${JSON.stringify(check.error || 'Assertion failed')}, actions=${JSON.stringify(planned.actions)}`;
-    }),
-    ...run.errors.map((error) => `Browser runtime/console error: ${error}`),
-    ...run.blockedRequests.map((request) => `Blocked network request from offline app: ${request}`),
-  ].slice(0, 20).map((error) => error.slice(0, 2000));
+  return browserFailureNotes(parsed.data.checks, run.checks, run.errors, run.blockedRequests);
 }
 export const saveBrowserRun = (root: string, run: BrowserRun) => writeJsonSnapshot(join(root, run.projectId, 'browser-runs', `${run.id}.json`), run);
 export async function listBrowserRuns(root: string, projectId: string): Promise<BrowserRun[]> {
