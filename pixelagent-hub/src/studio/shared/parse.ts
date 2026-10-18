@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { codeSchema, planSchema, testPlanSchema } from './schemas.js';
 
 /** A model reply as one JSON object: the first fenced block if present, otherwise the whole reply. */
@@ -8,14 +9,21 @@ export function parseModelObject(raw: string): Record<string, unknown> {
   return object;
 }
 
+/** Schema failures read as one short sentence instead of a raw issue dump. */
+function parseWith<T>(schema: z.ZodType<T>, object: unknown, what: string): T {
+  const result = schema.safeParse(object);
+  if (result.success) return result.data;
+  throw new Error(`The ${what} did not match the expected format: ${z.prettifyError(result.error).replace(/\s*\n\s*/g, '; ').slice(0, 500)}`);
+}
+
 export const parsePlanOutput = (object: unknown) => {
-  const { projectName, goal, phases, estimatedRounds, risks } = planSchema.parse(object);
+  const { projectName, goal, phases, estimatedRounds, risks } = parseWith(planSchema, object, 'plan');
   return { projectName, goal, phases, estimatedRounds, risks };
 };
 
 export const parseCodeOutput = (object: unknown) => {
-  const { language, files, explanation, dependencies } = codeSchema.parse(object);
+  const { language, files, explanation, dependencies } = parseWith(codeSchema, object, 'code');
   return { language, files, explanation, dependencies };
 };
 
-export const parseTestPlanOutput = (object: unknown) => testPlanSchema.parse(object);
+export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema, object, 'test plan');

@@ -10,10 +10,11 @@ export const planSchema = z.object({
   estimatedRounds: z.number().positive(), risks: z.array(z.string()),
 });
 
+// Descriptive fields default to empty: some models omit them, and nothing downstream needs them.
 export const codeSchema = z.object({
   language: z.string().min(1),
-  files: z.array(z.object({ path: z.string().min(1), content: z.string().min(1), description: z.string() })).min(1),
-  explanation: z.string(), dependencies: z.array(z.string()),
+  files: z.array(z.object({ path: z.string().min(1), content: z.string().min(1), description: z.string().default('') })).min(1),
+  explanation: z.string().default(''), dependencies: z.array(z.string()).default([]),
 });
 
 const selector = z.string().min(1).max(160);
