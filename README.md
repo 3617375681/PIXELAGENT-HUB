@@ -29,7 +29,7 @@ A Manager plans, a Coder writes a small offline web app, a Builder really compil
 | DeepSeek | `deepseek-chat` | | OpenRouter | `deepseek/deepseek-chat` |
 | Anthropic | `claude-opus-5-5` | | Qwen (DashScope) | `qwen-plus` |
 | OpenAI | `gpt-4o-mini` | | Zhipu GLM | `glm-4-flash` |
-| SiliconFlow | `deepseek-ai/DeepSeek-V3` | | | |
+| SiliconFlow | `deepseek-ai/DeepSeek-V3` | | **Custom / local** | any model on Ollama, LM Studio, vLLM… ([below](#local-models)) |
 
 - **Models:** the model field is free text, so use any model your key can access.
 - **Your key** is sent only to the provider you pick and kept in the tab by default. Generated apps run in an iframe with no same-origin access, so they can't read it ([SECURITY.md](pixelagent-hub/SECURITY.md)).

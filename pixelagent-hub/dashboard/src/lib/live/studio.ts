@@ -1,6 +1,7 @@
 import { strToU8, zipSync } from 'fflate';
 import { coderPrompt, managerPrompt, testerPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { browserFailureNotes } from '@studio-shared/repair';
+import { dependencyNote, unsupportedDependencies } from '@studio-shared/dependencies';
 import type { BrowserCheck } from '../studioChecks';
 import { parseCodeOutput, parseModelObject, parsePlanOutput, parseTestPlanOutput } from '@studio-shared/parse';
 import type { StudioDiagnostic, StudioEvent, StudioEventType, StudioProject, StudioSummary, StudioTestPlan } from '../../types/studio';
@@ -145,10 +146,13 @@ async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: s
     const code = await ask('Coder', coderPrompt(project.description, 'javascript', { language: 'javascript', constraints: STUDIO_CONSTRAINTS, plan: project.plan?.output, previousFiles, revisionNotes }), parseCodeOutput, signal, LIVE_CODER_TIMEOUT_MS);
     const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
     project.rounds.push(attempt);
-    if (code.output.dependencies.length) throw new Error('Generated project requires unsupported dependencies');
     emit(entry, 'code_ready', { files: code.output.files.length }, round);
+    // Real packages are unsupported; like a compile error, the reason goes back to the Coder.
+    const dependencies = unsupportedDependencies(code.output.dependencies);
     phase('building', round);
-    const build = await buildInBrowser(code.output.files, signal);
+    const build = dependencies.length
+      ? { status: 'failed' as const, errors: [dependencyNote(dependencies)], checkedFiles: [] as string[], html: undefined }
+      : await buildInBrowser(code.output.files, signal);
     attempt.build = { status: build.status, errors: build.errors, checkedFiles: build.checkedFiles, browserVerified: false };
     emit(entry, build.status === 'passed' ? 'build_passed' : 'build_failed', build.status === 'passed' ? undefined : { errors: summarizeErrors(build.errors) }, round);
     if (build.status === 'passed') {

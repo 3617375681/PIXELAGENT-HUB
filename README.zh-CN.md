@@ -35,7 +35,7 @@
 | DeepSeek | `deepseek-chat` | | OpenRouter | `deepseek/deepseek-chat` |
 | Anthropic | `claude-opus-5-5` | | 通义千问（DashScope） | `qwen-plus` |
 | OpenAI | `gpt-4o-mini` | | 智谱 GLM | `glm-4-flash` |
-| 硅基流动 | `deepseek-ai/DeepSeek-V3` | | | |
+| 硅基流动 | `deepseek-ai/DeepSeek-V3` | | **自定义 / 本地** | Ollama、LM Studio、vLLM 等上的任意模型（[见下文](#本地模型)） |
 
 - **模型**：模型名可以自由填写，你的 key 能用的任何模型都可以。
 - **key 的去向**：只发给你选的提供商，默认只保存在当前标签页。生成的应用运行在没有同源权限的 iframe 里，读不到你的 key（见 [安全说明](pixelagent-hub/SECURITY.md)）。

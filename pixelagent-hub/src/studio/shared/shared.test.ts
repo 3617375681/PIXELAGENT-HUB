@@ -42,3 +42,10 @@ test('inlineDocument refuses external scripts through any adapter', async () => 
   const doc = { hasEmbeddedDocuments: () => false, scripts: () => [{ src: 'https://cdn.example/x.js', text: '', removeIntegrity() {}, setSrc() {}, setText() {} }], stylesheets: () => [], removeMetaAndLinks() {}, prependToHead() {}, serialize: () => '' };
   await assert.rejects(inlineDocument(doc, new Map(), async (code) => code), /Missing or external script/);
 });
+
+test('only real package names count as unsupported dependencies', async () => {
+  const { unsupportedDependencies, dependencyNote } = await import('./dependencies.js');
+  assert.deepEqual(unsupportedDependencies(['none', 'HTML5', 'CSS3', 'Vanilla JS', 'canvas API', 'localStorage', ' ']), []);
+  assert.deepEqual(unsupportedDependencies(['react', 'none', 'lodash@4']), ['react', 'lodash@4']);
+  assert.match(dependencyNote(['react']), /Unsupported dependencies: react\..*"dependencies": \[\]/);
+});
