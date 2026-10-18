@@ -127,6 +127,27 @@
 .studio pre::-webkit-scrollbar-track { background: var(--k-card); }
 .studio pre::-webkit-scrollbar-thumb { background: var(--k-primary); }
 
+/* Replay gallery: every recorded run of the strategy comparison. */
+.studio-gallery { margin-top: 26px; text-align: center; }
+.studio-gallery h2 { margin: 10px 0 8px; font-size: 14px; line-height: 1.5; color: #fff; }
+.studio-gallery > p { max-width: 640px; margin: 0 auto; font-size: 19px; line-height: 1.35; color: var(--k-muted); }
+.studio-gallery-score { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 14px 0 16px; font-size: 9px; color: var(--k-muted); }
+.studio-gallery-score b { color: var(--k-primary); }
+.studio-gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; text-align: left; }
+.studio-gallery-grid article { padding: 12px; }
+.studio-gallery-grid h3 { margin: 0 0 10px; font-size: 9px; line-height: 1.5; color: var(--k-cyan); }
+.studio-gallery-row { display: grid; grid-template-columns: 1fr repeat(3, 40px); align-items: center; gap: 4px; margin-top: 6px; }
+.studio-gallery-row > span { font-size: 7px; white-space: nowrap; color: var(--k-muted); }
+.studio-gallery-row a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0; font-size: 8px; text-decoration: none; border: 2px solid; transition: transform 0.1s; }
+.studio-gallery-row a i { font-style: normal; font-size: 6px; opacity: 0.75; }
+.studio-gallery-row a:hover, .studio-gallery-row a:focus-visible { transform: translateY(-2px); }
+.studio-gallery-row a.passed { color: var(--k-primary); border-color: color-mix(in srgb, var(--k-primary) 55%, transparent); background: color-mix(in srgb, var(--k-primary) 10%, transparent); }
+.studio-gallery-row a.checks-failed { color: var(--k-red); border-color: color-mix(in srgb, var(--k-red) 60%, transparent); background: color-mix(in srgb, var(--k-red) 12%, transparent); }
+.studio-gallery-row a.not-built { color: var(--k-muted); border-color: var(--k-line); border-style: dashed; }
+.studio-gallery-row a.selected { outline: 2px solid var(--k-amber); outline-offset: 2px; }
+.studio-replay nav button { padding: 4px 8px; font-size: 8px; color: var(--k-amber); background: transparent; border: 1px solid var(--k-amber); cursor: pointer; }
+.studio-replay nav button.selected { color: var(--k-bg); background: var(--k-amber); }
+
 /* MORE TOOLS: everything that is not needed to understand or play the result. */
 .studio-more { margin-top: 26px; }
 .studio-more > summary { display: block; padding: 14px 16px; font-size: 10px; color: var(--k-primary); cursor: pointer; background: var(--k-card); border: 2px solid hsl(var(--border)); box-shadow: var(--k-shadow); }

@@ -14,6 +14,7 @@ import { reducePipeline } from '../lib/studioPipeline';
 import { useStudioEvents } from '../hooks/useStudioEvents';
 import ApiConnection from '../components/ApiConnection';
 import ReplayBanner from '../components/ReplayBanner';
+import ReplayGallery from '../components/ReplayGallery';
 import { REPLAY, loadReplayManifest } from '../lib/replay';
 import { soundEngine } from '../lib/soundEngine';
 
@@ -341,6 +342,8 @@ export default function Studio() {
               : <div className="studio-empty"><h3 className="pixel-font">NO CODE YET</h3><p>The Coder's files show up here.</p></div>)}
           </div>
         </section>
+
+        {REPLAY && <ReplayGallery projectId={projectId} />}
 
         <details className="studio-more" onToggle={(event) => { if (event.currentTarget.open) soundEngine.openPanel(); else soundEngine.closePanel(); }}>
           <summary className="pixel-font">MORE TOOLS</summary>
