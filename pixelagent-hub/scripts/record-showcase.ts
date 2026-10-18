@@ -3,7 +3,7 @@
  * production Studio API, gets a Tester plan, and is checked in the sandboxed browser. Every outcome is
  * saved (failures included) in the benchmark evidence layout, so `export-replay` can stage it.
  *
- *   npx tsx scripts/record-showcase.ts <out-dir> [--max-tokens 400000]
+ *   npx tsx scripts/record-showcase.ts <out-dir> [--max-tokens 400000] [--only snake,timer]
  *
  * Calls the paid model. Stops before the next idea once reported tokens pass --max-tokens.
  */
@@ -30,6 +30,8 @@ const argument = (name: string) => { const index = process.argv.indexOf(name); r
 const out = resolve(process.argv[2] || '');
 if (!process.argv[2] || process.argv[2].startsWith('--')) throw new Error('Usage: record-showcase.ts <out-dir> [--max-tokens N]');
 const maxTokens = Number(argument('--max-tokens') || 400_000);
+const only = argument('--only')?.split(',');
+const ideas = SHOWCASE_IDEAS.filter((idea) => !only || only.includes(idea.id));
 const revision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim() !== '';
 
@@ -63,7 +65,7 @@ const tokensOf = (result?: { output?: { llmUsage?: Usage } }) => result?.output?
 const entries = [];
 let spent = 0;
 try {
-  for (const idea of SHOWCASE_IDEAS) {
+  for (const idea of ideas) {
     if (spent >= maxTokens) { entries.push({ id: idea.id, skipped: `token budget reached (${spent})` }); continue; }
     const started = Date.now();
     const created = await post('/api/studio/projects', { description: idea.description });
@@ -91,7 +93,7 @@ try {
   }
 } finally {
   await mkdir(out, { recursive: true });
-  await writeFile(join(out, 'showcase.json'), JSON.stringify({ recordedAt: new Date().toISOString(), sourceRevision: revision, sourceDirty: dirty, models: [process.env.LLM_PROVIDER, process.env.DEEPSEEK_MODEL || process.env.LLM_MODEL].filter(Boolean).join('/'), reportedTokens: spent, ideas: SHOWCASE_IDEAS, entries }, null, 2));
+  await writeFile(join(out, 'showcase.json'), JSON.stringify({ recordedAt: new Date().toISOString(), sourceRevision: revision, sourceDirty: dirty, models: [process.env.LLM_PROVIDER, process.env.DEEPSEEK_MODEL || process.env.LLM_MODEL].filter(Boolean).join('/'), reportedTokens: spent, ideas, entries }, null, 2));
   await new Promise<void>((done) => server.close(() => done()));
   await rm(temp, { recursive: true, force: true });
 }
