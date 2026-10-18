@@ -51,3 +51,10 @@ it('waits up to 2 s for the expected value, like the server browser runs', async
   const [result] = await runDOMChecks(document, [{ name: 'Eventually ready', actions: [], selector: '#status', expected: 'Ready' }]);
   expect(result).toMatchObject({ status: 'passed', actual: 'Ready' });
 });
+
+it('compares text with runs of whitespace as one space, like the server', async () => {
+  const output = { textContent: '  C→F: x×9/5+32  |  F→C:\n (x−32)×5/9 ' };
+  const document = { querySelectorAll: () => [output] } as unknown as Document;
+  const [result] = await runDOMChecks(document, [{ name: 'Formula', actions: [], selector: '#formula', expected: 'C→F: x×9/5+32 | F→C: (x−32)×5/9' }]);
+  expect(result).toMatchObject({ status: 'passed', actual: 'C→F: x×9/5+32 | F→C: (x−32)×5/9' });
+});

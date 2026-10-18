@@ -15,6 +15,8 @@ export type BrowserRun = {
   checks: { name: string; status: 'passed' | 'failed'; actual: string; error?: string }[];
   errors: string[]; blockedRequests: string[]; screenshots: ('initial.png' | 'final.png')[];
 };
+/** Text assertions compare text as people read it: trimmed, with runs of whitespace as one space. */
+export const collapseWhitespace = (text: string) => text.replace(/\s+/g, ' ').trim();
 export const contentHash = (content: string) => createHash('sha256').update(content).digest('hex');
 /** A completed failure in this exact preview/plan can inform code repair; launch failures cannot. */
 export function browserRepairErrors(run: BrowserRun, plan: TestPlanRecord | undefined, html: string): string[] {
@@ -103,13 +105,15 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         const target = frame.locator(`css=${check.selector}`);
         if (await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
         const deadline = Date.now() + 2000;
+        // Text is compared as people read it: runs of whitespace count as one space.
+        const expected = check.assertion === 'disabled' ? check.expected : collapseWhitespace(check.expected);
         do {
           controller.signal.throwIfAborted();
-          actual = check.assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : (await target.textContent() || '').trim();
-          if (actual === check.expected) break;
+          actual = check.assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : collapseWhitespace(await target.textContent() || '');
+          if (actual === expected) break;
           await new Promise((resolve) => setTimeout(resolve, 50));
         } while (Date.now() < deadline);
-        if (actual !== check.expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
+        if (actual !== expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
         run.checks.push({ name: check.name, status: 'passed', actual: actual.slice(0, 300) });
       } catch (error) {
         controller.signal.throwIfAborted();
