@@ -19,20 +19,21 @@ Links:
 
 I built a pixel-art "dev squad": a Manager plans, a Coder writes a small offline web app, a Builder compiles it with esbuild, and a Tester writes checks and runs them in a sandbox. Compiler errors and failed checks are sent back to the Coder as evidence. Every animation in the UI is a real event from the run; nothing is simulated.
 
-The demo is a static GitHub Pages site. Press BUILD LIVE, paste your own key (DeepSeek, Claude, OpenAI, OpenRouter, Qwen, GLM or SiliconFlow), and the whole loop runs in your tab:
+The demo is a static GitHub Pages site. Press BUILD LIVE, paste your own key (DeepSeek, Claude, OpenAI, OpenRouter, Qwen, GLM or SiliconFlow) or point it at a local Ollama/LM Studio server, and the whole loop runs in your tab:
 
 - streaming model calls straight to the provider;
 - esbuild-wasm compilation;
 - one sandboxed iframe per check.
 
-There's no server. A small app takes about 20 seconds with deepseek-chat.
+There's no server. A small app takes about 20 seconds with deepseek-chat. A local qwen3:4b on a laptop CPU took 22 minutes, but it got there.
 
-Two things I learned that surprised me:
+Three things I learned that surprised me:
 
 1. **The planning agent didn't measurably help.** 5 fixed apps × 2 strategies × 3 runs (30 generations, deepseek-v4-pro): plan-then-code passed every check in 13/15 runs and code-only in 12/15. Planning cost about 1,200 extra tokens per app. Every finished build compiled on the first try, so my compile-repair loop never fired.
 2. **The tester was wrong more often than I expected.** Checks shared one page, so a toggle flipped by one check broke the next one, and the repair loop then "fixed" apps that were already correct. Making every check start on a freshly loaded page took the same timer prompt from 0 clean runs out of 3 (two false failures and one Coder error) to 2 of 3 passing 10/10.
+3. **In the end, the bottleneck was the tester.** I benchmarked the live loop the way a visitor uses it: 5 fixed cases × 3 runs through the real site. It went 8/15 → 11/15 → 14/15 fully passing, and every failure along the way was the Tester's fault, not the app's: it added wrong, forgot to set a `<select>`, or pressed Next without answering. So the Tester now re-examines its own failing checks before the Coder gets blamed. That review never triggered in the 14/15 round, so I can't yet say how much it helps.
 
-All 50 recorded generations are in the repo, failures included, and 40 of them can be replayed in the demo. The browser and Node versions share the same prompts, schemas and bundling code.
+All 50 recorded generations (plus the 45 benchmark runs) are in the repo, failures included, and 40 of them can be replayed in the demo. The browser and Node versions share the same prompts, schemas and bundling code.
 
 Happy to answer questions about the event-driven UI, running agent loops client-side, or the experiment design.
 
