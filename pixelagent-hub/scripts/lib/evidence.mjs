@@ -50,6 +50,7 @@ export async function stageRepairEvidence(studioRoot) {
 }
 
 export const seriesDirectory = join(app, 'docs/software-studio/benchmark-results/2026-10-15-repeated');
+export const showcaseDirectory = join(app, 'docs/software-studio/benchmark-results/2026-10-18-showcase');
 
 /**
  * Copies one saved benchmark project (record, events, source, plans and browser runs) into a Studio

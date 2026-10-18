@@ -1,0 +1,154 @@
+{
+  "projectId": "1ab6108a-3918-437d-ae9d-8d3f745ce5ce",
+  "jobId": "studio-1ab6108a-3918-437d-ae9d-8d3f745ce5ce",
+  "strategy": "manager-coder",
+  "description": "A pixel tip calculator: bill amount, tip percent buttons (10, 15, 20) and the number of people; show the tip and the total per person.",
+  "status": "ready_for_review",
+  "startedAt": "2026-10-18T02:01:13.545Z",
+  "rounds": [
+    {
+      "round": 1,
+      "code": {
+        "taskId": "1ab6108a-3918-437d-ae9d-8d3f745ce5ce-code-1",
+        "agentId": "coder",
+        "status": "success",
+        "output": {
+          "language": "javascript",
+          "files": [
+            {
+              "path": "index.html",
+              "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel Tip Calculator</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"game-board\" aria-labelledby=\"title\">\n    <h1 id=\"title\">Pixel Tip Calculator</h1>\n\n    <label for=\"bill-amount\">Bill amount</label>\n    <div class=\"input-wrap\">\n      <span class=\"currency\" aria-hidden=\"true\">$</span>\n      <input id=\"bill-amount\" type=\"number\" inputmode=\"decimal\" min=\"0\" step=\"0.01\" placeholder=\"0.00\">\n    </div>\n\n    <fieldset class=\"tip-group\">\n      <legend>Tip percent</legend>\n      <div class=\"tip-buttons\">\n        <button type=\"button\" class=\"tip-button\" data-tip=\"10\" aria-pressed=\"false\">10%</button>\n        <button type=\"button\" class=\"tip-button is-selected\" data-tip=\"15\" aria-pressed=\"true\">15%</button>\n        <button type=\"button\" class=\"tip-button\" data-tip=\"20\" aria-pressed=\"false\">20%</button>\n      </div>\n    </fieldset>\n\n    <label for=\"people-count\">Number of people</label>\n    <input id=\"people-count\" type=\"number\" inputmode=\"numeric\" min=\"1\" step=\"1\" placeholder=\"1\">\n\n    <section class=\"results\" aria-live=\"polite\" aria-atomic=\"true\">\n      <div class=\"result-row\">\n        <span>Tip amount</span>\n        <output id=\"tip-amount\">$0.00</output>\n      </div>\n      <div class=\"result-row\">\n        <span>Total per person</span>\n        <output id=\"total-per-person\">$0.00</output>\n      </div>\n    </section>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+              "description": "Semantic HTML structure with labeled inputs, tip buttons, live-result outputs, and linked local assets."
+            },
+            {
+              "path": "style.css",
+              "content": ":root {\n  --bg: #1a1c2c;\n  --panel: #2d2b45;\n  --primary: #e85f5c;\n  --accent: #f4a261;\n  --text: #f7e3af;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1.5rem 1rem;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  color: var(--text);\n  background-color: var(--bg);\n  background-image:\n    linear-gradient(rgba(247, 227, 175, 0.08) 1px, transparent 1px),\n    linear-gradient(90deg, rgba(247, 227, 175, 0.08) 1px, transparent 1px);\n  background-size: 24px 24px;\n}\n\n.game-board {\n  width: min(92%, 420px);\n  padding: 1.75rem;\n  background: var(--panel);\n  border: 4px solid #1a1c2c;\n  box-shadow: 8px 8px 0 var(--primary);\n  color: var(--text);\n  border-radius: 0;\n}\n\nh1 {\n  margin: 0 0 1.25rem;\n  font-size: clamp(1.5rem, 6vw, 2rem);\n  line-height: 1.1;\n  text-align: center;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  color: var(--primary);\n  text-shadow: 3px 3px 0 #1a1c2c;\n}\n\nlabel,\nlegend {\n  display: block;\n  margin-bottom: 0.4rem;\n  font-weight: bold;\n  color: var(--accent);\n}\n\nfieldset {\n  border: none;\n  padding: 0;\n  margin: 0;\n}\n\ninput[type=\"number\"] {\n  width: 100%;\n  padding: 0.75rem;\n  margin-bottom: 1rem;\n  background: var(--bg);\n  color: var(--text);\n  border: 3px solid #1a1c2c;\n  border-radius: 0;\n  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.25);\n  font: inherit;\n  outline: none;\n}\n\ninput[type=\"number\"]:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(244, 162, 97, 0.5), inset 3px 3px 0 rgba(0, 0, 0, 0.25);\n}\n\n.input-wrap {\n  position: relative;\n}\n\n.input-wrap .currency {\n  position: absolute;\n  left: 0.75rem;\n  top: 1.65rem;\n  pointer-events: none;\n  color: var(--text);\n  font-weight: bold;\n}\n\n.input-wrap input {\n  padding-left: 2rem;\n}\n\n.tip-group {\n  margin-bottom: 1rem;\n}\n\n.tip-buttons {\n  display: flex;\n  gap: 0.75rem;\n}\n\n.tip-button {\n  flex: 1;\n  padding: 0.65rem 0.25rem;\n  background: var(--bg);\n  color: var(--text);\n  border: 3px solid #1a1c2c;\n  border-radius: 0;\n  box-shadow: 0 4px 0 var(--primary);\n  font: inherit;\n  font-weight: bold;\n  cursor: pointer;\n  transition: transform 0.06s ease, box-shadow 0.06s ease, background-color 0.06s ease;\n}\n\n.tip-button:hover {\n  background: var(--primary);\n  color: var(--bg);\n  transform: translateY(-2px);\n  box-shadow: 0 6px 0 #1a1c2c;\n}\n\n.tip-button.is-selected {\n  background: var(--primary);\n  color: var(--bg);\n  box-shadow: 0 4px 0 #1a1c2c;\n}\n\n.tip-button:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.tip-button:active {\n  transform: translateY(4px);\n  box-shadow: 0 0 0 var(--primary);\n}\n\n.results {\n  margin-top: 1.5rem;\n  padding-top: 1rem;\n  border-top: 4px dashed var(--accent);\n  display: grid;\n  gap: 0.75rem;\n}\n\n.result-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1rem;\n  background: var(--bg);\n  border: 3px solid #1a1c2c;\n  padding: 0.75rem;\n  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, 0.25);\n}\n\n.result-row span {\n  font-weight: bold;\n  color: var(--accent);\n}\n\noutput {\n  font-size: 1.35rem;\n  font-weight: bold;\n  color: var(--primary);\n  font-variant-numeric: tabular-nums;\n}\n\n@media (max-width: 380px) {\n  .game-board {\n    padding: 1.25rem;\n    box-shadow: 5px 5px 0 var(--primary);\n  }\n\n  .tip-buttons {\n    gap: 0.45rem;\n  }\n\n  .tip-button {\n    font-size: 0.95rem;\n  }\n\n  output {\n    font-size: 1.15rem;\n  }\n}\n",
+              "description": "Pixel-art-themed responsive stylesheet using a five-color palette, card layout, and visible hover, focus, and pressed control states."
+            },
+            {
+              "path": "script.js",
+              "content": "(function () {\n  const billInput = document.getElementById('bill-amount');\n  const peopleInput = document.getElementById('people-count');\n  const tipButtons = Array.from(document.querySelectorAll('.tip-button'));\n  const tipAmountOutput = document.getElementById('tip-amount');\n  const totalPerPersonOutput = document.getElementById('total-per-person');\n\n  let selectedTip = 15;\n\n  function formatCurrency(value) {\n    return '$' + value.toFixed(2);\n  }\n\n  function calculate() {\n    const bill = parseFloat(billInput.value);\n    const people = parseInt(peopleInput.value, 10);\n\n    if (isNaN(bill) || bill <= 0 || isNaN(people) || people <= 0) {\n      tipAmountOutput.textContent = '$0.00';\n      totalPerPersonOutput.textContent = '$0.00';\n      return;\n    }\n\n    const tip = bill * selectedTip / 100;\n    const total = bill + tip;\n    const perPerson = total / people;\n\n    tipAmountOutput.textContent = formatCurrency(tip);\n    totalPerPersonOutput.textContent = formatCurrency(perPerson);\n  }\n\n  function selectTip(tip) {\n    selectedTip = tip;\n    tipButtons.forEach(function (button) {\n      const isSelected = Number(button.dataset.tip) === tip;\n      button.classList.toggle('is-selected', isSelected);\n      button.setAttribute('aria-pressed', isSelected ? 'true' : 'false');\n    });\n    calculate();\n  }\n\n  tipButtons.forEach(function (button) {\n    button.addEventListener('click', function () {\n      selectTip(Number(button.dataset.tip));\n    });\n  });\n\n  billInput.addEventListener('input', calculate);\n  peopleInput.addEventListener('input', calculate);\n\n  selectTip(15);\n})();\n",
+              "description": "Plain JavaScript calculation logic using addEventListener for bill, people, and tip buttons; updates live outputs safely."
+            },
+            {
+              "path": "README.md",
+              "content": "# Pixel Tip Calculator\n\nAn offline browser tip calculator with a pixel-art interface. Enter a bill amount, choose a 10%, 15%, or 20% tip, and set the number of people. The app shows the tip amount and total per person.\n\n## How to run\n\nOpen `index.html` directly in any modern browser. No packages, network access, or server required.\n\n## Files\n\n- `index.html` — semantic markup and labeled controls\n- `style.css` — responsive pixel-art layout and control states\n- `script.js` — tip calculation and event handling\n\n## Features\n\n- Tip percent buttons: 10%, 15%, 20%\n- Bill amount and number-of-people inputs\n- Live tip amount and total-per-person outputs\n- Keyboard-accessible controls with visible focus states\n- Responsive layout from 360px wide\n",
+              "description": "Documentation with run instructions, file list, and feature summary."
+            }
+          ],
+          "explanation": "A self-contained pixel-art tip calculator built with plain HTML, CSS, and JavaScript. It uses only local files, keyboard-accessible labeled inputs and buttons, addEventListener-based behavior, a responsive centered card, and a cohesive five-color palette.",
+          "dependencies": [],
+          "llmUsage": {
+            "prompt_tokens": 922,
+            "completion_tokens": 6298,
+            "total_tokens": 7220
+          },
+          "llmModel": "deepseek-v4-pro",
+          "llmProvider": "deepseek"
+        },
+        "reasoning": "Generated by deepseek/deepseek-v4-pro",
+        "metadata": {
+          "executedAt": "2026-10-18T02:02:13.579Z",
+          "agentName": "Coder"
+        }
+      },
+      "build": {
+        "status": "passed",
+        "tool": "esbuild",
+        "errors": [],
+        "checkedFiles": [
+          "index.html",
+          "style.css",
+          "script.js",
+          "README.md"
+        ],
+        "browserVerified": false
+      }
+    }
+  ],
+  "phase": "ready_for_review",
+  "plan": {
+    "taskId": "1ab6108a-3918-437d-ae9d-8d3f745ce5ce",
+    "agentId": "manager",
+    "status": "success",
+    "output": {
+      "projectName": "Pixel Tip Calculator",
+      "goal": "Build an offline browser app that calculates tip amount and total per person from bill amount, tip percentage (10%, 15%, 20%), and number of people, using only HTML, CSS, and plain JavaScript with a polished pixel-art interface.",
+      "phases": [
+        {
+          "id": "p1",
+          "name": "Setup and Semantic Structure",
+          "tasks": [
+            "Create root index.html with linked style.css and script.js using relative paths",
+            "Create README.md describing the app, file structure, and how to run it offline",
+            "Build semantic markup for bill amount, tip percent buttons, number of people, tip output, and total per person",
+            "Add accessible labeled controls and include empty addEventListener stubs"
+          ],
+          "assignee": "Frontend Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p2",
+          "name": "Tip Calculation Logic",
+          "tasks": [
+            "Implement calculation for tip amount, total bill, and total per person",
+            "Handle tip percentage buttons for 10%, 15%, and 20%",
+            "Read bill amount and number of people inputs safely",
+            "Update results on button clicks and input changes using addEventListener only",
+            "Handle edge cases such as zero people, empty bill, or non-numeric input"
+          ],
+          "assignee": "Frontend Developer",
+          "priority": "high"
+        },
+        {
+          "id": "p3",
+          "name": "Pixel Art Styling and Responsive Layout",
+          "tasks": [
+            "Create a centered card or game board on a themed background using CSS or canvas",
+            "Apply a cohesive palette of 3-5 colors",
+            "Use system fonts at 16px or larger with clear visual hierarchy and generous spacing",
+            "Style hover, focus, and pressed states for all controls",
+            "Ensure layout works from 360px wide without horizontal scrolling"
+          ],
+          "assignee": "UI Designer",
+          "priority": "medium"
+        },
+        {
+          "id": "p4",
+          "name": "Validation, Polish, and Packaging",
+          "tasks": [
+            "Verify keyboard accessibility for all controls and focus indicators",
+            "Confirm no imports, packages, network requests, external assets, iframes, or server code",
+            "Test offline by opening index.html directly",
+            "Polish README with build evidence and source archive notes",
+            "Review final files use only .html, .css, .js, and .md extensions with relative paths"
+          ],
+          "assignee": "QA Tester",
+          "priority": "medium"
+        }
+      ],
+      "estimatedRounds": 4,
+      "risks": [
+        "Pixel art styling may be visually inconsistent across browsers without external assets",
+        "Custom tip buttons may not meet keyboard accessibility expectations if focus states are incomplete",
+        "Responsive layout may require extra tuning at 360px width",
+        "Offline constraint means all visuals and functionality must be self-contained without network requests"
+      ],
+      "llmUsage": {
+        "prompt_tokens": 409,
+        "completion_tokens": 1106,
+        "total_tokens": 1515
+      },
+      "llmModel": "deepseek-v4-pro",
+      "llmProvider": "deepseek"
+    },
+    "reasoning": "Generated by deepseek/deepseek-v4-pro",
+    "metadata": {
+      "executedAt": "2026-10-18T02:01:28.616Z",
+      "agentName": "Manager"
+    }
+  },
+  "previewFile": "v1/dist/index.html",
+  "archiveFile": "source.zip",
+  "finishedAt": "2026-10-18T02:02:13.634Z"
+}

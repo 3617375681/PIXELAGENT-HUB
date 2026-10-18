@@ -11,7 +11,7 @@ export default function ReplayBanner({ projectId }: { projectId?: string }) {
   useEffect(() => { void loadReplayManifest().then(setManifest).catch(() => setManifest(null)); }, []);
   const current = manifest?.cases.find((item) => item.projectId === projectId);
   const featured = manifest?.cases.filter((item) => item.group !== 'series') || [];
-  const series = manifest?.cases.filter((item) => item.group === 'series') || [];
+  const recorded = manifest?.cases.filter((item) => item.group === 'series' || item.group === 'showcase') || [];
   return (
     <aside className="studio-replay" aria-label="Replay notice">
       <span className="pixel-font studio-replay-tag">REPLAY</span>
@@ -23,7 +23,7 @@ export default function ReplayBanner({ projectId }: { projectId?: string }) {
               {FEATURED_LABELS[index] || `CASE ${index}`}
             </Link>
           ))}
-          {series.length > 0 && <button type="button" className={`pixel-font ${current?.group === 'series' ? 'selected' : ''}`} onClick={() => document.getElementById('studio-gallery')?.scrollIntoView({ behavior: 'smooth' })}>ALL {series.length} RUNS ↓</button>}
+          {recorded.length > 0 && <button type="button" className={`pixel-font ${current && recorded.includes(current) ? 'selected' : ''}`} onClick={() => (document.getElementById('studio-showcase') || document.getElementById('studio-gallery'))?.scrollIntoView({ behavior: 'smooth' })}>GALLERY · {recorded.length} RUNS ↓</button>}
         </nav>
       )}
       <a className="pixel-font" href={REPO_URL} target="_blank" rel="noreferrer">GITHUB ↗</a>

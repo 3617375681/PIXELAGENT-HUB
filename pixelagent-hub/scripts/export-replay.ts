@@ -11,7 +11,7 @@
  * STUDIO_BROWSER_EXECUTABLE), so the replay includes live browser-check events and screenshots.
  */
 import { createServer } from 'node:http';
-import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { createOrchestrator } from '../src/factory.js';
@@ -19,7 +19,7 @@ import { MockProvider } from '../src/core/llm/mock.js';
 import { RunRuntime } from '../src/web/runRuntime.js';
 import { createStudioApi } from '../src/web/studioApi.js';
 // @ts-expect-error -- plain ESM helper shared with portfolio-demo.mjs
-import { seriesDirectory, stageBenchmarkProject, stageRepairEvidence } from './lib/evidence.mjs';
+import { seriesDirectory, showcaseDirectory, stageBenchmarkProject, stageRepairEvidence } from './lib/evidence.mjs';
 
 const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
 const out = resolve(argument('--out') || 'dashboard/public/replay');
@@ -86,6 +86,34 @@ const stageSeries = async () => {
   return cases;
 };
 
+type ShowcaseFile = { ideas: { id: string; title: string }[]; entries: { id: string; projectId?: string }[] };
+/** Stages every attempt of the real-model showcase (first pass, then retries), failures included. */
+const stageShowcase = async () => {
+  const cases = [];
+  const attempts = new Map<string, number>();
+  // retry, retry2, retry3, ... in order
+  const retries = (await readdir(showcaseDirectory)).filter((name) => name.startsWith('retry')).sort((a, b) => a.length - b.length || a.localeCompare(b));
+  for (const directory of [showcaseDirectory, ...retries.map((name) => join(showcaseDirectory, name))]) {
+    const showcase = JSON.parse(await readFile(join(directory, 'showcase.json'), 'utf8')) as ShowcaseFile;
+    for (const entry of showcase.entries) {
+      if (!entry.projectId) continue;
+      const record = await stageBenchmarkProject(studioRoot, join(directory, entry.id));
+      const attempt = (attempts.get(entry.id) || 0) + 1;
+      attempts.set(entry.id, attempt);
+      const browserRun = (await (await call(`/api/studio/projects/${record.projectId}/browser-runs`)).json() as { runs: { id: string; status: string; screenshots: string[]; checks: { status: string }[] }[] }).runs[0];
+      const outcome = record.status !== 'ready_for_review' ? 'not-built' : browserRun?.status === 'passed' ? 'passed' : 'checks-failed';
+      cases.push({
+        projectId: record.projectId, kind: 'real-model', group: 'showcase', caseId: entry.id, run: attempt, outcome,
+        checks: browserRun ? `${browserRun.checks.filter((check) => check.status === 'passed').length}/${browserRun.checks.length}` : undefined,
+        screenshot: browserRun?.screenshots.includes('final.png') ? `/api/studio/projects/${record.projectId}/browser-runs/${browserRun.id}/final.png` : undefined,
+        title: `${showcase.ideas.find((idea) => idea.id === entry.id)?.title || entry.id} · attempt ${attempt}`,
+        note: outcome === 'not-built' ? `Generation stopped: ${String(record.error || 'failed').slice(0, 200)}` : 'Real DeepSeek run, 2026-10-18, one generation with the visual brief. Event gaps are shortened for the replay.',
+      });
+    }
+  }
+  return cases;
+};
+
 try {
   const mock = await post('/api/studio/projects', { description: MOCK_DESCRIPTION });
   await waitFor(mock.jobId);
@@ -100,6 +128,7 @@ try {
   }
   const evidence: { stage: string; projectId: string }[] = await stageRepairEvidence(studioRoot);
   const series = await stageSeries();
+  const showcase = await stageShowcase();
 
   await rm(out, { recursive: true, force: true });
   const list = await (await call('/api/studio/projects')).json();
@@ -124,6 +153,7 @@ try {
     cases: [
       { projectId: mock.projectId, kind: 'mock', group: 'featured', title: 'Offline mock model: real compile, repair and browser test', note: 'Agents use the offline mock model. Round 1 contains a deliberate syntax error; the real esbuild error goes back to the Coder and round 2 fixes it. Event timing is as recorded.' },
       ...evidence.map(({ stage, projectId }) => ({ projectId, kind: 'real-model', group: 'featured', title: { baseline: 'Real model: counter', fault: 'Real model: injected +2 bug caught by the browser test', repaired: 'Real model: repaired from the browser evidence' }[stage], note: 'Saved 2026-10-09 run with DeepSeek. The timeline is rebuilt from the saved record; only start and finish times are real.' })),
+      ...showcase,
       ...series,
     ],
   };

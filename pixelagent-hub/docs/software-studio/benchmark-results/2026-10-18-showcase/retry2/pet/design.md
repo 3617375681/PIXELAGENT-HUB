@@ -1,0 +1,72 @@
+# Project plan
+
+```json
+{
+  "projectName": "Pixel Virtual Pet",
+  "goal": "Build an offline browser-based pixel virtual pet with a CSS-drawn creature, hunger, happiness, and energy bars, Feed/Play/Sleep controls, and dynamic mood text using only HTML, CSS, and plain JavaScript.",
+  "phases": [
+    {
+      "id": "p1",
+      "name": "Foundation & Layout",
+      "tasks": [
+        "Create root index.html, styles.css, script.js, and README.md with relative paths.",
+        "Build centered card or game board on themed background using semantic HTML and clear visual hierarchy.",
+        "Add viewport meta, title, 16px or larger system fonts, and responsive layout from 360px width.",
+        "Add accessible labeled Feed, Play, and Sleep buttons with visible focus states."
+      ],
+      "assignee": "Frontend Developer",
+      "priority": "high"
+    },
+    {
+      "id": "p2",
+      "name": "Visual Design & CSS Creature",
+      "tasks": [
+        "Define a cohesive 3–5 color palette for background, card, bars, buttons, and creature.",
+        "Draw the pixel virtual pet using CSS-only techniques such as box-shadow pixel grid or stacked elements.",
+        "Style hunger, happiness, and energy bars with accessible labels and dynamic width updates.",
+        "Add visible hover, focus, and pressed states for controls; ensure contrast and generous spacing."
+      ],
+      "assignee": "Frontend Developer",
+      "priority": "high"
+    },
+    {
+      "id": "p3",
+      "name": "Interactivity & State Management",
+      "tasks": [
+        "Use plain JavaScript to maintain state for hunger, happiness, energy, and mood.",
+        "Attach event listeners via addEventListener to Feed, Play, and Sleep buttons; no inline HTML event handlers.",
+        "Update bar widths and mood text based on state changes.",
+        "Handle edge cases such as repeated clicks and bar value clamping."
+      ],
+      "assignee": "Frontend Developer",
+      "priority": "high"
+    },
+    {
+      "id": "p4",
+      "name": "Polish, Accessibility & Delivery",
+      "tasks": [
+        "Verify offline use with no imports, packages, network requests, external assets, iframes, or server code.",
+        "Test keyboard accessibility for all labeled controls.",
+        "Refine responsive layout, spacing, and focus/pressed styling on 360px and larger screens.",
+        "Write README.md with run instructions and feature summary; prepare final source archive."
+      ],
+      "assignee": "Frontend Developer",
+      "priority": "medium"
+    }
+  ],
+  "estimatedRounds": 4,
+  "risks": [
+    "CSS pixel art may be difficult to make responsive and could require many hard-coded box-shadow values.",
+    "Accessibility contrast or focus indicators may conflict with a cohesive 3–5 color palette.",
+    "Bar value clamping and mood text edge cases may be overlooked without careful testing.",
+    "Layout could overflow on 360px width if spacing or button sizes are not tested early."
+  ],
+  "llmUsage": {
+    "prompt_tokens": 408,
+    "completion_tokens": 2131,
+    "total_tokens": 2539
+  },
+  "llmModel": "deepseek-v4-pro",
+  "llmProvider": "deepseek"
+}
+```

@@ -15,6 +15,7 @@ import { useStudioEvents } from '../hooks/useStudioEvents';
 import ApiConnection from '../components/ApiConnection';
 import ReplayBanner from '../components/ReplayBanner';
 import ReplayGallery from '../components/ReplayGallery';
+import ReplayShowcase from '../components/ReplayShowcase';
 import { REPLAY, loadReplayManifest } from '../lib/replay';
 import { soundEngine } from '../lib/soundEngine';
 
@@ -343,6 +344,7 @@ export default function Studio() {
           </div>
         </section>
 
+        {REPLAY && <ReplayShowcase projectId={projectId} />}
         {REPLAY && <ReplayGallery projectId={projectId} />}
 
         <details className="studio-more" onToggle={(event) => { if (event.currentTarget.open) soundEngine.openPanel(); else soundEngine.closePanel(); }}>
