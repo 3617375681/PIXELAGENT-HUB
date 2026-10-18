@@ -20,6 +20,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // Studio logic shared with the Node backend (PLAY LIVE runs it in the browser).
+      "@studio-shared": path.resolve(__dirname, "../src/studio/shared"),
+      // The shared files live outside this package; resolve their imports from here.
+      zod: path.resolve(__dirname, "node_modules/zod"),
     },
   },
   envDir: path.resolve(__dirname),

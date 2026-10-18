@@ -1,5 +1,6 @@
 import type { ApiErrorShape } from '@/types/recordsApi';
 import { REPLAY, REPLAY_READ_ONLY, replayEventPage, replayEventStream, replayFileUrl } from './replay';
+import { isLiveProject, liveArchive, liveEventStream, liveRequest, liveSummaries } from './live/studio';
 import type { StudioChanges, StudioDiagnostic, StudioEvent, StudioProject, StudioSummary, StudioVersions, StudioTestPlan, StudioReview, StudioBrowserRun } from '@/types/studio';
 
 /** Empty string = same-origin (use Vite `server.proxy` to Records API in dev). */
@@ -75,6 +76,8 @@ export function getRecordsApiBaseUrl(): string {
 }
 
 export async function fetchRecordsBinary(path: string): Promise<Blob> {
+  const live = path.match(/^\/api\/studio\/projects\/([^/]+)\/archive$/);
+  if (REPLAY && live && isLiveProject(decodeURIComponent(live[1]))) return liveArchive(decodeURIComponent(live[1]));
   if (REPLAY) {
     const res = await fetch(replayFileUrl(path));
     if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${path}`);
@@ -104,8 +107,20 @@ export class ApiError extends Error {
 }
 export const OFFLINE_MESSAGE = 'Local API not reachable. Run npm start in pixelagent-hub.';
 
+/** PLAY LIVE (static build): live runs are answered by the in-browser Studio. */
+async function liveOrUndefined(path: string, init?: RequestInit): Promise<unknown> {
+  try {
+    return await liveRequest(init?.method || 'GET', path, typeof init?.body === 'string' ? init.body : undefined);
+  } catch (error) {
+    const status = (error as { status?: number }).status;
+    throw new ApiError(error instanceof Error ? error.message : String(error), status === 401 ? 'unauthorized' : 'http', status);
+  }
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (REPLAY) {
+    const live = await liveOrUndefined(path, init);
+    if (live !== undefined) return live as T;
     if ((init?.method || 'GET') !== 'GET') throw new ApiError(REPLAY_READ_ONLY, 'http', 405);
     const events = path.match(/^\/api\/studio\/projects\/([^/]+)\/events\?after=(\d+)$/);
     if (events) return replayEventPage(decodeURIComponent(events[1]), Number(events[2]), init?.signal || undefined) as Promise<T>;
@@ -140,6 +155,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
  * Resolves when the server closes the stream, i.e. after the generation's terminal event.
  */
 export async function streamStudioEvents(projectId: string, after: number, onEvent: (event: StudioEvent) => void, signal: AbortSignal): Promise<void> {
+  if (REPLAY && isLiveProject(projectId)) return liveEventStream(projectId, after, onEvent, signal);
   if (REPLAY) return replayEventStream(projectId, after, onEvent, signal);
   const res = await fetch(`${API_BASE}/api/studio/projects/${encodeURIComponent(projectId)}/events?stream=1&after=${after}`, { headers: authHeaders(), redirect: 'error', signal });
   if (!res.ok || !res.body) throw new ApiError(`Event stream unavailable (HTTP ${res.status})`, res.status === 401 || res.status === 403 ? 'unauthorized' : 'http', res.status);
@@ -164,7 +180,10 @@ export const studioApi = {
   cancelBrowserRun: (projectId: string, cancelRunId: string) => request<{ runId: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/browser-runs`, { method: 'POST', body: JSON.stringify({ cancelRunId }) }),
   reviews: (projectId: string, signal?: AbortSignal) => request<{ reviews: StudioReview[]; current: StudioReview | null }>(`/api/studio/projects/${encodeURIComponent(projectId)}/reviews`, { signal }),
   saveReview: (projectId: string, payload: Omit<StudioReview, 'id' | 'savedAt' | 'source'>) => request<{ review: StudioReview }>(`/api/studio/projects/${encodeURIComponent(projectId)}/reviews`, { method: 'POST', body: JSON.stringify(payload) }),
-  list: (signal?: AbortSignal) => request<{ projects: StudioSummary[] }>('/api/studio/projects', { signal }),
+  list: async (signal?: AbortSignal) => {
+    const recorded = await request<{ projects: StudioSummary[] }>('/api/studio/projects', { signal });
+    return REPLAY ? { projects: [...await liveSummaries(), ...recorded.projects] } : recorded;
+  },
   create: (description: string, idempotencyKey?: string) => request<{ projectId: string; jobId: string }>('/api/studio/projects', { method: 'POST', headers: idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined, body: JSON.stringify({ description }) }),
   project: (projectId: string, signal?: AbortSignal) => request<{ project: StudioProject }>(`/api/studio/projects/${encodeURIComponent(projectId)}`, { signal }),
   preview: (projectId: string, signal?: AbortSignal) => request<{ html: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/preview`, { signal }),

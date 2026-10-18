@@ -17,6 +17,9 @@ import ReplayBanner from '../components/ReplayBanner';
 import ReplayGallery from '../components/ReplayGallery';
 import ReplayShowcase from '../components/ReplayShowcase';
 import { REPLAY, loadReplayManifest } from '../lib/replay';
+import { isLiveProject } from '../lib/live/studio';
+import { liveCredentials } from '../lib/live/key';
+import LiveKeyDialog from '../components/LiveKeyDialog';
 import { soundEngine } from '../lib/soundEngine';
 
 const statusText = { queued: 'QUEUED', running: 'BUILDING', ready_for_review: 'READY TO PLAY', failed: 'FAILED', cancelled: 'CANCELLED' };
@@ -33,6 +36,8 @@ export default function Studio() {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [description, setDescription] = useState(EXAMPLES[0].text);
+  const [edited, setEdited] = useState(false);
+  const [keyDialog, setKeyDialog] = useState(false);
   const [sound, setSound] = useState(() => { try { return localStorage.getItem('pixelagent:sound') !== 'off'; } catch { return true; } });
   useEffect(() => {
     soundEngine.setEnabled(sound);
@@ -159,9 +164,16 @@ export default function Studio() {
 
   const timeline = useStudioEvents(projectId, refreshKey);
   const pipeline = useMemo(() => reducePipeline(timeline.events), [timeline.events]);
-  // In the static replay the saved record is already final; show it as running until its timeline has played.
-  const replaying = REPLAY && !!project && !pipeline.terminal;
+  // PLAY LIVE runs in this tab; every other project in the static build is a read-only recording.
+  const live = REPLAY && isLiveProject(projectId);
+  const readOnly = REPLAY && !live;
+  // A recording's saved record is already final; show it as running until its timeline has played.
+  const replaying = readOnly && !!project && !pipeline.terminal;
   const running = replaying || project?.status === 'queued' || project?.status === 'running';
+  // A real generation in progress (not a replay) blocks starting another one.
+  const building = running && !replaying;
+  // In the static build the box shows the request of the run on screen until the visitor types.
+  const promptText = REPLAY && project && !edited ? project.description : description;
   const current = project?.rounds.at(-1);
   const files = current?.code.output?.files || [];
   const selectedFile = files.find((file) => file.path === filePath) || files[0];
@@ -197,10 +209,12 @@ export default function Studio() {
   };
   const create = () => action(async () => {
     soundEngine.click();
-    const text = description.trim();
+    if (REPLAY && !liveCredentials()) { setKeyDialog(true); return; }
+    const text = promptText.trim();
     if (creationRequest.current?.description !== text) creationRequest.current = { description: text, key: crypto.randomUUID() };
     const accepted = await studioApi.create(text, creationRequest.current.key);
     creationRequest.current = null;
+    setDescription(text); setEdited(false);
     navigate(`/studio/${accepted.projectId}`); setTab('preview'); setRefreshKey((key) => key + 1);
   });
   const cancel = () => action(async () => {
@@ -276,7 +290,8 @@ export default function Studio() {
 
   return (
     <main className="studio pixel-grid-bg">
-      {REPLAY && <ReplayBanner projectId={projectId} />}
+      {REPLAY && <ReplayBanner projectId={projectId} live={live} />}
+      {REPLAY && <LiveKeyDialog open={keyDialog} onOpenChange={setKeyDialog} onSaved={() => { setKeyDialog(false); void create(); }} />}
       <div className="studio-crt scanline" aria-hidden="true" />
       <header className="studio-header">
         <Link to="/studio" className="studio-brand" aria-label="PixelAgent Hub home">
@@ -305,24 +320,23 @@ export default function Studio() {
           <p className="studio-lede">The Manager plans, the Coder writes a small web app, the Builder compiles it, and the Tester clicks through it in a real browser. Any error goes straight back to the Coder.</p>
           <div className="studio-prompt">
             <label htmlFor="studio-description" className="sr-only">Your idea</label>
-            <textarea id="studio-description" value={REPLAY && project ? project.description : description} onChange={(event) => setDescription(event.target.value)} maxLength={4000} rows={2} disabled={REPLAY || busy || running} />
-            <button className="studio-create pixel-font" onClick={() => void create()} disabled={REPLAY || busy || running || !description.trim()}><Play size={14} />{busy ? 'WAIT…' : 'BUILD IT'}</button>
+            <textarea id="studio-description" value={promptText} onChange={(event) => { setDescription(event.target.value); setEdited(true); }} maxLength={4000} rows={2} disabled={busy || building} />
+            <button className="studio-create pixel-font" onClick={() => void create()} disabled={busy || building || !promptText.trim()}><Play size={14} />{busy ? 'WAIT…' : REPLAY ? 'BUILD LIVE' : 'BUILD IT'}</button>
           </div>
-          {REPLAY
-            ? <p className="studio-hint">This is a recorded run, so building is switched off. Clone the repo and run <code>npm start</code> to try your own idea offline.</p>
-            : <div className="studio-examples"><span className="pixel-font">TRY</span>{EXAMPLES.map((example) => <button key={example.label} className="pixel-font" disabled={busy || running} onClick={() => { soundEngine.click(); setDescription(example.text); }}>{example.label}</button>)}</div>}
+          <div className="studio-examples"><span className="pixel-font">TRY</span>{EXAMPLES.map((example) => <button key={example.label} className="pixel-font" disabled={busy || building} onClick={() => { soundEngine.click(); setDescription(example.text); setEdited(true); }}>{example.label}</button>)}</div>
+          {REPLAY && <p className="studio-hint">{readOnly ? 'Below is a recorded run. ' : ''}<b>BUILD LIVE</b> runs the squad in this tab with your own DeepSeek key{liveCredentials() ? <> (<button type="button" className="studio-link" onClick={() => setKeyDialog(true)}>change key</button>)</> : ''}, or clone the repo and run <code>npm start</code> to build offline.</p>}
         </section>
 
         {error && <div className={`studio-error ${error === OFFLINE_MESSAGE ? 'offline' : ''}`} role="alert">{error}<button className="pixel-font" onClick={() => setRefreshKey((key) => key + 1)}>RETRY</button></div>}
 
         {project && (
           <section className="studio-mission" aria-label="Current mission">
-            <span className="pixel-font studio-kicker">{REPLAY ? 'STATUS' : 'MISSION'}</span>
+            <span className="pixel-font studio-kicker">{readOnly ? 'STATUS' : 'MISSION'}</span>
             {/* In the replay the prompt box above already shows the recorded request. */}
-            <p>{REPLAY ? 'Recorded run of the request above' : project.plan?.output?.projectName || project.description}</p>
+            <p>{readOnly ? 'Recorded run of the request above' : project.plan?.output?.projectName || project.description}</p>
             <span className={`pixel-font studio-status ${replaying ? 'running' : project.status}`} role="status">{replaying ? 'REPLAYING' : projectStatus(project)}</span>
-            {running && !REPLAY && <button className="pixel-font" onClick={() => void cancel()} disabled={busy}><Square size={12} />STOP</button>}
-            {stuck && !REPLAY && <button className="pixel-font" onClick={() => void retry()} disabled={busy}><RotateCcw size={12} />TRY AGAIN</button>}
+            {building && <button className="pixel-font" onClick={() => void cancel()} disabled={busy}><Square size={12} />STOP</button>}
+            {stuck && !readOnly && <button className="pixel-font" onClick={() => void retry()} disabled={busy}><RotateCcw size={12} />TRY AGAIN</button>}
           </section>
         )}
         {project?.error && <div className="studio-error" role="alert">{project.error}</div>}
