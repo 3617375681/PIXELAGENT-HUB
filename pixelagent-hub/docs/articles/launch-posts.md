@@ -4,8 +4,8 @@ Everything here is a draft; publishing is the maintainer's call. Numbers come fr
 `docs/software-studio/benchmark-results/`; update them if new runs are added.
 
 Links:
-- Demo: https://3617375681.github.io/PIXELAGENT-HUB/
-- Repo: https://github.com/3617375681/PIXELAGENT-HUB
+- Demo: https://jiarong-song233.github.io/PIXELAGENT-HUB/
+- Repo: https://github.com/Jiarong-Song233/PIXELAGENT-HUB
 - Chinese article: [multi-agent-not-better.zh-CN.md](multi-agent-not-better.zh-CN.md)
 
 ---
@@ -55,7 +55,7 @@ Your key goes only to the provider you pick: DeepSeek, Claude, OpenAI, OpenRoute
 
 I also ran the boring experiment: does a planning agent help? Across 30 runs, 13/15 with the planner vs 12/15 without, so no measurable difference. All the runs are replayable in the demo.
 
-Demo: https://3617375681.github.io/PIXELAGENT-HUB/ · Code (MIT): https://github.com/3617375681/PIXELAGENT-HUB
+Demo: https://jiarong-song233.github.io/PIXELAGENT-HUB/ · Code (MIT): https://github.com/Jiarong-Song233/PIXELAGENT-HUB
 
 ---
 
@@ -65,7 +65,7 @@ Demo: https://3617375681.github.io/PIXELAGENT-HUB/ · Code (MIT): https://github
 
 **正文：**
 
-先说怎么玩：打开 https://3617375681.github.io/PIXELAGENT-HUB/ ，点 **BUILD LIVE**，填入你自己的 key，支持 DeepSeek、Claude、OpenAI、通义千问、智谱、OpenRouter 和硅基流动。接下来的流程全部在你的浏览器里完成，没有任何后端：
+先说怎么玩：打开 https://jiarong-song233.github.io/PIXELAGENT-HUB/ ，点 **BUILD LIVE**，填入你自己的 key，支持 DeepSeek、Claude、OpenAI、通义千问、智谱、OpenRouter 和硅基流动。接下来的流程全部在你的浏览器里完成，没有任何后端：
 
 1. Manager 规划；
 2. Coder 写码；
@@ -77,7 +77,7 @@ Demo: https://3617375681.github.io/PIXELAGENT-HUB/ · Code (MIT): https://github
 
 顺便做了个对比实验：先规划再写码 vs 直接写码，5 个应用 × 3 次，结果是 13/15 对 12/15，规划没有可测的帮助。完整的过程写在这里：[我让 4 个 AI Agent 分工写代码，测了 30 次，结果并不比 1 个强](multi-agent-not-better.zh-CN.md)。
 
-代码 MIT 开源：https://github.com/3617375681/PIXELAGENT-HUB ，欢迎拍砖。
+代码 MIT 开源：https://github.com/Jiarong-Song233/PIXELAGENT-HUB ，欢迎拍砖。
 
 ---
 

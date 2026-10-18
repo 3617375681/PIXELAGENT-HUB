@@ -1,8 +1,8 @@
 # 我让 4 个 AI Agent 分工写代码，测了 30 次，结果并不比 1 个强
 
-> 项目地址：https://github.com/3617375681/PIXELAGENT-HUB
+> 项目地址：https://github.com/Jiarong-Song233/PIXELAGENT-HUB
 >
-> 在线体验（不需要注册，也不需要后端）：https://3617375681.github.io/PIXELAGENT-HUB/
+> 在线体验（不需要注册，也不需要后端）：https://jiarong-song233.github.io/PIXELAGENT-HUB/
 
 ## 起因
 

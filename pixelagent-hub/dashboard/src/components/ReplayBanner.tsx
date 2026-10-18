@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { loadReplayManifest, type ReplayManifest } from '../lib/replay';
 
-const REPO_URL = 'https://github.com/3617375681/PIXELAGENT-HUB';
+const REPO_URL = 'https://github.com/Jiarong-Song233/PIXELAGENT-HUB';
 const FEATURED_LABELS = ['DEMO', 'REAL APP', 'BUG CAUGHT', 'BUG FIXED'];
 
 /** One-line notice in the static demo: it is a recorded, read-only run, and which case is showing. */
