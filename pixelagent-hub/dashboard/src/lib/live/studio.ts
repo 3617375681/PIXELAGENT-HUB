@@ -1,9 +1,9 @@
 import { strToU8, zipSync } from 'fflate';
-import { coderPrompt, managerPrompt, testerPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
+import { coderPrompt, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { browserFailureNotes } from '@studio-shared/repair';
 import { dependencyNote, unsupportedDependencies } from '@studio-shared/dependencies';
-import type { BrowserCheck } from '../studioChecks';
-import { parseCodeOutput, parseModelObject, parsePlanOutput, parseTestPlanOutput } from '@studio-shared/parse';
+import type { BrowserCheck, BrowserCheckResult } from '../studioChecks';
+import { parseCodeOutput, parseModelObject, parsePlanOutput, parseTestPlanOutput, parseTesterReview } from '@studio-shared/parse';
 import type { StudioDiagnostic, StudioEvent, StudioEventType, StudioProject, StudioSummary, StudioTestPlan } from '../../types/studio';
 import { customEndpoint, DEFAULT_CUSTOM_BASE_URL, liveChat, liveProvider, type LlmUsage } from './llm';
 import { buildInBrowser } from './build';
@@ -185,13 +185,22 @@ async function generate(entry: Entry, signal: AbortSignal) {
     const files = await codeUntilBuilt(entry, signal, phase, { previousFiles: [], revisionNotes: [], maxRounds: 3 });
     const checks = await planChecks(entry, signal);
     if (checks) {
-      const first = await runChecks(entry, checks, signal);
-      if (first.failed && project.rounds.length < LIVE_MAX_ROUNDS) {
+      let plan = checks;
+      let outcome = await runChecks(entry, plan, signal);
+      // The Tester can be wrong too: before blaming the Coder, it re-examines its failing checks once.
+      if (outcome.failed && !outcome.errors.length) {
+        const review = await reviewChecks(entry, plan, outcome.results, signal);
+        if (review.revised) {
+          plan = review.checks;
+          outcome = await runChecks(entry, plan, signal);
+        }
+      }
+      if (outcome.failed && project.rounds.length < LIVE_MAX_ROUNDS) {
         const good = { html: entry.html, files: entry.files, previewFile: project.previewFile };
-        const notes = [REPAIR_INSTRUCTIONS, ...browserFailureNotes(checks, first.results, first.errors)];
+        const notes = [REPAIR_INSTRUCTIONS, ...browserFailureNotes(plan, outcome.results, outcome.errors)];
         try {
           await codeUntilBuilt(entry, signal, phase, { previousFiles: files, revisionNotes: notes, maxRounds: 2 });
-          await runChecks(entry, checks, signal);
+          await runChecks(entry, plan, signal);
         } catch (error) {
           if (signal.aborted) throw error;
           // The repair did not build: keep the last working app rather than failing the run.
@@ -217,7 +226,19 @@ async function planChecks(entry: Entry, signal: AbortSignal) {
   project.phase = 'testing';
   emit(entry, 'test_plan_started', { planId: plan.id });
   try {
-    const result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [] }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
+    let result;
+    // Like a compile error for the Coder: a plan the schema rejects goes back to the Tester once.
+    for (let attempt = 1; ; attempt++) {
+      try {
+        result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [], ...(plan.error ? { invalidPlanFeedback: `Your previous plan was rejected: ${plan.error} Return a corrected plan; actions may only be {type:"click",selector}, {type:"input",selector,value} or {type:"key",selector,key}.` } : {}) }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
+        if (attempt > 1) plan.error = undefined;
+        break;
+      } catch (error) {
+        const invalid = error instanceof SyntaxError || (error instanceof Error && error.message.startsWith('The test plan did not match'));
+        if (signal.aborted || !invalid || attempt >= 2) throw error;
+        plan.error = error.message.slice(0, 500);
+      }
+    }
     plan.status = 'ready';
     plan.result = { status: 'success', output: result.output };
     emit(entry, 'test_plan_ready', { planId: plan.id, checks: result.output.checks.length });
@@ -228,6 +249,33 @@ async function planChecks(entry: Entry, signal: AbortSignal) {
     plan.error = error instanceof Error ? error.message : String(error);
     emit(entry, 'test_plan_failed', { planId: plan.id, status: plan.status, error: plan.error.slice(0, 300) });
     return null;
+  }
+}
+
+/**
+ * One second look at failing checks: a check the Tester judges wrong is replaced by its corrected
+ * version (same name, same requirement); every other failure stands and goes to the Coder.
+ * A failed review changes nothing.
+ */
+async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: BrowserCheckResult[], signal: AbortSignal): Promise<{ checks: BrowserCheck[]; revised: number }> {
+  const { project } = entry;
+  const failing = results.filter((result) => result.status === 'failed');
+  const planId = entry.plan?.id;
+  project.phase = 'testing';
+  emit(entry, 'test_plan_started', { planId, review: true });
+  try {
+    const failures = failing.map((result) => ({ check: checks.find((check) => check.name === result.name), actual: result.actual, error: result.error }));
+    const reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name)) }), signal, AGENT_TIMEOUT_MS);
+    const { verdicts } = reply.output;
+    const revisedChecks = checks.map((check) => verdicts.find((verdict) => verdict.name === check.name && verdict.check)?.check || check);
+    const revised = verdicts.filter((verdict) => verdict.verdict === 'check-wrong').length;
+    if (entry.plan?.result && revised) entry.plan.result.output = { ...entry.plan.result.output, checks: revisedChecks };
+    emit(entry, 'test_plan_ready', { planId, checks: revisedChecks.length, review: true, revised, verdicts: verdicts.map(({ name, verdict, reason }) => ({ name, verdict, reason: reason.slice(0, 200) })) });
+    return { checks: revisedChecks, revised };
+  } catch (error) {
+    if (signal.aborted) throw error;
+    emit(entry, 'test_plan_ready', { planId, checks: checks.length, review: true, revised: 0, error: (error instanceof Error ? error.message : String(error)).slice(0, 300) });
+    return { checks, revised: 0 };
   }
 }
 

@@ -140,7 +140,7 @@ it('a failed in-page check goes back to the Coder once, then the same checks run
   const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
   const events = await runToEnd(projectId);
   const types = events.map((event) => event.type);
-  expect(types.slice(types.indexOf('browser_run_finished'))).toEqual(['browser_run_finished', 'phase', 'code_ready', 'phase', 'build_passed', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
+  expect(types.slice(types.indexOf('browser_run_finished'))).toEqual(['browser_run_finished', 'test_plan_started', 'test_plan_ready', 'phase', 'code_ready', 'phase', 'build_passed', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
   expect(events.filter((event) => event.type === 'browser_run_finished').map((event) => event.data?.status)).toEqual(['failed', 'passed']);
   // The repair prompt carries the shared repair instructions and the exact failed check.
   const repairPrompt = JSON.parse(String((fetchMock.mock.calls.at(-1)![1] as RequestInit).body)).messages[1].content as string;
@@ -182,4 +182,59 @@ it('a custom provider runs without a key against the server the visitor entered'
   expect(events.at(-1)?.type).toBe('ready_for_review');
   expect(events[0].data).toMatchObject({ provider: 'localhost:11434', model: 'qwen3:4b' });
   expect(new Set(fetchMock.mock.calls.map(([url]) => url))).toEqual(new Set(['http://localhost:11434/v1/chat/completions']));
+});
+
+const review = (verdict: 'check-wrong' | 'app-wrong') => ({ verdicts: [{ name: 'Adds one', verdict, reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
+const routed = (verdict: 'check-wrong' | 'app-wrong') => async (_url: string, init: RequestInit) => {
+  const system: string = JSON.parse(String(init.body)).messages[0].content;
+  return sse(system.includes('project manager') ? plan : system.includes('You review failing browser checks') ? review(verdict) : system.includes('test planner') ? testPlan : code);
+};
+
+it('a check the Tester judges wrong is corrected and rerun, without sending the app back to the Coder', async () => {
+  fetchMock.mockImplementation(routed('check-wrong'));
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '0', error: 'Expected "1", observed "0"' }], errors: [] })
+    .mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  const types = events.map((event) => event.type);
+  expect(types.slice(types.indexOf('browser_run_finished'))).toEqual(['browser_run_finished', 'test_plan_started', 'test_plan_ready', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 1, verdicts: [{ name: 'Adds one', verdict: 'check-wrong' }] });
+  expect(build).toHaveBeenCalledTimes(1);
+  // The rerun used the corrected check.
+  expect((checks.mock.calls[1][1] as { actions: unknown[] }[])[0].actions).toEqual([{ type: 'click', selector: '#add' }]);
+});
+
+it('a failure the Tester stands by still goes to the Coder', async () => {
+  fetchMock.mockImplementation(routed('app-wrong'));
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '2', error: 'Expected "1", observed "2"' }], errors: [] })
+    .mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 0 });
+  expect(build).toHaveBeenCalledTimes(2);
+  expect(events.at(-1)?.type).toBe('ready_for_review');
+});
+
+it('a test plan the schema rejects goes back to the Tester once, with the reason', async () => {
+  let plans = 0;
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const body = JSON.parse(String(init.body));
+    const system: string = body.messages[0].content;
+    if (system.includes('test planner')) {
+      plans++;
+      if (plans === 1) return sse({ checks: [{ name: 'Adds one', actions: [{ type: 'wait', ms: 100 }], selector: '#count', expected: '1' }], limitations: [] });
+      expect(body.messages[1].content).toContain('Your previous plan was rejected');
+      return sse(testPlan);
+    }
+    return sse(system.includes('project manager') ? plan : code);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(plans).toBe(2);
+  expect(events.some((event) => event.type === 'test_plan_failed')).toBe(false);
+  expect(events.find((event) => event.type === 'browser_run_finished')?.data).toMatchObject({ status: 'passed' });
 });

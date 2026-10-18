@@ -30,3 +30,12 @@ export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min
 
 export const filesSchema = z.array(z.object({ path: z.string(), content: z.string() })).min(1).max(40);
 export type SourceFile = z.infer<typeof filesSchema>[number];
+
+export const testerReviewSchema = z.object({
+  verdicts: z.array(z.object({
+    name: z.string().min(1).max(120),
+    verdict: z.enum(['check-wrong', 'app-wrong']),
+    reason: z.string().max(500).default(''),
+    check: browserCheckSchema.optional(),
+  })).max(10),
+});

@@ -79,8 +79,15 @@ export function reducePipeline(events: StudioEvent[]): PipelineView {
         if (target) set(target, 'failed', event.type === 'cancelled' ? 'Cancelled' : event.data?.interrupted ? 'Interrupted' : 'Failed');
         break;
       }
-      case 'test_plan_started': set('tester', 'active', 'Writing checks…'); break;
-      case 'test_plan_ready': set('tester', 'done', `${Number(event.data?.checks) || 0} checks planned`); break;
+      case 'test_plan_started': set('tester', 'active', event.data?.review ? 'Reviewing its checks…' : 'Writing checks…'); break;
+      case 'test_plan_ready':
+        if (event.data?.review) {
+          const revised = Number(event.data?.revised) || 0;
+          set('tester', 'done', revised ? `${revised} checks revised` : 'Checks stand');
+          // The failure was the check's fault, not the app's: nothing goes back to the Coder for it.
+          if (revised) feedback = null;
+        } else set('tester', 'done', `${Number(event.data?.checks) || 0} checks planned`);
+        break;
       case 'test_plan_failed': set('tester', 'failed', event.data?.status === 'cancelled' ? 'Plan cancelled' : 'Plan failed'); break;
       case 'browser_run_started':
         checks = { total: Number(event.data?.checks) || 0, passed: 0, failed: 0 };
@@ -125,8 +132,8 @@ export function describeEvent(event: StudioEvent): string {
     case 'ready_for_review': return 'Built. Ready to play';
     case 'failed': return `Run failed${text(d.error) ? `: ${firstLine(text(d.error), 200)}` : ''}`;
     case 'cancelled': return 'Run cancelled';
-    case 'test_plan_started': return 'Tester is writing checks';
-    case 'test_plan_ready': return `${Number(d.checks) || 0} checks planned`;
+    case 'test_plan_started': return d.review ? 'Tester is re-examining its failing checks' : 'Tester is writing checks';
+    case 'test_plan_ready': return d.review ? (Number(d.revised) ? `Tester corrected ${Number(d.revised)} of its own checks` : 'Tester stands by its checks') : `${Number(d.checks) || 0} checks planned`;
     case 'test_plan_failed': return d.status === 'cancelled' ? 'Check plan cancelled' : `Check plan failed${text(d.error) ? `: ${firstLine(text(d.error), 200)}` : ''}`;
     case 'browser_run_started': return `Browser test started · ${Number(d.checks) || 0} checks`;
     case 'browser_check': return `${d.passed ? 'PASS' : 'FAIL'} ${text(d.name)}${d.passed ? '' : ` (got ${JSON.stringify(text(d.actual))})`}`;

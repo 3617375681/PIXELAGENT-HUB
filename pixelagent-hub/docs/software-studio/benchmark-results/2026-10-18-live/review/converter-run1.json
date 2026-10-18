@@ -1,0 +1,135 @@
+{
+  "caseId": "converter",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": null,
+  "finalChecks": null,
+  "repairTriggered": false,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 22,
+  "reportedTokens": 8395,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-18T13:41:57.495Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-18T13:41:57.495Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-18T13:42:01.353Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel-Style Temperature Converter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-18T13:42:01.354Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-18T13:42:09.734Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-18T13:42:09.734Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-18T13:42:10.542Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-18T13:42:10.543Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "14e590e6-0d78-42c8-8613-ec1b522e4828"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-18T13:42:12.674Z",
+      "type": "test_plan_failed",
+      "data": {
+        "planId": "14e590e6-0d78-42c8-8613-ec1b522e4828",
+        "status": "failed",
+        "error": "The test plan did not match the expected format: ✖ Invalid input; → at checks[0].actions"
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-18T13:42:12.675Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Temp Converter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>🌡️ Pixel Temp</h1>\n    <p class=\"subtitle\">Celsius ⇄ Fahrenheit</p>\n\n    <div class=\"field\">\n      <label for=\"temperature\">Temperature</label>\n      <input id=\"temperature\" type=\"text\" inputmode=\"decimal\" placeholder=\"e.g. 100\" autocomplete=\"off\">\n    </div>\n\n    <div class=\"field\">\n      <label for=\"direction\">Direction</label>\n      <select id=\"direction\">\n        <option value=\"c-to-f\">Celsius → Fahrenheit</option>\n        <option value=\"f-to-c\">Fahrenheit → Celsius</option>\n      </select>\n    </div>\n\n    <button id=\"convert\" type=\"button\">Convert</button>\n\n    <div class=\"result-box\" aria-live=\"polite\">\n      <span class=\"result-label\">Result</span>\n      <output id=\"result\">--</output>\n    </div>\n\n    <div class=\"formulas\">\n      <p><strong>C → F:</strong> x × 9/5 + 32</p>\n      <p><strong>F → C:</strong> (x − 32) × 5/9</p>\n    </div>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2e;\n  --card: #2a2a3c;\n  --accent: #f9a826;\n  --text: #e0e0e0;\n  --muted: #8888aa;\n  --border: #44445a;\n  --shadow: #0f0f18;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n  image-rendering: pixelated;\n}\n\n.card {\n  background: var(--card);\n  border: 4px solid var(--border);\n  border-radius: 0;\n  box-shadow: 8px 8px 0 var(--shadow);\n  padding: 32px 28px;\n  width: 100%;\n  max-width: 400px;\n  text-align: center;\n}\n\nh1 {\n  margin: 0 0 4px;\n  font-size: 1.6rem;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n\n.subtitle {\n  margin: 0 0 24px;\n  font-size: 0.95rem;\n  color: var(--muted);\n  letter-spacing: 0.5px;\n}\n\n.field {\n  margin-bottom: 20px;\n  text-align: left;\n}\n\nlabel {\n  display: block;\n  margin-bottom: 6px;\n  font-size: 0.9rem;\n  font-weight: 600;\n  letter-spacing: 0.5px;\n  text-transform: uppercase;\n  color: var(--muted);\n}\n\ninput, select {\n  width: 100%;\n  padding: 12px 14px;\n  font-size: 1rem;\n  font-family: inherit;\n  color: var(--text);\n  background: var(--bg);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  outline: none;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\n\ninput:hover, select:hover {\n  border-color: var(--muted);\n}\n\ninput:focus, select:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(249, 168, 38, 0.35);\n}\n\nbutton {\n  width: 100%;\n  padding: 14px;\n  font-size: 1.1rem;\n  font-family: inherit;\n  font-weight: 700;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: var(--bg);\n  background: var(--accent);\n  border: 3px solid var(--accent);\n  border-radius: 0;\n  cursor: pointer;\n  box-shadow: 4px 4px 0 var(--shadow);\n  transition: transform 0.1s, box-shadow 0.1s, background 0.15s;\n}\n\nbutton:hover {\n  background: #ffbe4d;\n  border-color: #ffbe4d;\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--text);\n  outline-offset: 3px;\n}\n\nbutton:active {\n  transform: translate(4px, 4px);\n  box-shadow: 0 0 0 var(--shadow);\n}\n\n.result-box {\n  margin: 24px 0 20px;\n  padding: 16px;\n  background: var(--bg);\n  border: 3px dashed var(--border);\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 6px;\n}\n\n.result-label {\n  font-size: 0.8rem;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  color: var(--muted);\n}\n\n#result {\n  font-size: 2rem;\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n  color: var(--accent);\n  min-height: 2.4rem;\n  word-break: break-all;\n}\n\n.formulas {\n  border-top: 3px solid var(--border);\n  padding-top: 16px;\n  font-size: 0.85rem;\n  color: var(--muted);\n  line-height: 1.6;\n  text-align: left;\n}\n\n.formulas p { margin: 0; }\n.formulas strong { color: var(--text); }\n\n@media (max-width: 360px) {\n  .card { padding: 24px 16px; }\n  h1 { font-size: 1.3rem; }\n  #result { font-size: 1.6rem; }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "'use strict';\n\nconst input = document.getElementById('temperature');\nconst direction = document.getElementById('direction');\nconst convertBtn = document.getElementById('convert');\nconst resultEl = document.getElementById('result');\n\nfunction convert() {\n  const raw = input.value.trim();\n\n  if (raw === '') {\n    resultEl.textContent = 'Error';\n    return;\n  }\n\n  const num = Number(raw);\n\n  if (!Number.isFinite(num)) {\n    resultEl.textContent = 'Error';\n    return;\n  }\n\n  let output;\n  if (direction.value === 'c-to-f') {\n    output = num * 9 / 5 + 32;\n  } else {\n    output = (num - 32) * 5 / 9;\n  }\n\n  if (!Number.isFinite(output)) {\n    resultEl.textContent = 'Error';\n    return;\n  }\n\n  resultEl.textContent = output.toFixed(2);\n}\n\nconvertBtn.addEventListener('click', convert);\n\ninput.addEventListener('keydown', (e) => {\n  if (e.key === 'Enter') {\n    e.preventDefault();\n    convert();\n  }\n});\n\ndirection.addEventListener('keydown', (e) => {\n  if (e.key === 'Enter') {\n    e.preventDefault();\n    convert();\n  }\n});",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel-Style Temperature Converter\n\nA tiny offline temperature converter with a pixel-art aesthetic. Built with plain HTML, CSS, and JavaScript — no packages, no network, no storage.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter a temperature in the **Temperature** field.\n3. Choose a direction from the **Direction** dropdown:\n   - `Celsius → Fahrenheit`\n   - `Fahrenheit → Celsius`\n4. Click **Convert** (or press **Enter** in the input/select).\n\nThe result appears below with exactly two decimal places and no unit suffix. The initial value is `--`.\n\n## Formulas\n\n- **C → F:** `x × 9/5 + 32`\n- **F → C:** `(x − 32) × 5/9`\n\n## Error Handling\n\nThe output shows the exact text `Error` when the input is:\n\n- empty or whitespace-only\n- non-numeric (e.g. `abc`)\n- non-finite (e.g. `Infinity`, `NaN`)\n\nValid results are always formatted to two decimals via `toFixed(2)`.\n\n## Accessibility\n\n- All controls have visible labels.\n- Keyboard users can Tab through controls and press Enter to convert.\n- Focus, hover, and pressed states are clearly visible.\n- The result region uses `aria-live=\"polite\"` for screen readers.\n\n## Constraints\n\n- Offline only: no external assets, fonts, imports, or requests.\n- No localStorage or cookies.\n- Responsive down to 360px wide.\n- Total source under 200 lines.\n\n## Files\n\n- `index.html` — markup\n- `styles.css` — pixel theme and layout\n- `app.js` — conversion and validation logic\n- `README.md` — this file",
+      "description": ""
+    }
+  ]
+}

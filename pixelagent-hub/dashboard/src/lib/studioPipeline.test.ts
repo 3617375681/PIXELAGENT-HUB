@@ -80,3 +80,13 @@ it('a live run that checks before its terminal event keeps the Tester result and
   expect(view.feedback).toBeNull();
   expect(view.stages.find((stage) => stage.id === 'tester')).toMatchObject({ state: 'done', label: 'All checks passed 2/2' });
 });
+
+it('a Tester review that revises its checks clears the feedback edge; one that stands keeps it', () => {
+  const failed = [ev('browser_run_started', undefined, { checks: 1 }), ev('browser_check', undefined, { name: 'Adds one', passed: false, actual: '0' }), ev('browser_run_finished', undefined, { status: 'failed', passed: 0, failed: 1 }), ev('test_plan_started', undefined, { review: true })];
+  expect(reducePipeline(failed).stages.find((stage) => stage.id === 'tester')?.label).toBe('Reviewing its checks…');
+  const revised = reducePipeline([...failed, ev('test_plan_ready', undefined, { review: true, revised: 1 })]);
+  expect(revised.feedback).toBeNull();
+  expect(revised.stages.find((stage) => stage.id === 'tester')?.label).toBe('1 checks revised');
+  expect(reducePipeline([...failed, ev('test_plan_ready', undefined, { review: true, revised: 0 })]).feedback?.from).toBe('tester');
+  expect(describeEvent(ev('test_plan_ready', undefined, { review: true, revised: 2 }))).toBe('Tester corrected 2 of its own checks');
+});

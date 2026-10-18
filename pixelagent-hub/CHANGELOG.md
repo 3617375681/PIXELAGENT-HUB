@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Added
+- The Tester re-examines its failing checks once before the Coder is blamed: checks it judges wrong are replaced by corrected checks testing the same requirement and rerun; failures it stands by go to the Coder (PLAY LIVE)
+- A test plan the schema rejects goes back to the Tester once with the validation error (PLAY LIVE)
 - PLAY LIVE benchmark (2026-10-18): `scripts/benchmark-live.ts` runs the fixed cases through the built site in Chromium; 8/15 → 11/15 full passes after the Tester fixes below, with every failure traced to the Tester's plan
 - PLAY LIVE "Custom / local" provider: any OpenAI-compatible server (Ollama, LM Studio, vLLM, gateways), key optional, https or localhost-only http, 20-minute agent limits for local servers; verified end to end with qwen3:4b on a CPU-only laptop
 - `#/studio?idea=…` links prefill the prompt box (kept through the redirect to the hero replay), so posts can link straight to an idea to build
