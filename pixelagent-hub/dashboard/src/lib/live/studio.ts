@@ -1,10 +1,11 @@
 import { strToU8, zipSync } from 'fflate';
 import { coderPrompt, managerPrompt, testerPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { browserFailureNotes } from '@studio-shared/repair';
+import { dependencyNote, unsupportedDependencies } from '@studio-shared/dependencies';
 import type { BrowserCheck } from '../studioChecks';
 import { parseCodeOutput, parseModelObject, parsePlanOutput, parseTestPlanOutput } from '@studio-shared/parse';
 import type { StudioDiagnostic, StudioEvent, StudioEventType, StudioProject, StudioSummary, StudioTestPlan } from '../../types/studio';
-import { liveChat, liveProvider, type LlmUsage } from './llm';
+import { customEndpoint, DEFAULT_CUSTOM_BASE_URL, liveChat, liveProvider, type LlmUsage } from './llm';
 import { buildInBrowser } from './build';
 import { runInPageChecks } from './checks';
 import { liveCredentials } from './key';
@@ -23,6 +24,7 @@ export const isLiveRun = (projectId?: string) => !!projectId?.startsWith(LIVE_PR
 export const isSharedProject = (projectId?: string) => !!projectId?.startsWith(SHARED_PREFIX);
 export const LIVE_CODER_TIMEOUT_MS = 300_000;
 const AGENT_TIMEOUT_MS = 180_000;
+export const LOCAL_AGENT_TIMEOUT_MS = 1_200_000;
 const TERMINAL = new Set<StudioEventType>(['ready_for_review', 'failed', 'cancelled']);
 
 type Files = { path: string; content: string; description?: string }[];
@@ -98,7 +100,9 @@ async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) =>
   const controller = new AbortController();
   const stop = () => controller.abort(signal.reason);
   signal.addEventListener('abort', stop, { once: true });
-  const timer = setTimeout(() => controller.abort(new Error(`${agent} exceeded its ${timeoutMs / 1000} s limit`)), timeoutMs);
+  // Local servers are free but often run on a CPU: give them far longer before giving up (STOP still works).
+  const limit = liveProvider(credentials.provider).custom ? Math.max(timeoutMs, LOCAL_AGENT_TIMEOUT_MS) : timeoutMs;
+  const timer = setTimeout(() => controller.abort(new Error(`${agent} exceeded its ${limit / 1000} s limit`)), limit);
   try {
     const reply = await liveChat(credentials, prompt, controller.signal);
     return { output: { ...parse(parseModelObject(reply.content)), llmUsage: reply.usage, llmModel: reply.model, llmProvider: credentials.provider } };
@@ -142,10 +146,13 @@ async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: s
     const code = await ask('Coder', coderPrompt(project.description, 'javascript', { language: 'javascript', constraints: STUDIO_CONSTRAINTS, plan: project.plan?.output, previousFiles, revisionNotes }), parseCodeOutput, signal, LIVE_CODER_TIMEOUT_MS);
     const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
     project.rounds.push(attempt);
-    if (code.output.dependencies.length) throw new Error('Generated project requires unsupported dependencies');
     emit(entry, 'code_ready', { files: code.output.files.length }, round);
+    // Real packages are unsupported; like a compile error, the reason goes back to the Coder.
+    const dependencies = unsupportedDependencies(code.output.dependencies);
     phase('building', round);
-    const build = await buildInBrowser(code.output.files, signal);
+    const build = dependencies.length
+      ? { status: 'failed' as const, errors: [dependencyNote(dependencies)], checkedFiles: [] as string[], html: undefined }
+      : await buildInBrowser(code.output.files, signal);
     attempt.build = { status: build.status, errors: build.errors, checkedFiles: build.checkedFiles, browserVerified: false };
     emit(entry, build.status === 'passed' ? 'build_passed' : 'build_failed', build.status === 'passed' ? undefined : { errors: summarizeErrors(build.errors) }, round);
     if (build.status === 'passed') {
@@ -238,6 +245,12 @@ async function runChecks(entry: Entry, checks: BrowserCheck[], signal: AbortSign
   return { failed, results, errors };
 }
 
+const providerLabel = (credentials: { provider: string; baseUrl?: string }) => {
+  const provider = liveProvider(credentials.provider);
+  if (!provider.custom) return provider.label;
+  try { return new URL(customEndpoint(credentials.baseUrl || DEFAULT_CUSTOM_BASE_URL)).host; } catch { return provider.label; }
+};
+
 function start(description: string): { projectId: string; jobId: string } {
   const credentials = liveCredentials();
   if (!credentials) throw httpError('Add a model key to build live.', 401);
@@ -246,7 +259,7 @@ function start(description: string): { projectId: string; jobId: string } {
   const projectId = `${LIVE_PREFIX}${crypto.randomUUID()}`;
   const entry: Entry = { project: { projectId, description: text, status: 'queued', startedAt: now(), strategy: 'manager-coder', rounds: [] }, events: [], diagnostics: [] };
   entries.set(projectId, entry);
-  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser', provider: liveProvider(credentials.provider).label, model: credentials.model });
+  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser', provider: providerLabel(credentials), model: credentials.model });
   const controller = new AbortController();
   controllers.set(projectId, controller);
   void generate(entry, controller.signal).finally(() => { controllers.delete(projectId); void persist(entry); });

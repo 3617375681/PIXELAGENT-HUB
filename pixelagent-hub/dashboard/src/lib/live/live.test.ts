@@ -150,3 +150,36 @@ it('a failed in-page check goes back to the Coder once, then the same checks run
   expect(project).toMatchObject({ status: 'ready_for_review', previewFile: 'v2/dist/index.html' });
   expect(checks).toHaveBeenCalledTimes(2);
 });
+
+it('custom endpoints: https anywhere, http only on localhost, and no key means no Authorization header', async () => {
+  const { customEndpoint, streamChat } = await import('./llm');
+  expect(customEndpoint('http://localhost:11434/v1')).toBe('http://localhost:11434/v1/chat/completions');
+  expect(customEndpoint('https://gateway.example.com/openai/v1/chat/completions/')).toBe('https://gateway.example.com/openai/v1/chat/completions');
+  expect(() => customEndpoint('http://192.168.1.5:11434/v1')).toThrow(/https/);
+  expect(() => customEndpoint('https://user:pass@example.com/v1')).toThrow(/API KEY/);
+  expect(() => customEndpoint('not a url')).toThrow(/server URL/);
+
+  // Servers that reject stream_options get one retry without it.
+  fetchMock.mockResolvedValueOnce(new Response('unknown field stream_options', { status: 400 })).mockResolvedValueOnce(sse({ ok: true }));
+  const reply = await streamChat({ apiKey: '', model: 'qwen3:4b', system: 's', user: 'u', endpoint: 'http://localhost:11434/v1/chat/completions', provider: 'localhost:11434' });
+  expect(reply.content).toContain('"ok":true');
+  const [first, second] = fetchMock.mock.calls.map(([, init]) => init as RequestInit);
+  expect(first.headers).not.toHaveProperty('Authorization');
+  expect(JSON.parse(String(first.body)).stream_options).toEqual({ include_usage: true });
+  expect(JSON.parse(String(second.body))).not.toHaveProperty('stream_options');
+});
+
+it('a custom provider runs without a key against the server the visitor entered', async () => {
+  key.saveLiveCredentials({ provider: 'custom', key: '', model: 'qwen3:4b', baseUrl: 'http://localhost:11434/v1' }, false);
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    return sse(system.includes('project manager') ? plan : system.includes('test planner') ? testPlan : code);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events.at(-1)?.type).toBe('ready_for_review');
+  expect(events[0].data).toMatchObject({ provider: 'localhost:11434', model: 'qwen3:4b' });
+  expect(new Set(fetchMock.mock.calls.map(([url]) => url))).toEqual(new Set(['http://localhost:11434/v1/chat/completions']));
+});

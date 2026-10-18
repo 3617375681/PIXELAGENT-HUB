@@ -29,7 +29,7 @@ A Manager plans, a Coder writes a small offline web app, a Builder really compil
 | DeepSeek | `deepseek-chat` | | OpenRouter | `deepseek/deepseek-chat` |
 | Anthropic | `claude-opus-5-5` | | Qwen (DashScope) | `qwen-plus` |
 | OpenAI | `gpt-4o-mini` | | Zhipu GLM | `glm-4-flash` |
-| SiliconFlow | `deepseek-ai/DeepSeek-V3` | | | |
+| SiliconFlow | `deepseek-ai/DeepSeek-V3` | | **Custom / local** | any model on Ollama, LM Studio, vLLM… ([below](#local-models)) |
 
 - **Models:** the model field is free text, so use any model your key can access.
 - **Your key** is sent only to the provider you pick and kept in the tab by default. Generated apps run in an iframe with no same-origin access, so they can't read it ([SECURITY.md](pixelagent-hub/SECURITY.md)).
@@ -43,6 +43,19 @@ A Manager plans, a Coder writes a small offline web app, a Builder really compil
 - **SHARE** a finished run: the link carries the whole run in its URL fragment (request, timeline, app and source), so anyone can replay it and play the app, with no server and no key.
 - **Cost:** typically 20k–40k tokens per run. Claude runs use server-side refusal fallbacks.
 - **Limitation:** in-browser checks run inside the app's own page, so a hostile app could forge them. Independent sandboxed-Chromium checks need the local server.
+
+## Local models
+
+PLAY LIVE also runs against any OpenAI-compatible server, including models on your own machine: no key, no cloud, no cost.
+
+1. Start the server and allow the demo's origin:
+   - **Ollama:** `OLLAMA_ORIGINS=* ollama serve` (or set it to `https://jiarong-song233.github.io`).
+   - **LM Studio:** start the local server and turn on CORS.
+2. In BUILD LIVE, choose **Custom / local**.
+3. Set SERVER URL to `http://localhost:11434/v1` for Ollama or `http://localhost:1234/v1` for LM Studio.
+4. Enter the model name (for example `qwen3:4b`) and leave the key empty.
+
+What to expect: `qwen3:4b` on a laptop CPU with no discrete GPU (about 14 tokens/s) built a counter in 22 minutes and passed 3/3 checks. A GPU or a hosted model is far faster. Local servers get up to 20 minutes per agent, and STOP works at any time. Plain `http://` is accepted only for `localhost`; anything else needs `https://`. Some browsers ask before a website can reach a local server.
 
 ## When things break
 

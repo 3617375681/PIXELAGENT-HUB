@@ -8,6 +8,7 @@ import type { TaskResult } from '../core/types.js';
 import { buildStaticProject, createSourceArchive, type BuildReport, type SourceFile } from './workspace.js';
 import { writeJsonSnapshot } from './atomicJson.js';
 import { REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE } from './shared/prompts.js';
+import { dependencyNote, unsupportedDependencies } from './shared/dependencies.js';
 import { appendStudioEvent, summarizeErrors, type StudioEventInput } from './events.js';
 
 export type StudioRecord = {
@@ -86,10 +87,13 @@ export async function runSoftwareStudio(options: {
       record.rounds.push(attempt);
       await save();
       if (code.status !== 'success') throw new Error(code.reasoning || 'Code generation failed');
-      if (code.output.dependencies?.length) throw new Error('Generated project requires unsupported dependencies');
       await emit({ type: 'code_ready', round, data: { files: code.output.files?.length ?? 0 } });
+      // Real packages are unsupported; like a compile error, the reason goes back to the Coder.
+      const dependencies = unsupportedDependencies(code.output.dependencies);
       await progress('building', round);
-      attempt.build = await buildStaticProject(code.output.files, join(directory, `v${round}`), options.signal);
+      attempt.build = dependencies.length
+        ? { status: 'failed', tool: 'esbuild', errors: [dependencyNote(dependencies)], checkedFiles: [], browserVerified: false }
+        : await buildStaticProject(code.output.files, join(directory, `v${round}`), options.signal);
       await save();
       await emit(attempt.build.status === 'passed' ? { type: 'build_passed', round } : { type: 'build_failed', round, data: { errors: summarizeErrors(attempt.build.errors) } });
       if (attempt.build.status === 'passed') {

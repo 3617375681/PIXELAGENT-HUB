@@ -38,7 +38,31 @@ Happy to answer questions about the event-driven UI, running agent loops client-
 
 ---
 
-## Reddit (r/LocalLLaMA, r/webdev, r/SideProject)
+## Reddit: r/LocalLLaMA
+
+**Title:** A 4-agent "dev squad" that builds and tests a small web app entirely in your browser, and it works with your local Ollama model (no key, no backend)
+
+**Body:**
+
+Point the demo at `http://localhost:11434/v1` (start Ollama with `OLLAMA_ORIGINS=*`), pick a model, type an idea, and the whole loop runs between your browser and your machine:
+
+1. A Manager plans and a Coder writes HTML/CSS/JS.
+2. esbuild-wasm compiles it. Compile errors go back to the Coder.
+3. A Tester writes checks, and each one runs on a fresh page in a sandboxed iframe.
+4. A failed check gets one repair round.
+
+Honest numbers: `qwen3:4b` on a CPU-only laptop (about 14 tok/s) built a working counter in 22 minutes and passed 3/3 checks. With a GPU it's much faster. Getting it to work turned up two robustness fixes:
+
+- Small models put `"none"` or `"HTML5"` in the dependencies list, which used to end the run.
+- `<think>` blocks have to be stripped before parsing JSON.
+
+I'd love to hear which local models do well. It also works with hosted APIs: DeepSeek, Claude, OpenAI, OpenRouter, Qwen, GLM and SiliconFlow.
+
+Demo: https://jiarong-song233.github.io/PIXELAGENT-HUB/ · Code (MIT): https://github.com/Jiarong-Song233/PIXELAGENT-HUB · Local setup: README → Local models
+
+---
+
+## Reddit: r/webdev, r/SideProject
 
 **Title:** I made four AI agents that build a small web app in your browser, with real compile and browser checks. Bring your own key, no backend.
 

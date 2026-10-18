@@ -35,7 +35,7 @@
 | DeepSeek | `deepseek-chat` | | OpenRouter | `deepseek/deepseek-chat` |
 | Anthropic | `claude-opus-5-5` | | 通义千问（DashScope） | `qwen-plus` |
 | OpenAI | `gpt-4o-mini` | | 智谱 GLM | `glm-4-flash` |
-| 硅基流动 | `deepseek-ai/DeepSeek-V3` | | | |
+| 硅基流动 | `deepseek-ai/DeepSeek-V3` | | **自定义 / 本地** | Ollama、LM Studio、vLLM 等上的任意模型（[见下文](#本地模型)） |
 
 - **模型**：模型名可以自由填写，你的 key 能用的任何模型都可以。
 - **key 的去向**：只发给你选的提供商，默认只保存在当前标签页。生成的应用运行在没有同源权限的 iframe 里，读不到你的 key（见 [安全说明](pixelagent-hub/SECURITY.md)）。
@@ -49,6 +49,19 @@
 - **分享**：运行结束后点 **SHARE**，整次运行（需求、事件时间线、应用和源码）都会压缩进链接的 URL 片段里。别人打开链接就能回放整个过程并直接玩这个应用，不需要服务器，也不需要 key。
 - **开销**：一次运行通常消耗 2–4 万 token。用 Claude 时会开启服务端拒答兜底（refusal fallbacks）。
 - **局限**：浏览器里的检查运行在被测应用自己的页面中，恶意应用理论上可以伪造结果。独立的沙箱 Chromium 检查需要本地服务器模式。
+
+## 本地模型
+
+PLAY LIVE 也可以连接任何 OpenAI 兼容的服务器，包括你自己电脑上的模型：不需要 key，不经过云端，也不花钱。
+
+1. 启动服务器，并允许演示页的来源访问（CORS）：
+   - **Ollama**：`OLLAMA_ORIGINS=* ollama serve`（也可以只设为 `https://jiarong-song233.github.io`）。
+   - **LM Studio**：启动本地服务器并打开 CORS。
+2. 在 BUILD LIVE 里选择 **Custom / local**。
+3. SERVER URL 填 `http://localhost:11434/v1`（Ollama）或 `http://localhost:1234/v1`（LM Studio）。
+4. 填入模型名（例如 `qwen3:4b`），key 留空。
+
+实测参考：在一台没有独立显卡的笔记本 CPU 上（约 14 token/秒），`qwen3:4b` 用 22 分钟做出了一个计数器，3/3 检查通过。用 GPU 或云端模型会快得多。本地服务器的每个 Agent 最多有 20 分钟，随时可以点 STOP 停止。只有 `localhost` 允许用 `http://`，其他地址必须是 `https://`。有些浏览器会先询问是否允许网页访问本地服务器。
 
 ## 出错时会发生什么
 

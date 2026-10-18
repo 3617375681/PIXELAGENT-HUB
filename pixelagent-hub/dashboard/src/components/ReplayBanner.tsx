@@ -15,7 +15,7 @@ export default function ReplayBanner({ projectId, live = false, sharedBy }: { pr
   return (
     <aside className="studio-replay" aria-label="Replay notice">
       <span className={`pixel-font studio-replay-tag ${live ? 'live' : sharedBy !== undefined ? 'shared' : ''}`}>{live ? 'LIVE' : sharedBy !== undefined ? 'SHARED' : 'REPLAY'}</span>
-      <span className="studio-replay-text">{live ? 'Your run · your own key · running in this browser'
+      <span className="studio-replay-text">{live ? 'Your run · your own model · running in this browser'
         : sharedBy !== undefined ? `Someone built this live${sharedBy ? ` with ${sharedBy}` : ''} · replayed in your browser · press BUILD LIVE to make your own`
           : `Recorded run · read-only${current ? ` · ${current.kind === 'mock' ? 'offline mock model' : 'real model (DeepSeek)'}` : ''}`}</span>
       {manifest && (
