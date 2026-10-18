@@ -22,6 +22,23 @@ test('code output tolerates omitted descriptive fields but not missing files', (
   assert.throws(() => parseTestPlanOutput({ checks: [], limitations: [] }), /The test plan did not match/);
 });
 
+test('test plans keep their checks when limitations are malformed', () => {
+  const check = { name: 'Adds one', actions: [], selector: '#count', expected: '1' };
+  const parsed = parseTestPlanOutput({ checks: [check], isolation: 'fresh', limitations: [{ note: 'canvas' }, 'x'.repeat(400), ...Array(12).fill('more')] });
+  assert.equal(parsed.checks.length, 1);
+  assert.deepEqual(parsed.limitations[0], '{"note":"canvas"}');
+  assert.equal(parsed.limitations[1].length, 300);
+  assert.equal(parsed.limitations.length, 10);
+  assert.deepEqual(parseTestPlanOutput({ checks: [check] }).limitations, []);
+  assert.throws(() => parseTestPlanOutput({ checks: [], limitations: [] }), /did not match/);
+});
+
+test('the tester prompt explains how to set selects and asks for self-contained checks', async () => {
+  const { testerPrompt } = await import('./prompts.js');
+  assert.match(testerPrompt('x').system, /To choose a <select> option, use an input action/);
+  assert.match(testerPrompt('x').system, /sets every input and select it depends on/);
+});
+
 test('the coder prompt carries the shared constraints unchanged', () => {
   const { user } = coderPrompt('A counter', 'javascript', { constraints: STUDIO_CONSTRAINTS, revisionNotes: [] });
   assert.match(user, /^Task: "A counter"\nLanguage: javascript\nContext: /);
