@@ -3,6 +3,10 @@
 ## [Unreleased]
 
 ### Added
+- PLAY LIVE takes keys for DeepSeek, Anthropic (official SDK, refusal fallbacks), OpenAI, OpenRouter, Qwen, Zhipu GLM and SiliconFlow
+- PLAY LIVE runs the Tester's checks before finishing and gives the Coder one repair round when a check fails
+- Test plans can request `isolation: "fresh"` (the Tester now does): every check starts on a freshly loaded page, on the server and in the browser; in-page checks wait up to 2 s like server checks
+- README is English-first (Chinese in `README.zh-CN.md`) and leads with a recording of a real PLAY LIVE run
 - PLAY LIVE: the static site runs the full Studio loop in the visitor's browser with their own DeepSeek key (streaming model calls, esbuild-wasm build, sandboxed in-page checks), emitting the same events as the server
 - `src/studio/shared`: prompts, output schemas and parsers, file validation and the HTML inliner shared by the Node backend and the browser
 - Real-model showcase (2026-10-18): six ideas, ten attempts, every outcome kept; shown in the replay as WHAT THE SQUAD BUILT with final screenshots. `scripts/record-showcase.ts` records it with a token budget guard

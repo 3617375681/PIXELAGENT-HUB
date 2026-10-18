@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Layout
 
-The real project is `pixelagent-hub/`; run npm commands from there. It contains two separate npm packages with separate lockfiles: the framework/API (`pixelagent-hub/`) and the React/Vite dashboard (`pixelagent-hub/dashboard/`). The repo-root `README.md` is the Studio-oriented overview; `pixelagent-hub/README.md` covers the framework. Most docs are in Chinese.
+The real project is `pixelagent-hub/`; run npm commands from there. It contains two separate npm packages with separate lockfiles: the framework/API (`pixelagent-hub/`) and the React/Vite dashboard (`pixelagent-hub/dashboard/`). The repo-root `README.md` (English, with `README.zh-CN.md` in Chinese) is the Studio-oriented overview; `pixelagent-hub/README.md` covers the framework. Most docs are in Chinese.
 
 ## Commands
 
