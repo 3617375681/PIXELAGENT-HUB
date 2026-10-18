@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.0] — 2026-10-18
+
 ### Added
 - The Tester re-examines its failing checks once before the Coder is blamed: checks it judges wrong are replaced by corrected checks testing the same requirement and rerun; failures it stands by go to the Coder (PLAY LIVE)
 - A test plan the schema rejects goes back to the Tester once with the validation error (PLAY LIVE)
@@ -14,6 +16,9 @@
 - Text assertions collapse whitespace (server browser runs and in-page checks), so a double space no longer fails a check
 - Non-package entries in a Coder reply's `dependencies` ("none", "HTML5"…) no longer end a run; real packages become a revision note for the Coder (server and PLAY LIVE)
 - Reasoning models' leading `<think>` blocks are ignored when parsing replies
+
+### Changed
+- LICENSE, CONTRIBUTING, CODE_OF_CONDUCT and SECURITY live at the repo root so GitHub detects them (community profile 42% → 100%); CONTRIBUTING is rewritten in English with a map of the codebase
 
 ## [2.0.0] — 2026-10-18
 
