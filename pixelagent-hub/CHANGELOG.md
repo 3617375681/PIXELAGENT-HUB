@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Added
+- PLAY LIVE: the static site runs the full Studio loop in the visitor's browser with their own DeepSeek key (streaming model calls, esbuild-wasm build, sandboxed in-page checks), emitting the same events as the server
+- `src/studio/shared`: prompts, output schemas and parsers, file validation and the HTML inliner shared by the Node backend and the browser
 - Real-model showcase (2026-10-18): six ideas, ten attempts, every outcome kept; shown in the replay as WHAT THE SQUAD BUILT with final screenshots. `scripts/record-showcase.ts` records it with a token budget guard
 - The Coder is asked for a finished look (palette, readable fonts, interaction states, narrow layouts); the mock counter is now an arcade-style app with a HI score
 - Replay gallery: the static demo now includes all 30 real-model runs of the 2026-10-15 strategy comparison (staged with their recorded events and hash-checked browser reports), one clickable cell per run, failures included
@@ -15,6 +17,7 @@
 - The mock provider now produces a buildable Studio app (first attempt deliberately fails to compile, exercising the repair loop) and fixed browser checks; optional `MOCK_LLM_DELAY_MS` slows it for live demos
 
 ### Fixed
+- Coder replies that omit per-file `description`, `explanation` or `dependencies` are no longer rejected; schema failures now read as one sentence instead of a raw issue list
 - `replay:export --browser` now fails when the mock browser run does not pass (for example, a missing Chromium) instead of publishing it as a failed check
 - `/api/run/:mode?async=1&stream=1` now returns a clean 400 instead of failing after SSE headers were written; run SSE responses use the configured CORS origin instead of `*`
 - Studio JSON responses now carry the configured CORS origin like other API routes

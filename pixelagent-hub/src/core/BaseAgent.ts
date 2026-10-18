@@ -1,5 +1,6 @@
 import { Agent, AgentConfig, Task, TaskResult, Message, MessageBus } from './types.js';
 import { LLMProvider, NO_LLM_PROVIDER_MESSAGE } from './llm/provider.js';
+import { parseModelObject } from '../studio/shared/parse.js';
 
 export abstract class BaseAgent implements Agent {
   config: AgentConfig;
@@ -61,10 +62,7 @@ export abstract class BaseAgent implements Agent {
       const { system, user } = buildPrompt();
       const llm = await this.llmProvider.askWithUsage(system, user, 0.7, task._exec?.signal);
       task._exec?.signal?.throwIfAborted();
-      const raw = llm.content.trim();
-      const json = raw.match(/```(?:json)?\s*([\s\S]*?)```/)?.[1] ?? raw;
-      const object = JSON.parse(json);
-      if (!object || typeof object !== 'object' || Array.isArray(object)) throw new Error('Expected a JSON object');
+      const object = parseModelObject(llm.content);
       const parsed = parseResponse(JSON.stringify(object));
       return this.createResult(
         task.id,

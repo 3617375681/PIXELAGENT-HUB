@@ -8,13 +8,21 @@
 
 **Type an idea, watch 4 agents build it.** The Manager plans, the Coder writes a small offline web app, the Builder really compiles it with esbuild, and the Tester clicks through it in a sandboxed Chromium. Any compiler error or failed check goes straight back to the Coder. Every animation in the pixel console is driven by a recorded server event.
 
-**▶ [Live replay](https://3617375681.github.io/PIXELAGENT-HUB/)** (read-only, no backend or key) · [Run locally](#run-locally) · [Evidence index](pixelagent-hub/docs/evidence/README.md)
+**▶ [Try it](https://3617375681.github.io/PIXELAGENT-HUB/)**: watch 40 recorded real-model runs, or press **BUILD LIVE**, paste your own DeepSeek key, and the four agents build your idea right in your browser (no backend) · [Run locally](#run-locally) · [Evidence index](pixelagent-hub/docs/evidence/README.md)
 
 ![Prompt → Manager plans → round 1 fails to compile and the red edge sends the error back → round 2 passes → 4/4 browser checks → playable](portfolio-screenshots/studio-demo.gif)
 
 | **30** real-model generations | **13/15 vs 12/15** no measurable multi-agent advantage | **0** simulated animations |
 | :---: | :---: | :---: |
 | each with source, event log and browser report | plan-then-code vs code-only, published as measured | every animation maps to a server event |
+
+## PLAY LIVE: build in your browser
+
+The online page has no backend. BUILD LIVE runs the whole Manager → Coder → Builder → Tester loop in your tab: model calls go straight from your browser to `api.deepseek.com` with your key, esbuild-wasm compiles the code, and the Tester's checks run one by one in a sandboxed iframe. It uses the **same** prompts, output validation and bundling as the local server (`src/studio/shared`) and emits the same events, so the squad, sounds and red repair edge behave identically.
+
+- A small calculator takes about 20 s with `deepseek-chat`; a run is typically 20k–40k tokens.
+- Your key stays in the tab by default; generated apps run in an iframe without same-origin access and cannot read it. See [SECURITY.md](pixelagent-hub/SECURITY.md).
+- Limitation: in-browser checks run inside the app's own page, so a hostile app could forge them. Independent sandboxed-Chromium checks need the local server.
 
 ## Results you can check
 

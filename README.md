@@ -8,13 +8,21 @@
 
 **一句话需求 → 4 个 Agent 规划、写码、真实编译、浏览器验收；失败证据自动回到 Coder 返修。** 每一步都写进事件日志，像素风控制台里看到的每个动画都对应一条真实事件。
 
-**▶ [在线回放演示](https://3617375681.github.io/PIXELAGENT-HUB/)**（只读、无需后端或密钥） · [本地运行](#本地运行) · [证据索引](pixelagent-hub/docs/evidence/README.md) · [作品集说明](pixelagent-hub/docs/portfolio/README.md)
+**▶ [在线体验](https://3617375681.github.io/PIXELAGENT-HUB/)**：直接看 40 次真实生成的回放；或点 **BUILD LIVE**，填自己的 DeepSeek key，4 个 Agent 就在你的浏览器里现场写一个应用（无需后端） · [本地运行](#本地运行) · [证据索引](pixelagent-hub/docs/evidence/README.md) · [作品集说明](pixelagent-hub/docs/portfolio/README.md)
 
 ![输入需求 → Manager 规划 → 第 1 轮编译失败，红线把报错交回 Coder → 第 2 轮通过 → 浏览器检查 4/4 → 可以直接玩](portfolio-screenshots/studio-demo.gif)
 
 | **30** 次真实模型生成 | **13/15 vs 12/15** 多 Agent 没有可测优势 | **0** 个模拟动画 |
 | :---: | :---: | :---: |
 | 每次都留有源码、事件日志和浏览器报告 | 先规划再写码 vs 直接写码，结果如实公开 | 界面上每个动画都对应一条服务器事件 |
+
+## 在线现场生成（PLAY LIVE）
+
+在线页面没有任何后端。点 BUILD LIVE 后，Manager → Coder → Builder → Tester 整个流程都在你的浏览器标签页里运行：模型调用用你自己的 DeepSeek key 直连 `api.deepseek.com`，代码用 esbuild-wasm 现场编译，Tester 的检查在沙箱 iframe 里逐条执行。和本地服务器用的是**同一套**提示词、输出校验和打包逻辑（`src/studio/shared`），事件格式也相同，所以动画、音效和回修红线都一样。
+
+- 用 `deepseek-chat` 生成一个小计算器约 20 秒，一次运行通常 2–4 万 token。
+- key 默认只存在当前标签页；生成的应用跑在无同源权限的沙箱里，读不到它。详见 [安全说明](pixelagent-hub/SECURITY.md)。
+- 局限：浏览器里的检查跑在被测应用自己的页面里，恶意应用理论上可以伪造结果；独立的沙箱 Chromium 检查只在本地服务器模式下提供。
 
 ## 它做什么
 
