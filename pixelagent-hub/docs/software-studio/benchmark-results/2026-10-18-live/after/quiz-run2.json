@@ -1,0 +1,614 @@
+{
+  "caseId": "quiz",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "9/10",
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 39,
+  "reportedTokens": 15540,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-18T13:29:29.159Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-18T13:29:29.159Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-18T13:29:33.655Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Offline Pixel-Style Two-Question Quiz"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-18T13:29:33.655Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-18T13:29:40.850Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-18T13:29:40.850Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-18T13:29:41.571Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-18T13:29:41.572Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2a8341cd-a221-4882-9c0a-7be25583e9ef"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-18T13:29:44.438Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2a8341cd-a221-4882-9c0a-7be25583e9ef",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-18T13:29:44.439Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "testPlanId": "2a8341cd-a221-4882-9c0a-7be25583e9ef",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Initial question and answers",
+        "passed": true,
+        "actual": "2 + 2 = ?"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Initial score is 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Correct first answer increments score",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Wrong first answer keeps score at 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Answers lock after first answer",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Next shows second question",
+        "passed": true,
+        "actual": "3 + 3 = ?"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Second question answer-b is 6",
+        "passed": false,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Second correct answer increments score",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Finished after answering second and next",
+        "passed": true,
+        "actual": "Finished"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "name": "Restart resets question and score",
+        "passed": true,
+        "actual": "2 + 2 = ?"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-18T13:29:49.662Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "4ce14f09-ab9a-4e6b-83fc-b0295f7bcf07",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-18T13:29:49.664Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-18T13:30:01.391Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-18T13:30:01.391Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-18T13:30:01.411Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-18T13:30:01.411Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "testPlanId": "2a8341cd-a221-4882-9c0a-7be25583e9ef",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Initial question and answers",
+        "passed": true,
+        "actual": "2 + 2 = ?"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Initial score is 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Correct first answer increments score",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Wrong first answer keeps score at 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Answers lock after first answer",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Next shows second question",
+        "passed": true,
+        "actual": "3 + 3 = ?"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Second question answer-b is 6",
+        "passed": false,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Second correct answer increments score",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Finished after answering second and next",
+        "passed": true,
+        "actual": "Finished"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "name": "Restart resets question and score",
+        "passed": true,
+        "actual": "2 + 2 = ?"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-18T13:30:06.699Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "071850e3-f139-45c4-8dac-cec11b154a0d",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-18T13:30:06.705Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial question and answers",
+        "actions": [],
+        "selector": "#question",
+        "expected": "2 + 2 = ?",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial score is 0",
+        "actions": [],
+        "selector": "#score",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Correct first answer increments score",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          }
+        ],
+        "selector": "#score",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Wrong first answer keeps score at 0",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          }
+        ],
+        "selector": "#score",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Answers lock after first answer",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          }
+        ],
+        "selector": "#answer-b",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Next shows second question",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          }
+        ],
+        "selector": "#question",
+        "expected": "3 + 3 = ?",
+        "assertion": "text"
+      },
+      {
+        "name": "Second question answer-b is 6",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#next"
+          }
+        ],
+        "selector": "#answer-b",
+        "expected": "6",
+        "assertion": "text"
+      },
+      {
+        "name": "Second correct answer increments score",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          }
+        ],
+        "selector": "#score",
+        "expected": "2",
+        "assertion": "text"
+      },
+      {
+        "name": "Finished after answering second and next",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          }
+        ],
+        "selector": "#question",
+        "expected": "Finished",
+        "assertion": "text"
+      },
+      {
+        "name": "Restart resets question and score",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          },
+          {
+            "type": "click",
+            "selector": "#restart"
+          }
+        ],
+        "selector": "#question",
+        "expected": "2 + 2 = ?",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Restart score reset is covered only indirectly; each check compares one element, so restart is asserted via #question rather than #score.",
+      "Answer-a text on the second question (should be 5) is not separately asserted.",
+      "Disabled state of #answer-a after answering is not separately asserted; #answer-b is used as the lock indicator.",
+      "Disabled state of #next before answering is not asserted.",
+      "Integer-only score formatting is not verified beyond text content.",
+      "No pixel/visual styling, README, or line-count requirements are checked.",
+      "Synthetic key events are not used; keyboard behavior beyond native button clicks is not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 2775,
+      "completion_tokens": 620,
+      "total_tokens": 3395,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 2391
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Quiz</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"quiz-card\" aria-labelledby=\"quiz-heading\">\n    <h1 id=\"quiz-heading\" class=\"visually-hidden\">Pixel Math Quiz</h1>\n    <p id=\"question\" class=\"question\">2 + 2 = ?</p>\n    <div class=\"answers\" role=\"group\" aria-label=\"Answer choices\">\n      <button id=\"answer-a\" class=\"answer-btn\" aria-label=\"Answer A\">4</button>\n      <button id=\"answer-b\" class=\"answer-btn\" aria-label=\"Answer B\">5</button>\n    </div>\n    <p id=\"score\" class=\"score\" aria-live=\"polite\">0</p>\n    <div class=\"controls\">\n      <button id=\"next\" class=\"control-btn\" aria-label=\"Next question\">Next</button>\n      <button id=\"restart\" class=\"control-btn\" aria-label=\"Restart quiz\">Restart</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "HTML structure with required IDs and initial text."
+    },
+    {
+      "path": "styles.css",
+      "content": "/* Pixel-style quiz - 3-5 color palette: #1a1a2e, #16213e, #e94560, #f5f5f5, #0f3460 */\n* { box-sizing: border-box; margin: 0; padding: 0; }\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: #1a1a2e;\n  font-family: 'Courier New', monospace;\n  font-size: 18px;\n  padding: 16px;\n}\n\n.quiz-card {\n  background: #16213e;\n  border: 4px solid #e94560;\n  padding: 32px 24px;\n  max-width: 420px;\n  width: 100%;\n  text-align: center;\n  box-shadow: 8px 8px 0 #0f3460;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n}\n\n.question {\n  color: #f5f5f5;\n  font-size: 28px;\n  font-weight: bold;\n  margin-bottom: 24px;\n  letter-spacing: 2px;\n  min-height: 44px;\n}\n\n.answers {\n  display: flex;\n  gap: 16px;\n  justify-content: center;\n  margin-bottom: 24px;\n}\n\n.answer-btn {\n  background: #0f3460;\n  color: #f5f5f5;\n  border: 3px solid #e94560;\n  padding: 12px 28px;\n  font-family: inherit;\n  font-size: 20px;\n  font-weight: bold;\n  cursor: pointer;\n  min-width: 80px;\n  transition: background 0.1s, transform 0.1s;\n}\n\n.answer-btn:hover:not(:disabled) {\n  background: #e94560;\n  color: #1a1a2e;\n}\n\n.answer-btn:focus-visible {\n  outline: 3px solid #f5f5f5;\n  outline-offset: 2px;\n}\n\n.answer-btn:active:not(:disabled) {\n  transform: translate(2px, 2px);\n}\n\n.answer-btn:disabled {\n  opacity: 0.6;\n  cursor: not-allowed;\n}\n\n.score {\n  color: #e94560;\n  font-size: 24px;\n  font-weight: bold;\n  margin-bottom: 24px;\n}\n\n.score::before { content: 'Score: '; color: #f5f5f5; }\n\n.controls {\n  display: flex;\n  gap: 16px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\n.control-btn {\n  background: #0f3460;\n  color: #f5f5f5;\n  border: 3px solid #e94560;\n  padding: 10px 24px;\n  font-family: inherit;\n  font-size: 18px;\n  font-weight: bold;\n  cursor: pointer;\n  transition: background 0.1s, transform 0.1s;\n}\n\n.control-btn:hover:not(:disabled) {\n  background: #e94560;\n  color: #1a1a2e;\n}\n\n.control-btn:focus-visible {\n  outline: 3px solid #f5f5f5;\n  outline-offset: 2px;\n}\n\n.control-btn:active:not(:disabled) {\n  transform: translate(2px, 2px);\n}\n\n.control-btn:disabled {\n  opacity: 0.6;\n  cursor: not-allowed;\n}\n\n@media (max-width: 400px) {\n  .quiz-card { padding: 24px 16px; }\n  .question { font-size: 24px; }\n  .answer-btn { padding: 10px 20px; min-width: 64px; }\n}",
+      "description": "Pixel-themed responsive styles."
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var state = {\n    questionIndex: 0,\n    answered: false,\n    score: 0\n  };\n\n  var questions = [\n    { text: '2 + 2 = ?', a: '4', b: '5', correct: 'a' },\n    { text: '3 + 3 = ?', a: '5', b: '6', correct: 'b' }\n  ];\n\n  var questionEl = document.getElementById('question');\n  var answerA = document.getElementById('answer-a');\n  var answerB = document.getElementById('answer-b');\n  var scoreEl = document.getElementById('score');\n  var nextBtn = document.getElementById('next');\n  var restartBtn = document.getElementById('restart');\n\n  function renderQuestion() {\n    var q = questions[state.questionIndex];\n    questionEl.textContent = q.text;\n    answerA.textContent = q.a;\n    answerB.textContent = q.b;\n    answerA.disabled = false;\n    answerB.disabled = false;\n    state.answered = false;\n    nextBtn.disabled = true;\n  }\n\n  function updateScore() {\n    scoreEl.textContent = String(state.score);\n  }\n\n  function handleAnswer(choice) {\n    if (state.answered) return;\n    state.answered = true;\n    answerA.disabled = true;\n    answerB.disabled = true;\n    var q = questions[state.questionIndex];\n    if (choice === q.correct) {\n      state.score += 1;\n      updateScore();\n    }\n    nextBtn.disabled = false;\n  }\n\n  answerA.addEventListener('click', function () {\n    handleAnswer('a');\n  });\n\n  answerB.addEventListener('click', function () {\n    handleAnswer('b');\n  });\n\n  nextBtn.addEventListener('click', function () {\n    if (state.questionIndex === 0) {\n      state.questionIndex = 1;\n      renderQuestion();\n    } else {\n      questionEl.textContent = 'Finished';\n      answerA.disabled = true;\n      answerB.disabled = true;\n      nextBtn.disabled = true;\n    }\n  });\n\n  restartBtn.addEventListener('click', function () {\n    state.questionIndex = 0;\n    state.answered = false;\n    state.score = 0;\n    updateScore();\n    renderQuestion();\n  });\n\n  // Initial state\n  renderQuestion();\n  updateScore();\n})();",
+      "description": "Quiz logic with locking, scoring, next, and restart."
+    },
+    {
+      "path": "README.md",
+      "content": "# Offline Pixel-Style Two-Question Quiz\n\nA self-contained, offline browser quiz with a pixel-art aesthetic. No packages, no network requests, no external assets.\n\n## Run\n\nOpen `index.html` directly in any modern browser. No server needed.\n\n## Features\n\n- Question 1: `2 + 2 = ?` with answers `4` and `5`\n- Question 2: `3 + 3 = ?` with answers `5` and `6`\n- Score starts at `0`; correct answers increment by 1 (integer only)\n- Answers lock after selection; `Next` advances or shows `Finished`\n- `Restart` resets to question 1 and score 0\n- Keyboard-accessible buttons with visible focus, hover, and pressed states\n- Responsive layout works from 360px wide\n\n## Accessibility\n\n- All controls are native `<button>` elements with `aria-label` attributes\n- Score updates are announced via `aria-live=\"polite\"`\n- Visible focus outlines and hover/pressed feedback\n\n## Files\n\n- `index.html` - structure\n- `styles.css` - pixel-themed styles\n- `script.js` - quiz logic\n- `README.md` - this file\n\nTotal lines: ~150 (under 230).",
+      "description": "Documentation."
+    }
+  ]
+}

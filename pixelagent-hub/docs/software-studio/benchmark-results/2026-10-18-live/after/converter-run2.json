@@ -1,0 +1,451 @@
+{
+  "caseId": "converter",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "9/9",
+  "finalChecks": "9/9",
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 19,
+  "reportedTokens": 7390,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-18T13:28:20.260Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-18T13:28:20.260Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-18T13:28:23.964Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Temperature Converter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-18T13:28:23.964Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-18T13:28:30.604Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-18T13:28:30.604Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-18T13:28:31.357Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-18T13:28:31.358Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "d65432da-bd38-4def-91c0-568be8f347cd"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-18T13:28:34.185Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "d65432da-bd38-4def-91c0-568be8f347cd",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-18T13:28:34.186Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "testPlanId": "d65432da-bd38-4def-91c0-568be8f347cd",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-18T13:28:37.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Initial result shows --",
+        "passed": true,
+        "actual": "--"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Celsius to Fahrenheit conversion (100 → 212.00)",
+        "passed": true,
+        "actual": "212.00"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Fahrenheit to Celsius conversion (212 → 100.00)",
+        "passed": true,
+        "actual": "100.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Celsius to Fahrenheit with two-decimal rounding (37 → 98.60)",
+        "passed": true,
+        "actual": "98.60"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Fahrenheit to Celsius negative value (-40 → -40.00)",
+        "passed": true,
+        "actual": "-40.00"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Empty input produces Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Non-numeric input produces Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Non-finite input produces Error",
+        "passed": true,
+        "actual": "Error"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "name": "Enter key in input triggers conversion (0 → 32.00)",
+        "passed": true,
+        "actual": "32.00"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-18T13:28:37.124Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "1a32bbab-20aa-42c4-b505-51fc7da87af6",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-18T13:28:37.129Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial result shows --",
+        "actions": [],
+        "selector": "#result",
+        "expected": "--"
+      },
+      {
+        "name": "Celsius to Fahrenheit conversion (100 → 212.00)",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "c-to-f"
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "212.00"
+      },
+      {
+        "name": "Fahrenheit to Celsius conversion (212 → 100.00)",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "212"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "f-to-c"
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "100.00"
+      },
+      {
+        "name": "Celsius to Fahrenheit with two-decimal rounding (37 → 98.60)",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "37"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "c-to-f"
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "98.60"
+      },
+      {
+        "name": "Fahrenheit to Celsius negative value (-40 → -40.00)",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "-40"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "f-to-c"
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "-40.00"
+      },
+      {
+        "name": "Empty input produces Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": ""
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error"
+      },
+      {
+        "name": "Non-numeric input produces Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "abc"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "c-to-f"
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error"
+      },
+      {
+        "name": "Non-finite input produces Error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "Infinity"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "f-to-c"
+          },
+          {
+            "type": "click",
+            "selector": "#convert"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Error"
+      },
+      {
+        "name": "Enter key in input triggers conversion (0 → 32.00)",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temperature",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#direction",
+            "value": "c-to-f"
+          },
+          {
+            "type": "key",
+            "selector": "#temperature",
+            "key": "Enter"
+          }
+        ],
+        "selector": "#result",
+        "expected": "32.00",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Key event checks use synthetic DOM keydown events, not trusted browser input; real Enter behavior in the browser is not exercised.",
+      "Trailing-garbage inputs like '12abc' are parsed by parseFloat and are not separately tested here; requirement interpretation of 'invalid' beyond empty/non-finite is not verified.",
+      "Visual pixel styling, CSS appearance, responsive layout, and focus states cannot be asserted via text/disabled comparisons.",
+      "README content, labels, and formula text presence are not verified by these DOM value checks.",
+      "No checks assert that no network requests, storage, or packages are used; offline constraint is not observable through these assertions."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 2345,
+      "completion_tokens": 706,
+      "total_tokens": 3051,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 2089
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Temp Converter</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Temp Converter</h1>\n    <div class=\"field\">\n      <label for=\"temperature\">Temperature</label>\n      <input type=\"text\" id=\"temperature\" placeholder=\"e.g. 100\" autocomplete=\"off\">\n    </div>\n    <div class=\"field\">\n      <label for=\"direction\">Direction</label>\n      <select id=\"direction\">\n        <option value=\"c-to-f\">Celsius &rarr; Fahrenheit</option>\n        <option value=\"f-to-c\">Fahrenheit &rarr; Celsius</option>\n      </select>\n    </div>\n    <button id=\"convert\" type=\"button\">Convert</button>\n    <div class=\"result-box\">\n      <span class=\"result-label\">Result</span>\n      <output id=\"result\">--</output>\n    </div>\n    <p class=\"formula\">C&rarr;F: x &times; 9/5 + 32 &nbsp;|&nbsp; F&rarr;C: (x &minus; 32) &times; 5/9</p>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --muted: #8892b0;\n}\n* { box-sizing: border-box; margin: 0; padding: 0; }\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: 'Courier New', Courier, monospace;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n.card {\n  background: var(--card);\n  border: 4px solid var(--accent);\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 420px;\n  box-shadow: 8px 8px 0 rgba(233, 69, 96, 0.3);\n}\nh1 {\n  font-size: 20px;\n  text-align: center;\n  margin-bottom: 24px;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n.field { margin-bottom: 20px; }\nlabel {\n  display: block;\n  margin-bottom: 8px;\n  font-size: 16px;\n  color: var(--muted);\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\ninput, select {\n  width: 100%;\n  padding: 12px;\n  font-family: inherit;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  border: 2px solid var(--muted);\n  outline: none;\n}\ninput:focus, select:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 2px var(--accent);\n}\nselect { cursor: pointer; }\nbutton {\n  width: 100%;\n  padding: 14px;\n  font-family: inherit;\n  font-size: 18px;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  background: var(--accent);\n  color: var(--bg);\n  border: none;\n  cursor: pointer;\n  transition: transform 0.05s, background 0.15s;\n}\nbutton:hover { background: #ff6b81; }\nbutton:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }\nbutton:active { transform: translate(2px, 2px); background: #c73650; }\n.result-box {\n  margin-top: 24px;\n  padding: 16px;\n  background: var(--bg);\n  border: 2px dashed var(--muted);\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n}\n.result-label {\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  color: var(--muted);\n}\n#result {\n  font-size: 22px;\n  font-weight: bold;\n  color: var(--accent);\n  word-break: break-all;\n}\n.formula {\n  margin-top: 20px;\n  font-size: 13px;\n  text-align: center;\n  color: var(--muted);\n  line-height: 1.5;\n}\n@media (max-width: 400px) {\n  .card { padding: 24px 16px; }\n  h1 { font-size: 18px; }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const tempInput = document.getElementById('temperature');\nconst direction = document.getElementById('direction');\nconst convertBtn = document.getElementById('convert');\nconst resultEl = document.getElementById('result');\n\nfunction convert() {\n  const raw = tempInput.value.trim();\n  const x = parseFloat(raw);\n\n  if (raw === '' || !isFinite(x)) {\n    resultEl.textContent = 'Error';\n    return;\n  }\n\n  let out;\n  if (direction.value === 'c-to-f') {\n    out = x * 9 / 5 + 32;\n  } else {\n    out = (x - 32) * 5 / 9;\n  }\n\n  if (!isFinite(out)) {\n    resultEl.textContent = 'Error';\n    return;\n  }\n\n  resultEl.textContent = out.toFixed(2);\n}\n\nconvertBtn.addEventListener('click', convert);\n\ntempInput.addEventListener('keydown', (e) => {\n  if (e.key === 'Enter') convert();\n});\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Temperature Converter\n\nA tiny offline pixel-style temperature converter built with plain HTML, CSS, and JavaScript.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter a numeric temperature in the **Temperature** field.\n3. Choose a direction:\n   - **Celsius → Fahrenheit**\n   - **Fahrenheit → Celsius**\n4. Click **Convert** (or press Enter in the input).\n5. The result appears with exactly two decimal places and no unit.\n\nInvalid, empty, or non-finite input displays exactly `Error`.\n\n## Formulas\n\n- Celsius to Fahrenheit: `x * 9/5 + 32`\n- Fahrenheit to Celsius: `(x - 32) * 5/9`\n\n## Files\n\n- `index.html` – markup and required IDs (`temperature`, `direction`, `convert`, `result`)\n- `style.css` – pixel-themed responsive styling\n- `script.js` – conversion logic and validation\n\n## Constraints\n\n- Offline only: no network requests, packages, imports, or external assets.\n- No storage or server code.\n- Keyboard accessible with labeled controls and visible focus states.\n- Responsive down to 360px wide.\n- Under 200 lines total.\n",
+      "description": ""
+    }
+  ]
+}

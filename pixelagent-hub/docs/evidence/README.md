@@ -6,6 +6,7 @@
 
 | 日期 | 实验 | 一句话结论 |
 | --- | --- | --- |
+| 2026-10-18 | [PLAY LIVE 基准](../software-studio/benchmark-results/2026-10-18-live/README.md) | 5 个固定用例 × 3 次，在构建好的静态站点里用 deepseek-chat 跑：完整通过 8/15 → 修正 Tester 提示后 11/15；失败全部来自 Tester 的检查计划，而不是应用 |
 | 2026-10-18 | [真实模型展示](../software-studio/benchmark-results/2026-10-18-showcase/README.md) | 6 个创意共 10 次尝试，5 个最终全部检查通过；像素宠物三次都没生成出来（Coder 超时），番茄钟第 1 次失败是 Tester 计划写错 |
 | 2026-10-15 | [单 Agent vs 多 Agent 重复对比](../software-studio/benchmark-results/2026-10-15-repeated/README.md) | 5 个应用 × 2 种策略 × 3 次，共 30 次生成。先规划再写码 13/15 完整通过，直接写码 12/15，没有可测优势 |
 | 2026-10-09 | [首次浏览器评测](../software-studio/benchmark-results/2026-10-09/README.md) | 10 次生成全部首次编译通过，浏览器检查 6 过 4 败；其中 2 次失败是构建器缺陷（`defer` 顺序），已修复 |
