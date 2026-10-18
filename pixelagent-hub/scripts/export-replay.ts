@@ -11,7 +11,7 @@
  * STUDIO_BROWSER_EXECUTABLE), so the replay includes live browser-check events and screenshots.
  */
 import { createServer } from 'node:http';
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { createOrchestrator } from '../src/factory.js';
@@ -19,7 +19,7 @@ import { MockProvider } from '../src/core/llm/mock.js';
 import { RunRuntime } from '../src/web/runRuntime.js';
 import { createStudioApi } from '../src/web/studioApi.js';
 // @ts-expect-error -- plain ESM helper shared with portfolio-demo.mjs
-import { stageRepairEvidence } from './lib/evidence.mjs';
+import { seriesDirectory, stageBenchmarkProject, stageRepairEvidence } from './lib/evidence.mjs';
 
 const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
 const out = resolve(argument('--out') || 'dashboard/public/replay');
@@ -63,6 +63,29 @@ const save = async (path: string, data: string | Uint8Array) => {
   await writeFile(file, data);
 };
 
+type SeriesEntry = { caseId: string; strategy: 'manager-coder' | 'coder-only'; projectId: string; status: string; elapsedMs?: number };
+/** Stages all 30 generations of the 2026-10-15 strategy comparison, with their recorded events. */
+const stageSeries = async () => {
+  const titles = new Map((JSON.parse(await readFile(resolve('config/studio-benchmark.json'), 'utf8')) as { id: string; title: string }[]).map((item) => [item.id, item.title]));
+  const cases = [];
+  for (const run of [1, 2, 3]) {
+    const { entries } = JSON.parse(await readFile(join(seriesDirectory, `run${run}`, 'run.json'), 'utf8')) as { entries: SeriesEntry[] };
+    for (const entry of entries) {
+      const record = await stageBenchmarkProject(studioRoot, join(seriesDirectory, `run${run}`, `${entry.caseId}-${entry.strategy}`));
+      if (record.projectId !== entry.projectId) throw new Error(`Benchmark entry ${entry.caseId}/${entry.strategy} does not match its record`);
+      const browserRun = (await (await call(`/api/studio/projects/${entry.projectId}/browser-runs`)).json() as { runs: { status: string; checks: { status: string }[] }[] }).runs[0];
+      const checks = browserRun ? `${browserRun.checks.filter((check) => check.status === 'passed').length}/${browserRun.checks.length}` : undefined;
+      const outcome = record.status !== 'ready_for_review' ? 'not-built' : browserRun?.status === 'passed' ? 'passed' : 'checks-failed';
+      cases.push({
+        projectId: entry.projectId, kind: 'real-model', group: 'series', caseId: entry.caseId, strategy: entry.strategy, run, outcome, checks,
+        title: `${titles.get(entry.caseId) || entry.caseId} · ${entry.strategy === 'manager-coder' ? 'plan + code' : 'code only'} · run ${run}`,
+        note: outcome === 'not-built' ? `Generation stopped: ${String(record.error || 'failed').slice(0, 200)}` : `Real DeepSeek run, 2026-10-15. Event gaps are shortened for the replay; browser checks ran later on the saved build.`,
+      });
+    }
+  }
+  return cases;
+};
+
 try {
   const mock = await post('/api/studio/projects', { description: MOCK_DESCRIPTION });
   await waitFor(mock.jobId);
@@ -71,8 +94,12 @@ try {
   if (browser) {
     const run = await post(`/api/studio/projects/${mock.projectId}/browser-runs`, { testPlanId: plan.planId });
     await waitFor(run.jobId);
+    const { runs } = await (await call(`/api/studio/projects/${mock.projectId}/browser-runs`)).json() as { runs: { status: string; error?: string }[] };
+    // A missing browser must not be recorded as a failed check in the published demo.
+    if (runs[0]?.status !== 'passed') throw new Error(`Mock browser run did not pass: ${runs[0]?.error || runs[0]?.status}`);
   }
   const evidence: { stage: string; projectId: string }[] = await stageRepairEvidence(studioRoot);
+  const series = await stageSeries();
 
   await rm(out, { recursive: true, force: true });
   const list = await (await call('/api/studio/projects')).json();
@@ -95,8 +122,9 @@ try {
     recordedAt: new Date().toISOString(),
     hero: mock.projectId,
     cases: [
-      { projectId: mock.projectId, kind: 'mock', title: 'Offline mock model: real compile, repair and browser test', note: 'Agents use the offline mock model. Round 1 contains a deliberate syntax error; the real esbuild error goes back to the Coder and round 2 fixes it. Event timing is as recorded.' },
-      ...evidence.map(({ stage, projectId }) => ({ projectId, kind: 'real-model', title: { baseline: 'Real model: counter', fault: 'Real model: injected +2 bug caught by the browser test', repaired: 'Real model: repaired from the browser evidence' }[stage], note: 'Saved 2026-10-09 run with DeepSeek. The timeline is rebuilt from the saved record; only start and finish times are real.' })),
+      { projectId: mock.projectId, kind: 'mock', group: 'featured', title: 'Offline mock model: real compile, repair and browser test', note: 'Agents use the offline mock model. Round 1 contains a deliberate syntax error; the real esbuild error goes back to the Coder and round 2 fixes it. Event timing is as recorded.' },
+      ...evidence.map(({ stage, projectId }) => ({ projectId, kind: 'real-model', group: 'featured', title: { baseline: 'Real model: counter', fault: 'Real model: injected +2 bug caught by the browser test', repaired: 'Real model: repaired from the browser evidence' }[stage], note: 'Saved 2026-10-09 run with DeepSeek. The timeline is rebuilt from the saved record; only start and finish times are real.' })),
+      ...series,
     ],
   };
   await save('manifest.json', JSON.stringify(manifest, null, 2));

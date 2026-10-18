@@ -6,7 +6,13 @@ import type { StudioEvent } from '../types/studio';
  */
 export const REPLAY = import.meta.env.VITE_REPLAY === '1';
 export const REPLAY_READ_ONLY = 'This is a read-only replay. Clone the repo and run it locally to build your own.';
-export type ReplayCase = { projectId: string; kind: 'mock' | 'real-model'; title: string; note: string };
+export type ReplayCase = {
+  projectId: string; kind: 'mock' | 'real-model'; title: string; note: string;
+  /** `featured`: the demo and repair story; `series`: one generation of the 2026-10-15 strategy comparison. */
+  group?: 'featured' | 'series';
+  caseId?: string; strategy?: 'manager-coder' | 'coder-only'; run?: number;
+  outcome?: 'passed' | 'checks-failed' | 'not-built'; checks?: string;
+};
 export type ReplayManifest = { recordedAt: string; hero: string; cases: ReplayCase[] };
 
 /** `/api/studio/projects/<id>/archive` → `<base>replay/api/studio/projects/<id>/archive.zip`; JSON routes get `.json`. */
