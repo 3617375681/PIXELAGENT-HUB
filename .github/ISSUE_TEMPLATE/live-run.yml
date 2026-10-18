@@ -1,0 +1,41 @@
+name: Share a PLAY LIVE run
+description: An idea the squad built (or failed to build) in the online demo
+labels: ["live-run"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying PLAY LIVE! Runs that fail are the most useful: they show where the loop breaks.
+        **Never paste your API key.** Download the ZIP from the result panel if you want to attach the source.
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: The text you typed into the prompt box.
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Provider and model
+      placeholder: DeepSeek / deepseek-chat
+    validations:
+      required: true
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: What happened?
+      options:
+        - All checks passed and the app works
+        - All checks passed but the app is wrong (the checks missed something)
+        - Some checks failed but the app looks right (the checks were wrong)
+        - Checks failed and the app is broken
+        - It never built (compile error or timeout)
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: The last lines of the LOG panel, the failing check names, or a screenshot.
