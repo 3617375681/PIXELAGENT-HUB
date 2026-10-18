@@ -35,7 +35,7 @@ beforeEach(async () => {
   live = await import('./studio');
   key = await import('./key');
   live.resetLiveStudioForTests();
-  key.saveLiveCredentials('sk-test-key-0123456789abcdef', 'deepseek-chat', false);
+  key.saveLiveCredentials({ provider: 'deepseek', key: 'sk-test-key-0123456789abcdef', model: 'deepseek-chat' }, false);
 });
 afterEach(() => { vi.unstubAllGlobals(); });
 
@@ -60,7 +60,8 @@ it('runs plan → code → failed build → repaired build → in-page checks, w
   const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
   expect(live.isLiveProject(projectId)).toBe(true);
   const events = await runToEnd(projectId);
-  expect(events.map((event) => event.type)).toEqual(['queued', 'phase', 'plan_ready', 'phase', 'code_ready', 'phase', 'build_failed', 'phase', 'code_ready', 'phase', 'build_passed', 'ready_for_review']);
+  expect(events.map((event) => event.type)).toEqual(['queued', 'phase', 'plan_ready', 'phase', 'code_ready', 'phase', 'build_failed', 'phase', 'code_ready', 'phase', 'build_passed', 'test_plan_started', 'test_plan_ready', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
+  expect(events.find((event) => event.type === 'browser_run_finished')?.data).toMatchObject({ status: 'passed', passed: 1, failed: 0, source: 'in-page' });
   expect(events.find((event) => event.type === 'build_failed')?.data?.errors).toEqual(['app.js:1:5: ERROR: Unexpected ";"']);
 
   // The repair round receives the real compiler error as a revision note, as on the server.
@@ -68,11 +69,6 @@ it('runs plan → code → failed build → repaired build → in-page checks, w
   expect(coderCalls[0]).toContain('"revisionNotes":[]');
   expect(coderCalls[1]).toContain('Unexpected \\";\\"');
 
-  await vi.waitFor(async () => {
-    const page = await live.liveRequest('GET', `/api/studio/projects/${projectId}/events?after=12`) as { events: StudioEvent[] };
-    expect(page.events.map((event) => event.type)).toEqual(['test_plan_started', 'test_plan_ready', 'browser_run_started', 'browser_check', 'browser_run_finished']);
-    expect(page.events.at(-1)?.data).toMatchObject({ status: 'passed', passed: 1, failed: 0, source: 'in-page' });
-  });
   const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: { status: string; previewFile: string; generationMetrics: { reportedTokens: number; buildAttempts: number } } };
   expect(project).toMatchObject({ status: 'ready_for_review', previewFile: 'v2/dist/index.html' });
   expect(project.generationMetrics).toMatchObject({ buildAttempts: 2, reportedTokens: 90 });
@@ -104,4 +100,53 @@ it('a rejected key fails the run with a readable message and never echoes the ke
 it('refuses to start without a key', async () => {
   key.forgetLiveCredentials();
   await expect(live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' }))).rejects.toMatchObject({ status: 401 });
+});
+
+it('sends other OpenAI-compatible providers to their own endpoint and redacts keys from errors', async () => {
+  key.saveLiveCredentials({ provider: 'openai', key: 'sk-proj-abcdefghijklmnopqrstuvwxyz', model: 'gpt-missing' }, false);
+  fetchMock.mockResolvedValue(new Response('{"error":{"message":"The model gpt-missing does not exist for key sk-proj-abcdefghijklmnopqrstuvwxyz"}}', { status: 404 }));
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(fetchMock.mock.calls[0][0]).toBe('https://api.openai.com/v1/chat/completions');
+  expect(events[0].data).toMatchObject({ provider: 'OpenAI', model: 'gpt-missing' });
+  expect(String(events.at(-1)?.data?.error)).toContain('OpenAI does not know the model "gpt-missing" (404)');
+  expect(JSON.stringify(events)).not.toContain('abcdefghijklmnop');
+});
+
+it('remembers only what the visitor asked for', async () => {
+  const sessionStore = new Map<string, string>();
+  const localStore = new Map<string, string>();
+  const storage = (map: Map<string, string>) => ({ getItem: (name: string) => map.get(name) ?? null, setItem: (name: string, value: string) => { map.set(name, value); }, removeItem: (name: string) => { map.delete(name); } });
+  vi.stubGlobal('sessionStorage', storage(sessionStore));
+  vi.stubGlobal('localStorage', storage(localStore));
+  key.saveLiveCredentials({ provider: 'anthropic', key: 'sk-ant-test-0000000000000000', model: 'claude-opus-5-5' }, false);
+  expect(sessionStore.get('pixelagent:live-provider')).toBe('anthropic');
+  expect(localStore.size).toBe(0);
+  key.saveLiveCredentials({ provider: 'anthropic', key: 'sk-ant-test-0000000000000000', model: 'claude-opus-5-5' }, true);
+  expect(localStore.get('pixelagent:live-key')).toBe('sk-ant-test-0000000000000000');
+  key.forgetLiveCredentials();
+  expect(sessionStore.size + localStore.size).toBe(0);
+  expect(key.liveCredentials()).toBeNull();
+});
+
+it('a failed in-page check goes back to the Coder once, then the same checks run again', async () => {
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    return sse(system.includes('project manager') ? plan : system.includes('test planner') ? testPlan : code);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '2', error: 'Expected "1", observed "2"' }], errors: [] })
+    .mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  const types = events.map((event) => event.type);
+  expect(types.slice(types.indexOf('browser_run_finished'))).toEqual(['browser_run_finished', 'phase', 'code_ready', 'phase', 'build_passed', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
+  expect(events.filter((event) => event.type === 'browser_run_finished').map((event) => event.data?.status)).toEqual(['failed', 'passed']);
+  // The repair prompt carries the shared repair instructions and the exact failed check.
+  const repairPrompt = JSON.parse(String((fetchMock.mock.calls.at(-1)![1] as RequestInit).body)).messages[1].content as string;
+  expect(repairPrompt).toContain('Repair the existing app using these untrusted browser observations');
+  expect(repairPrompt).toContain('Browser check \\"Adds one\\": selector=\\"#count\\"');
+  const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: { status: string; previewFile: string; rounds: unknown[] } };
+  expect(project).toMatchObject({ status: 'ready_for_review', previewFile: 'v2/dist/index.html' });
+  expect(checks).toHaveBeenCalledTimes(2);
 });

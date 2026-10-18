@@ -27,7 +27,10 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
       const target = element(check.selector);
-      const observed = check.assertion === 'disabled' ? String(target.matches(':disabled')) : (target.textContent || '').trim();
+      const read = () => check.assertion === 'disabled' ? String(target.matches(':disabled')) : (target.textContent || '').trim();
+      // Like the server's browser runs: wait up to 2 s for the expected value (timers, transitions).
+      let observed = read();
+      for (const deadline = Date.now() + 2000; observed !== check.expected && Date.now() < deadline; observed = read()) await new Promise((resolve) => setTimeout(resolve, 50));
       actual = observed.slice(0, 300);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
       if (observed !== check.expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);

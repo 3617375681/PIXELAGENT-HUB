@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Layout
 
-The real project is `pixelagent-hub/`; run npm commands from there. It contains two separate npm packages with separate lockfiles: the framework/API (`pixelagent-hub/`) and the React/Vite dashboard (`pixelagent-hub/dashboard/`). The repo-root `README.md` is the Studio-oriented overview; `pixelagent-hub/README.md` covers the framework. Most docs are in Chinese.
+The real project is `pixelagent-hub/`; run npm commands from there. It contains two separate npm packages with separate lockfiles: the framework/API (`pixelagent-hub/`) and the React/Vite dashboard (`pixelagent-hub/dashboard/`). The repo-root `README.md` (English, with `README.zh-CN.md` in Chinese) is the Studio-oriented overview; `pixelagent-hub/README.md` covers the framework. Most docs are in Chinese.
 
 ## Commands
 
@@ -34,7 +34,7 @@ npm test -- --test-name-pattern="some name"   # extra args are forwarded before 
 
 Real-browser Studio tests are skipped unless `RUN_STUDIO_BROWSER_TESTS=1` (needs `npx playwright install chromium`); CI runs them serially with `--test-concurrency=1`.
 
-Other scripts: `npm run studio:create -- "<description>"`, `studio:preview -- <projectId>`, `studio:doctor`, `studio:benchmark`, `smoke:package`, `smoke:dashboard`, `portfolio:demo`, and `example:*` (pipeline, code-review, debate, vote, company).
+Other scripts: `npm run studio:create -- "<description>"`, `studio:preview -- <projectId>`, `studio:doctor`, `studio:benchmark`, `smoke:package`, `smoke:dashboard`, `smoke:live` (built static site + PLAY LIVE in Chromium, mock model; on Git Bash set `MSYS_NO_PATHCONV=1` before passing a `/BASE/`), `portfolio:demo`, and `example:*` (pipeline, code-review, debate, vote, company).
 
 Use `LLM_PROVIDER=mock` (or `OFFLINE=true`) for offline work; `.env.example` defaults to mock. With no provider and no API key, `detectProviderId` returns `null` and agents fail with `NO_LLM_PROVIDER_MESSAGE` — there is deliberately no silent vendor or mock fallback.
 

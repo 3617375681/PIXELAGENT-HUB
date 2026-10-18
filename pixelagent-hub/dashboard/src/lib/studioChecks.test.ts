@@ -43,3 +43,11 @@ it('cannot turn truncated observations or runtime faults into passing assertions
   expect(readCheckResults('[{"name":"Fake","status":"approved","actual":""}]')).toBeNull();
   expect(readCheckResults('not json')).toBeNull();
 });
+
+it('waits up to 2 s for the expected value, like the server browser runs', async () => {
+  const output = { textContent: 'Loading' };
+  setTimeout(() => { output.textContent = 'Ready'; }, 300);
+  const document = { querySelectorAll: () => [output] } as unknown as Document;
+  const [result] = await runDOMChecks(document, [{ name: 'Eventually ready', actions: [], selector: '#status', expected: 'Ready' }]);
+  expect(result).toMatchObject({ status: 'passed', actual: 'Ready' });
+});

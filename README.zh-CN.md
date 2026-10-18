@@ -1,0 +1,117 @@
+# PixelAgent Hub · 像素 AI 开发小队
+
+[English](README.md) · 中文
+
+[![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
+[![在线演示](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://3617375681.github.io/PIXELAGENT-HUB/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
+
+**输入一个想法，看 4 个 AI Agent 在你的浏览器里规划、写码、编译、逐项测试，然后直接玩。**
+
+四个 Agent 各司其职：
+- **Manager** 拆解需求；
+- **Coder** 写一个离线小应用；
+- **Builder** 用 esbuild 真实编译；
+- **Tester** 写检查清单，并在沙箱里逐项执行。
+
+编译错误和失败的检查都会直接交回 Coder 返修。像素控制台里的每一个动画都对应一条真实事件，没有任何模拟进度。
+
+**▶ [打开在线演示](https://3617375681.github.io/PIXELAGENT-HUB/)**：点 **BUILD LIVE**，填入你自己的模型 key。整个流程都在你的浏览器标签页里运行，不需要服务器，也不用注册。
+
+![一次真实的在线生成：输入想法 → Manager 规划 → Coder 写码 → Builder 编译 → Tester 10/10 检查通过 → 番茄钟可以直接用](portfolio-screenshots/studio-live.gif)
+
+<sub>一次真实运行，除了 1.5 倍速外未做剪辑：模型是 `deepseek-chat`，从想法到可玩的应用约 20 秒，Tester 检查 10/10 通过。</sub>
+
+## 有什么不一样
+
+- **靠验证，不靠自述。** 应用必须真的编译通过，Tester 的检查必须在真实浏览器里通过，Agent 说"完成"不算数。失败会变成证据交回 Coder，你能看到它沿着红线传回去。
+- **在你的浏览器里、用你自己的 key 运行。** GitHub Pages 静态站点在本地跑完整个流程：流式调用模型、esbuild-wasm 编译、沙箱检查。它和 Node 服务器用的是同一套提示词和打包代码。
+- **数字如实公开。** 仓库里附带 50 次真实模型生成的完整记录，包括源码、事件日志、检查计划、浏览器报告和截图，失败的也在内。最重要的结论对项目本身并不讨好：[规划 Agent 没有带来可测的提升](#可核对的结果)。
+
+## 在线生成（PLAY LIVE）：用你自己的 key
+
+| 提供商 | 推荐模型 | | 提供商 | 推荐模型 |
+| --- | --- | --- | --- | --- |
+| DeepSeek | `deepseek-chat` | | OpenRouter | `deepseek/deepseek-chat` |
+| Anthropic | `claude-opus-5-5` | | 通义千问（DashScope） | `qwen-plus` |
+| OpenAI | `gpt-4o-mini` | | 智谱 GLM | `glm-4-flash` |
+| 硅基流动 | `deepseek-ai/DeepSeek-V3` | | | |
+
+- **模型**：模型名可以自由填写，你的 key 能用的任何模型都可以。
+- **key 的去向**：只发给你选的提供商，默认只保存在当前标签页。生成的应用运行在没有同源权限的 iframe 里，读不到你的 key（见 [安全说明](pixelagent-hub/SECURITY.md)）。
+- **每次运行的流程**：
+  1. Manager 规划；
+  2. Coder 写码，最多 3 轮编译，编译错误会交回 Coder；
+  3. Tester 写一组互相独立的检查；
+  4. 每项检查都在重新加载的页面上执行；
+  5. 有检查失败时，Coder 获得**一次返修机会**，然后用同一组检查复测。
+- **开销**：一次运行通常消耗 2–4 万 token。用 Claude 时会开启服务端拒答兜底（refusal fallbacks）。
+- **局限**：浏览器里的检查运行在被测应用自己的页面中，恶意应用理论上可以伪造结果。独立的沙箱 Chromium 检查需要本地服务器模式。
+
+## 出错时会发生什么
+
+![第 1 轮编译失败，红线把错误交回 Coder；第 2 轮通过；浏览器检查 4/4；应用可以直接玩](portfolio-screenshots/studio-demo.gif)
+
+Builder 会把真实的 esbuild 报错交给 Coder（第 1 轮 → 第 2 轮）。浏览器检查失败时，Tester 也会做同样的事，并附上选择器、期望值和页面上的实际内容。
+
+## 可核对的结果
+
+以下都来自真实模型，详见 [证据索引](pixelagent-hub/docs/evidence/README.md)。
+
+- **[单 Agent vs 多 Agent 重复对比](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-15-repeated/README.md)**
+  - 实验：5 个应用 × 2 种策略 × 3 次，模型为 `deepseek-v4-pro`。
+  - 结果：先规划再写码 13/15 完整通过，直接写码 12/15。
+  - 代价：规划平均每个应用多花约 1,200 token，没有可测的收益。
+  - 每一次失败都逐条列出。
+- **[真实模型展示](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-showcase/README.md)**：6 个想法共 10 次尝试，其中 5 个最终全部检查通过；像素宠物 3 次都没能生成出来。有一次失败的原因是 Tester 写错了计划，而不是应用本身有问题，这促成了"每项检查重新加载页面"的改进。
+- **[受控故障返修](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md)**：把计数器故意改成 `+= 2`，浏览器检查发现了这个故障；返修只改了 1 行，另外 3 个文件逐字节不变。
+- 这些都是小样本观察，不代表通用成功率。在线演示的画廊里可以回放其中 40 次。
+
+## 工作原理
+
+```mermaid
+flowchart LR
+  R[想法] --> M[Manager 规划] --> C[Coder 写码] --> B[Builder · esbuild]
+  B -- 编译错误 --> C
+  B -- 通过 --> T[Tester · 沙箱检查]
+  T -- 检查失败 --> C
+  T -- 通过 --> H[直接玩]
+  M & C & B & T -. 事件 .-> E[(事件日志)] -. SSE .-> UI[像素控制台]
+```
+
+- **共享核心**（`src/studio/shared`）：提示词、输出校验、文件校验、HTML 打包，不依赖任何 Node API。服务器和浏览器运行的是同一份代码。
+- **服务器**（TypeScript + Node）：
+  - 每个项目一个隔离工作区，状态以原子写入的 JSON 保存，每次状态变化追加到有序的 `events.jsonl`，并通过 SSE 推送；
+  - 用 Playwright 独立执行检查；
+  - 支持版本、源码对比，以及根据保存的证据返修；
+  - HTTP 契约由测试用真实响应校验。
+- **前端**（React 19 + Vite）：一个纯函数 reducer 把事件变成 4 个角色的状态、连线、数据包和红色回流边；8-bit 音效和粒子特效只在真实的状态变化时触发。静态构建额外提供回放画廊和 PLAY LIVE。
+- **工程**：队列、取消、超时、重启后恢复、幂等创建、鉴权与限流。CI 覆盖 Node 18/20/22、Windows、真实浏览器和 Docker 生产启动。
+
+## 本地运行
+
+需要 Node 22.12+。默认使用离线 mock 模型，它会生成一个真实可编译的计数器，第 1 轮故意带语法错误，所以不需要任何 key 也能看到"编译 → 返修"的完整流程。
+
+```bash
+cd pixelagent-hub
+cp .env.example .env          # 默认 LLM_PROVIDER=mock；真实生成时改为所选模型并填写 key
+npm ci && npm --prefix dashboard ci
+npm run build:all
+npm start                     # http://127.0.0.1:3100/studio
+```
+
+- **独立浏览器检查**：先运行 `npx playwright install chromium`，再设置 `ENABLE_STUDIO_BROWSER_CHECKS=true`。
+- **Docker**：在仓库根目录运行 `docker compose up --build`。
+- **测试**：`npm test`（后端）和 `npm --prefix dashboard test`（前端）。
+
+## 已知限制
+
+- 只生成离线的 HTML/CSS/JS 小应用和小游戏，不涉及数据库、登录、支付或 npm 依赖。
+- Tester 的检查由模型生成，只覆盖计划里写到的行为；检查通过不等于人工验收。
+- 单进程运行，不是分布式调度平台。
+
+## 开发方式
+
+项目的起点是 Kimi 生成的像素风多 Agent 控制台原型，当时由假数据驱动（提交 `14a030e`）。后端和 Studio 生成流程在 GPT 的协助下实现。之后用 Claude Code 收敛了范围、恢复了原版视觉，并加入了事件时间线、静态回放、PLAY LIVE 和各项实验。作者负责方向、取舍和验收标准，所有改动都经过测试与 CI。
+
+[贡献指南](pixelagent-hub/CONTRIBUTING.md) · [安全策略](pixelagent-hub/SECURITY.md) · [更新记录](pixelagent-hub/CHANGELOG.md) · [底层框架文档](pixelagent-hub/README.md) · MIT 许可（[LICENSE](pixelagent-hub/LICENSE)）。

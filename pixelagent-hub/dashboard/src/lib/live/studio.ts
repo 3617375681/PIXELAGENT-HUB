@@ -1,8 +1,10 @@
 import { strToU8, zipSync } from 'fflate';
-import { coderPrompt, managerPrompt, testerPrompt, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
+import { coderPrompt, managerPrompt, testerPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
+import { browserFailureNotes } from '@studio-shared/repair';
+import type { BrowserCheck } from '../studioChecks';
 import { parseCodeOutput, parseModelObject, parsePlanOutput, parseTestPlanOutput } from '@studio-shared/parse';
 import type { StudioDiagnostic, StudioEvent, StudioEventType, StudioProject, StudioSummary, StudioTestPlan } from '../../types/studio';
-import { streamChat, type LlmUsage } from './llm';
+import { liveChat, liveProvider, type LlmUsage } from './llm';
 import { buildInBrowser } from './build';
 import { runInPageChecks } from './checks';
 import { liveCredentials } from './key';
@@ -84,17 +86,17 @@ function finishFailed(entry: Entry, error: string, status: 'failed' | 'cancelled
 }
 
 // ---- agents ----
-type AgentReply<T> = { output: T & { llmUsage?: LlmUsage; llmModel: string; llmProvider: 'deepseek' } };
+type AgentReply<T> = { output: T & { llmUsage?: LlmUsage; llmModel: string; llmProvider: string } };
 async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) => T, signal: AbortSignal, timeoutMs: number): Promise<AgentReply<T>> {
   const credentials = liveCredentials();
-  if (!credentials) throw new Error('Add your DeepSeek key to build live.');
+  if (!credentials) throw new Error('Add a model key to build live.');
   const controller = new AbortController();
   const stop = () => controller.abort(signal.reason);
   signal.addEventListener('abort', stop, { once: true });
   const timer = setTimeout(() => controller.abort(new Error(`${agent} exceeded its ${timeoutMs / 1000} s limit`)), timeoutMs);
   try {
-    const reply = await streamChat({ apiKey: credentials.key, model: credentials.model, ...prompt, signal: controller.signal });
-    return { output: { ...parse(parseModelObject(reply.content)), llmUsage: reply.usage, llmModel: reply.model, llmProvider: 'deepseek' } };
+    const reply = await liveChat(credentials, prompt, controller.signal);
+    return { output: { ...parse(parseModelObject(reply.content)), llmUsage: reply.usage, llmModel: reply.model, llmProvider: credentials.provider } };
   } catch (error) {
     if (signal.aborted) throw signal.reason;
     if (controller.signal.aborted) throw controller.signal.reason;
@@ -107,7 +109,7 @@ async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) =>
 
 function metrics(entry: Entry): StudioProject['generationMetrics'] {
   const { project } = entry;
-  const tasks = [project.plan, ...project.rounds.map((round) => round.code)].filter(Boolean) as { output?: { llmUsage?: LlmUsage; llmModel?: string } }[];
+  const tasks = [project.plan, ...project.rounds.map((round) => round.code)].filter(Boolean) as { output?: { llmUsage?: LlmUsage; llmModel?: string; llmProvider?: string } }[];
   const usage = tasks.map((task) => task.output?.llmUsage).filter(Boolean) as LlmUsage[];
   return {
     elapsedMs: project.finishedAt ? Date.parse(project.finishedAt) - Date.parse(project.startedAt) : null,
@@ -115,12 +117,47 @@ function metrics(entry: Entry): StudioProject['generationMetrics'] {
     failedBuilds: project.rounds.filter((round) => round.build?.status === 'failed').length,
     agentTasks: tasks.length, reportedUsageTasks: usage.length, missingUsageTasks: tasks.length - usage.length,
     reportedTokens: usage.reduce((sum, item) => sum + (item.total_tokens || 0), 0),
-    models: [...new Set(tasks.map((task) => task.output?.llmModel).filter(Boolean) as string[])].map((model) => `deepseek/${model}`),
+    models: [...new Set(tasks.flatMap((task) => task.output?.llmModel ? [`${task.output.llmProvider || 'model'}/${task.output.llmModel}`] : []))],
     costUsd: null,
   };
 }
 
 // ---- the loop ----
+/** Coder rounds in one run, compile repairs and the browser repair together. */
+export const LIVE_MAX_ROUNDS = 4;
+
+/** Code → build until it compiles; returns the passing round's files. */
+async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: string, round?: number) => void, start: { previousFiles: Files; revisionNotes: string[]; maxRounds: number }) {
+  const { project } = entry;
+  let { previousFiles, revisionNotes } = start;
+  const limit = Math.min(LIVE_MAX_ROUNDS, project.rounds.length + start.maxRounds);
+  while (project.rounds.length < limit) {
+    const round = project.rounds.length + 1;
+    phase('coding', round);
+    const code = await ask('Coder', coderPrompt(project.description, 'javascript', { language: 'javascript', constraints: STUDIO_CONSTRAINTS, plan: project.plan?.output, previousFiles, revisionNotes }), parseCodeOutput, signal, LIVE_CODER_TIMEOUT_MS);
+    const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
+    project.rounds.push(attempt);
+    if (code.output.dependencies.length) throw new Error('Generated project requires unsupported dependencies');
+    emit(entry, 'code_ready', { files: code.output.files.length }, round);
+    phase('building', round);
+    const build = await buildInBrowser(code.output.files, signal);
+    attempt.build = { status: build.status, errors: build.errors, checkedFiles: build.checkedFiles, browserVerified: false };
+    emit(entry, build.status === 'passed' ? 'build_passed' : 'build_failed', build.status === 'passed' ? undefined : { errors: summarizeErrors(build.errors) }, round);
+    if (build.status === 'passed') {
+      entry.html = build.html; entry.files = code.output.files; project.previewFile = `v${round}/dist/index.html`;
+      return code.output.files;
+    }
+    previousFiles = code.output.files;
+    revisionNotes = [...start.revisionNotes.filter((note) => note === REPAIR_INSTRUCTIONS), ...build.errors];
+  }
+  throw new Error(`Build failed after ${limit} attempts`);
+}
+
+/**
+ * Plan → code/build (compile errors go back to the Coder) → Tester plan → in-page checks →
+ * one repair round from failed checks → recheck → ready. Unlike the server, checks run before the
+ * single terminal event, so a live run ends only when its checks (and repair) are done.
+ */
 async function generate(entry: Entry, signal: AbortSignal) {
   const { project } = entry;
   const description = project.description;
@@ -133,78 +170,78 @@ async function generate(entry: Entry, signal: AbortSignal) {
     const plan = await ask('Manager', managerPrompt(description, { constraints: STUDIO_CONSTRAINTS, deliverable: STUDIO_DELIVERABLE }), parsePlanOutput, signal, AGENT_TIMEOUT_MS);
     project.plan = { status: 'success', output: plan.output };
     emit(entry, 'plan_ready', { projectName: plan.output.projectName });
-    let previousFiles: Files = [];
-    let revisionNotes: string[] = [];
-    for (let round = 1; round <= 3; round++) {
-      phase('coding', round);
-      const code = await ask('Coder', coderPrompt(description, 'javascript', { language: 'javascript', constraints: STUDIO_CONSTRAINTS, plan: project.plan.output, previousFiles, revisionNotes }), parseCodeOutput, signal, LIVE_CODER_TIMEOUT_MS);
-      const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
-      project.rounds.push(attempt);
-      if (code.output.dependencies.length) throw new Error('Generated project requires unsupported dependencies');
-      emit(entry, 'code_ready', { files: code.output.files.length }, round);
-      phase('building', round);
-      const build = await buildInBrowser(code.output.files, signal);
-      attempt.build = { status: build.status, errors: build.errors, checkedFiles: build.checkedFiles, browserVerified: false };
-      emit(entry, build.status === 'passed' ? 'build_passed' : 'build_failed', build.status === 'passed' ? undefined : { errors: summarizeErrors(build.errors) }, round);
-      if (build.status === 'passed') {
-        entry.html = build.html; entry.files = code.output.files;
-        project.previewFile = `v${round}/dist/index.html`; project.archiveFile = 'source.zip';
-        project.status = 'ready_for_review'; project.phase = 'ready_for_review'; project.finishedAt = now();
-        project.generationMetrics = metrics(entry);
-        emit(entry, 'ready_for_review', { previewFile: project.previewFile }, round);
-        break;
+    const files = await codeUntilBuilt(entry, signal, phase, { previousFiles: [], revisionNotes: [], maxRounds: 3 });
+    const checks = await planChecks(entry, signal);
+    if (checks) {
+      const first = await runChecks(entry, checks, signal);
+      if (first.failed && project.rounds.length < LIVE_MAX_ROUNDS) {
+        const good = { html: entry.html, files: entry.files, previewFile: project.previewFile };
+        const notes = [REPAIR_INSTRUCTIONS, ...browserFailureNotes(checks, first.results, first.errors)];
+        try {
+          await codeUntilBuilt(entry, signal, phase, { previousFiles: files, revisionNotes: notes, maxRounds: 2 });
+          await runChecks(entry, checks, signal);
+        } catch (error) {
+          if (signal.aborted) throw error;
+          // The repair did not build: keep the last working app rather than failing the run.
+          Object.assign(entry, { html: good.html, files: good.files }); project.previewFile = good.previewFile;
+        }
       }
-      previousFiles = code.output.files;
-      revisionNotes = [...build.errors];
     }
-    if (project.status === 'running') throw new Error('Build failed after three attempts');
+    project.status = 'ready_for_review'; project.phase = 'ready_for_review'; project.archiveFile = 'source.zip'; project.finishedAt = now();
+    project.generationMetrics = metrics(entry);
+    emit(entry, 'ready_for_review', { previewFile: project.previewFile });
   } catch (error) {
     const cancelled = signal.aborted;
     finishFailed(entry, cancelled ? 'Cancelled by you' : error instanceof Error ? error.message : String(error), cancelled ? 'cancelled' : 'failed');
     project.generationMetrics = metrics(entry);
-    return;
   }
-  await test(entry, signal);
 }
 
-async function test(entry: Entry, signal: AbortSignal) {
+/** The Tester writes a plan for the working build; `null` when planning fails (the app still ships). */
+async function planChecks(entry: Entry, signal: AbortSignal) {
   const { project } = entry;
   const plan: StudioTestPlan = { id: crypto.randomUUID(), projectId: project.projectId, previewFile: project.previewFile!, jobId: `live-tests-${project.projectId}`, status: 'running' };
   entry.plan = plan;
+  project.phase = 'testing';
   emit(entry, 'test_plan_started', { planId: plan.id });
   try {
     const result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [] }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
     plan.status = 'ready';
     plan.result = { status: 'success', output: result.output };
     emit(entry, 'test_plan_ready', { planId: plan.id, checks: result.output.checks.length });
+    return result.output.checks;
   } catch (error) {
-    plan.status = signal.aborted ? 'cancelled' : 'failed';
-    plan.error = signal.aborted ? 'Cancelled by you' : error instanceof Error ? error.message : String(error);
+    if (signal.aborted) { plan.status = 'cancelled'; plan.error = 'Cancelled by you'; throw error; }
+    plan.status = 'failed';
+    plan.error = error instanceof Error ? error.message : String(error);
     emit(entry, 'test_plan_failed', { planId: plan.id, status: plan.status, error: plan.error.slice(0, 300) });
-    return;
-  }
-  const checks = plan.result.output.checks;
-  const runId = crypto.randomUUID();
-  emit(entry, 'browser_run_started', { runId, testPlanId: plan.id, checks: checks.length, source: 'in-page' });
-  try {
-    const { results, errors } = await runInPageChecks(entry.html!, checks, signal);
-    for (const result of results) emit(entry, 'browser_check', { runId, name: result.name, passed: result.status === 'passed', actual: result.actual });
-    const passed = results.filter((result) => result.status === 'passed').length;
-    entry.diagnostics.unshift({ id: runId, savedAt: now(), source: 'browser-client', previewFile: project.previewFile!, loaded: true, errors, testPlanId: plan.id, checks: results });
-    emit(entry, 'browser_run_finished', { runId, status: passed === results.length && !errors.length ? 'passed' : 'failed', passed, failed: results.length - passed, source: 'in-page' });
-  } catch (error) {
-    emit(entry, 'browser_run_finished', { runId, status: signal.aborted ? 'cancelled' : 'failed', passed: 0, failed: 0, error: (error instanceof Error ? error.message : String(error)).slice(0, 300), source: 'in-page' });
+    return null;
   }
 }
 
+async function runChecks(entry: Entry, checks: BrowserCheck[], signal: AbortSignal) {
+  const { project } = entry;
+  const runId = crypto.randomUUID();
+  project.phase = 'testing';
+  emit(entry, 'browser_run_started', { runId, testPlanId: entry.plan?.id, checks: checks.length, source: 'in-page' });
+  const { results, errors } = await runInPageChecks(entry.html!, checks, signal, entry.plan?.result?.output.isolation ?? 'shared');
+  for (const result of results) emit(entry, 'browser_check', { runId, name: result.name, passed: result.status === 'passed', actual: result.actual });
+  const passed = results.filter((result) => result.status === 'passed').length;
+  const failed = passed !== results.length || errors.length > 0;
+  entry.diagnostics.unshift({ id: runId, savedAt: now(), source: 'browser-client', previewFile: project.previewFile!, loaded: true, errors, testPlanId: entry.plan?.id, checks: results });
+  emit(entry, 'browser_run_finished', { runId, status: failed ? 'failed' : 'passed', passed, failed: results.length - passed, source: 'in-page', ...(errors.length ? { error: errors[0].slice(0, 300) } : {}) });
+  return { failed, results, errors };
+}
+
 function start(description: string): { projectId: string; jobId: string } {
-  if (!liveCredentials()) throw httpError('Add your DeepSeek key to build live.', 401);
+  const credentials = liveCredentials();
+  if (!credentials) throw httpError('Add a model key to build live.', 401);
   const text = description.trim();
   if (!text || text.length > 4000) throw httpError('Provide a project description of 1–4000 characters', 400);
   const projectId = `${LIVE_PREFIX}${crypto.randomUUID()}`;
   const entry: Entry = { project: { projectId, description: text, status: 'queued', startedAt: now(), strategy: 'manager-coder', rounds: [] }, events: [], diagnostics: [] };
   entries.set(projectId, entry);
-  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser' });
+  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser', provider: liveProvider(credentials.provider).label, model: credentials.model });
   const controller = new AbortController();
   controllers.set(projectId, controller);
   void generate(entry, controller.signal).finally(() => { controllers.delete(projectId); void persist(entry); });
@@ -270,7 +307,7 @@ export async function liveArchive(projectId: string): Promise<Blob> {
   await ready();
   const entry = entries.get(projectId);
   if (!entry?.html || !entry.files) throw httpError('No build to download yet', 409);
-  const build = entry.project.rounds.at(-1)?.build;
+  const build = entry.project.rounds.find((round) => `v${round.round}/dist/index.html` === entry.project.previewFile)?.build;
   const zip: Record<string, Uint8Array> = {};
   for (const file of entry.files) zip[`source/${file.path}`] = strToU8(file.content);
   zip['preview/index.html'] = strToU8(entry.html);

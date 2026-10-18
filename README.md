@@ -1,104 +1,111 @@
-# PixelAgent Hub · 像素 AI 开发小队
+# PixelAgent Hub · Pixel AI Dev Squad
+
+English · [中文](README.zh-CN.md)
 
 [![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
-[![Replay demo](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml)
+[![Live demo](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://3617375681.github.io/PIXELAGENT-HUB/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
 
-中文 · [English](README.en.md)
+**Type an idea. Watch four AI agents plan it, code it, compile it and click through it in your browser. Then play it.**
 
-**一句话需求 → 4 个 Agent 规划、写码、真实编译、浏览器验收；失败证据自动回到 Coder 返修。** 每一步都写进事件日志，像素风控制台里看到的每个动画都对应一条真实事件。
+A Manager plans, a Coder writes a small offline web app, a Builder really compiles it with esbuild, and a Tester writes checks and runs them in a sandbox. Compiler errors and failed checks go straight back to the Coder. Every animation in the pixel console is a real event, never fake progress.
 
-**▶ [在线体验](https://3617375681.github.io/PIXELAGENT-HUB/)**：直接看 40 次真实生成的回放；或点 **BUILD LIVE**，填自己的 DeepSeek key，4 个 Agent 就在你的浏览器里现场写一个应用（无需后端） · [本地运行](#本地运行) · [证据索引](pixelagent-hub/docs/evidence/README.md) · [作品集说明](pixelagent-hub/docs/portfolio/README.md)
+**▶ [Open the live demo](https://3617375681.github.io/PIXELAGENT-HUB/)**: press **BUILD LIVE** and use your own key. It runs entirely in your tab, with no server and no sign-up.
 
-![输入需求 → Manager 规划 → 第 1 轮编译失败，红线把报错交回 Coder → 第 2 轮通过 → 浏览器检查 4/4 → 可以直接玩](portfolio-screenshots/studio-demo.gif)
+![A real PLAY LIVE run: typing an idea, the Manager plans, the Coder writes, the Builder compiles, the Tester passes 10/10 checks, and the pomodoro timer appears ready to play](portfolio-screenshots/studio-live.gif)
 
-| **30** 次真实模型生成 | **13/15 vs 12/15** 多 Agent 没有可测优势 | **0** 个模拟动画 |
-| :---: | :---: | :---: |
-| 每次都留有源码、事件日志和浏览器报告 | 先规划再写码 vs 直接写码，结果如实公开 | 界面上每个动画都对应一条服务器事件 |
+<sub>One real run, unedited apart from 1.5× speed: `deepseek-chat`, about 20 s from idea to a playable app, 10/10 Tester checks.</sub>
 
-## 在线现场生成（PLAY LIVE）
+## Why it's different
 
-在线页面没有任何后端。点 BUILD LIVE 后，Manager → Coder → Builder → Tester 整个流程都在你的浏览器标签页里运行：模型调用用你自己的 DeepSeek key 直连 `api.deepseek.com`，代码用 esbuild-wasm 现场编译，Tester 的检查在沙箱 iframe 里逐条执行。和本地服务器用的是**同一套**提示词、输出校验和打包逻辑（`src/studio/shared`），事件格式也相同，所以动画、音效和回修红线都一样。
+- **Verified, not self-reported.** The app has to compile, and the Tester's checks have to pass in a real browser. The agents never just say "done". A failure becomes evidence the Coder must fix, and you can watch it travel back along the red edge.
+- **Runs in your browser with your own key.** The static GitHub Pages site runs the whole loop client-side: streaming model calls, esbuild-wasm, and sandboxed checks. It uses the same prompts and bundling code as the Node server.
+- **Honest numbers.** 50 recorded real-model generations ship with the repo: sources, event logs, test plans, browser reports and screenshots, failures included. The headline finding is unflattering: [a planning agent made no measurable difference](#results-you-can-check).
 
-- 用 `deepseek-chat` 生成一个小计算器约 20 秒，一次运行通常 2–4 万 token。
-- key 默认只存在当前标签页；生成的应用跑在无同源权限的沙箱里，读不到它。详见 [安全说明](pixelagent-hub/SECURITY.md)。
-- 局限：浏览器里的检查跑在被测应用自己的页面里，恶意应用理论上可以伪造结果；独立的沙箱 Chromium 检查只在本地服务器模式下提供。
+## PLAY LIVE: bring your own key
 
-## 它做什么
+| Provider | Suggested model | | Provider | Suggested model |
+| --- | --- | --- | --- | --- |
+| DeepSeek | `deepseek-chat` | | OpenRouter | `deepseek/deepseek-chat` |
+| Anthropic | `claude-opus-5-5` | | Qwen (DashScope) | `qwen-plus` |
+| OpenAI | `gpt-4o-mini` | | Zhipu GLM | `glm-4-flash` |
+| SiliconFlow | `deepseek-ai/DeepSeek-V3` | | | |
 
-| 阶段 | 实际发生的事 |
-| --- | --- |
-| **Manager** 规划 | 把需求拆成计划，交给 Coder |
-| **Coder** 写码 | 生成离线 HTML/CSS/JS 项目，写入隔离工作区 |
-| **Builder** 编译 | esbuild 真实构建；失败时把编译错误作为返修说明交回 Coder，最多 3 轮 |
-| **Tester** 验收 | 生成声明式检查计划，在独立沙箱 Chromium 中点击、输入、断言并截图 |
-| 返修 / 版本 | 浏览器失败证据可直接触发返修，生成新版本；原版本与证据保留，可对比源码 |
-| 人工决定 | 构建通过、浏览器检查通过、人工批准三者分开记录，互不替代 |
+- **Models:** the model field is free text, so use any model your key can access.
+- **Your key** is sent only to the provider you pick and kept in the tab by default. Generated apps run in an iframe with no same-origin access, so they can't read it ([SECURITY.md](pixelagent-hub/SECURITY.md)).
+- **Each run:**
+  1. The Manager plans.
+  2. The Coder writes code; up to 3 compile rounds feed compiler errors back to it.
+  3. The Tester plans independent checks.
+  4. The checks run, each on a freshly loaded page.
+  5. If a check fails, the Coder gets **one repair round**, and the same checks run again.
+- **Cost:** typically 20k–40k tokens per run. Claude runs use server-side refusal fallbacks.
+- **Limitation:** in-browser checks run inside the app's own page, so a hostile app could forge them. Independent sandboxed-Chromium checks need the local server.
 
-![编译失败：Builder 把真实 esbuild 报错交回 Coder，第 2 轮返修](portfolio-screenshots/studio-pipeline-repair-2026-10-14.png)
+## When things break
 
-![注入故障：浏览器检查发现 +1 实际加了 2，失败证据从 Tester 回到 Coder](portfolio-screenshots/studio-pipeline-browser-failure-2026-10-14.png)
+![A compile error in round 1 travels back to the Coder on the red edge; round 2 passes; 4/4 browser checks; the app is playable](portfolio-screenshots/studio-demo.gif)
 
-## 可核对的结果
+The Builder hands the real esbuild error to the Coder (round 1 → round 2). A failed browser check does the same from the Tester, with the selector, the expected value and what the page actually showed.
 
-以下来自仓库中保存的真实模型（`deepseek-v4-pro`）记录，均含源码 ZIP、检查计划、浏览器报告与截图：
+## Results you can check
 
-- **[10 次真实生成](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09/README.md)**（5 个应用 × 2 种策略）全部首次编译通过；原始浏览器检查 6 次通过、4 次失败。其中 2 次失败后来查明是构建器丢失 `defer` 脚本顺序的平台缺陷，已修复并加了真实浏览器回归测试。
-- **[受控故障返修](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md)**：把计数器改成 `+= 2` 后，浏览器检查 2/4 失败；依据失败证据返修只改了 1 行，另外 3 个文件逐字节不变，复测原计划 4/4、额外 7/7 通过。
-- **[单 Agent vs 多 Agent 重复对比](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-15-repeated/README.md)**（5 个应用 × 2 种策略 × 3 次，共 30 次真实生成）：先规划再写码 13/15 完整通过，直接写码 12/15，**没有可测优势**；规划平均多花约 1,200 token。完成的 28 次生成全部首次编译通过；3 次检查失败（计分不变、违反“文本输入”要求）和 2 次超时都已逐条记录。
-- 这些是小样本观察，不代表通用成功率。
+All with real models; see the [evidence index](pixelagent-hub/docs/evidence/README.md).
 
-## 工作原理
+- **[Single vs multi-agent, repeated](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-15-repeated/README.md):**
+  - Design: 5 apps × 2 strategies × 3 runs with `deepseek-v4-pro`.
+  - Result: Manager → Coder passed every check in 13/15 runs; Coder only in 12/15.
+  - Cost: planning added about 1,200 tokens per app for no measurable gain.
+  - Every failure is listed.
+- **[Showcase](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-showcase/README.md):** 6 ideas, 10 attempts. 5 ideas ended with every check passing; the pixel pet never built (3 attempts). One failure came from the Tester's plan, not the app, which led to fresh per-check isolation.
+- **[Controlled fault repair](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md):** a counter was broken to `+= 2`. The browser check caught it; the repair changed one line and left three files byte-identical.
+- These are small samples, not general success rates. Browse all 40 replayable runs in the demo's gallery.
+
+## How it works
 
 ```mermaid
 flowchart LR
-  R[需求] --> M[Manager 规划] --> C[Coder 写码] --> B[Builder · esbuild]
-  B -- 编译错误 --> C
-  B -- 通过 --> T[Tester · 沙箱 Chromium]
-  T -- 失败证据 --> C
-  T -- 通过 --> H[人工验收]
-  M & C & B & T -. 事件 .-> E[(events.jsonl)] -. SSE .-> UI[像素控制台]
+  R[Idea] --> M[Manager plans] --> C[Coder writes] --> B[Builder · esbuild]
+  B -- compile error --> C
+  B -- passed --> T[Tester · sandboxed checks]
+  T -- failed check --> C
+  T -- passed --> H[You play it]
+  M & C & B & T -. events .-> E[(event log)] -. SSE .-> UI[Pixel console]
 ```
 
-- **后端**：TypeScript + Node。`src/studio` 负责生成循环、构建、浏览器检查和版本，状态以原子写入的 JSON 落盘，每次状态变化追加到有序事件日志，经 SSE 推送（`GET /api/studio/projects/:id/events?stream=1`）。HTTP 契约见 [studio-api.yaml](pixelagent-hub/openapi/studio-api.yaml)，由测试用 Ajv 校验真实响应。
-- **前端**：React 19 + Vite。事件经纯函数 reducer 变成 4 个角色的状态，驱动连线、数据包和红色回流边；没有任何模拟进度。
-- **工程**：队列、取消与超时、进程重启后恢复、创建幂等、鉴权与限流；CI 覆盖 Node 18/20/22、Windows、真实浏览器和 Docker 生产启动。
+- **Shared core** (`src/studio/shared`): agent prompts, output schemas, file validation and the HTML inliner, with no Node APIs. The Node server and the browser run the same code.
+- **Server** (TypeScript + Node):
+  - an isolated per-project workspace, atomically written JSON state, and an ordered `events.jsonl` streamed over SSE;
+  - independent Playwright checks;
+  - versions, diffs, and repair from saved evidence;
+  - an OpenAPI contract that tests validate against real responses.
+- **Dashboard** (React 19 + Vite): a pure reducer turns events into the four agents' state, connectors, data packets and the red feedback edge. Each stage card plays 8-bit sounds and particle effects only on real transitions. The static build adds a replay gallery and PLAY LIVE.
+- **Engineering:** queueing, cancellation, timeouts, restart recovery, idempotent creation, auth and rate limits. CI runs on Node 18/20/22 and Windows, with a real browser and a Docker production start.
 
-## 本地运行
+## Run locally
 
-需要 Node 22.12+。默认使用离线 mock 模型：生成一个真实可编译的像素计数器，第 1 轮故意带语法错误，用来演示真实的编译 → 返修流程。
+Needs Node 22.12+. The default offline mock model builds a real counter whose first attempt deliberately fails to compile, so you see the compile → repair loop without any key.
 
 ```bash
 cd pixelagent-hub
-cp .env.example .env          # LLM_PROVIDER=mock；真实生成改为所选模型并填写密钥
+cp .env.example .env          # LLM_PROVIDER=mock; set a provider + key for real generation
 npm ci && npm --prefix dashboard ci
 npm run build:all
 npm start                     # http://127.0.0.1:3100/studio
 ```
 
-- 想看清每一步：在 `.env` 加 `MOCK_LLM_DELAY_MS=1500`。
-- 浏览器检查：`npx playwright install chromium`，并设置 `ENABLE_STUDIO_BROWSER_CHECKS=true`。
-- 回放真实模型实验：`npm run portfolio:demo`；导出静态回放：`npm run replay:export -- --browser`。
-- Docker：在仓库根目录 `docker compose up --build`，见 [Docker 部署说明](pixelagent-hub/docs/software-studio/docker-start.md)。
-- 测试：`npm test`（后端）、`npm --prefix dashboard test`（前端）。
+- **Independent browser checks:** run `npx playwright install chromium` and set `ENABLE_STUDIO_BROWSER_CHECKS=true`.
+- **Docker:** run `docker compose up --build` from the repo root.
+- **Tests:** `npm test` and `npm --prefix dashboard test`.
 
-## 已知限制
+## Limits
 
-- 生成范围限于离线 HTML/CSS/JS 小应用与小游戏，不生成数据库、登录、支付或 npm 依赖项目。
-- Tester 的检查由模型生成，只覆盖计划里写到的行为；页面编译成功或检查通过都不等于人工验收。
-- 用量记录 token 与耗时，不计算实际费用。
-- 单进程运行，不是分布式调度平台。
+- Small offline HTML/CSS/JS apps and games only: no databases, logins, payments or npm dependencies.
+- The Tester's checks are model-written and cover only what the plan lists; passing them is not human acceptance.
+- Single process; not a distributed scheduler.
 
-## 开发方式
+## How it was built
 
-项目起点是 Kimi 生成的像素风多 Agent 控制台原型（假数据驱动，见提交 `14a030e`）。后端、Studio 生成与验收流程在 GPT 的协助下实现；之后用 Claude Code 收敛范围、恢复原版视觉、加入事件时间线和静态回放。作者负责方向、取舍和验收标准；所有改动都经过测试与 CI 约束。
+The starting point was a pixel-art multi-agent console prototype generated by Kimi, driven by fake data (commit `14a030e`). The backend and Studio loop were built with GPT's help. Claude Code then narrowed the scope, restored the original look, and added the event timeline, the replay, PLAY LIVE and the experiments. The author set the direction, the trade-offs and the acceptance bar, and every change goes through tests and CI.
 
-## 更多文档
-
-- [Software Studio 运行说明](pixelagent-hub/docs/software-studio/README.md) · [API 集成](pixelagent-hub/docs/software-studio/api-integration.md) · [同源本地启动](pixelagent-hub/docs/software-studio/local-start.md)
-- [底层多 Agent 框架](pixelagent-hub/README.md)：6 种协作模式（Pipeline / Parallel / Debate / Vote / Roundtable / Company）、多模型提供商、Records API
-- [贡献指南](pixelagent-hub/CONTRIBUTING.md) · [安全策略](pixelagent-hub/SECURITY.md) · [更新记录](pixelagent-hub/CHANGELOG.md)
-
-## License
-
-MIT — 详见 [LICENSE](pixelagent-hub/LICENSE)。
+[Contributing](pixelagent-hub/CONTRIBUTING.md) · [Security](pixelagent-hub/SECURITY.md) · [Changelog](pixelagent-hub/CHANGELOG.md) · [Framework docs](pixelagent-hub/README.md) · MIT licensed ([LICENSE](pixelagent-hub/LICENSE)).
