@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router';
 import { Code2, Download, Play, Plus, Radio, RefreshCw, RotateCcw, Share2, Square, Terminal, Volume2, VolumeX, Zap } from 'lucide-react';
 import { OFFLINE_MESSAGE, studioApi } from '../lib/recordsApi';
 import type { StudioChanges, StudioDiagnostic, StudioProject, StudioSummary, StudioVersions, StudioTestPlan } from '../types/studio';
@@ -35,8 +35,12 @@ const projectStatus = (project: StudioSummary) => project.status === 'ready_for_
 export default function Studio() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const [description, setDescription] = useState(EXAMPLES[0].text);
-  const [edited, setEdited] = useState(false);
+  // ?idea=… (e.g. a link someone posted) prefills the prompt box.
+  const [searchParams] = useSearchParams();
+  const ideaParam = searchParams.get('idea')?.trim().slice(0, 4000) || '';
+  const { search } = useLocation();
+  const [description, setDescription] = useState(ideaParam || EXAMPLES[0].text);
+  const [edited, setEdited] = useState(!!ideaParam);
   const [keyDialog, setKeyDialog] = useState(false);
   const [shareState, setShareState] = useState<{ projectId?: string; url?: string; copied?: boolean }>({});
   const [sound, setSound] = useState(() => { try { return localStorage.getItem('pixelagent:sound') !== 'off'; } catch { return true; } });
@@ -184,8 +188,8 @@ export default function Studio() {
   const ready = !replaying && project?.status === 'ready_for_review';
   useEffect(() => {
     if (!REPLAY || projectId) return;
-    void loadReplayManifest().then((manifest) => navigate(`/studio/${manifest.hero}`, { replace: true })).catch((error) => setError(error instanceof Error ? error.message : String(error)));
-  }, [projectId, navigate]);
+    void loadReplayManifest().then((manifest) => navigate(`/studio/${manifest.hero}${search}`, { replace: true })).catch((error) => setError(error instanceof Error ? error.message : String(error)));
+  }, [projectId, navigate, search]);
   const generationMetrics = project?.generationMetrics;
   useEffect(() => {
     setVersions(null);

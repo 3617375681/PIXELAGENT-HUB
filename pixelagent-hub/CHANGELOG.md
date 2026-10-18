@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- `#/studio?idea=…` links prefill the prompt box (kept through the redirect to the hero replay), so posts can link straight to an idea to build
+
 ## [2.0.0] — 2026-10-18
 
 ### Added

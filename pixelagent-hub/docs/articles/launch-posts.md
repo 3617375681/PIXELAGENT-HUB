@@ -6,6 +6,7 @@ Everything here is a draft; publishing is the maintainer's call. Numbers come fr
 Links:
 - Demo: https://jiarong-song233.github.io/PIXELAGENT-HUB/
 - Repo: https://github.com/Jiarong-Song233/PIXELAGENT-HUB
+- One-click idea: https://jiarong-song233.github.io/PIXELAGENT-HUB/#/studio?idea=A%20pixel%20pomodoro%20timer%3A%20a%20big%2025%3A00%20countdown%2C%20Start%2C%20Pause%20and%20Reset%20buttons%2C%20and%20a%205-minute%20break%20mode.
 - Chinese article: [multi-agent-not-better.zh-CN.md](multi-agent-not-better.zh-CN.md)
 
 ---
