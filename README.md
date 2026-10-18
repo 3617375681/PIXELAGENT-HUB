@@ -2,15 +2,15 @@
 
 English · [中文](README.zh-CN.md)
 
-[![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
-[![Live demo](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://3617375681.github.io/PIXELAGENT-HUB/)
+[![CI](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml)
+[![Live demo](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://jiarong-song233.github.io/PIXELAGENT-HUB/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
 
 **Type an idea. Watch four AI agents plan it, code it, compile it and click through it in your browser. Then play it.**
 
 A Manager plans, a Coder writes a small offline web app, a Builder really compiles it with esbuild, and a Tester writes checks and runs them in a sandbox. Compiler errors and failed checks go straight back to the Coder. Every animation in the pixel console is a real event, never fake progress.
 
-**▶ [Open the live demo](https://3617375681.github.io/PIXELAGENT-HUB/)**: press **BUILD LIVE** and use your own key. It runs entirely in your tab, with no server and no sign-up.
+**▶ [Open the live demo](https://jiarong-song233.github.io/PIXELAGENT-HUB/)**: press **BUILD LIVE** and use your own key. It runs entirely in your tab, with no server and no sign-up.
 
 ![A real PLAY LIVE run: typing an idea, the Manager plans, the Coder writes, the Builder compiles, the Tester passes 10/10 checks, and the pomodoro timer appears ready to play](portfolio-screenshots/studio-live.gif)
 

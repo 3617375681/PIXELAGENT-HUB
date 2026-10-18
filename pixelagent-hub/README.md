@@ -1,6 +1,6 @@
 # PixelAgent Hub
 
-[![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
+[![CI](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![node](https://img.shields.io/node/v/pixelagent-hub)](https://nodejs.org/)
 

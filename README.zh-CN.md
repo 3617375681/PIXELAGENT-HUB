@@ -2,8 +2,8 @@
 
 [English](README.md) · 中文
 
-[![CI](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/ci.yml)
-[![在线演示](https://github.com/3617375681/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://3617375681.github.io/PIXELAGENT-HUB/)
+[![CI](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml/badge.svg)](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/ci.yml)
+[![在线演示](https://github.com/Jiarong-Song233/PIXELAGENT-HUB/actions/workflows/pages.yml/badge.svg)](https://jiarong-song233.github.io/PIXELAGENT-HUB/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](pixelagent-hub/LICENSE)
 
 **输入一个想法，看 4 个 AI Agent 在你的浏览器里规划、写码、编译、逐项测试，然后直接玩。**
@@ -16,7 +16,7 @@
 
 编译错误和失败的检查都会直接交回 Coder 返修。像素控制台里的每一个动画都对应一条真实事件，没有任何模拟进度。
 
-**▶ [打开在线演示](https://3617375681.github.io/PIXELAGENT-HUB/)**：点 **BUILD LIVE**，填入你自己的模型 key。整个流程都在你的浏览器标签页里运行，不需要服务器，也不用注册。
+**▶ [打开在线演示](https://jiarong-song233.github.io/PIXELAGENT-HUB/)**：点 **BUILD LIVE**，填入你自己的模型 key。整个流程都在你的浏览器标签页里运行，不需要服务器，也不用注册。
 
 ![一次真实的在线生成：输入想法 → Manager 规划 → Coder 写码 → Builder 编译 → Tester 10/10 检查通过 → 番茄钟可以直接用](portfolio-screenshots/studio-live.gif)
 
