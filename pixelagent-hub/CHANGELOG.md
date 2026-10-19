@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.2.0] — 2026-10-19
+
 ### Added
 - `visible` check assertion ("true"/"false"): Playwright `isVisible` on the server, element box and visibility in the page
 - PLAY LIVE benchmark on six harder ideas (`config/live-showcase-cases.json`): 7/18 → 9/18 → 11/18 full passes over three rounds of fixes
