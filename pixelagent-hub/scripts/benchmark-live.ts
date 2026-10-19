@@ -4,7 +4,7 @@
  * The page holds a test key; requests to api.deepseek.com are forwarded with DEEPSEEK_API_KEY, so the
  * real key never enters the page. Each run uses a fresh browser profile; its recorded events are saved.
  *
- *   npx tsx scripts/benchmark-live.ts <dist> <out-dir> [--runs 3] [--model deepseek-chat] [--only counter,todo]
+ *   npx tsx scripts/benchmark-live.ts <dist> <out-dir> [--runs 3] [--model deepseek-chat] [--only counter,todo] [--cases file.json]
  *
  * Calls the paid model.
  */
@@ -23,7 +23,7 @@ const only = argument('--only')?.split(',');
 const dist = resolve(distArg);
 const out = resolve(outArg);
 const base = '/PIXELAGENT-HUB/';
-const cases = (JSON.parse(await readFile(resolve('config/studio-benchmark.json'), 'utf8')) as { id: string; title: string; description: string }[]).filter((item) => !only || only.includes(item.id));
+const cases = (JSON.parse(await readFile(resolve(argument('--cases') || 'config/studio-benchmark.json'), 'utf8')) as { id: string; title: string; description: string }[]).filter((item) => !only || only.includes(item.id));
 const types: Record<string, string> = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.zip': 'application/zip', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.wasm': 'application/wasm' };
 const server = createServer(async (req, res) => {
   let file = join(dist, decodeURIComponent(new URL(req.url!, 'http://x').pathname).slice(base.length));
@@ -66,11 +66,16 @@ try {
     const events = record.events as Event[];
     const browserRuns = events.filter((event) => event.type === 'browser_run_finished').map((event) => ({ status: String(event.data?.status), passed: Number(event.data?.passed), failed: Number(event.data?.failed) }));
     const compileFailures = events.filter((event) => event.type === 'build_failed').length;
+    const reviews = events.filter((event) => event.type === 'test_plan_ready' && event.data?.review);
     const entry = {
       caseId: testCase.id, run, model, status: record.project.status, error: record.project.error,
       coderRounds: record.project.rounds.length, compileFailures,
       firstChecks: browserRuns[0] ? `${browserRuns[0].passed}/${browserRuns[0].passed + browserRuns[0].failed}` : null,
       finalChecks: browserRuns.at(-1) ? `${browserRuns.at(-1)!.passed}/${browserRuns.at(-1)!.passed + browserRuns.at(-1)!.failed}` : null,
+      reviewTriggered: reviews.length > 0,
+      checksRevised: reviews.reduce((sum, event) => sum + (Number(event.data?.revised) || 0), 0),
+      coderRepair: record.project.rounds.length > 1 + compileFailures,
+      checkRuns: browserRuns.map((run) => `${run.passed}/${run.passed + run.failed}`),
       repairTriggered: browserRuns.length > 1,
       fullPass: record.project.status === 'ready_for_review' && browserRuns.at(-1)?.status === 'passed',
       rescuedByRepair: browserRuns.length > 1 && browserRuns.at(-1)?.status === 'passed',
