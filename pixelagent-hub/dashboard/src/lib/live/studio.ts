@@ -1,5 +1,5 @@
 import { strToU8, zipSync } from 'fflate';
-import { coderPrompt, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
+import { coderPrompt, invalidPlanFeedback, isInvalidPlanError, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { browserFailureNotes } from '@studio-shared/repair';
 import { dependencyNote, unsupportedDependencies } from '@studio-shared/dependencies';
 import type { BrowserCheck, BrowserCheckResult } from '../studioChecks';
@@ -230,11 +230,11 @@ async function planChecks(entry: Entry, signal: AbortSignal) {
     // Like a compile error for the Coder: a plan the schema rejects goes back to the Tester once.
     for (let attempt = 1; ; attempt++) {
       try {
-        result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [], ...(plan.error ? { invalidPlanFeedback: `Your previous plan was rejected: ${plan.error} Return a corrected plan; actions may only be {type:"click",selector}, {type:"input",selector,value} or {type:"key",selector,key}.` } : {}) }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
+        result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [], ...(plan.error ? { invalidPlanFeedback: invalidPlanFeedback(plan.error) } : {}) }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
         if (attempt > 1) plan.error = undefined;
         break;
       } catch (error) {
-        const invalid = error instanceof SyntaxError || (error instanceof Error && error.message.startsWith('The test plan did not match'));
+        const invalid = error instanceof SyntaxError || (error instanceof Error && isInvalidPlanError(error.message));
         if (signal.aborted || !invalid || attempt >= 2) throw error;
         plan.error = error.message.slice(0, 500);
       }

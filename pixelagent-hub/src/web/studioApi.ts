@@ -1,4 +1,5 @@
 import { createOrchestrator } from '../factory.js';
+import { invalidPlanFeedback, isInvalidPlanError } from '../studio/shared/prompts.js';
 import { listTestPlans, saveTestPlan, testPlanSchema, type TestPlanRecord } from '../studio/testPlans.js';
 import { browserRepairErrors, contentHash, executeBrowserRun, listBrowserRuns, saveBrowserRun, type BrowserRun } from '../studio/browserRuns.js';
 import { randomUUID } from 'node:crypto';
@@ -316,7 +317,12 @@ export function createStudioApi(options: {
             plan.status = 'running'; await saveTestPlan(options.root, plan);
             try {
               const orchestrator = options.createOrchestrator?.() || createOrchestrator('StudioTester', undefined, { includeTester: true });
-              plan.result = await orchestrator.runTask({ id, type: 'browser_test_plan', description: record.description, context: { files, changeRequests: requests, repair: record.repair } }, 'tester', { signal });
+              const context = { files, changeRequests: requests, repair: record.repair };
+              plan.result = await orchestrator.runTask({ id, type: 'browser_test_plan', description: record.description, context }, 'tester', { signal });
+              // Like a compile error for the Coder: a plan the schema rejects goes back to the Tester once.
+              if (plan.result.status !== 'success' && !signal.aborted && isInvalidPlanError(plan.result.reasoning || '')) {
+                plan.result = await orchestrator.runTask({ id: `${id}-retry`, type: 'browser_test_plan', description: record.description, context: { ...context, invalidPlanFeedback: invalidPlanFeedback(plan.result.reasoning || '') } }, 'tester', { signal });
+              }
               if (plan.result.status !== 'success') throw new Error(plan.result.reasoning || 'Test planning failed');
               signal.throwIfAborted(); plan.status = 'ready';
               await appendStudioEvent(options.root, projectId, { type: 'test_plan_ready', data: { planId: id, checks: plan.result.output?.checks?.length ?? 0 } });
