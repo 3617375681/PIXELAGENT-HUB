@@ -105,11 +105,14 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         const target = frame.locator(`css=${check.selector}`);
         if (await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
         const deadline = Date.now() + 2000;
-        // Text is compared as people read it: runs of whitespace count as one space.
-        const expected = check.assertion === 'disabled' ? check.expected : collapseWhitespace(check.expected);
+        // Text is compared as people read it: the rendered text, runs of whitespace as one space.
+        const assertion = check.assertion || 'text';
+        const expected = assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         do {
           controller.signal.throwIfAborted();
-          actual = check.assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : collapseWhitespace(await target.textContent() || '');
+          actual = assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled')))
+            : assertion === 'visible' ? String(await target.isVisible())
+              : collapseWhitespace(await target.innerText());
           if (actual === expected) break;
           await new Promise((resolve) => setTimeout(resolve, 50));
         } while (Date.now() < deadline);

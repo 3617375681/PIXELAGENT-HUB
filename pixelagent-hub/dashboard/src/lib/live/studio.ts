@@ -1,5 +1,5 @@
 import { strToU8, zipSync } from 'fflate';
-import { coderPrompt, invalidPlanFeedback, isInvalidPlanError, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
+import { coderPrompt, invalidCodeReplyNote, invalidPlanFeedback, isInvalidPlanError, isInvalidReplyError, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { browserFailureNotes } from '@studio-shared/repair';
 import { dependencyNote, unsupportedDependencies } from '@studio-shared/dependencies';
 import type { BrowserCheck, BrowserCheckResult } from '../studioChecks';
@@ -143,7 +143,19 @@ async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: s
   while (project.rounds.length < limit) {
     const round = project.rounds.length + 1;
     phase('coding', round);
-    const code = await ask('Coder', coderPrompt(project.description, 'javascript', { language: 'javascript', constraints: STUDIO_CONSTRAINTS, plan: project.plan?.output, previousFiles, revisionNotes }), parseCodeOutput, signal, LIVE_CODER_TIMEOUT_MS);
+    let code;
+    try {
+      code = await ask('Coder', coderPrompt(project.description, 'javascript', { language: 'javascript', constraints: STUDIO_CONSTRAINTS, plan: project.plan?.output, previousFiles, revisionNotes }), parseCodeOutput, signal, LIVE_CODER_TIMEOUT_MS);
+    } catch (error) {
+      // An unusable reply goes back to the Coder like a compile error; timeouts and provider errors end the run.
+      const message = error instanceof Error ? error.message : String(error);
+      if (signal.aborted || !(error instanceof SyntaxError || isInvalidReplyError(message))) throw error;
+      const note = invalidCodeReplyNote(message);
+      project.rounds.push({ round, code: { status: 'failed', reasoning: message }, build: { status: 'failed', errors: [note], checkedFiles: [], browserVerified: false } });
+      emit(entry, 'build_failed', { errors: summarizeErrors([note]) }, round);
+      revisionNotes = [...start.revisionNotes.filter((item) => item === REPAIR_INSTRUCTIONS), note];
+      continue;
+    }
     const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
     project.rounds.push(attempt);
     emit(entry, 'code_ready', { files: code.output.files.length }, round);

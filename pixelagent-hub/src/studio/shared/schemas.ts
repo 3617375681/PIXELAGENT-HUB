@@ -23,8 +23,9 @@ const action = z.discriminatedUnion('type', [
   z.object({ type: z.literal('input'), selector, value: z.string().max(300) }).strict(),
   z.object({ type: z.literal('key'), selector, key: z.string().min(1).max(32) }).strict(),
 ]);
-export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, expected: z.string().max(300), assertion: z.enum(['text', 'disabled']).optional() }).strict()
-  .refine((check) => check.assertion !== 'disabled' || ['true', 'false'].includes(check.expected), 'Disabled assertions require expected "true" or "false"');
+// text: rendered text; disabled: native :disabled state; visible: whether the element is shown.
+export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, expected: z.string().max(300), assertion: z.enum(['text', 'disabled', 'visible']).optional() }).strict()
+  .refine((check) => !['disabled', 'visible'].includes(check.assertion || 'text') || ['true', 'false'].includes(check.expected), 'Disabled and visible assertions require expected "true" or "false"');
 // isolation: 'shared' (default; saved and fixed plans) runs checks in order on one page; 'fresh' reloads the app before each check.
 export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min(1).max(10), limitations: z.array(z.string().max(300)).max(10), isolation: z.enum(['shared', 'fresh']).optional() }).strict().refine((plan) => new Set(plan.checks.map((check) => check.name)).size === plan.checks.length, 'Check names must be unique');
 
