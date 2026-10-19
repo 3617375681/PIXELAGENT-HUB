@@ -1,0 +1,576 @@
+{
+  "caseId": "pet",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksRevised": 2,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 34,
+  "reportedTokens": 14954,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-19T02:13:46.121Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-19T02:13:46.121Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-19T02:13:49.238Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Virtual Pet"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-19T02:13:49.238Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-19T02:13:59.786Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-19T02:13:59.786Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-19T02:14:00.305Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-19T02:14:00.306Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "33fbf053-2f5e-4f78-9f15-206673c6ef49"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-19T02:14:02.720Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "33fbf053-2f5e-4f78-9f15-206673c6ef49",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-19T02:14:02.721Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "testPlanId": "33fbf053-2f5e-4f78-9f15-206673c6ef49",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Initial mood and bars render on fresh load",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Pet creature is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Feed button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Play button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Sleep button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Mood text remains a Mood line after feeding",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Mood text remains a Mood line after playing",
+        "passed": false,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Mood text remains a Mood line after sleeping",
+        "passed": false,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Hunger bar is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "name": "Energy bar is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-19T02:14:10.016Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "4af0fd98-f73d-490d-aa6b-81e4cfc19901",
+        "status": "failed",
+        "passed": 8,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-19T02:14:10.019Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "33fbf053-2f5e-4f78-9f15-206673c6ef49",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-19T02:14:14.769Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "33fbf053-2f5e-4f78-9f15-206673c6ef49",
+        "checks": 10,
+        "review": true,
+        "revised": 2,
+        "verdicts": [
+          {
+            "name": "Mood text remains a Mood line after playing",
+            "verdict": "check-wrong",
+            "reason": "After one Play click from the initial 100/100/100 state, the stats become hunger 90, happiness 100, energy 85. The app's mood logic requires all three >70 for Happy, else Okay. Since energy 85>70, hun"
+          },
+          {
+            "name": "Mood text remains a Mood line after sleeping",
+            "verdict": "check-wrong",
+            "reason": "After one Sleep click from 100/100/100, stats become hunger 95, happiness 95, energy 100 (clamped). All >70, so mood is Happy, not Okay. The expected 'Mood: Okay' is wrong. To reach Okay deterministic"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-19T02:14:14.770Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "testPlanId": "33fbf053-2f5e-4f78-9f15-206673c6ef49",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Initial mood and bars render on fresh load",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Pet creature is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Feed button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Play button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Sleep button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Mood text remains a Mood line after feeding",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Mood text remains a Mood line after playing",
+        "passed": true,
+        "actual": "Mood: Okay"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Mood text remains a Mood line after sleeping",
+        "passed": true,
+        "actual": "Mood: Okay"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Hunger bar is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "name": "Energy bar is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-19T02:14:17.966Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "6419a4f2-affe-4e40-a571-7311cceedfb2",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-19T02:14:17.970Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial mood and bars render on fresh load",
+        "actions": [],
+        "selector": "#mood",
+        "expected": "Mood: Happy",
+        "assertion": "text"
+      },
+      {
+        "name": "Pet creature is visible",
+        "actions": [],
+        "selector": "#pet",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Feed button is enabled",
+        "actions": [],
+        "selector": "#feed-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Play button is enabled",
+        "actions": [],
+        "selector": "#play-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Sleep button is enabled",
+        "actions": [],
+        "selector": "#sleep-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Mood text remains a Mood line after feeding",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#feed-btn"
+          }
+        ],
+        "selector": "#mood",
+        "expected": "Mood: Happy",
+        "assertion": "text"
+      },
+      {
+        "name": "Mood text remains a Mood line after playing",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#mood",
+        "expected": "Mood: Okay",
+        "assertion": "text"
+      },
+      {
+        "name": "Mood text remains a Mood line after sleeping",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          }
+        ],
+        "selector": "#mood",
+        "expected": "Mood: Okay",
+        "assertion": "text"
+      },
+      {
+        "name": "Hunger bar is visible",
+        "actions": [],
+        "selector": "#hunger-bar",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Energy bar is visible",
+        "actions": [],
+        "selector": "#energy-bar",
+        "expected": "true",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "Bar fill percentages are set via inline style width and are not observable through text, disabled, or visible assertions; bar values cannot be verified with the allowed assertion types.",
+      "CSS-drawn pet appearance and mood-driven expression classes (happy/sad/sleeping) cannot be verified without pixel or computed-style inspection.",
+      "The 5-second stat decay interval makes numeric stat values time-dependent and therefore unverifiable.",
+      "Exact numeric changes to hunger, happiness and energy from Feed/Play/Sleep cannot be asserted with text/disabled/visible checks.",
+      "Keyboard accessibility and focus-visible styling cannot be tested with synthetic DOM key events."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4033,
+      "completion_tokens": 473,
+      "total_tokens": 4506,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 3777
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Virtual Pet</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-card\">\n    <h1>Pixel Pet</h1>\n    <div class=\"pet-container\">\n      <div class=\"pet\" id=\"pet\" aria-hidden=\"true\">\n        <div class=\"pet-body\">\n          <div class=\"pet-eye left\"></div>\n          <div class=\"pet-eye right\"></div>\n          <div class=\"pet-mouth\"></div>\n        </div>\n      </div>\n    </div>\n    <p class=\"mood\" id=\"mood\" aria-live=\"polite\">Mood: Happy</p>\n    <div class=\"stats\">\n      <div class=\"stat\">\n        <span class=\"stat-label\">Hunger</span>\n        <div class=\"bar-bg\"><div class=\"bar-fill hunger\" id=\"hunger-bar\"></div></div>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Happiness</span>\n        <div class=\"bar-bg\"><div class=\"bar-fill happiness\" id=\"happiness-bar\"></div></div>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Energy</span>\n        <div class=\"bar-bg\"><div class=\"bar-fill energy\" id=\"energy-bar\"></div></div>\n      </div>\n    </div>\n    <div class=\"controls\">\n      <button id=\"feed-btn\" aria-label=\"Feed the pet\">Feed</button>\n      <button id=\"play-btn\" aria-label=\"Play with the pet\">Play</button>\n      <button id=\"sleep-btn\" aria-label=\"Put the pet to sleep\">Sleep</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #2d1b3d;\n  --card-bg: #3e2a5c;\n  --text: #f0e6ff;\n  --accent: #b388ff;\n  --accent-hover: #d1b3ff;\n  --hunger-color: #ff6b6b;\n  --happiness-color: #ffd93d;\n  --energy-color: #6bcb77;\n  --bar-bg: #1e1230;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.game-card {\n  background: var(--card-bg);\n  border-radius: 20px;\n  padding: 24px;\n  max-width: 480px;\n  width: 100%;\n  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  align-items: center;\n}\n\nh1 {\n  font-size: 24px;\n  font-weight: 700;\n  letter-spacing: 1px;\n  color: var(--accent);\n}\n\n.pet-container {\n  width: 160px;\n  height: 160px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(0, 0, 0, 0.2);\n  border-radius: 16px;\n  padding: 8px;\n}\n\n.pet {\n  width: 120px;\n  height: 120px;\n  position: relative;\n  image-rendering: pixelated;\n}\n\n.pet-body {\n  width: 100%;\n  height: 100%;\n  background: #ffb347;\n  border-radius: 24px 24px 16px 16px;\n  position: relative;\n  box-shadow:\n    -8px -8px 0 0 #ffb347,\n    8px -8px 0 0 #ffb347,\n    -8px 8px 0 0 #ffb347,\n    8px 8px 0 0 #ffb347,\n    0 0 0 8px #e6952e;\n  transition: transform 0.2s;\n}\n\n.pet-body::after {\n  content: '';\n  position: absolute;\n  bottom: -16px;\n  left: 50%;\n  transform: translateX(-50%);\n  width: 40px;\n  height: 16px;\n  background: #e6952e;\n  border-radius: 0 0 8px 8px;\n}\n\n.pet-eye {\n  position: absolute;\n  width: 16px;\n  height: 16px;\n  background: #2d1b3d;\n  border-radius: 4px;\n  top: 40px;\n}\n\n.pet-eye.left {\n  left: 28px;\n}\n\n.pet-eye.right {\n  right: 28px;\n}\n\n.pet-mouth {\n  position: absolute;\n  width: 24px;\n  height: 8px;\n  background: #2d1b3d;\n  border-radius: 0 0 8px 8px;\n  bottom: 32px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.pet.sleeping .pet-eye {\n  height: 4px;\n  top: 46px;\n  border-radius: 2px;\n}\n\n.pet.sleeping .pet-mouth {\n  width: 16px;\n  height: 4px;\n  border-radius: 4px;\n}\n\n.pet.happy .pet-mouth {\n  width: 32px;\n  height: 16px;\n  border-radius: 0 0 16px 16px;\n  bottom: 24px;\n}\n\n.pet.sad .pet-mouth {\n  width: 24px;\n  height: 8px;\n  border-radius: 8px 8px 0 0;\n  bottom: 24px;\n}\n\n.mood {\n  font-size: 18px;\n  font-weight: 600;\n  color: var(--accent-hover);\n  min-height: 1.5em;\n}\n\n.stats {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.stat {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n}\n\n.stat-label {\n  font-size: 14px;\n  font-weight: 600;\n  opacity: 0.9;\n}\n\n.bar-bg {\n  width: 100%;\n  height: 16px;\n  background: var(--bar-bg);\n  border-radius: 8px;\n  overflow: hidden;\n}\n\n.bar-fill {\n  height: 100%;\n  width: 100%;\n  border-radius: 8px;\n  transition: width 0.3s ease;\n}\n\n.bar-fill.hunger {\n  background: var(--hunger-color);\n}\n\n.bar-fill.happiness {\n  background: var(--happiness-color);\n}\n\n.bar-fill.energy {\n  background: var(--energy-color);\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n  flex-wrap: wrap;\n  justify-content: center;\n  width: 100%;\n}\n\nbutton {\n  font-family: inherit;\n  font-size: 16px;\n  font-weight: 600;\n  padding: 12px 24px;\n  border: none;\n  border-radius: 12px;\n  background: var(--accent);\n  color: var(--bg);\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  flex: 1 1 auto;\n  min-width: 100px;\n}\n\nbutton:hover {\n  background: var(--accent-hover);\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--text);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.96);\n}\n\n@media (max-width: 400px) {\n  .game-card {\n    padding: 16px;\n    gap: 16px;\n  }\n  button {\n    padding: 10px 16px;\n    min-width: 80px;\n  }\n  .pet-container {\n    width: 140px;\n    height: 140px;\n  }\n  .pet {\n    width: 100px;\n    height: 100px;\n  }\n  .pet-body {\n    border-radius: 20px 20px 14px 14px;\n    box-shadow:\n      -6px -6px 0 0 #ffb347,\n      6px -6px 0 0 #ffb347,\n      -6px 6px 0 0 #ffb347,\n      6px 6px 0 0 #ffb347,\n      0 0 0 6px #e6952e;\n  }\n  .pet-eye {\n    width: 12px;\n    height: 12px;\n    top: 32px;\n  }\n  .pet-eye.left {\n    left: 22px;\n  }\n  .pet-eye.right {\n    right: 22px;\n  }\n  .pet-mouth {\n    width: 20px;\n    height: 6px;\n    bottom: 26px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const state = {\n  hunger: 100,\n  happiness: 100,\n  energy: 100\n};\n\nconst petEl = document.getElementById('pet');\nconst moodEl = document.getElementById('mood');\nconst hungerBar = document.getElementById('hunger-bar');\nconst happinessBar = document.getElementById('happiness-bar');\nconst energyBar = document.getElementById('energy-bar');\n\nfunction clamp(value) {\n  return Math.max(0, Math.min(100, value));\n}\n\nfunction updateUI() {\n  hungerBar.style.width = state.hunger + '%';\n  happinessBar.style.width = state.happiness + '%';\n  energyBar.style.width = state.energy + '%';\n\n  petEl.classList.remove('happy', 'sad', 'sleeping');\n\n  let mood = 'Happy';\n  if (state.energy < 20) {\n    mood = 'Sleepy';\n    petEl.classList.add('sleeping');\n  } else if (state.hunger < 20) {\n    mood = 'Hungry';\n    petEl.classList.add('sad');\n  } else if (state.happiness < 20) {\n    mood = 'Sad';\n    petEl.classList.add('sad');\n  } else if (state.hunger > 70 && state.happiness > 70 && state.energy > 70) {\n    mood = 'Happy';\n    petEl.classList.add('happy');\n  } else {\n    mood = 'Okay';\n  }\n\n  moodEl.textContent = 'Mood: ' + mood;\n}\n\nfunction feed() {\n  state.hunger = clamp(state.hunger + 20);\n  state.energy = clamp(state.energy - 5);\n  updateUI();\n}\n\nfunction play() {\n  state.happiness = clamp(state.happiness + 20);\n  state.energy = clamp(state.energy - 15);\n  state.hunger = clamp(state.hunger - 10);\n  updateUI();\n}\n\nfunction sleep() {\n  state.energy = clamp(state.energy + 30);\n  state.hunger = clamp(state.hunger - 5);\n  state.happiness = clamp(state.happiness - 5);\n  updateUI();\n}\n\ndocument.getElementById('feed-btn').addEventListener('click', feed);\ndocument.getElementById('play-btn').addEventListener('click', play);\ndocument.getElementById('sleep-btn').addEventListener('click', sleep);\n\nsetInterval(() => {\n  state.hunger = clamp(state.hunger - 1);\n  state.happiness = clamp(state.happiness - 1);\n  state.energy = clamp(state.energy - 1);\n  updateUI();\n}, 5000);\n\nupdateUI();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Virtual Pet\n\nA tiny offline virtual pet drawn with CSS. Keep your pet happy by feeding, playing, and letting it sleep.\n\n## Features\n\n- CSS-drawn pixel pet that changes expression based on mood.\n- Three stat bars: Hunger, Happiness, and Energy.\n- Feed, Play, and Sleep buttons to interact.\n- Mood text updates in real time.\n- Stats slowly decrease over time to keep the game engaging.\n- Fully keyboard accessible with visible focus states.\n- Responsive layout works from 360px wide.\n\n## How to Run\n\n1. Download or clone this folder.\n2. Open `index.html` in any modern browser.\n\nNo server, build step, or network connection required.\n\n## Controls\n\n- **Feed**: Increases hunger by 20, decreases energy by 5.\n- **Play**: Increases happiness by 20, decreases energy by 15, decreases hunger by 10.\n- **Sleep**: Increases energy by 30, decreases hunger and happiness by 5.\n\nAll stats are clamped between 0 and 100. Stats decrease by 1 every 5 seconds.\n\n## Files\n\n- `index.html` – structure and content\n- `styles.css` – visual design and pixel pet\n- `script.js` – game logic and state\n\n## Palette\n\n- Background: `#2d1b3d`\n- Card: `#3e2a5c`\n- Text: `#f0e6ff`\n- Accent: `#b388ff`\n- Bar colors: red, yellow, green\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

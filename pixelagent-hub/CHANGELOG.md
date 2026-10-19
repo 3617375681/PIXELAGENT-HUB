@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Added
+- `visible` check assertion ("true"/"false"): Playwright `isVisible` on the server, element box and visibility in the page
+- PLAY LIVE benchmark on six harder ideas (`config/live-showcase-cases.json`): 7/18 → 9/18 → 11/18 full passes over three rounds of fixes
+
+### Fixed
+- Test plans and Tester reviews are validated item by item: an invalid check is dropped with a note and an invalid verdict leaves its failure standing (the review had failed to parse in 7 of 8 real runs)
+- Text checks match the rendered text (paragraph breaks, CSS casing) or the source text
+- A Coder reply that is not valid JSON is fed back to the Coder as a failed round instead of ending the run (server and PLAY LIVE)
+- The server gives a rejected test plan one retry, like PLAY LIVE
+
 ## [2.1.0] — 2026-10-18
 
 ### Added

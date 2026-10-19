@@ -1,0 +1,773 @@
+{
+  "caseId": "pet",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "2/10",
+  "finalChecks": "3/10",
+  "reviewTriggered": true,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "2/10",
+    "3/10",
+    "3/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 86,
+  "reportedTokens": 21910,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-19T02:26:04.304Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-19T02:26:04.304Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-19T02:26:08.276Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Virtual Pet"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-19T02:26:08.276Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-19T02:26:17.730Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-19T02:26:17.730Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-19T02:26:18.145Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-19T02:26:18.146Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "22725713-e25b-445e-8692-029ae73ebdbc"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-19T02:26:21.240Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "22725713-e25b-445e-8692-029ae73ebdbc",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-19T02:26:21.241Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "testPlanId": "22725713-e25b-445e-8692-029ae73ebdbc",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-19T02:26:40.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Initial mood text is Happy",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Feed increases hunger aria-valuenow to 95",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Feed decreases energy aria-valuenow to 85",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Play increases happiness aria-valuenow to 85",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Play decreases energy aria-valuenow to 80",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Play decreases hunger aria-valuenow to 75",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Sleep increases energy aria-valuenow to 100 (clamped)",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Sleep decreases hunger aria-valuenow to 70",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Mood updates to Okay after two Play clicks",
+        "passed": false,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "name": "Feed button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-19T02:26:40.685Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "cd2ff22b-b2c5-4113-8b56-09121be71364",
+        "status": "failed",
+        "passed": 2,
+        "failed": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-19T02:26:40.687Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "22725713-e25b-445e-8692-029ae73ebdbc",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-19T02:26:45.405Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "22725713-e25b-445e-8692-029ae73ebdbc",
+        "checks": 10,
+        "review": true,
+        "revised": 1,
+        "verdicts": [
+          {
+            "name": "Feed increases hunger aria-valuenow to 95",
+            "verdict": "app-wrong",
+            "reason": "The check reads the element's text content, but the value lives in the aria-valuenow attribute; the observed empty text confirms this. The requirement is about the value, so assert the attribute inste"
+          },
+          {
+            "name": "Feed decreases energy aria-valuenow to 85",
+            "verdict": "app-wrong",
+            "reason": "Same issue: value is in aria-valuenow attribute, not text. 90-5=85 is correct."
+          },
+          {
+            "name": "Play increases happiness aria-valuenow to 85",
+            "verdict": "app-wrong",
+            "reason": "Value is in aria-valuenow attribute; 70+15=85 is correct."
+          },
+          {
+            "name": "Play decreases energy aria-valuenow to 80",
+            "verdict": "app-wrong",
+            "reason": "Value is in aria-valuenow attribute; 90-10=80 is correct."
+          },
+          {
+            "name": "Play decreases hunger aria-valuenow to 75",
+            "verdict": "app-wrong",
+            "reason": "Value is in aria-valuenow attribute; 80-5=75 is correct."
+          },
+          {
+            "name": "Sleep increases energy aria-valuenow to 100 (clamped)",
+            "verdict": "app-wrong",
+            "reason": "Value is in aria-valuenow attribute; 90+20 clamps to 100, correct."
+          },
+          {
+            "name": "Sleep decreases hunger aria-valuenow to 70",
+            "verdict": "app-wrong",
+            "reason": "Value is in aria-valuenow attribute; 80-10=70 is correct."
+          },
+          {
+            "name": "Mood updates to Okay after two Play clicks",
+            "verdict": "check-wrong",
+            "reason": "After two Play clicks: happiness 70+15+15=100, energy 90-10-10=70, hunger 80-5-5=70; avg=80 which is >=75, so mood stays Happy. The check's arithmetic is wrong; to reach Okay, three Play clicks give h"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-19T02:26:45.405Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "testPlanId": "22725713-e25b-445e-8692-029ae73ebdbc",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Initial mood text is Happy",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Feed increases hunger aria-valuenow to 95",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Feed decreases energy aria-valuenow to 85",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Play increases happiness aria-valuenow to 85",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Play decreases energy aria-valuenow to 80",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Play decreases hunger aria-valuenow to 75",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Sleep increases energy aria-valuenow to 100 (clamped)",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Sleep decreases hunger aria-valuenow to 70",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Mood updates to Okay after two Play clicks",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "name": "Feed button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-19T02:27:02.754Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "21c5e4d8-b077-4016-b561-089eb33d0151",
+        "status": "failed",
+        "passed": 3,
+        "failed": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-19T02:27:02.757Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-19T02:27:11.213Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-19T02:27:11.213Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-19T02:27:11.228Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-19T02:27:11.228Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "testPlanId": "22725713-e25b-445e-8692-029ae73ebdbc",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Initial mood text is Happy",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Feed increases hunger aria-valuenow to 95",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Feed decreases energy aria-valuenow to 85",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Play increases happiness aria-valuenow to 85",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Play decreases energy aria-valuenow to 80",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Play decreases hunger aria-valuenow to 75",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 47,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Sleep increases energy aria-valuenow to 100 (clamped)",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 48,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Sleep decreases hunger aria-valuenow to 70",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 49,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Mood updates to Okay after two Play clicks",
+        "passed": true,
+        "actual": "Mood: Happy"
+      }
+    },
+    {
+      "seq": 50,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "name": "Feed button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 51,
+      "at": "2026-10-19T02:27:28.585Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "817effc4-d749-47f7-9977-1e96b0e6e5c0",
+        "status": "failed",
+        "passed": 3,
+        "failed": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 52,
+      "at": "2026-10-19T02:27:28.593Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial mood text is Happy",
+        "actions": [],
+        "selector": "#mood",
+        "expected": "Mood: Happy",
+        "assertion": "text"
+      },
+      {
+        "name": "Feed increases hunger aria-valuenow to 95",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#feed-btn"
+          }
+        ],
+        "selector": "#hunger-bar",
+        "expected": "95"
+      },
+      {
+        "name": "Feed decreases energy aria-valuenow to 85",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#feed-btn"
+          }
+        ],
+        "selector": "#energy-bar",
+        "expected": "85"
+      },
+      {
+        "name": "Play increases happiness aria-valuenow to 85",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#happiness-bar",
+        "expected": "85"
+      },
+      {
+        "name": "Play decreases energy aria-valuenow to 80",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#energy-bar",
+        "expected": "80"
+      },
+      {
+        "name": "Play decreases hunger aria-valuenow to 75",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#hunger-bar",
+        "expected": "75"
+      },
+      {
+        "name": "Sleep increases energy aria-valuenow to 100 (clamped)",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          }
+        ],
+        "selector": "#energy-bar",
+        "expected": "100"
+      },
+      {
+        "name": "Sleep decreases hunger aria-valuenow to 70",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          }
+        ],
+        "selector": "#hunger-bar",
+        "expected": "70"
+      },
+      {
+        "name": "Mood updates to Okay after two Play clicks",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#mood",
+        "expected": "Mood: Happy",
+        "assertion": "text"
+      },
+      {
+        "name": "Feed button is enabled",
+        "actions": [],
+        "selector": "#feed-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "Passive stat decay every 10 seconds is time-dependent and cannot be reliably asserted with fixed expectations; checks run immediately after actions and may be affected if a decay tick fires between action and assertion.",
+      "Bar fill width is applied via inline style percentage; checks assert aria-valuenow on the progressbar element rather than computed pixel width, since visual width/pixel rendering is not observable via allowed assertions.",
+      "CSS-drawn pet appearance, pixel art styling, colors, and layout responsiveness cannot be verified with text/disabled/visible assertions.",
+      "Mood thresholds are computed from the average of all three stats; checks only cover the specific combinations produced by the listed actions, not every possible average boundary.",
+      "Clamping at 0 is not exercised because reaching 0 would require many clicks beyond the 8-action limit.",
+      "Keyboard focus-visible styling and synthetic vs trusted key events are not verifiable; no key-based checks are included."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3396,
+      "completion_tokens": 597,
+      "total_tokens": 3993,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 3012
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Virtual Pet</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Pet</h1>\n    <div class=\"pet\" aria-hidden=\"true\">\n      <div class=\"pet-body\">\n        <div class=\"pet-eye left\"></div>\n        <div class=\"pet-eye right\"></div>\n        <div class=\"pet-mouth\"></div>\n      </div>\n    </div>\n    <p class=\"mood\" id=\"mood\" aria-live=\"polite\">Mood: Happy</p>\n    <div class=\"bars\">\n      <div class=\"bar-container\">\n        <label for=\"hunger-bar\">Hunger</label>\n        <div class=\"bar\" id=\"hunger-bar\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"80\" aria-label=\"Hunger level\">\n          <div class=\"bar-fill hunger\" style=\"width: 80%\"></div>\n        </div>\n      </div>\n      <div class=\"bar-container\">\n        <label for=\"happiness-bar\">Happiness</label>\n        <div class=\"bar\" id=\"happiness-bar\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"70\" aria-label=\"Happiness level\">\n          <div class=\"bar-fill happiness\" style=\"width: 70%\"></div>\n        </div>\n      </div>\n      <div class=\"bar-container\">\n        <label for=\"energy-bar\">Energy</label>\n        <div class=\"bar\" id=\"energy-bar\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"90\" aria-label=\"Energy level\">\n          <div class=\"bar-fill energy\" style=\"width: 90%\"></div>\n        </div>\n      </div>\n    </div>\n    <div class=\"controls\">\n      <button id=\"feed-btn\" aria-label=\"Feed the pet\">Feed</button>\n      <button id=\"play-btn\" aria-label=\"Play with the pet\">Play</button>\n      <button id=\"sleep-btn\" aria-label=\"Let the pet sleep\">Sleep</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with pet, bars, and controls"
+    },
+    {
+      "path": "style.css",
+      "content": "/* Palette: #2d1b3d (dark purple), #f9e2ae (cream), #e8a87c (peach), #7ebc89 (green), #d95d5d (red) */\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: #2d1b3d;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  padding: 16px;\n}\n\n.card {\n  background: #f9e2ae;\n  border-radius: 24px;\n  padding: 32px 24px;\n  max-width: 420px;\n  width: 100%;\n  text-align: center;\n  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.6rem;\n  color: #2d1b3d;\n  margin-bottom: 16px;\n  letter-spacing: 1px;\n}\n\n/* Pixel pet */\n.pet {\n  display: flex;\n  justify-content: center;\n  margin-bottom: 16px;\n}\n\n.pet-body {\n  width: 96px;\n  height: 96px;\n  background: #7ebc89;\n  border-radius: 8px;\n  position: relative;\n  image-rendering: pixelated;\n  box-shadow:\n    0 0 0 4px #2d1b3d,\n    0 0 0 8px #e8a87c;\n}\n\n.pet-eye {\n  width: 16px;\n  height: 16px;\n  background: #2d1b3d;\n  position: absolute;\n  top: 28px;\n  border-radius: 2px;\n}\n\n.pet-eye.left { left: 20px; }\n.pet-eye.right { right: 20px; }\n\n.pet-mouth {\n  width: 32px;\n  height: 8px;\n  background: #2d1b3d;\n  position: absolute;\n  bottom: 24px;\n  left: 50%;\n  transform: translateX(-50%);\n  border-radius: 0 0 8px 8px;\n}\n\n/* Mood text */\n.mood {\n  font-size: 1.1rem;\n  font-weight: 600;\n  color: #2d1b3d;\n  margin-bottom: 20px;\n  min-height: 1.6em;\n}\n\n/* Bars */\n.bars {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\n.bar-container {\n  text-align: left;\n}\n\n.bar-container label {\n  display: block;\n  font-size: 0.95rem;\n  font-weight: 600;\n  color: #2d1b3d;\n  margin-bottom: 4px;\n}\n\n.bar {\n  height: 20px;\n  background: #e8d5b0;\n  border-radius: 10px;\n  overflow: hidden;\n  border: 2px solid #2d1b3d;\n}\n\n.bar-fill {\n  height: 100%;\n  border-radius: 8px;\n  transition: width 0.3s ease;\n}\n\n.bar-fill.hunger { background: #d95d5d; }\n.bar-fill.happiness { background: #e8a87c; }\n.bar-fill.energy { background: #7ebc89; }\n\n/* Buttons */\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\nbutton {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 20px;\n  border: 2px solid #2d1b3d;\n  border-radius: 12px;\n  background: #e8a87c;\n  color: #2d1b3d;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s;\n  min-width: 80px;\n}\n\nbutton:hover {\n  background: #f0b88e;\n}\n\nbutton:focus-visible {\n  outline: 3px solid #2d1b3d;\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.95);\n  background: #d99a6e;\n}\n\n/* Responsive */\n@media (max-width: 400px) {\n  .card { padding: 24px 16px; }\n  h1 { font-size: 1.4rem; }\n  button { padding: 10px 14px; font-size: 0.95rem; min-width: 70px; }\n  .pet-body { width: 80px; height: 80px; }\n  .pet-eye { width: 12px; height: 12px; top: 22px; }\n  .pet-eye.left { left: 16px; }\n  .pet-eye.right { right: 16px; }\n  .pet-mouth { width: 24px; bottom: 18px; }\n}",
+      "description": "Styling for pet, bars, buttons, and responsive layout"
+    },
+    {
+      "path": "script.js",
+      "content": "const state = {\n  hunger: 80,\n  happiness: 70,\n  energy: 90\n};\n\nconst moodEl = document.getElementById('mood');\nconst bars = {\n  hunger: document.getElementById('hunger-bar'),\n  happiness: document.getElementById('happiness-bar'),\n  energy: document.getElementById('energy-bar')\n};\n\nfunction clamp(value) {\n  return Math.max(0, Math.min(100, value));\n}\n\nfunction updateMood() {\n  const avg = (state.hunger + state.happiness + state.energy) / 3;\n  let mood;\n  if (avg >= 75) mood = 'Happy';\n  else if (avg >= 50) mood = 'Okay';\n  else if (avg >= 25) mood = 'Sad';\n  else mood = 'Critical';\n  moodEl.textContent = 'Mood: ' + mood;\n}\n\nfunction updateBars() {\n  for (const key of ['hunger', 'happiness', 'energy']) {\n    const bar = bars[key];\n    const fill = bar.querySelector('.bar-fill');\n    fill.style.width = state[key] + '%';\n    bar.setAttribute('aria-valuenow', state[key]);\n  }\n  updateMood();\n}\n\nfunction feed() {\n  state.hunger = clamp(state.hunger + 15);\n  state.energy = clamp(state.energy - 5);\n  updateBars();\n}\n\nfunction play() {\n  state.happiness = clamp(state.happiness + 15);\n  state.energy = clamp(state.energy - 10);\n  state.hunger = clamp(state.hunger - 5);\n  updateBars();\n}\n\nfunction sleep() {\n  state.energy = clamp(state.energy + 20);\n  state.hunger = clamp(state.hunger - 10);\n  updateBars();\n}\n\ndocument.getElementById('feed-btn').addEventListener('click', feed);\ndocument.getElementById('play-btn').addEventListener('click', play);\ndocument.getElementById('sleep-btn').addEventListener('click', sleep);\n\n// Passive decay every 10 seconds\nsetInterval(() => {\n  state.hunger = clamp(state.hunger - 2);\n  state.happiness = clamp(state.happiness - 1);\n  state.energy = clamp(state.energy - 1);\n  updateBars();\n}, 10000);\n\nupdateBars();",
+      "description": "Game logic with state, update functions, and event listeners"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Virtual Pet\n\nA fully offline, accessible pixel-art virtual pet built with only HTML, CSS, and plain JavaScript.\n\n## Features\n\n- CSS-drawn pixel creature\n- Hunger, Happiness, and Energy bars with ARIA progressbar roles\n- Feed, Play, and Sleep buttons that adjust stats\n- Mood text updates based on average stat values\n- Passive stat decay every 10 seconds\n- Keyboard-accessible controls with visible focus states\n- Responsive layout down to 360px wide\n\n## Controls\n\n- **Feed**: Increases hunger by 15, decreases energy by 5\n- **Play**: Increases happiness by 15, decreases energy by 10 and hunger by 5\n- **Sleep**: Increases energy by 20, decreases hunger by 10\n\nStats decay passively every 10 seconds.\n\n## Accessibility\n\n- Mood text uses `aria-live=\"polite\"` for screen reader announcements\n- Bars use `role=\"progressbar\"` with `aria-valuenow`\n- Buttons have `aria-label` attributes and visible focus indicators\n- All controls are reachable via keyboard\n\n## Run\n\nOpen `index.html` in any modern browser. No server or network required.\n\n## Files\n\n- `index.html` — structure\n- `style.css` — styling and pixel art\n- `script.js` — game logic\n- `README.md` — this file",
+      "description": "Project documentation and run instructions"
+    }
+  ]
+}
