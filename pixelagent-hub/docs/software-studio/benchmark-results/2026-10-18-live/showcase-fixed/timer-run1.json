@@ -1,0 +1,627 @@
+{
+  "caseId": "timer",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "7/10",
+  "finalChecks": "7/10",
+  "reviewTriggered": true,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "7/10",
+    "7/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 47,
+  "reportedTokens": 19844,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-19T02:10:13.566Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-19T02:10:13.566Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-19T02:10:17.560Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Pomodoro Timer"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-19T02:10:17.560Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-19T02:10:26.613Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-19T02:10:26.613Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-19T02:10:27.069Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-19T02:10:27.071Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "31a7de7a-a30b-4cc7-bc8b-b42046788daa"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-19T02:10:29.376Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "31a7de7a-a30b-4cc7-bc8b-b42046788daa",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-19T02:10:29.376Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "testPlanId": "31a7de7a-a30b-4cc7-bc8b-b42046788daa",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Initial work timer shows 25:00",
+        "passed": true,
+        "actual": "25:00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Break mode shows 05:00",
+        "passed": true,
+        "actual": "05:00"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Switching back to work shows 25:00",
+        "passed": true,
+        "actual": "25:00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Start button changes label to Pause",
+        "passed": false,
+        "actual": "PAUSE"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Pause after start changes label back to Start",
+        "passed": false,
+        "actual": "START"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Reset restores work countdown after starting",
+        "passed": true,
+        "actual": "25:00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Reset restores break countdown after starting",
+        "passed": true,
+        "actual": "05:00"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Reset button changes label from Pause back to Start",
+        "passed": false,
+        "actual": "START"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Timer display is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "name": "Start and reset controls are enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-19T02:10:38.641Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "447e4386-28f4-4e45-b000-7995f4aea04f",
+        "status": "failed",
+        "passed": 7,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-19T02:10:38.643Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "31a7de7a-a30b-4cc7-bc8b-b42046788daa",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-19T02:10:40.945Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "31a7de7a-a30b-4cc7-bc8b-b42046788daa",
+        "checks": 10,
+        "review": true,
+        "revised": 0,
+        "verdicts": [
+          {
+            "name": "Start button changes label to Pause",
+            "verdict": "app-wrong",
+            "reason": "The button text content is \"Pause\" in the DOM, but CSS text-transform:uppercase renders it as \"PAUSE\". The check expects the literal label text \"Pause\" which matches the source markup; the observed re"
+          },
+          {
+            "name": "Pause after start changes label back to Start",
+            "verdict": "app-wrong",
+            "reason": "Same uppercase CSS transform issue; app sets textContent to 'Start' but renders 'START'. The check correctly tests the label reverting to Start."
+          },
+          {
+            "name": "Reset button changes label from Pause back to Start",
+            "verdict": "app-wrong",
+            "reason": "Same uppercase CSS transform issue; reset sets label back to 'Start' in source but renders 'START'. Check correctly tests reset restoring Start label."
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-19T02:10:40.946Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-19T02:10:48.766Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-19T02:10:48.766Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-19T02:10:48.795Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-19T02:10:48.796Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "testPlanId": "31a7de7a-a30b-4cc7-bc8b-b42046788daa",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Initial work timer shows 25:00",
+        "passed": true,
+        "actual": "25:00"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Break mode shows 05:00",
+        "passed": true,
+        "actual": "05:00"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Switching back to work shows 25:00",
+        "passed": true,
+        "actual": "25:00"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Start button changes label to Pause",
+        "passed": false,
+        "actual": "PAUSE"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Pause after start changes label back to Start",
+        "passed": false,
+        "actual": "START"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Reset restores work countdown after starting",
+        "passed": true,
+        "actual": "25:00"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Reset restores break countdown after starting",
+        "passed": true,
+        "actual": "05:00"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Reset button changes label from Pause back to Start",
+        "passed": false,
+        "actual": "START"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Timer display is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "name": "Start and reset controls are enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-19T02:10:58.190Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "2ddc5ca5-835a-4885-a71e-f22782d45fec",
+        "status": "failed",
+        "passed": 7,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-19T02:10:58.193Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial work timer shows 25:00",
+        "actions": [],
+        "selector": "#timerDisplay",
+        "expected": "25:00"
+      },
+      {
+        "name": "Break mode shows 05:00",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#breakMode"
+          }
+        ],
+        "selector": "#timerDisplay",
+        "expected": "05:00"
+      },
+      {
+        "name": "Switching back to work shows 25:00",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#breakMode"
+          },
+          {
+            "type": "click",
+            "selector": "#workMode"
+          }
+        ],
+        "selector": "#timerDisplay",
+        "expected": "25:00"
+      },
+      {
+        "name": "Start button changes label to Pause",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startPauseBtn"
+          }
+        ],
+        "selector": "#startPauseBtn",
+        "expected": "Pause"
+      },
+      {
+        "name": "Pause after start changes label back to Start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startPauseBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#startPauseBtn"
+          }
+        ],
+        "selector": "#startPauseBtn",
+        "expected": "Start"
+      },
+      {
+        "name": "Reset restores work countdown after starting",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startPauseBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#resetBtn"
+          }
+        ],
+        "selector": "#timerDisplay",
+        "expected": "25:00"
+      },
+      {
+        "name": "Reset restores break countdown after starting",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#breakMode"
+          },
+          {
+            "type": "click",
+            "selector": "#startPauseBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#resetBtn"
+          }
+        ],
+        "selector": "#timerDisplay",
+        "expected": "05:00"
+      },
+      {
+        "name": "Reset button changes label from Pause back to Start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startPauseBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#resetBtn"
+          }
+        ],
+        "selector": "#startPauseBtn",
+        "expected": "Start"
+      },
+      {
+        "name": "Timer display is visible",
+        "actions": [],
+        "selector": "#timerDisplay",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Start and reset controls are enabled",
+        "actions": [],
+        "selector": "#startPauseBtn",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "Cannot verify the actual countdown decrementing over time, since checks avoid timing-dependent assertions and no timing actions are supported.",
+      "Cannot verify automatic mode switch at zero (25:00 / 05:00 completion) without waiting real time.",
+      "Cannot verify aria-pressed state on mode buttons, only native disabled state and visible/text assertions are supported.",
+      "Cannot verify the big countdown font size or pixel styling, as pixel/CSS assertions are unsupported.",
+      "Cannot verify keyboard interaction semantics beyond synthetic DOM key events, which do not reflect trusted browser input."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3283,
+      "completion_tokens": 561,
+      "total_tokens": 3844,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 3027
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Pomodoro Timer</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Pomodoro</h1>\n\n    <div class=\"mode-indicator\" role=\"group\" aria-label=\"Timer mode\">\n      <button id=\"workMode\" class=\"mode-btn active\" aria-pressed=\"true\">Work</button>\n      <button id=\"breakMode\" class=\"mode-btn\" aria-pressed=\"false\">Break</button>\n    </div>\n\n    <div id=\"timerDisplay\" class=\"timer\" role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">25:00</div>\n\n    <div class=\"controls\">\n      <button id=\"startPauseBtn\" class=\"btn primary\" aria-label=\"Start timer\">Start</button>\n      <button id=\"resetBtn\" class=\"btn\" aria-label=\"Reset timer\">Reset</button>\n    </div>\n\n    <p class=\"hint\">Press Start to begin. Work 25 min, break 5 min.</p>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with timer display, mode buttons, and controls."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1a2e;\n  --card: #2d2640;\n  --text: #f0e6d2;\n  --accent: #e8a87c;\n  --accent-dark: #c47f5a;\n  --muted: #8a7f9e;\n  --green: #6fcf97;\n  --shadow: #0f0c18;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  background-image: \n    linear-gradient(45deg, #2a2340 25%, transparent 25%),\n    linear-gradient(-45deg, #2a2340 25%, transparent 25%),\n    linear-gradient(45deg, transparent 75%, #2a2340 75%),\n    linear-gradient(-45deg, transparent 75%, #2a2340 75%);\n  background-size: 32px 32px;\n  background-position: 0 0, 0 16px, 16px -16px, -16px 0;\n  font-family: 'Courier New', Courier, monospace;\n  color: var(--text);\n  padding: 20px;\n}\n\n.card {\n  background: var(--card);\n  border: 4px solid var(--shadow);\n  border-radius: 0;\n  padding: 30px 24px;\n  width: 100%;\n  max-width: 400px;\n  box-shadow: 8px 8px 0 var(--shadow);\n  text-align: center;\n}\n\nh1 {\n  font-size: 24px;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  margin-bottom: 24px;\n  color: var(--accent);\n  text-shadow: 2px 2px 0 var(--shadow);\n}\n\n.mode-indicator {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  margin-bottom: 24px;\n}\n\n.mode-btn {\n  font-family: inherit;\n  font-size: 16px;\n  padding: 10px 20px;\n  background: var(--bg);\n  color: var(--muted);\n  border: 3px solid var(--shadow);\n  border-radius: 0;\n  cursor: pointer;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  transition: background 0.1s, color 0.1s, transform 0.1s;\n}\n\n.mode-btn:hover {\n  background: #3a3152;\n  color: var(--text);\n}\n\n.mode-btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.mode-btn:active {\n  transform: translate(2px, 2px);\n}\n\n.mode-btn.active {\n  background: var(--accent);\n  color: var(--shadow);\n  border-color: var(--accent-dark);\n}\n\n.mode-btn.active:hover {\n  background: var(--accent-dark);\n}\n\n.timer {\n  font-size: 64px;\n  font-weight: bold;\n  letter-spacing: 4px;\n  margin: 20px 0 30px;\n  color: var(--text);\n  text-shadow: 4px 4px 0 var(--shadow);\n  font-variant-numeric: tabular-nums;\n  line-height: 1;\n}\n\n.controls {\n  display: flex;\n  gap: 16px;\n  justify-content: center;\n  margin-bottom: 24px;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 18px;\n  font-weight: bold;\n  padding: 14px 28px;\n  background: var(--bg);\n  color: var(--text);\n  border: 3px solid var(--shadow);\n  border-radius: 0;\n  cursor: pointer;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  transition: background 0.1s, transform 0.1s, box-shadow 0.1s;\n  box-shadow: 4px 4px 0 var(--shadow);\n}\n\n.btn:hover {\n  background: #3a3152;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: translate(4px, 4px);\n  box-shadow: none;\n}\n\n.btn.primary {\n  background: var(--accent);\n  color: var(--shadow);\n  border-color: var(--accent-dark);\n}\n\n.btn.primary:hover {\n  background: var(--accent-dark);\n}\n\n.btn.primary:focus-visible {\n  outline-color: var(--text);\n}\n\n.hint {\n  font-size: 14px;\n  color: var(--muted);\n  line-height: 1.5;\n}\n\n@media (max-width: 420px) {\n  .timer {\n    font-size: 48px;\n    letter-spacing: 2px;\n  }\n  .card {\n    padding: 24px 16px;\n  }\n  .btn {\n    padding: 12px 20px;\n    font-size: 16px;\n  }\n  h1 {\n    font-size: 20px;\n  }\n}",
+      "description": "Pixel-art themed styling with responsive layout."
+    },
+    {
+      "path": "script.js",
+      "content": "const WORK_TIME = 25 * 60;\nconst BREAK_TIME = 5 * 60;\n\nconst timerDisplay = document.getElementById('timerDisplay');\nconst startPauseBtn = document.getElementById('startPauseBtn');\nconst resetBtn = document.getElementById('resetBtn');\nconst workModeBtn = document.getElementById('workMode');\nconst breakModeBtn = document.getElementById('breakMode');\n\nlet currentMode = 'work';\nlet timeLeft = WORK_TIME;\nlet timerId = null;\nlet isRunning = false;\n\nfunction formatTime(seconds) {\n  const m = Math.floor(seconds / 60).toString().padStart(2, '0');\n  const s = (seconds % 60).toString().padStart(2, '0');\n  return `${m}:${s}`;\n}\n\nfunction updateDisplay() {\n  timerDisplay.textContent = formatTime(timeLeft);\n}\n\nfunction setMode(mode) {\n  if (isRunning) return;\n  currentMode = mode;\n  timeLeft = mode === 'work' ? WORK_TIME : BREAK_TIME;\n  updateDisplay();\n  workModeBtn.classList.toggle('active', mode === 'work');\n  workModeBtn.setAttribute('aria-pressed', mode === 'work');\n  breakModeBtn.classList.toggle('active', mode === 'break');\n  breakModeBtn.setAttribute('aria-pressed', mode === 'break');\n}\n\nfunction startTimer() {\n  if (isRunning) return;\n  isRunning = true;\n  startPauseBtn.textContent = 'Pause';\n  startPauseBtn.setAttribute('aria-label', 'Pause timer');\n  timerId = setInterval(() => {\n    timeLeft--;\n    updateDisplay();\n    if (timeLeft <= 0) {\n      clearInterval(timerId);\n      timerId = null;\n      isRunning = false;\n      startPauseBtn.textContent = 'Start';\n      startPauseBtn.setAttribute('aria-label', 'Start timer');\n      // Auto-switch mode on completion\n      if (currentMode === 'work') {\n        setMode('break');\n      } else {\n        setMode('work');\n      }\n    }\n  }, 1000);\n}\n\nfunction pauseTimer() {\n  if (!isRunning) return;\n  clearInterval(timerId);\n  timerId = null;\n  isRunning = false;\n  startPauseBtn.textContent = 'Start';\n  startPauseBtn.setAttribute('aria-label', 'Start timer');\n}\n\nfunction resetTimer() {\n  pauseTimer();\n  timeLeft = currentMode === 'work' ? WORK_TIME : BREAK_TIME;\n  updateDisplay();\n}\n\nstartPauseBtn.addEventListener('click', () => {\n  if (isRunning) {\n    pauseTimer();\n  } else {\n    startTimer();\n  }\n});\n\nresetBtn.addEventListener('click', resetTimer);\n\nworkModeBtn.addEventListener('click', () => setMode('work'));\nbreakModeBtn.addEventListener('click', () => setMode('break'));\n\n// Initialize\nupdateDisplay();",
+      "description": "Timer logic with start/pause/reset and mode switching."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Pomodoro Timer\n\nA simple, offline pixel-art styled Pomodoro timer built with plain HTML, CSS, and JavaScript.\n\n## Features\n\n- **25-minute work mode** and **5-minute break mode**\n- **Start/Pause** and **Reset** buttons\n- **Big countdown display** in MM:SS format\n- **Keyboard accessible** controls with visible focus states\n- **Responsive** layout that works from 360px wide\n- **No external dependencies** – fully offline\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Click **Work** or **Break** to choose a mode.\n3. Press **Start** to begin the countdown.\n4. Press **Pause** to stop temporarily, or **Reset** to restart the current mode.\n5. When the timer reaches zero, it automatically switches to the other mode.\n\n## Accessibility\n\n- All buttons are focusable and labeled.\n- The timer display uses `aria-live` to announce updates.\n- Mode buttons use `aria-pressed` to indicate the active state.\n\n## Offline\n\nThis app makes no network requests and uses no external assets. All graphics are drawn with CSS.\n\n## File Structure\n\n- `index.html` – main markup\n- `style.css` – pixel-art styling\n- `script.js` – timer logic\n- `README.md` – this file\n\n## License\n\nMIT",
+      "description": "Project documentation."
+    }
+  ]
+}

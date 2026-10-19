@@ -142,3 +142,19 @@ test('fresh isolation reloads the app before every check; shared plans keep thei
     assert.deepEqual(shared.checks.map((check) => check.actual), ['Break', 'Focus']);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('visible assertions and rendered text match what a person sees', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-visible-'));
+  try {
+    const content = '<html><body><div id="intro"><p>Use the arrow keys.</p><p>Eat the dot.</p></div><div id="win" style="display:none">You won!</div><button id="toggle" style="text-transform:uppercase">Pause</button><button id="show">Show</button><script>document.querySelector("#show").addEventListener("click",()=>document.querySelector("#win").style.display="block")</script></body></html>';
+    const checks = { checks: [
+      { name: 'Paragraphs read as separate sentences', actions: [], selector: '#intro', expected: 'Use the arrow keys. Eat the dot.' },
+      { name: 'Win message hidden', actions: [], selector: '#win', assertion: 'visible', expected: 'false' },
+      { name: 'Win message shown after click', actions: [{ type: 'click', selector: '#show' }], selector: '#win', assertion: 'visible', expected: 'true' },
+      { name: 'CSS casing does not change the label', actions: [], selector: '#toggle', expected: 'Pause' },
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.deepEqual(run.checks.map((check) => check.status), ['passed', 'passed', 'passed', 'passed'], JSON.stringify(run.checks));
+    assert.equal(run.checks[3].actual, 'PAUSE');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

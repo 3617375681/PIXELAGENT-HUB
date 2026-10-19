@@ -58,3 +58,29 @@ it('compares text with runs of whitespace as one space, like the server', async 
   const [result] = await runDOMChecks(document, [{ name: 'Formula', actions: [], selector: '#formula', expected: 'C→F: x×9/5+32 | F→C: (x−32)×5/9' }]);
   expect(result).toMatchObject({ status: 'passed', actual: 'C→F: x×9/5+32 | F→C: (x−32)×5/9' });
 });
+
+it('in-page visible assertions follow the element box and visibility, and text prefers innerText', async () => {
+  let shown = false;
+  const win = { textContent: 'You won!', innerText: 'You won!', getBoundingClientRect: () => ({ width: shown ? 100 : 0, height: shown ? 20 : 0 }), matches: () => false };
+  const button = { click: () => { shown = true; } };
+  const intro = { textContent: 'Use the arrow keys.Eat the dot.', innerText: 'Use the arrow keys.\n\nEat the dot.' };
+  const document = {
+    defaultView: { getComputedStyle: () => ({ visibility: 'visible' }) },
+    querySelectorAll: (selector: string) => selector === '#win' ? [win] : selector === '#show' ? [button] : [intro],
+  } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Hidden', actions: [], selector: '#win', assertion: 'visible', expected: 'false' },
+    { name: 'Shown', actions: [{ type: 'click', selector: '#show' }], selector: '#win', assertion: 'visible', expected: 'true' },
+    { name: 'Intro', actions: [], selector: '#intro', expected: 'Use the arrow keys. Eat the dot.' },
+  ]);
+  expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'passed']);
+});
+
+it('text matches the source text when CSS changes how it is rendered (text-transform)', async () => {
+  const button = { textContent: 'Pause', innerText: 'PAUSE' };
+  const document = { querySelectorAll: () => [button] } as unknown as Document;
+  const [result] = await runDOMChecks(document, [{ name: 'Label', actions: [], selector: '#toggle', expected: 'Pause' }]);
+  expect(result).toMatchObject({ status: 'passed', actual: 'PAUSE' });
+  const [wrong] = await runDOMChecks(document, [{ name: 'Label', actions: [], selector: '#toggle', expected: 'Start' }]);
+  expect(wrong.status).toBe('failed');
+});

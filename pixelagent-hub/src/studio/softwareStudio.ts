@@ -7,7 +7,7 @@ import type { Orchestrator } from '../core/Orchestrator.js';
 import type { TaskResult } from '../core/types.js';
 import { buildStaticProject, createSourceArchive, type BuildReport, type SourceFile } from './workspace.js';
 import { writeJsonSnapshot } from './atomicJson.js';
-import { REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE } from './shared/prompts.js';
+import { invalidCodeReplyNote, isInvalidReplyError, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE } from './shared/prompts.js';
 import { dependencyNote, unsupportedDependencies } from './shared/dependencies.js';
 import { appendStudioEvent, summarizeErrors, type StudioEventInput } from './events.js';
 
@@ -86,7 +86,15 @@ export async function runSoftwareStudio(options: {
       const attempt: StudioRecord['rounds'][number] = { round, code };
       record.rounds.push(attempt);
       await save();
-      if (code.status !== 'success') throw new Error(code.reasoning || 'Code generation failed');
+      if (code.status !== 'success') {
+        // An unusable reply goes back to the Coder like a compile error; timeouts and provider errors end the run.
+        if (options.signal?.aborted || !isInvalidReplyError(code.reasoning || '')) throw new Error(code.reasoning || 'Code generation failed');
+        attempt.build = { status: 'failed', tool: 'esbuild', errors: [invalidCodeReplyNote(code.reasoning || '')], checkedFiles: [], browserVerified: false };
+        await save();
+        await emit({ type: 'build_failed', round, data: { errors: summarizeErrors(attempt.build.errors) } });
+        revisionNotes = [...requestNotes, ...attempt.build.errors];
+        continue;
+      }
       await emit({ type: 'code_ready', round, data: { files: code.output.files?.length ?? 0 } });
       // Real packages are unsupported; like a compile error, the reason goes back to the Coder.
       const dependencies = unsupportedDependencies(code.output.dependencies);

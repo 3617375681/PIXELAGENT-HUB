@@ -238,3 +238,27 @@ it('a test plan the schema rejects goes back to the Tester once, with the reason
   expect(events.some((event) => event.type === 'test_plan_failed')).toBe(false);
   expect(events.find((event) => event.type === 'browser_run_finished')?.data).toMatchObject({ status: 'passed' });
 });
+
+it('a Coder reply that is not valid JSON goes back to the Coder instead of ending the run', async () => {
+  let coderCalls = 0;
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const body = JSON.parse(String(init.body));
+    const system: string = body.messages[0].content;
+    if (system.includes('project manager')) return sse(plan);
+    if (system.includes('test planner')) return sse(testPlan);
+    coderCalls++;
+    if (coderCalls === 1) {
+      const broken = new Response(`data: ${JSON.stringify({ model: 'deepseek-flash', choices: [{ delta: { content: '{"language":"javascript","files":[{"path":"index.html","content":"<p class="x">broken</p>"}]}' } }] })}\n\ndata: [DONE]\n\n`);
+      return broken;
+    }
+    expect(body.messages[1].content).toContain('Your previous reply could not be used');
+    return sse(code);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(coderCalls).toBe(2);
+  expect(events.find((event) => event.type === 'build_failed')?.round).toBe(1);
+  expect(events.at(-1)?.type).toBe('ready_for_review');
+});

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { codeSchema, planSchema, testPlanSchema, testerReviewSchema } from './schemas.js';
+import { browserCheckSchema, codeSchema, planSchema, testPlanSchema } from './schemas.js';
 
 /** A model reply as one JSON object: the first fenced block if present, otherwise the whole reply. */
 export function parseModelObject(raw: string): Record<string, unknown> {
@@ -27,22 +27,54 @@ export const parseCodeOutput = (object: unknown) => {
   return { language, files, explanation, dependencies };
 };
 
-/** `limitations` is descriptive: normalise it (strings, ≤300 chars, ≤10 items) rather than reject a usable plan. */
-const normaliseLimitations = (object: unknown) => {
-  if (!object || typeof object !== 'object' || Array.isArray(object)) return object;
-  const { limitations, ...rest } = object as Record<string, unknown>;
-  const list = Array.isArray(limitations) ? limitations : limitations === undefined || limitations === null ? [] : [limitations];
-  return { ...rest, limitations: list.map((item) => (typeof item === 'string' ? item : JSON.stringify(item)).slice(0, 300)).slice(0, 10) };
+/** Model-written checks: `assertion: null` means a text assertion. */
+const normaliseCheck = (check: unknown) => {
+  if (!check || typeof check !== 'object' || Array.isArray(check)) return check;
+  const { assertion, ...rest } = check as Record<string, unknown>;
+  return assertion === null || assertion === undefined ? rest : { ...rest, assertion };
 };
 
-export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema, normaliseLimitations(object), 'test plan');
+/**
+ * Descriptive fields are normalised (limitations: strings, ≤300 chars, ≤10 items) and a check that
+ * does not match the check format is dropped, with a note, instead of sinking the whole plan.
+ */
+const normalisePlan = (object: unknown) => {
+  if (!object || typeof object !== 'object' || Array.isArray(object)) return object;
+  const { limitations, checks, ...rest } = object as Record<string, unknown>;
+  const notes = (Array.isArray(limitations) ? limitations : limitations === undefined || limitations === null ? [] : [limitations])
+    .map((item) => (typeof item === 'string' ? item : JSON.stringify(item)).slice(0, 300));
+  let list = checks;
+  if (Array.isArray(checks)) {
+    const valid = checks.map(normaliseCheck).filter((check) => browserCheckSchema.safeParse(check).success);
+    if (valid.length && valid.length < checks.length) {
+      list = valid;
+      notes.unshift(`${checks.length - valid.length} planned check(s) were dropped because they did not match the check format.`);
+    }
+  }
+  return { ...rest, checks: list, limitations: notes.slice(0, 10) };
+};
+
+export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema, normalisePlan(object), 'test plan');
 
 /**
- * Tester review: keeps only verdicts for checks that actually failed; a "check-wrong" verdict counts
- * only with a valid corrected check of the same name (otherwise the failure stands).
+ * Tester review, validated verdict by verdict: a "check-wrong" verdict counts only for a check that
+ * actually failed and only with a valid corrected check of the same name; anything else leaves the
+ * failure standing. Only a reply without a verdicts list is rejected.
  */
 export const parseTesterReview = (object: unknown, failing: readonly string[]) => {
-  const { verdicts } = parseWith(testerReviewSchema, object, 'test review');
+  const raw = object && typeof object === 'object' && !Array.isArray(object) ? (object as { verdicts?: unknown }).verdicts : undefined;
+  if (!Array.isArray(raw)) throw new Error('The test review did not match the expected format: no verdicts list');
+  const verdicts = raw.flatMap((item) => {
+    if (!item || typeof item !== 'object') return [];
+    const value = item as Record<string, unknown>;
+    const check = value.check ? browserCheckSchema.safeParse(normaliseCheck(value.check)) : undefined;
+    return [{
+      name: typeof value.name === 'string' ? value.name : '',
+      verdict: value.verdict === 'check-wrong' ? 'check-wrong' as const : 'app-wrong' as const,
+      reason: (typeof value.reason === 'string' ? value.reason : value.reason == null ? '' : JSON.stringify(value.reason)).slice(0, 500),
+      check: check?.success ? check.data : undefined,
+    }];
+  });
   return failing.map((name) => {
     const verdict = verdicts.find((item) => item.name === name);
     const corrected = verdict?.verdict === 'check-wrong' && verdict.check?.name === name ? verdict.check : undefined;

@@ -1,0 +1,564 @@
+{
+  "caseId": "pet",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "7/9",
+  "finalChecks": "7/9",
+  "reviewTriggered": true,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "7/9",
+    "7/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 50,
+  "reportedTokens": 26086,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-19T01:57:21.195Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-19T01:57:21.195Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-19T01:57:25.187Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Virtual Pet"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-19T01:57:25.187Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-19T01:57:38.183Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-19T01:57:38.183Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-19T01:57:38.610Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-19T01:57:38.611Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8ada57a8-4902-4823-bc77-ba01d144bc15"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-19T01:57:41.154Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8ada57a8-4902-4823-bc77-ba01d144bc15",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-19T01:57:41.155Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "testPlanId": "8ada57a8-4902-4823-bc77-ba01d144bc15",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Initial mood and stat bars render at 70%",
+        "passed": true,
+        "actual": "Your pet is happy to see you!"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Feed raises hunger bar and value",
+        "passed": true,
+        "actual": "88%"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Feed updates hunger progressbar aria-valuenow",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Play raises happiness value",
+        "passed": true,
+        "actual": "90%"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Play lowers energy value",
+        "passed": true,
+        "actual": "58%"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Sleep raises energy value",
+        "passed": true,
+        "actual": "95%"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Sleep lowers hunger value",
+        "passed": true,
+        "actual": "64%"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "Play lowers hunger and mood reflects care needed",
+        "passed": false,
+        "actual": "Your pet is happy to see you!"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "name": "All action buttons are enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-19T01:57:48.030Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "6a38ed29-d132-4a5f-bd20-5f4968245d26",
+        "status": "failed",
+        "passed": 7,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-19T01:57:48.032Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8ada57a8-4902-4823-bc77-ba01d144bc15",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-19T01:57:50.078Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8ada57a8-4902-4823-bc77-ba01d144bc15",
+        "checks": 9,
+        "review": true,
+        "revised": 0,
+        "error": "The test review did not match the expected format: ✖ Invalid input; → at verdicts[0].check; ✖ Invalid input; → at verdicts[1].reason; ✖ Invalid input; → at verdicts[0].check.assertion"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-19T01:57:50.079Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-19T01:58:01.480Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-19T01:58:01.480Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-19T01:58:01.497Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-19T01:58:01.497Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "testPlanId": "8ada57a8-4902-4823-bc77-ba01d144bc15",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Initial mood and stat bars render at 70%",
+        "passed": true,
+        "actual": "Your pet is happy to see you!"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Feed raises hunger bar and value",
+        "passed": true,
+        "actual": "88%"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Feed updates hunger progressbar aria-valuenow",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Play raises happiness value",
+        "passed": true,
+        "actual": "90%"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Play lowers energy value",
+        "passed": true,
+        "actual": "58%"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Sleep raises energy value",
+        "passed": true,
+        "actual": "95%"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Sleep lowers hunger value",
+        "passed": true,
+        "actual": "64%"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "Play lowers hunger and mood reflects care needed",
+        "passed": false,
+        "actual": "Your pet is happy to see you!"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "name": "All action buttons are enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-19T01:58:08.439Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "416b369c-8435-4a87-947d-91e6cc18f3e0",
+        "status": "failed",
+        "passed": 7,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-19T01:58:08.444Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial mood and stat bars render at 70%",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#mood"
+          }
+        ],
+        "selector": "#mood",
+        "expected": "Your pet is happy to see you!"
+      },
+      {
+        "name": "Feed raises hunger bar and value",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#feed-btn"
+          }
+        ],
+        "selector": "#hunger-value",
+        "expected": "88%"
+      },
+      {
+        "name": "Feed updates hunger progressbar aria-valuenow",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#feed-btn"
+          }
+        ],
+        "selector": "#hunger-bar",
+        "expected": "88",
+        "assertion": "text"
+      },
+      {
+        "name": "Play raises happiness value",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#happiness-value",
+        "expected": "90%"
+      },
+      {
+        "name": "Play lowers energy value",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#energy-value",
+        "expected": "58%"
+      },
+      {
+        "name": "Sleep raises energy value",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          }
+        ],
+        "selector": "#energy-value",
+        "expected": "95%"
+      },
+      {
+        "name": "Sleep lowers hunger value",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#sleep-btn"
+          }
+        ],
+        "selector": "#hunger-value",
+        "expected": "64%"
+      },
+      {
+        "name": "Play lowers hunger and mood reflects care needed",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#mood",
+        "expected": "Your pet could use some care."
+      },
+      {
+        "name": "All action buttons are enabled",
+        "actions": [],
+        "selector": "#feed-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "Cannot assert CSS-drawn pixel pet appearance, colors, classes, or bounce animation; disabled assertion only covers native :disabled and text assertion only reads textContent.",
+      "Cannot verify aria-valuenow attribute values, aria-live announcements, or role attributes; only visible text is checked.",
+      "Cannot verify bar fill widths or visual bar changes.",
+      "Cannot reliably test the 5-second passive decay timer or mood threshold transitions requiring many clicks within the 8-action limit.",
+      "Cannot verify progressbar aria-valuemin/aria-valuemax or accessibility semantics beyond native disabled state."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4555,
+      "completion_tokens": 453,
+      "total_tokens": 5008,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 4299
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Virtual Pet</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"app-title\">\n    <h1 id=\"app-title\">Pixel Pet</h1>\n\n    <section class=\"pet-stage\" aria-label=\"Your pixel pet\">\n      <div class=\"pet\" id=\"pet\" aria-hidden=\"true\">\n        <div class=\"pet-body\">\n          <div class=\"pet-eye left\"></div>\n          <div class=\"pet-eye right\"></div>\n          <div class=\"pet-mouth\"></div>\n          <div class=\"pet-cheek left\"></div>\n          <div class=\"pet-cheek right\"></div>\n        </div>\n      </div>\n      <p class=\"mood\" id=\"mood\" role=\"status\" aria-live=\"polite\">Your pet is happy to see you!</p>\n    </section>\n\n    <section class=\"stats\" aria-label=\"Pet stats\">\n      <div class=\"stat\">\n        <div class=\"stat-label\">\n          <span>Hunger</span>\n          <span id=\"hunger-value\">70%</span>\n        </div>\n        <div class=\"bar\" role=\"progressbar\" aria-label=\"Hunger\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"70\" id=\"hunger-bar\">\n          <div class=\"bar-fill hunger\" id=\"hunger-fill\" style=\"width:70%\"></div>\n        </div>\n      </div>\n      <div class=\"stat\">\n        <div class=\"stat-label\">\n          <span>Happiness</span>\n          <span id=\"happiness-value\">70%</span>\n        </div>\n        <div class=\"bar\" role=\"progressbar\" aria-label=\"Happiness\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"70\" id=\"happiness-bar\">\n          <div class=\"bar-fill happiness\" id=\"happiness-fill\" style=\"width:70%\"></div>\n        </div>\n      </div>\n      <div class=\"stat\">\n        <div class=\"stat-label\">\n          <span>Energy</span>\n          <span id=\"energy-value\">70%</span>\n        </div>\n        <div class=\"bar\" role=\"progressbar\" aria-label=\"Energy\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"70\" id=\"energy-bar\">\n          <div class=\"bar-fill energy\" id=\"energy-fill\" style=\"width:70%\"></div>\n        </div>\n      </div>\n    </section>\n\n    <section class=\"controls\" aria-label=\"Pet actions\">\n      <button type=\"button\" id=\"feed-btn\" class=\"btn feed\" aria-label=\"Feed your pet\">Feed</button>\n      <button type=\"button\" id=\"play-btn\" class=\"btn play\" aria-label=\"Play with your pet\">Play</button>\n      <button type=\"button\" id=\"sleep-btn\" class=\"btn sleep\" aria-label=\"Let your pet sleep\">Sleep</button>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with pet, stat bars, and controls"
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1b1f3b;\n  --card: #f4f1de;\n  --ink: #2b2d42;\n  --accent: #e07a5f;\n  --accent-2: #3d405b;\n  --good: #81b29a;\n  --warn: #f2cc8f;\n  --bad: #e07a5f;\n  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);\n  --radius: 16px;\n  --font: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n}\n\n* { box-sizing: border-box; }\n\nhtml, body {\n  margin: 0;\n  min-height: 100%;\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--ink);\n}\n\nbody {\n  display: grid;\n  place-items: center;\n  padding: 24px 16px;\n  background: radial-gradient(circle at 20% 20%, #2e335c, var(--bg) 60%);\n}\n\n.card {\n  width: min(100%, 420px);\n  background: var(--card);\n  border-radius: var(--radius);\n  box-shadow: var(--shadow);\n  padding: 24px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  border: 4px solid var(--accent-2);\n}\n\nh1 {\n  margin: 0;\n  text-align: center;\n  font-size: 1.6rem;\n  letter-spacing: 0.5px;\n  color: var(--accent-2);\n}\n\n.pet-stage {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 12px;\n}\n\n.pet {\n  width: 120px;\n  height: 120px;\n  display: grid;\n  place-items: center;\n  transition: transform 0.2s ease;\n}\n\n.pet-body {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  background: var(--accent);\n  border-radius: 12px;\n  box-shadow: inset -6px -6px 0 rgba(0, 0, 0, 0.12), 0 6px 0 var(--accent-2);\n  transition: background 0.3s ease;\n}\n\n.pet-eye {\n  position: absolute;\n  top: 30px;\n  width: 14px;\n  height: 18px;\n  background: var(--ink);\n  border-radius: 4px;\n}\n.pet-eye.left { left: 22px; }\n.pet-eye.right { right: 22px; }\n\n.pet-mouth {\n  position: absolute;\n  bottom: 26px;\n  left: 50%;\n  transform: translateX(-50%);\n  width: 28px;\n  height: 10px;\n  border-bottom: 4px solid var(--ink);\n  border-radius: 0 0 12px 12px;\n  transition: all 0.2s ease;\n}\n\n.pet-cheek {\n  position: absolute;\n  bottom: 34px;\n  width: 12px;\n  height: 8px;\n  background: rgba(224, 122, 95, 0.6);\n  border-radius: 50%;\n}\n.pet-cheek.left { left: 12px; }\n.pet-cheek.right { right: 12px; }\n\n.pet.happy .pet-body { background: var(--accent); }\n.pet.sad .pet-body { background: #b5838d; }\n.pet.sleepy .pet-body { background: var(--accent-2); }\n.pet.sleepy .pet-eye { height: 4px; top: 38px; }\n.pet.sad .pet-mouth {\n  border-bottom: none;\n  border-top: 4px solid var(--ink);\n  border-radius: 12px 12px 0 0;\n}\n.pet.happy .pet-mouth { width: 32px; }\n\n.pet.bounce { transform: translateY(-6px) scale(1.03); }\n\n.mood {\n  margin: 0;\n  font-size: 1.05rem;\n  font-weight: 600;\n  text-align: center;\n  min-height: 1.4em;\n  color: var(--accent-2);\n}\n\n.stats {\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n}\n\n.stat-label {\n  display: flex;\n  justify-content: space-between;\n  font-size: 0.95rem;\n  font-weight: 600;\n  margin-bottom: 6px;\n  color: var(--accent-2);\n}\n\n.bar {\n  height: 16px;\n  background: #d9d4c5;\n  border-radius: 8px;\n  overflow: hidden;\n  border: 2px solid var(--accent-2);\n}\n\n.bar-fill {\n  height: 100%;\n  width: 70%;\n  border-radius: 6px;\n  transition: width 0.35s ease, background 0.35s ease;\n}\n\n.bar-fill.hunger { background: var(--good); }\n.bar-fill.happiness { background: var(--warn); }\n.bar-fill.energy { background: #6d9dc5; }\n.bar-fill.low { background: var(--bad); }\n\n.controls {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 700;\n  padding: 12px 8px;\n  border-radius: 10px;\n  border: 3px solid var(--accent-2);\n  background: #fff;\n  color: var(--accent-2);\n  cursor: pointer;\n  transition: transform 0.08s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;\n  min-height: 48px;\n}\n\n.btn:hover {\n  background: var(--accent-2);\n  color: #fff;\n  transform: translateY(-2px);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.btn:active {\n  transform: translateY(1px) scale(0.98);\n  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.2);\n}\n\n.btn.feed { border-color: var(--good); color: #2f6b53; }\n.btn.feed:hover { background: var(--good); color: #fff; }\n\n.btn.play { border-color: var(--warn); color: #8a6d1f; }\n.btn.play:hover { background: var(--warn); color: var(--ink); }\n\n.btn.sleep { border-color: #6d9dc5; color: #2f5f8a; }\n.btn.sleep:hover { background: #6d9dc5; color: #fff; }\n\n@media (max-width: 360px) {\n  .card { padding: 16px; gap: 16px; }\n  h1 { font-size: 1.4rem; }\n  .controls { gap: 8px; }\n  .btn { font-size: 0.95rem; padding: 10px 4px; }\n}\n",
+      "description": "Stylesheet with palette, layout, pet drawing, and control states"
+    },
+    {
+      "path": "script.js",
+      "content": "const state = {\n  hunger: 70,\n  happiness: 70,\n  energy: 70\n};\n\nconst petEl = document.getElementById('pet');\nconst moodEl = document.getElementById('mood');\n\nconst els = {\n  hunger: {\n    bar: document.getElementById('hunger-bar'),\n    fill: document.getElementById('hunger-fill'),\n    value: document.getElementById('hunger-value')\n  },\n  happiness: {\n    bar: document.getElementById('happiness-bar'),\n    fill: document.getElementById('happiness-fill'),\n    value: document.getElementById('happiness-value')\n  },\n  energy: {\n    bar: document.getElementById('energy-bar'),\n    fill: document.getElementById('energy-fill'),\n    value: document.getElementById('energy-value')\n  }\n};\n\nfunction clamp(n) {\n  return Math.max(0, Math.min(100, Math.round(n)));\n}\n\nfunction updateMood() {\n  const { hunger, happiness, energy } = state;\n  let mood = 'Your pet is happy to see you!';\n  let className = 'happy';\n\n  if (hunger < 25) {\n    mood = 'Your pet is very hungry...';\n    className = 'sad';\n  } else if (energy < 25) {\n    mood = 'Your pet is sleepy. Zzz...';\n    className = 'sleepy';\n  } else if (happiness < 25) {\n    mood = 'Your pet feels lonely and sad.';\n    className = 'sad';\n  } else if (hunger < 50 || happiness < 50 || energy < 50) {\n    mood = 'Your pet could use some care.';\n    className = 'sad';\n  } else if (hunger > 80 && happiness > 80 && energy > 80) {\n    mood = 'Your pet is absolutely thrilled!';\n    className = 'happy';\n  }\n\n  moodEl.textContent = mood;\n  petEl.className = 'pet ' + className;\n}\n\nfunction render() {\n  for (const key of ['hunger', 'happiness', 'energy']) {\n    const val = clamp(state[key]);\n    const group = els[key];\n    group.fill.style.width = val + '%';\n    group.value.textContent = val + '%';\n    group.bar.setAttribute('aria-valuenow', String(val));\n    group.bar.setAttribute('aria-valuetext', val + '%');\n    group.fill.classList.toggle('low', val < 25);\n  }\n  updateMood();\n}\n\nfunction animatePet() {\n  petEl.classList.add('bounce');\n  window.setTimeout(() => petEl.classList.remove('bounce'), 220);\n}\n\nfunction feed() {\n  state.hunger = clamp(state.hunger + 18);\n  state.happiness = clamp(state.happiness + 4);\n  state.energy = clamp(state.energy + 2);\n  render();\n  animatePet();\n}\n\nfunction play() {\n  state.happiness = clamp(state.happiness + 20);\n  state.energy = clamp(state.energy - 12);\n  state.hunger = clamp(state.hunger - 8);\n  render();\n  animatePet();\n}\n\nfunction sleep() {\n  state.energy = clamp(state.energy + 25);\n  state.hunger = clamp(state.hunger - 6);\n  state.happiness = clamp(state.happiness - 4);\n  render();\n  animatePet();\n}\n\ndocument.getElementById('feed-btn').addEventListener('click', feed);\ndocument.getElementById('play-btn').addEventListener('click', play);\ndocument.getElementById('sleep-btn').addEventListener('click', sleep);\n\n// Gentle passive decay over time\nlet tick = 0;\nwindow.setInterval(() => {\n  tick += 1;\n  if (tick % 3 === 0) {\n    state.hunger = clamp(state.hunger - 1);\n    state.happiness = clamp(state.happiness - 1);\n    state.energy = clamp(state.energy - 1);\n    render();\n  }\n}, 5000);\n\nrender();\n",
+      "description": "Game state, stat logic, mood updates, and event listeners"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Virtual Pet\n\nA self-contained, offline browser app where you care for a CSS-drawn pixel creature. Keep its hunger, happiness, and energy bars up with Feed, Play, and Sleep actions, and watch its mood text change.\n\n## Features\n\n- CSS-drawn pixel pet with mood-dependent appearance (happy, sad, sleepy).\n- Three stat bars: Hunger, Happiness, and Energy, each with ARIA progressbar attributes.\n- Feed, Play, and Sleep buttons that adjust stats and trigger a bounce animation.\n- Mood text updates based on stat thresholds and announces changes via `aria-live`.\n- Gentle passive stat decay over time.\n- Keyboard-accessible labeled controls with visible hover, focus, and pressed states.\n- Responsive layout that works from 360px wide.\n- Cohesive 5-color palette and system font stack.\n\n## Usage\n\nOpen `index.html` in any modern browser. No server, build step, or network connection required.\n\n- **Feed** raises hunger and slightly boosts happiness and energy.\n- **Play** raises happiness but costs energy and hunger.\n- **Sleep** restores energy but reduces hunger and happiness slightly.\n\n## Files\n\n- `index.html` — structure and controls\n- `styles.css` — palette, layout, pet drawing, and states\n- `script.js` — game state, stat logic, and event listeners\n\n## Accessibility\n\nAll buttons are native `<button>` elements with `aria-label`s. Bars expose `role=\"progressbar\"` with live `aria-valuenow`. Focus styles are visible, and the mood text uses `role=\"status\"` with `aria-live=\"polite\"`.\n",
+      "description": "Project documentation and usage instructions"
+    }
+  ]
+}
