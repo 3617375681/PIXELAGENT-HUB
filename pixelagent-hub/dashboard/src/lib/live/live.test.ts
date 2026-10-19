@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import type { StudioEvent } from '../../types/studio';
+import type { StudioEvent, StudioProject } from '../../types/studio';
 
 const build = vi.fn();
 const checks = vi.fn();
@@ -11,14 +11,14 @@ const code = { language: 'javascript', files: [{ path: 'index.html', content: '<
 const testPlan = { checks: [{ name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' }], limitations: [] };
 
 /** A DeepSeek-style SSE body that splits the reply across chunks, with usage in the last one. */
-const sse = (reply: unknown) => {
+const sse = (reply: unknown, usage: object | null = { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }) => {
   const text = '```json\n' + JSON.stringify(reply) + '\n```';
   const half = Math.floor(text.length / 2);
   const chunk = (content: string, usage?: object) => `data: ${JSON.stringify({ model: 'deepseek-flash', choices: [{ delta: { content } }], usage: usage ?? null })}\n\n`;
   return new Response(new ReadableStream({ start(controller) {
     const encoder = new TextEncoder();
     controller.enqueue(encoder.encode(chunk(text.slice(0, half))));
-    controller.enqueue(encoder.encode(chunk(text.slice(half), { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }) + 'data: [DONE]\n\n'));
+    controller.enqueue(encoder.encode(chunk(text.slice(half), usage ?? undefined) + 'data: [DONE]\n\n'));
     controller.close();
   } }), { status: 200 });
 };
@@ -75,6 +75,36 @@ it('runs plan → code → failed build → repaired build → in-page checks, w
   expect(await live.liveRequest('GET', `/api/studio/projects/${projectId}/preview`)).toEqual({ html: '<!DOCTYPE html><html></html>' });
   expect((await live.liveArchive(projectId)).size).toBeGreaterThan(100);
   await expect(live.liveRequest('GET', '/api/studio/projects/not-live/events?after=0')).resolves.toBeUndefined();
+});
+
+it.each([true, false])('reports running plan and Coder usage before completion (provider reports usage: %s)', async (reported) => {
+  let releasePlan!: (response: Response) => void;
+  fetchMock.mockReturnValueOnce(new Promise<Response>((resolve) => { releasePlan = resolve; }));
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    return sse(system.includes('test planner') ? testPlan : code, reported ? { total_tokens: 50 } : null);
+  });
+  build.mockResolvedValueOnce({ status: 'failed', errors: ['Compile error'], checkedFiles: [] })
+    .mockResolvedValueOnce({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const snapshots: Promise<StudioProject>[] = [];
+  const stream = live.liveEventStream(projectId, 0, (event) => {
+    if (event.type === 'plan_ready' || event.type === 'code_ready') snapshots.push(live.liveRequest('GET', `/api/studio/projects/${projectId}`).then((result) => structuredClone((result as { project: StudioProject }).project)));
+  }, new AbortController().signal);
+  releasePlan(sse(plan, reported ? { total_tokens: 30 } : null));
+  await stream;
+  const projects = await Promise.all(snapshots);
+  expect(projects).toHaveLength(3);
+  projects.forEach((project, index) => {
+    expect(project.status).toBe('running');
+    expect(project.generationMetrics).toMatchObject({ elapsedMs: null, reportedTokens: reported ? 30 + index * 50 : 0, reportedUsageTasks: reported ? index + 1 : 0, missingUsageTasks: reported ? 0 : index + 1 });
+  });
+  const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: StudioProject };
+  expect(project.status).toBe('ready_for_review');
+  expect(project.generationMetrics).toMatchObject({ reportedTokens: reported ? 130 : 0, reportedUsageTasks: reported ? 3 : 0 });
+  expect(project.generationMetrics?.reportedTokens).toBe(projects.at(-1)?.generationMetrics?.reportedTokens);
+  expect(project.generationMetrics?.elapsedMs).toEqual(expect.any(Number));
 });
 
 it('cancel stops the run with a cancelled event', async () => {

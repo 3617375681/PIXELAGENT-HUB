@@ -158,6 +158,7 @@ async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: s
     }
     const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
     project.rounds.push(attempt);
+    project.generationMetrics = metrics(entry);
     emit(entry, 'code_ready', { files: code.output.files.length }, round);
     // Real packages are unsupported; like a compile error, the reason goes back to the Coder.
     const dependencies = unsupportedDependencies(code.output.dependencies);
@@ -193,6 +194,7 @@ async function generate(entry: Entry, signal: AbortSignal) {
     phase('planning');
     const plan = await ask('Manager', managerPrompt(description, { constraints: STUDIO_CONSTRAINTS, deliverable: STUDIO_DELIVERABLE }), parsePlanOutput, signal, AGENT_TIMEOUT_MS);
     project.plan = { status: 'success', output: plan.output };
+    project.generationMetrics = metrics(entry);
     emit(entry, 'plan_ready', { projectName: plan.output.projectName });
     const files = await codeUntilBuilt(entry, signal, phase, { previousFiles: [], revisionNotes: [], maxRounds: 3 });
     const checks = await planChecks(entry, signal);
