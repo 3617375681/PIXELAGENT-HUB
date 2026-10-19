@@ -75,3 +75,12 @@ it('in-page visible assertions follow the element box and visibility, and text p
   ]);
   expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'passed']);
 });
+
+it('text matches the source text when CSS changes how it is rendered (text-transform)', async () => {
+  const button = { textContent: 'Pause', innerText: 'PAUSE' };
+  const document = { querySelectorAll: () => [button] } as unknown as Document;
+  const [result] = await runDOMChecks(document, [{ name: 'Label', actions: [], selector: '#toggle', expected: 'Pause' }]);
+  expect(result).toMatchObject({ status: 'passed', actual: 'PAUSE' });
+  const [wrong] = await runDOMChecks(document, [{ name: 'Label', actions: [], selector: '#toggle', expected: 'Start' }]);
+  expect(wrong.status).toBe('failed');
+});

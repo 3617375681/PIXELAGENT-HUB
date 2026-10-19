@@ -38,14 +38,17 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         const style = document.defaultView?.getComputedStyle?.(target);
         return !!box && box.width > 0 && box.height > 0 && style?.visibility !== 'hidden';
       };
+      // Text matches either the rendered text (innerText: paragraph breaks, CSS casing) or the source
+      // text (textContent); the rendered text is reported.
       const read = () => assertion === 'disabled' ? String(target.matches(':disabled'))
         : assertion === 'visible' ? String(visible())
           : collapse(target.innerText ?? target.textContent ?? '');
+      const matches = (observed: string) => observed === expected || (assertion === 'text' && collapse(target.textContent ?? '') === expected);
       let observed = read();
-      for (const deadline = Date.now() + 2000; observed !== expected && Date.now() < deadline; observed = read()) await new Promise((resolve) => setTimeout(resolve, 50));
+      for (const deadline = Date.now() + 2000; !matches(observed) && Date.now() < deadline; observed = read()) await new Promise((resolve) => setTimeout(resolve, 50));
       actual = observed.slice(0, 300);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
-      if (observed !== expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
+      if (!matches(observed)) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
       results.push({ name: check.name, status: 'passed', actual });
     } catch (error) {
       results.push({ name: check.name, status: 'failed', actual, error: (error instanceof Error ? error.message : String(error)).slice(0, 2000) });

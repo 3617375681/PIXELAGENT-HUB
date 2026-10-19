@@ -105,18 +105,25 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         const target = frame.locator(`css=${check.selector}`);
         if (await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
         const deadline = Date.now() + 2000;
-        // Text is compared as people read it: the rendered text, runs of whitespace as one space.
+        // Text matches either what is rendered (innerText: paragraph breaks, CSS casing) or the source
+        // text (textContent), with runs of whitespace as one space; the rendered text is reported.
         const assertion = check.assertion || 'text';
         const expected = assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
+        let matched = false;
         do {
           controller.signal.throwIfAborted();
-          actual = assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled')))
-            : assertion === 'visible' ? String(await target.isVisible())
-              : collapseWhitespace(await target.innerText());
-          if (actual === expected) break;
+          if (assertion === 'text') {
+            const [rendered, source] = await target.evaluate((element) => [(element as HTMLElement).innerText ?? '', element.textContent ?? '']);
+            actual = collapseWhitespace(rendered);
+            matched = actual === expected || collapseWhitespace(source) === expected;
+          } else {
+            actual = assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible());
+            matched = actual === expected;
+          }
+          if (matched) break;
           await new Promise((resolve) => setTimeout(resolve, 50));
         } while (Date.now() < deadline);
-        if (actual !== expected) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
+        if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
         run.checks.push({ name: check.name, status: 'passed', actual: actual.slice(0, 300) });
       } catch (error) {
         controller.signal.throwIfAborted();
