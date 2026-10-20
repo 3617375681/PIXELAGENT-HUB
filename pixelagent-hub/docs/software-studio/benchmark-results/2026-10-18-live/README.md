@@ -70,6 +70,7 @@ The five fixed cases had become too easy to exercise the Tester review. So the s
 | [`showcase-fixed/`](showcase-fixed/) | `da4b0c2` | 9/18 | 0 | 0 | 10 (6) | 1 | 0 |
 | [`showcase-final/`](showcase-final/) | `6560e7b` | **11/18** | 0 | 0 | 9 (7) | 1 | 1 |
 | [`showcase-count/`](showcase-count/) | `40c1087` (clean), `count` + `attribute` + unthrottled frame | **12/18** | 0 | 0 | 8 (5) | 2 | 0 |
+| [`showcase-visible/`](showcase-visible/) | `5324a64` (clean), transparent = hidden, live `checked`, `unsupported` verdict | **17/18** | 0 | 0 | 4 (10) | 0 | 0 |
 
 **What the first round exposed:**
 - **The Tester review was effectively broken.** In 7 of its 8 real runs the reply failed validation (`null` reasons, `null` or unknown assertions), so the whole review was discarded and it revised nothing. The unit tests had only fed it well-formed replies.
@@ -85,14 +86,14 @@ The five fixed cases had become too easy to exercise the Tester review. So the s
 
 **A regression, fixed in `6560e7b`:** comparing rendered text also applied CSS `text-transform`. A timer whose button is styled uppercase showed "PAUSE" where the check expected "Pause", and all three timers failed. A text check now passes when the expected value matches either the rendered or the source text.
 
-| Idea | Round 1 | Round 2 | Round 3 | Round 4 |
-| --- | --- | --- | --- | --- |
-| Snake | 0/3 | 0/3 | 2/3 | 0/3 |
-| Pomodoro timer | 3/3 | 0/3 (CSS casing regression) | 3/3 | 3/3 |
-| Tip calculator | 2/3 | 3/3 | 3/3 | 3/3 |
-| Pixel pet | 1/3 | 1/3 | 1/3 | 2/3 |
-| Memory match | 1/3 | 3/3 | 1/3 | 2/3 |
-| Palette generator | 0/3 | 2/3 | 1/3 | 2/3 |
+| Idea | Round 1 | Round 2 | Round 3 | Round 4 | Round 5 |
+| --- | --- | --- | --- | --- | --- |
+| Snake | 0/3 | 0/3 | 2/3 | 0/3 | 3/3 |
+| Pomodoro timer | 3/3 | 0/3 (CSS casing regression) | 3/3 | 3/3 | 3/3 |
+| Tip calculator | 2/3 | 3/3 | 3/3 | 3/3 | 3/3 |
+| Pixel pet | 1/3 | 1/3 | 1/3 | 2/3 | 3/3 |
+| Memory match | 1/3 | 3/3 | 1/3 | 2/3 | 3/3 |
+| Palette generator | 0/3 | 2/3 | 1/3 | 2/3 | 2/3 |
 
 Per-idea results swing widely between rounds (memory went 3/3 → 1/3 with no relevant change), so at three runs per idea only the totals and the removed failure classes are meaningful. Crashes and runs without checks went from 4 to 0.
 
@@ -121,6 +122,33 @@ The review now parses and does revise checks: 6 and 7 in the last two rounds, ea
 - Per-idea swings remain large (snake 2/3 → 0/3 came from a CSS style choice the models made, not from a code change), so 11/18 → 12/18 is within noise. The failure classes are the useful signal.
 
 Tokens: 276,405 for the 18 runs (round 3: 266,250); median 27 s per run (round 3: 32 s).
+
+### Round 5: transparent means hidden, `checked` reads the live state, and an `unsupported` verdict
+
+The changes, all from round 4's failures:
+- `visible` now also requires that neither the element nor an ancestor has opacity 0.
+- `attribute: "checked"` reads a checkbox or radio's live state.
+- The review has a third verdict, `unsupported`. Such a check is dropped, recorded as a limitation and never sent to the Coder. At most a third of a plan can be dropped, and a plan is never emptied.
+
+The source is `5324a64`: the round-4 branch plus these changes.
+
+**17/18 full passes.** All three snakes passed. Every one again hides its overlay with opacity (two with `.hidden { opacity: 0 }`, one with `.overlay { opacity: 0 }` plus `.visible { opacity: 1 }`), and every "Start hides the overlay" check now passes. Pet and memory went to 3/3.
+
+**Read this before the headline:**
+- **No check was dropped.** The `unsupported` verdict was never used, so none of the 17 passes comes from checking less. Its value here is untested.
+- **No `checked` check was written**, so that fix is also unmeasured.
+- **Only 4 runs needed a review and only 1 a Coder repair** (round 4: 8 and 6). Most of the gain is first plans that pass. Part of that reflects the fixes; part is ordinary run-to-run variance. Tokens fell to 197,075 (round 4: 276,405) because fewer runs went through review and repair.
+
+**The one failure, palette 2 (9/10).** The plan's five lock checks targeted `.lock-btn`, which matches 5 elements. The review correctly revised all five to target the first swatch. But for "Locked swatch keeps its hex after Generate" it wrote `expected: "__CAPTURED_HEX__"`, a placeholder for a value it wanted to read before clicking Generate. The language cannot remember a value from earlier in a check. That is exactly the case `unsupported` exists for, and the review chose an impossible correction instead. The app was correct.
+
+**What five rounds show.** On these six ideas, full passes went 7 → 9 → 11 → 12 → 17 of 18. Apart from feeding malformed replies back instead of failing the run, no change touched how apps are written. Every other gain came from making the checks see what a person sees and say what the requirement means:
+- validating and feeding back malformed replies;
+- comparing rendered text;
+- adding element counts and attribute values;
+- treating transparent as hidden;
+- running the checks in a frame the browser does not throttle.
+
+At three runs per idea, one round can swing a lot (snake went 2/3 → 0/3 → 3/3 as models switched between `visibility` and `opacity`). So the removed failure classes are the result, not the exact 17.
 
 ## Reading this honestly
 

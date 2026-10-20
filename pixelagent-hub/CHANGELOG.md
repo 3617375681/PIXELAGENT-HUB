@@ -7,9 +7,13 @@
 - `attribute` check assertion with an `attribute` field: one attribute compared exactly (`aria-valuenow`, `aria-pressed`, …; `value` reads the live input value). 5 of the 7 failed showcase runs were correct apps the old language could not check
 - Ctrl/Cmd+Enter in the prompt box builds; PLAY LIVE shows the tokens spent so far while a run is going
 - Root-cause analysis of round 3's 7 showcase failures (`showcase-final-failures.md`)
+- `unsupported` review verdict: a check the review can explain but not fix is dropped, recorded as a limitation and never sent to the Coder (at most a third of a plan; a plan is never emptied)
+- PLAY LIVE showcase round 5 (`showcase-visible/`): **17/18** full passes, with no check dropped. The one failure is a review correction that relied on a value the language cannot capture
 - PLAY LIVE showcase round 4 (`showcase-count/`): 11/18 → 12/18 full passes. Pet, memory and palette each gain one; the 3 snake failures are a new class (`visible` treats an `opacity: 0` overlay as shown), and one failure is a real app bug the checks caught
 
 ### Fixed
+- `visible` treats an element as hidden when it or an ancestor has opacity 0, as a person sees it; Playwright's rule had counted the three round-4 snake overlays as shown
+- `attribute: "checked"` reads a checkbox or radio's live state instead of the attribute a click does not change
 - PLAY LIVE checks run in an unthrottled frame: the off-screen hidden frame froze CSS transitions and slowed timers to about 1 Hz, so checks saw a different app than the visitor
 
 ## [2.2.0] — 2026-10-19
