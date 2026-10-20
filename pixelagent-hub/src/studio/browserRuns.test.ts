@@ -158,3 +158,42 @@ test('visible assertions and rendered text match what a person sees', { skip: pr
     assert.equal(run.checks[3].actual, 'PAUSE');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('real browser counts matches and reads exact attributes and live values', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-count-attribute-'));
+  try {
+    const content = `<html><body>${'<div class="card"></div>'.repeat(15)}<div id="hungerBar" aria-valuenow="100" title="  hungry  now "></div><input id="input" value="initial"><button id="play">Play</button><script>document.querySelector('#play').addEventListener('click',()=>setTimeout(()=>{document.querySelector('#hungerBar').setAttribute('aria-valuenow','90');const card=document.createElement('div');card.className='card';document.body.append(card)},100))</script></body></html>`;
+    const checks = { checks: [
+      { name: 'Missing card', actions: [], selector: '.card', assertion: 'count', expected: '16' },
+      { name: 'Added later', actions: [{ type: 'click', selector: '#play' }], selector: '.card', assertion: 'count', expected: '16' },
+      { name: 'Empty', actions: [], selector: '.absent', assertion: 'count', expected: '0' },
+      { name: 'Hunger', actions: [], selector: '#hungerBar', assertion: 'attribute', attribute: 'aria-valuenow', expected: '90' },
+      { name: 'Exact whitespace', actions: [], selector: '#hungerBar', assertion: 'attribute', attribute: 'title', expected: '  hungry  now ' },
+      { name: 'Live value', actions: [{ type: 'input', selector: '#input', value: 'updated' }], selector: '#input', assertion: 'attribute', attribute: 'value', expected: 'updated' },
+      { name: 'Missing attribute', actions: [], selector: '#hungerBar', assertion: 'attribute', attribute: 'data-state', expected: 'ready' },
+      { name: 'Ambiguous attribute', actions: [], selector: '.card', assertion: 'attribute', attribute: 'class', expected: 'card' },
+      { name: 'Ambiguous action', actions: [{ type: 'click', selector: '.card' }], selector: '.card', assertion: 'count', expected: '16' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map((check) => check.status), ['failed', 'passed', 'passed', 'passed', 'passed', 'passed', 'failed', 'failed', 'failed'], JSON.stringify(run));
+    assert.deepEqual(run.checks.slice(0, 7).map((check) => check.actual), ['15', '16', '0', '90', '  hungry  now ', 'updated', '']);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('real browser visibility includes ancestor opacity and checked reads live state', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-opacity-checked-'));
+  try {
+    const content = '<html><body><div id="transparent" style="opacity:0">Hidden</div><div style="opacity:0"><div id="child">Hidden child</div></div><div id="partial" style="opacity:0.5">Shown</div><input id="check" type="checkbox"></body></html>';
+    const checks = { checks: [
+      { name: 'Transparent', actions: [], selector: '#transparent', assertion: 'visible', expected: 'false' },
+      { name: 'Ancestor', actions: [], selector: '#child', assertion: 'visible', expected: 'false' },
+      { name: 'Partial', actions: [], selector: '#partial', assertion: 'visible', expected: 'true' },
+      { name: 'Unchecked', actions: [], selector: '#check', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+      { name: 'Checked', actions: [{ type: 'click', selector: '#check' }], selector: '#check', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.deepEqual(run.checks.map((check) => check.actual), ['false', 'false', 'true', 'false', 'true']);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

@@ -1,0 +1,617 @@
+{
+  "caseId": "snake",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "9/10",
+  "reviewTriggered": true,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "9/10",
+    "9/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 41,
+  "reportedTokens": 23370,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T14:24:28.926Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T14:24:28.926Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T14:24:32.573Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Snake Game"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T14:24:32.573Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T14:24:42.949Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T14:24:42.949Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T14:24:43.325Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T14:24:43.326Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "aa3cfb90-614a-4f3a-8643-65e1228943de"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T14:24:46.268Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "aa3cfb90-614a-4f3a-8643-65e1228943de",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T14:24:46.269Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "testPlanId": "aa3cfb90-614a-4f3a-8643-65e1228943de",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Starts paused with how-to-play overlay and score zero",
+        "passed": true,
+        "actual": "How to Play"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Overlay shows instructions text and Start button",
+        "passed": true,
+        "actual": "Use arrow keys to move. Press Pause to start."
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Overlay is visible on initial load",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Score starts at zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Start button begins game and hides overlay",
+        "passed": false,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Pause button pauses running game and shows Paused overlay",
+        "passed": true,
+        "actual": "Paused"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Pause button label becomes Resume after pausing",
+        "passed": true,
+        "actual": "Resume"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "P key pauses a running game",
+        "passed": true,
+        "actual": "Paused"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Restart resets game to paused how-to-play state",
+        "passed": true,
+        "actual": "How to Play"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "name": "Restart resets score to zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T14:24:51.508Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "506002ca-b89b-4749-8a48-d95800a9fbc5",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T14:24:51.513Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "aa3cfb90-614a-4f3a-8643-65e1228943de",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-20T14:24:52.578Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "aa3cfb90-614a-4f3a-8643-65e1228943de",
+        "checks": 10,
+        "review": true,
+        "revised": 0,
+        "verdicts": [
+          {
+            "name": "Start button begins game and hides overlay",
+            "verdict": "app-wrong",
+            "reason": "Clicking the Start button calls togglePause, which hides the overlay by adding the 'hidden' class (opacity 0, pointer-events none). The observed visibility being true indicates the overlay is not actu"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-20T14:24:52.579Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-20T14:25:02.919Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-20T14:25:02.919Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-20T14:25:02.948Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-20T14:25:02.949Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "testPlanId": "aa3cfb90-614a-4f3a-8643-65e1228943de",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Starts paused with how-to-play overlay and score zero",
+        "passed": true,
+        "actual": "How to Play"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Overlay shows instructions text and Start button",
+        "passed": true,
+        "actual": "Use arrow keys to move. Press Pause to start."
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Overlay is visible on initial load",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Score starts at zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Start button begins game and hides overlay",
+        "passed": false,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Pause button pauses running game and shows Paused overlay",
+        "passed": true,
+        "actual": "Paused"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Pause button label becomes Resume after pausing",
+        "passed": true,
+        "actual": "Resume"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "P key pauses a running game",
+        "passed": true,
+        "actual": "Paused"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Restart resets game to paused how-to-play state",
+        "passed": true,
+        "actual": "How to Play"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "name": "Restart resets score to zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-20T14:25:08.186Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "fc86d8c6-c5fb-4a09-a265-8dbc5e8ee4d6",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-20T14:25:08.189Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Starts paused with how-to-play overlay and score zero",
+        "actions": [],
+        "selector": "#overlayTitle",
+        "expected": "How to Play",
+        "assertion": "text"
+      },
+      {
+        "name": "Overlay shows instructions text and Start button",
+        "actions": [],
+        "selector": "#overlayText",
+        "expected": "Use arrow keys to move. Press Pause to start.",
+        "assertion": "text"
+      },
+      {
+        "name": "Overlay is visible on initial load",
+        "actions": [],
+        "selector": "#overlay",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Score starts at zero",
+        "actions": [],
+        "selector": "#score",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Start button begins game and hides overlay",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#overlayBtn"
+          }
+        ],
+        "selector": "#overlay",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Pause button pauses running game and shows Paused overlay",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#overlayBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#pauseBtn"
+          }
+        ],
+        "selector": "#overlayTitle",
+        "expected": "Paused",
+        "assertion": "text"
+      },
+      {
+        "name": "Pause button label becomes Resume after pausing",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#overlayBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#pauseBtn"
+          }
+        ],
+        "selector": "#pauseBtn",
+        "expected": "Resume",
+        "assertion": "text"
+      },
+      {
+        "name": "P key pauses a running game",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#overlayBtn"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "p"
+          }
+        ],
+        "selector": "#overlayTitle",
+        "expected": "Paused",
+        "assertion": "text"
+      },
+      {
+        "name": "Restart resets game to paused how-to-play state",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#overlayBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#restartBtn"
+          }
+        ],
+        "selector": "#overlayTitle",
+        "expected": "How to Play",
+        "assertion": "text"
+      },
+      {
+        "name": "Restart resets score to zero",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#overlayBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#restartBtn"
+          }
+        ],
+        "selector": "#score",
+        "expected": "0",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Game-over screen cannot be reliably triggered because it requires the snake to hit a wall or itself, which depends on timing and random food placement; no check asserts the Game Over overlay.",
+      "Arrow-key movement and direction changes are not observable in the DOM because the snake is drawn on a canvas; canvas pixel assertions are unsupported.",
+      "Score increments from eating food depend on random food placement and timing, so only the initial zero score and restart reset are checked.",
+      "Pause/resume toggle behavior while already paused and the 'P to continue' flow are not fully exercised beyond overlay title and button label checks.",
+      "Keyboard checks use synthetic keydown events dispatched to body, which may not match trusted browser key handling exactly."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4236,
+      "completion_tokens": 614,
+      "total_tokens": 4850,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "prompt_cache_hit_tokens": 512,
+      "prompt_cache_miss_tokens": 3724
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Snake</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"game-container\">\n    <div class=\"game-header\">\n      <h1>Pixel Snake</h1>\n      <div class=\"score-display\" aria-live=\"polite\">Score: <span id=\"score\">0</span></div>\n    </div>\n\n    <div class=\"canvas-wrapper\">\n      <canvas id=\"gameCanvas\" width=\"400\" height=\"400\" aria-label=\"Snake game board\"></canvas>\n      <div id=\"overlay\" class=\"overlay\">\n        <div class=\"overlay-content\">\n          <h2 id=\"overlayTitle\">How to Play</h2>\n          <p id=\"overlayText\">Use arrow keys to move.<br>Press <strong>Pause</strong> to start.</p>\n          <button id=\"overlayBtn\" class=\"btn primary\" aria-label=\"Start game\">Start</button>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"controls\">\n      <button id=\"pauseBtn\" class=\"btn\" aria-label=\"Pause or resume game\">Pause</button>\n      <button id=\"restartBtn\" class=\"btn\" aria-label=\"Restart game\">Restart</button>\n    </div>\n\n    <p class=\"hint\">Arrow keys to move &middot; P to pause &middot; R to restart</p>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with canvas, score, controls, and overlay."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --grid: #0f3460;\n  --snake: #4ecca3;\n  --food: #e94560;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: var(--font);\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.game-container {\n  background: var(--card);\n  border-radius: 16px;\n  padding: 24px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n  max-width: 480px;\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n\n.game-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\nh1 {\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: var(--accent);\n  letter-spacing: 1px;\n}\n\n.score-display {\n  font-size: 1.125rem;\n  font-weight: 600;\n  background: var(--grid);\n  padding: 6px 14px;\n  border-radius: 8px;\n}\n\n.canvas-wrapper {\n  position: relative;\n  width: 100%;\n  aspect-ratio: 1;\n  border-radius: 12px;\n  overflow: hidden;\n  background: var(--grid);\n}\n\ncanvas {\n  display: block;\n  width: 100%;\n  height: 100%;\n  image-rendering: pixelated;\n}\n\n.overlay {\n  position: absolute;\n  inset: 0;\n  background: rgba(22, 33, 62, 0.92);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  padding: 20px;\n  transition: opacity 0.2s ease;\n}\n\n.overlay.hidden {\n  opacity: 0;\n  pointer-events: none;\n}\n\n.overlay-content {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  align-items: center;\n}\n\n.overlay h2 {\n  font-size: 1.375rem;\n  color: var(--accent);\n}\n\n.overlay p {\n  font-size: 1rem;\n  line-height: 1.5;\n  color: var(--text);\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n}\n\n.btn {\n  font-family: var(--font);\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 20px;\n  border: 2px solid var(--accent);\n  border-radius: 10px;\n  background: transparent;\n  color: var(--accent);\n  cursor: pointer;\n  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;\n  flex: 1;\n}\n\n.btn:hover {\n  background: var(--accent);\n  color: var(--card);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--snake);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.btn.primary {\n  background: var(--accent);\n  color: var(--card);\n}\n\n.btn.primary:hover {\n  background: var(--snake);\n  border-color: var(--snake);\n}\n\n.hint {\n  font-size: 0.875rem;\n  color: #8a8a9a;\n  text-align: center;\n}\n\n@media (max-width: 400px) {\n  .game-container {\n    padding: 16px;\n    gap: 12px;\n  }\n  h1 {\n    font-size: 1.25rem;\n  }\n  .btn {\n    padding: 10px 14px;\n    font-size: 0.9375rem;\n  }\n  .hint {\n    font-size: 0.8125rem;\n  }\n}",
+      "description": "Styling for the game, including overlay, buttons, and responsive layout."
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const canvas = document.getElementById('gameCanvas');\n  const ctx = canvas.getContext('2d');\n  const scoreEl = document.getElementById('score');\n  const overlay = document.getElementById('overlay');\n  const overlayTitle = document.getElementById('overlayTitle');\n  const overlayText = document.getElementById('overlayText');\n  const overlayBtn = document.getElementById('overlayBtn');\n  const pauseBtn = document.getElementById('pauseBtn');\n  const restartBtn = document.getElementById('restartBtn');\n\n  const GRID = 20;\n  const CELL = canvas.width / GRID;\n  const TICK_MS = 140;\n\n  const COLORS = {\n    grid: '#0f3460',\n    snake: '#4ecca3',\n    snakeHead: '#6ee7b7',\n    food: '#e94560'\n  };\n\n  let snake, dir, nextDir, food, score, running, paused, gameOver, timer;\n\n  function reset() {\n    snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];\n    dir = { x: 1, y: 0 };\n    nextDir = { x: 1, y: 0 };\n    score = 0;\n    scoreEl.textContent = '0';\n    gameOver = false;\n    paused = true;\n    running = false;\n    placeFood();\n    draw();\n    showOverlay('How to Play', 'Use arrow keys to move.<br>Press <strong>Pause</strong> to start.', 'Start');\n  }\n\n  function placeFood() {\n    let pos;\n    do {\n      pos = { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID) };\n    } while (snake.some(s => s.x === pos.x && s.y === pos.y));\n    food = pos;\n  }\n\n  function draw() {\n    ctx.fillStyle = COLORS.grid;\n    ctx.fillRect(0, 0, canvas.width, canvas.height);\n\n    ctx.strokeStyle = 'rgba(255,255,255,0.04)';\n    ctx.lineWidth = 1;\n    for (let i = 1; i < GRID; i++) {\n      ctx.beginPath();\n      ctx.moveTo(i * CELL, 0);\n      ctx.lineTo(i * CELL, canvas.height);\n      ctx.stroke();\n      ctx.beginPath();\n      ctx.moveTo(0, i * CELL);\n      ctx.lineTo(canvas.width, i * CELL);\n      ctx.stroke();\n    }\n\n    ctx.fillStyle = COLORS.food;\n    ctx.fillRect(food.x * CELL + 1, food.y * CELL + 1, CELL - 2, CELL - 2);\n\n    snake.forEach((seg, i) => {\n      ctx.fillStyle = i === 0 ? COLORS.snakeHead : COLORS.snake;\n      ctx.fillRect(seg.x * CELL + 1, seg.y * CELL + 1, CELL - 2, CELL - 2);\n    });\n  }\n\n  function tick() {\n    if (paused || gameOver) return;\n\n    dir = nextDir;\n    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };\n\n    if (head.x < 0 || head.x >= GRID || head.y < 0 || head.y >= GRID ||\n        snake.some(s => s.x === head.x && s.y === head.y)) {\n      endGame();\n      return;\n    }\n\n    snake.unshift(head);\n\n    if (head.x === food.x && head.y === food.y) {\n      score += 10;\n      scoreEl.textContent = score;\n      placeFood();\n    } else {\n      snake.pop();\n    }\n\n    draw();\n  }\n\n  function startLoop() {\n    clearInterval(timer);\n    timer = setInterval(tick, TICK_MS);\n  }\n\n  function endGame() {\n    gameOver = true;\n    paused = true;\n    running = false;\n    clearInterval(timer);\n    draw();\n    showOverlay('Game Over', 'Final score: <strong>' + score + '</strong><br>Press Restart to play again.', 'Restart');\n    pauseBtn.textContent = 'Pause';\n  }\n\n  function showOverlay(title, html, btnLabel) {\n    overlayTitle.textContent = title;\n    overlayText.innerHTML = html;\n    overlayBtn.textContent = btnLabel;\n    overlay.classList.remove('hidden');\n    overlayBtn.focus();\n  }\n\n  function hideOverlay() {\n    overlay.classList.add('hidden');\n  }\n\n  function togglePause() {\n    if (gameOver) return;\n    if (!running) {\n      running = true;\n      paused = false;\n      hideOverlay();\n      pauseBtn.textContent = 'Pause';\n      startLoop();\n      return;\n    }\n    paused = !paused;\n    pauseBtn.textContent = paused ? 'Resume' : 'Pause';\n    if (paused) {\n      showOverlay('Paused', 'Press Resume or P to continue.', 'Resume');\n    } else {\n      hideOverlay();\n      overlayBtn.blur();\n    }\n  }\n\n  function restart() {\n    clearInterval(timer);\n    reset();\n    pauseBtn.textContent = 'Pause';\n  }\n\n  function changeDir(nx, ny) {\n    if (nx === -dir.x && ny === -dir.y) return;\n    nextDir = { x: nx, y: ny };\n  }\n\n  document.addEventListener('keydown', (e) => {\n    const key = e.key;\n    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(key)) {\n      e.preventDefault();\n    }\n    if (gameOver && key !== 'r' && key !== 'R') return;\n\n    switch (key) {\n      case 'ArrowUp': changeDir(0, -1); break;\n      case 'ArrowDown': changeDir(0, 1); break;\n      case 'ArrowLeft': changeDir(-1, 0); break;\n      case 'ArrowRight': changeDir(1, 0); break;\n      case 'p': case 'P': togglePause(); break;\n      case 'r': case 'R': restart(); break;\n    }\n  });\n\n  pauseBtn.addEventListener('click', togglePause);\n  restartBtn.addEventListener('click', restart);\n\n  overlayBtn.addEventListener('click', () => {\n    if (gameOver) {\n      restart();\n    } else {\n      togglePause();\n    }\n  });\n\n  reset();\n})();",
+      "description": "Game logic including movement, scoring, pause/resume, restart, and overlay handling."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Snake\n\nA classic snake game built with plain HTML, CSS, and JavaScript. No dependencies, no network requests — fully offline.\n\n## How to Play\n\n- **Arrow keys** — move the snake\n- **P** — pause / resume\n- **R** — restart\n- Eat the red food to grow and score points.\n- Avoid walls and your own tail.\n\n## Features\n\n- Starts paused with an instructions overlay\n- Score display\n- Pause / resume and restart buttons\n- Game-over screen with final score\n- Keyboard-accessible controls with visible focus states\n- Responsive layout from 360px wide\n- Cohesive dark palette with pixel-art canvas rendering\n\n## Run\n\nOpen `index.html` in any modern browser. No build step or server required.\n\n## Files\n\n- `index.html` — structure\n- `style.css` — styling and layout\n- `script.js` — game logic\n\n## Controls\n\n| Action | Key / Button |\n|--------|--------------|\n| Move | Arrow keys |\n| Pause / Resume | P or Pause button |\n| Restart | R or Restart button |\n| Start | Start button on overlay |\n",
+      "description": "Project documentation and instructions."
+    }
+  ]
+}

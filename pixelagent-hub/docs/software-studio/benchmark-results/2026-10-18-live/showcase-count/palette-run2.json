@@ -1,0 +1,562 @@
+{
+  "caseId": "palette",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "8/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": true,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/9",
+    "9/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 45,
+  "reportedTokens": 25658,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T14:30:53.183Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T14:30:53.183Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T14:30:58.532Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Palette Generator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T14:30:58.532Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T14:31:12.770Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T14:31:12.770Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T14:31:23.513Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T14:31:23.513Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T14:31:24.028Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T14:31:24.028Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "79a3ea65-0e25-4ce8-9a88-f1698ebf4aad"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T14:31:29.192Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "79a3ea65-0e25-4ce8-9a88-f1698ebf4aad",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T14:31:29.193Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "testPlanId": "79a3ea65-0e25-4ce8-9a88-f1698ebf4aad",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Five swatches with hex codes render on load",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Each swatch shows a hex code label",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Each swatch has a lock toggle",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Lock toggle starts unpressed",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Clicking a lock sets aria-pressed to true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Clicking a lock twice returns aria-pressed to false",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Generate button remains enabled after generating",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Locked swatch keeps its hex after Generate",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "name": "Palette still has five swatches after Generate",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T14:31:32.087Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "e2241f77-4afe-4fe9-96d3-e2abdaf246b8",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-20T14:31:32.090Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "79a3ea65-0e25-4ce8-9a88-f1698ebf4aad",
+        "review": true
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-20T14:31:33.077Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "79a3ea65-0e25-4ce8-9a88-f1698ebf4aad",
+        "checks": 9,
+        "review": true,
+        "revised": 1,
+        "verdicts": [
+          {
+            "name": "Lock toggle starts unpressed",
+            "verdict": "check-wrong",
+            "reason": "The selector .lock-btn matches all 5 swatch lock buttons, but a single-element attribute assertion requires exactly one match. The requirement is that each lock toggle starts unpressed, so use a count"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-20T14:31:33.078Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "testPlanId": "79a3ea65-0e25-4ce8-9a88-f1698ebf4aad",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Five swatches with hex codes render on load",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Each swatch shows a hex code label",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Each swatch has a lock toggle",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Lock toggle starts unpressed",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Clicking a lock sets aria-pressed to true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Clicking a lock twice returns aria-pressed to false",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Generate button remains enabled after generating",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Locked swatch keeps its hex after Generate",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "name": "Palette still has five swatches after Generate",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-20T14:31:35.939Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "b6d8a45b-23c8-49ae-88b2-f47ce92a370e",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-20T14:31:35.941Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Five swatches with hex codes render on load",
+        "actions": [],
+        "selector": ".swatch",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Each swatch shows a hex code label",
+        "actions": [],
+        "selector": ".swatch-hex",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Each swatch has a lock toggle",
+        "actions": [],
+        "selector": ".lock-btn",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Lock toggle starts unpressed",
+        "actions": [],
+        "selector": ".lock-btn[aria-pressed=\"false\"]",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Clicking a lock sets aria-pressed to true",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".swatch:nth-child(3) .lock-btn"
+          }
+        ],
+        "selector": ".swatch:nth-child(3) .lock-btn",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Clicking a lock twice returns aria-pressed to false",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".swatch:nth-child(2) .lock-btn"
+          },
+          {
+            "type": "click",
+            "selector": ".swatch:nth-child(2) .lock-btn"
+          }
+        ],
+        "selector": ".swatch:nth-child(2) .lock-btn",
+        "expected": "false",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Generate button remains enabled after generating",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#generate-btn"
+          }
+        ],
+        "selector": "#generate-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Locked swatch keeps its hex after Generate",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".swatch:nth-child(1) .lock-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#generate-btn"
+          }
+        ],
+        "selector": ".swatch:nth-child(1) .lock-btn",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Palette still has five swatches after Generate",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#generate-btn"
+          }
+        ],
+        "selector": ".swatch",
+        "expected": "5",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "Cannot verify that unlocked swatches actually change color after Generate because hex values are randomly generated and time-dependent; only structural counts and lock state are asserted.",
+      "Cannot verify harmony of generated colors (analogous vs split-complementary) since values are random.",
+      "Cannot verify the visual lock icon glyph or background color change on lock; only aria-pressed is checked.",
+      "Cannot verify live-region screen-reader announcements or focus-visible outlines.",
+      "Cannot verify exact hex text formatting (uppercase, leading #) without predicting random values."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4197,
+      "completion_tokens": 565,
+      "total_tokens": 4762,
+      "prompt_tokens_details": {
+        "cached_tokens": 3968
+      },
+      "prompt_cache_hit_tokens": 3968,
+      "prompt_cache_miss_tokens": 229
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Palette Generator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"app\" aria-labelledby=\"app-title\">\n    <header class=\"app-header\">\n      <h1 id=\"app-title\">Pixel Palette</h1>\n      <p class=\"subtitle\">Generate a harmonious 5-color palette. Lock colors you like.</p>\n    </header>\n\n    <section class=\"palette\" id=\"palette\" aria-label=\"Color palette\">\n      <!-- Swatches injected by JS -->\n    </section>\n\n    <div class=\"controls\">\n      <button id=\"generate-btn\" class=\"btn btn-primary\" type=\"button\">\n        Generate Palette\n      </button>\n    </div>\n\n    <div id=\"live-region\" class=\"sr-only\" aria-live=\"polite\" aria-atomic=\"true\"></div>\n\n    <footer class=\"app-footer\">\n      <p>Click a lock to keep a color. Press Generate for a new palette.</p>\n    </footer>\n  </main>\n\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with header, palette container, generate button, live region, and footer."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a3d;\n  --text: #f0f0f5;\n  --text-muted: #a0a0b8;\n  --accent: #6c5ce7;\n  --accent-hover: #7d6ff0;\n  --accent-active: #5a4bd1;\n  --focus-ring: #fdcb6e;\n  --border-radius: 12px;\n  --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: var(--font);\n  font-size: 16px;\n  line-height: 1.5;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.app {\n  background: var(--card-bg);\n  border-radius: var(--border-radius);\n  box-shadow: var(--shadow);\n  padding: 24px;\n  width: 100%;\n  max-width: 720px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n.app-header {\n  text-align: center;\n}\n\n.app-header h1 {\n  font-size: 1.75rem;\n  font-weight: 700;\n  letter-spacing: -0.02em;\n}\n\n.subtitle {\n  color: var(--text-muted);\n  font-size: 1rem;\n  margin-top: 4px;\n}\n\n.palette {\n  display: grid;\n  grid-template-columns: repeat(5, 1fr);\n  gap: 12px;\n}\n\n.swatch {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 8px;\n  border-radius: var(--border-radius);\n  overflow: hidden;\n  background: rgba(255, 255, 255, 0.05);\n  padding-bottom: 8px;\n}\n\n.swatch-color {\n  width: 100%;\n  aspect-ratio: 1 / 1;\n  min-height: 80px;\n  transition: background-color 0.2s ease;\n}\n\n.swatch-hex {\n  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;\n  font-size: 0.875rem;\n  font-weight: 600;\n  color: var(--text);\n  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);\n  letter-spacing: 0.02em;\n}\n\n.lock-btn {\n  background: transparent;\n  border: 2px solid var(--text-muted);\n  border-radius: 50%;\n  width: 36px;\n  height: 36px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  font-size: 1.1rem;\n  color: var(--text-muted);\n  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;\n  flex-shrink: 0;\n}\n\n.lock-btn:hover {\n  border-color: var(--text);\n  color: var(--text);\n}\n\n.lock-btn:focus-visible {\n  outline: 3px solid var(--focus-ring);\n  outline-offset: 2px;\n}\n\n.lock-btn[aria-pressed=\"true\"] {\n  background: var(--accent);\n  border-color: var(--accent);\n  color: #fff;\n}\n\n.lock-btn[aria-pressed=\"true\"]:hover {\n  background: var(--accent-hover);\n  border-color: var(--accent-hover);\n}\n\n.lock-btn[aria-pressed=\"true\"]:active {\n  background: var(--accent-active);\n  border-color: var(--accent-active);\n}\n\n.controls {\n  display: flex;\n  justify-content: center;\n}\n\n.btn {\n  font-family: var(--font);\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 28px;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background-color 0.15s ease, transform 0.1s ease;\n}\n\n.btn-primary {\n  background: var(--accent);\n  color: #fff;\n}\n\n.btn-primary:hover {\n  background: var(--accent-hover);\n}\n\n.btn-primary:focus-visible {\n  outline: 3px solid var(--focus-ring);\n  outline-offset: 2px;\n}\n\n.btn-primary:active {\n  background: var(--accent-active);\n  transform: scale(0.97);\n}\n\n.app-footer {\n  text-align: center;\n  color: var(--text-muted);\n  font-size: 0.875rem;\n}\n\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n\n@media (max-width: 520px) {\n  .palette {\n    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));\n  }\n\n  .app {\n    padding: 16px;\n  }\n\n  .app-header h1 {\n    font-size: 1.5rem;\n  }\n\n  .swatch-hex {\n    font-size: 0.75rem;\n  }\n\n  .lock-btn {\n    width: 32px;\n    height: 32px;\n    font-size: 1rem;\n  }\n}\n\n@media (max-width: 360px) {\n  .palette {\n    grid-template-columns: repeat(2, 1fr);\n  }\n\n  .app {\n    padding: 12px;\n  }\n\n  .btn {\n    width: 100%;\n  }\n}",
+      "description": "Responsive CSS with dark theme, cohesive palette, hover/focus/active states, and mobile breakpoints."
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  const paletteEl = document.getElementById('palette');\n  const generateBtn = document.getElementById('generate-btn');\n  const liveRegion = document.getElementById('live-region');\n\n  const SWATCH_COUNT = 5;\n  const state = [];\n\n  function hslToHex(h, s, l) {\n    s /= 100;\n    l /= 100;\n    const a = s * Math.min(l, 1 - l);\n    const f = (n) => {\n      const k = (n + h / 30) % 12;\n      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);\n      return Math.round(255 * color).toString(16).padStart(2, '0');\n    };\n    return '#' + f(0) + f(8) + f(4);\n  }\n\n  function generateHarmoniousPalette() {\n    const baseHue = Math.random() * 360;\n    const scheme = Math.random() < 0.5 ? 'analogous' : 'split';\n    const offsets = scheme === 'analogous'\n      ? [-30, -15, 0, 15, 30]\n      : [0, 30, 150, 180, 210];\n    const saturation = 55 + Math.random() * 30;\n    const lightnessBase = 45 + Math.random() * 20;\n\n    return offsets.map((offset, i) => {\n      const hue = (baseHue + offset + 360) % 360;\n      const lightness = Math.min(85, Math.max(25, lightnessBase + (i - 2) * 8));\n      const hex = hslToHex(hue, saturation, lightness);\n      return { hex, locked: false };\n    });\n  }\n\n  function render() {\n    paletteEl.innerHTML = '';\n    state.forEach((swatch, index) => {\n      const wrapper = document.createElement('div');\n      wrapper.className = 'swatch';\n\n      const colorDiv = document.createElement('div');\n      colorDiv.className = 'swatch-color';\n      colorDiv.style.backgroundColor = swatch.hex;\n      colorDiv.setAttribute('aria-hidden', 'true');\n\n      const hexLabel = document.createElement('span');\n      hexLabel.className = 'swatch-hex';\n      hexLabel.textContent = swatch.hex.toUpperCase();\n      hexLabel.setAttribute('aria-label', 'Color ' + (index + 1) + ': ' + swatch.hex.toUpperCase());\n\n      const lockBtn = document.createElement('button');\n      lockBtn.type = 'button';\n      lockBtn.className = 'lock-btn';\n      lockBtn.setAttribute('aria-pressed', String(swatch.locked));\n      lockBtn.setAttribute('aria-label', (swatch.locked ? 'Unlock' : 'Lock') + ' color ' + (index + 1) + ' ' + swatch.hex.toUpperCase());\n      lockBtn.textContent = swatch.locked ? '\\u{1F512}' : '\\u{1F513}';\n\n      lockBtn.addEventListener('click', () => {\n        state[index].locked = !state[index].locked;\n        render();\n        announce('Color ' + (index + 1) + ' ' + (state[index].locked ? 'locked' : 'unlocked'));\n      });\n\n      wrapper.appendChild(colorDiv);\n      wrapper.appendChild(hexLabel);\n      wrapper.appendChild(lockBtn);\n      paletteEl.appendChild(wrapper);\n    });\n  }\n\n  function announce(message) {\n    liveRegion.textContent = message;\n  }\n\n  function generate() {\n    const fresh = generateHarmoniousPalette();\n    for (let i = 0; i < SWATCH_COUNT; i++) {\n      if (!state[i] || !state[i].locked) {\n        state[i] = fresh[i];\n      }\n    }\n    render();\n    announce('New palette generated: ' + state.map((s) => s.hex.toUpperCase()).join(', '));\n  }\n\n  generateBtn.addEventListener('click', generate);\n\n  // Initialize with a generated palette\n  state.push(...generateHarmoniousPalette());\n  render();\n  announce('Palette ready: ' + state.map((s) => s.hex.toUpperCase()).join(', '));\n})();",
+      "description": "JavaScript logic for HSL-based harmonious palette generation, lock toggling, rendering, and ARIA announcements."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Palette Generator\n\nA fully offline, single-page browser app that generates a harmonious 5-color palette with hex codes. Lock colors you like and regenerate the rest.\n\n## How to Run\n\nOpen `index.html` in any modern browser. No server, build step, or network connection required.\n\n## Features\n\n- Generates a harmonious 5-color palette using HSL-based analogous or split-complementary schemes.\n- Displays each color as a swatch with its hex code.\n- Lock toggle on each swatch to preserve colors across regenerations.\n- \"Generate Palette\" button creates a new palette while respecting locked colors.\n- Fully keyboard accessible: all controls reachable via Tab, activatable via Enter/Space, with visible focus rings.\n- ARIA live region announces palette updates and lock state changes for screen readers.\n- Responsive layout that works from 360px wide up to desktop.\n- No external assets, imports, or network requests.\n\n## Keyboard Shortcuts\n\n- **Tab** / **Shift+Tab**: Move focus between lock toggles and the Generate button.\n- **Enter** or **Space**: Activate a focused control (toggle lock or generate palette).\n\n## Accessibility\n\n- Lock buttons use `aria-pressed` to reflect state.\n- Each swatch hex code has an `aria-label` including its position and value.\n- A polite live region announces changes.\n- Focus-visible outlines are provided on all interactive elements.\n\n## Files\n\n- `index.html` – Structure\n- `styles.css` – Styling and responsive layout\n- `app.js` – Palette generation and interaction logic\n- `README.md` – This file",
+      "description": "README with project description, run instructions, feature list, keyboard shortcuts, and accessibility notes."
+    }
+  ]
+}

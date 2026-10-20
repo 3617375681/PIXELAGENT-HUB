@@ -103,10 +103,11 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           else await target.press(action.key);
         }
         const target = frame.locator(`css=${check.selector}`);
-        if (await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
+        if (check.assertion !== 'count' && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
         const deadline = Date.now() + 2000;
         // Text matches either what is rendered (innerText: paragraph breaks, CSS casing) or the source
         // text (textContent), with runs of whitespace as one space; the rendered text is reported.
+        // Visibility uses Playwright plus no opacity:0 on the element or ancestors.
         const assertion = check.assertion || 'text';
         const expected = assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         let matched = false;
@@ -117,7 +118,14 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
             actual = collapseWhitespace(rendered);
             matched = actual === expected || collapseWhitespace(source) === expected;
           } else {
-            actual = assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible());
+            actual = assertion === 'count' ? String(await target.count())
+              : assertion === 'attribute' ? await target.evaluate((element, attribute) => attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
+                : assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible() && await target.evaluate((element) => {
+                  for (let current: Element | null = element; current; current = current.parentElement) {
+                    if (parseFloat(getComputedStyle(current).opacity) === 0) return false;
+                  }
+                  return true;
+                }));
             matched = actual === expected;
           }
           if (matched) break;

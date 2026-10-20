@@ -23,6 +23,7 @@ import LiveKeyDialog from '../components/LiveKeyDialog';
 import { soundEngine } from '../lib/soundEngine';
 
 const statusText = { queued: 'QUEUED', running: 'BUILDING', ready_for_review: 'READY TO PLAY', failed: 'FAILED', cancelled: 'CANCELLED' };
+const formatTokens = (tokens: number) => tokens >= 1000 ? `${(tokens / 1000).toFixed(1)}k` : String(tokens);
 const EXAMPLES = [
   { label: 'SNAKE', text: 'A pixel snake game: arrow keys to move, a score, pause/resume, restart and a game-over screen. Start paused and show how to play.' },
   { label: 'TIMER', text: 'A pixel pomodoro timer: 25-minute work and 5-minute break modes, start/pause/reset buttons and a big countdown.' },
@@ -182,6 +183,7 @@ export default function Studio() {
   const building = running && !replaying;
   // In the static build the box shows the request of the run on screen until the visitor types.
   const promptText = REPLAY && project && !edited ? project.description : description;
+  const createDisabled = busy || building || !promptText.trim();
   const current = project?.rounds.at(-1);
   const files = current?.code.output?.files || [];
   const selectedFile = files.find((file) => file.path === filePath) || files[0];
@@ -337,8 +339,8 @@ export default function Studio() {
           <p className="studio-lede">The Manager plans, the Coder writes a small web app, the Builder compiles it, and the Tester clicks through it in a real browser. Any error goes straight back to the Coder.</p>
           <div className="studio-prompt">
             <label htmlFor="studio-description" className="sr-only">Your idea</label>
-            <textarea id="studio-description" value={promptText} onChange={(event) => { setDescription(event.target.value); setEdited(true); }} maxLength={4000} rows={2} disabled={busy || building} />
-            <button className="studio-create pixel-font" onClick={() => void create()} disabled={busy || building || !promptText.trim()}><Play size={14} />{busy ? 'WAIT…' : REPLAY ? 'BUILD LIVE' : 'BUILD IT'}</button>
+            <textarea id="studio-description" value={promptText} onChange={(event) => { setDescription(event.target.value); setEdited(true); }} onKeyDown={(event) => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey) && !event.nativeEvent.isComposing && !createDisabled) { event.preventDefault(); void create(); } }} maxLength={4000} rows={2} disabled={busy || building} />
+            <button className="studio-create pixel-font" onClick={() => void create()} disabled={createDisabled} title="Ctrl+Enter or Cmd+Enter to build"><Play size={14} />{busy ? 'WAIT…' : REPLAY ? 'BUILD LIVE' : 'BUILD IT'}</button>
           </div>
           <div className="studio-examples"><span className="pixel-font">TRY</span>{EXAMPLES.map((example) => <button key={example.label} className="pixel-font" disabled={busy || building} onClick={() => { soundEngine.click(); setDescription(example.text); setEdited(true); }}>{example.label}</button>)}</div>
           {REPLAY && <p className="studio-hint">{readOnly ? 'Below is a recorded run. ' : ''}<b>BUILD LIVE</b> runs the squad in this tab with your own key (DeepSeek, Claude, OpenAI, Qwen, GLM…){liveCredentials() ? <> (<button type="button" className="studio-link" onClick={() => setKeyDialog(true)}>change key</button>)</> : ''}, or clone the repo and run <code>npm start</code> to build offline.</p>}
@@ -351,6 +353,7 @@ export default function Studio() {
             <span className="pixel-font studio-kicker">{readOnly ? 'STATUS' : 'MISSION'}</span>
             {/* In the replay the prompt box above already shows the recorded request. */}
             <p>{readOnly ? 'Recorded run of the request above' : project.plan?.output?.projectName || project.description}</p>
+            {building && !!generationMetrics?.reportedUsageTasks && <span className="pixel-font studio-kicker">{formatTokens(generationMetrics.reportedTokens)} tokens</span>}
             <span className={`pixel-font studio-status ${replaying ? 'running' : project.status}`} role="status">{replaying ? 'REPLAYING' : projectStatus(project)}</span>
             {building && <button className="pixel-font" onClick={() => void cancel()} disabled={busy}><Square size={12} />STOP</button>}
             {stuck && !readOnly && <button className="pixel-font" onClick={() => void retry()} disabled={busy}><RotateCcw size={12} />TRY AGAIN</button>}
@@ -429,7 +432,7 @@ export default function Studio() {
             <h3 className="pixel-font">QUICK CHECKS</h3>
             <p className="studio-hint">The Tester writes click-and-expect checks; they run inside the preview above. The full sandboxed browser test is below.</p>
             <button disabled={busy || qaRunning || testPlans.some((plan) => ['queued', 'running'].includes(plan.status))} onClick={() => void generateTests()}>Write checks</button>
-            {testPlans.map((plan) => <details key={plan.id}><summary>Plan {plan.id.slice(0, 8)} · {plan.status}</summary>{plan.error && <p role="alert">{plan.error}</p>}{['queued', 'running'].includes(plan.status) && <button onClick={() => void cancelTests(plan.id)} disabled={busy}>Cancel</button>}{plan.result?.output?.checks && <><ol>{plan.result.output.checks.map((check, index) => <li key={index}>{check.name}: {check.actions.length} actions → {check.selector} {check.assertion === 'disabled' ? 'disabled' : 'text'} = {JSON.stringify(check.expected)}</li>)}</ol><button disabled={plan.status !== 'ready' || busy || qaRunning || plan.previewFile !== project?.previewFile} onClick={() => runChecks(plan)}>Run in preview</button></>}</details>)}
+            {testPlans.map((plan) => <details key={plan.id}><summary>Plan {plan.id.slice(0, 8)} · {plan.status}</summary>{plan.error && <p role="alert">{plan.error}</p>}{['queued', 'running'].includes(plan.status) && <button onClick={() => void cancelTests(plan.id)} disabled={busy}>Cancel</button>}{plan.result?.output?.checks && <><ol>{plan.result.output.checks.map((check, index) => <li key={index}>{check.name}: {check.actions.length} actions → {check.selector} {check.assertion === 'attribute' ? `attribute ${check.attribute}` : check.assertion || 'text'} = {JSON.stringify(check.expected)}</li>)}</ol><button disabled={plan.status !== 'ready' || busy || qaRunning || plan.previewFile !== project?.previewFile} onClick={() => runChecks(plan)}>Run in preview</button></>}</details>)}
             {qaRunning && <p role="status">Running checks…</p>}
             {qaResults.length > 0 && <><p role="status">{qaResults.filter((result) => result.status === 'passed').length} / {qaResults.length} passed</p><ul>{qaResults.map((result, index) => <li key={index}>{result.name} · {result.status} · got {JSON.stringify(result.actual)}{result.error && <pre>{result.error}</pre>}</li>)}</ul><button disabled={busy || qaSaved} onClick={() => void saveChecks()}>{qaSaved ? 'Saved' : 'Save results'}</button></>}
           </section>}

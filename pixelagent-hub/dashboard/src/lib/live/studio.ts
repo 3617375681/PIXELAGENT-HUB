@@ -158,6 +158,7 @@ async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: s
     }
     const attempt: StudioProject['rounds'][number] = { round, code: { status: 'success', output: code.output } };
     project.rounds.push(attempt);
+    project.generationMetrics = metrics(entry);
     emit(entry, 'code_ready', { files: code.output.files.length }, round);
     // Real packages are unsupported; like a compile error, the reason goes back to the Coder.
     const dependencies = unsupportedDependencies(code.output.dependencies);
@@ -193,6 +194,7 @@ async function generate(entry: Entry, signal: AbortSignal) {
     phase('planning');
     const plan = await ask('Manager', managerPrompt(description, { constraints: STUDIO_CONSTRAINTS, deliverable: STUDIO_DELIVERABLE }), parsePlanOutput, signal, AGENT_TIMEOUT_MS);
     project.plan = { status: 'success', output: plan.output };
+    project.generationMetrics = metrics(entry);
     emit(entry, 'plan_ready', { projectName: plan.output.projectName });
     const files = await codeUntilBuilt(entry, signal, phase, { previousFiles: [], revisionNotes: [], maxRounds: 3 });
     const checks = await planChecks(entry, signal);
@@ -202,7 +204,7 @@ async function generate(entry: Entry, signal: AbortSignal) {
       // The Tester can be wrong too: before blaming the Coder, it re-examines its failing checks once.
       if (outcome.failed && !outcome.errors.length) {
         const review = await reviewChecks(entry, plan, outcome.results, signal);
-        if (review.revised) {
+        if (review.revised || review.dropped) {
           plan = review.checks;
           outcome = await runChecks(entry, plan, signal);
         }
@@ -266,10 +268,10 @@ async function planChecks(entry: Entry, signal: AbortSignal) {
 
 /**
  * One second look at failing checks: a check the Tester judges wrong is replaced by its corrected
- * version (same name, same requirement); every other failure stands and goes to the Coder.
+ * version (same name, same requirement); unsupported checks are dropped unless none would remain.
  * A failed review changes nothing.
  */
-async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: BrowserCheckResult[], signal: AbortSignal): Promise<{ checks: BrowserCheck[]; revised: number }> {
+async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: BrowserCheckResult[], signal: AbortSignal): Promise<{ checks: BrowserCheck[]; revised: number; dropped: number }> {
   const { project } = entry;
   const failing = results.filter((result) => result.status === 'failed');
   const planId = entry.plan?.id;
@@ -277,17 +279,20 @@ async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: Brows
   emit(entry, 'test_plan_started', { planId, review: true });
   try {
     const failures = failing.map((result) => ({ check: checks.find((check) => check.name === result.name), actual: result.actual, error: result.error }));
-    const reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name)) }), signal, AGENT_TIMEOUT_MS);
+    const reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name), checks.length) }), signal, AGENT_TIMEOUT_MS);
     const { verdicts } = reply.output;
-    const revisedChecks = checks.map((check) => verdicts.find((verdict) => verdict.name === check.name && verdict.check)?.check || check);
+    const unsupported = verdicts.filter((verdict) => verdict.verdict === 'unsupported');
+    const removed = checks.some((check) => !unsupported.some((verdict) => verdict.name === check.name)) ? unsupported : [];
+    const dropped = removed.length;
+    const revisedChecks = checks.filter((check) => !removed.some((verdict) => verdict.name === check.name)).map((check) => verdicts.find((verdict) => verdict.name === check.name && verdict.check)?.check || check);
     const revised = verdicts.filter((verdict) => verdict.verdict === 'check-wrong').length;
-    if (entry.plan?.result && revised) entry.plan.result.output = { ...entry.plan.result.output, checks: revisedChecks };
-    emit(entry, 'test_plan_ready', { planId, checks: revisedChecks.length, review: true, revised, verdicts: verdicts.map(({ name, verdict, reason }) => ({ name, verdict, reason: reason.slice(0, 200) })) });
-    return { checks: revisedChecks, revised };
+    if (entry.plan?.result && (revised || dropped)) entry.plan.result.output = { ...entry.plan.result.output, checks: revisedChecks, limitations: [...entry.plan.result.output.limitations, ...removed.map(({ name, reason }) => `Not checked: ${name}: ${reason.slice(0, 200)}`)] };
+    emit(entry, 'test_plan_ready', { planId, checks: revisedChecks.length, review: true, revised, dropped, verdicts: verdicts.map(({ name, verdict, reason }) => ({ name, verdict, reason: reason.slice(0, 200) })) });
+    return { checks: revisedChecks, revised, dropped };
   } catch (error) {
     if (signal.aborted) throw error;
-    emit(entry, 'test_plan_ready', { planId, checks: checks.length, review: true, revised: 0, error: (error instanceof Error ? error.message : String(error)).slice(0, 300) });
-    return { checks, revised: 0 };
+    emit(entry, 'test_plan_ready', { planId, checks: checks.length, review: true, revised: 0, dropped: 0, error: (error instanceof Error ? error.message : String(error)).slice(0, 300) });
+    return { checks, revised: 0, dropped: 0 };
   }
 }
 

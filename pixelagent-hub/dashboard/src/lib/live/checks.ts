@@ -26,7 +26,9 @@ async function runInFrame(html: string, checks: BrowserCheck[], signal?: AbortSi
   frame.setAttribute('sandbox', 'allow-scripts allow-forms');
   frame.setAttribute('aria-hidden', 'true');
   frame.tabIndex = -1;
-  frame.style.cssText = 'position:fixed;left:-20000px;top:0;width:1280px;height:720px;border:0;visibility:hidden';
+  // In the viewport but transparent: an off-screen or hidden cross-origin frame is throttled,
+  // which freezes CSS transitions and slows timers to about 1 Hz, so checks saw a different app.
+  frame.style.cssText = 'position:fixed;left:0;top:0;width:1280px;height:720px;border:0;opacity:0;pointer-events:none;z-index:-1';
   const errors: string[] = [];
   try {
     return await new Promise((resolve, reject) => {

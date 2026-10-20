@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import type { StudioEvent } from '../../types/studio';
+import type { StudioEvent, StudioProject } from '../../types/studio';
 
 const build = vi.fn();
 const checks = vi.fn();
@@ -11,14 +11,14 @@ const code = { language: 'javascript', files: [{ path: 'index.html', content: '<
 const testPlan = { checks: [{ name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' }], limitations: [] };
 
 /** A DeepSeek-style SSE body that splits the reply across chunks, with usage in the last one. */
-const sse = (reply: unknown) => {
+const sse = (reply: unknown, usage: object | null = { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }) => {
   const text = '```json\n' + JSON.stringify(reply) + '\n```';
   const half = Math.floor(text.length / 2);
   const chunk = (content: string, usage?: object) => `data: ${JSON.stringify({ model: 'deepseek-flash', choices: [{ delta: { content } }], usage: usage ?? null })}\n\n`;
   return new Response(new ReadableStream({ start(controller) {
     const encoder = new TextEncoder();
     controller.enqueue(encoder.encode(chunk(text.slice(0, half))));
-    controller.enqueue(encoder.encode(chunk(text.slice(half), { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }) + 'data: [DONE]\n\n'));
+    controller.enqueue(encoder.encode(chunk(text.slice(half), usage ?? undefined) + 'data: [DONE]\n\n'));
     controller.close();
   } }), { status: 200 });
 };
@@ -75,6 +75,36 @@ it('runs plan → code → failed build → repaired build → in-page checks, w
   expect(await live.liveRequest('GET', `/api/studio/projects/${projectId}/preview`)).toEqual({ html: '<!DOCTYPE html><html></html>' });
   expect((await live.liveArchive(projectId)).size).toBeGreaterThan(100);
   await expect(live.liveRequest('GET', '/api/studio/projects/not-live/events?after=0')).resolves.toBeUndefined();
+});
+
+it.each([true, false])('reports running plan and Coder usage before completion (provider reports usage: %s)', async (reported) => {
+  let releasePlan!: (response: Response) => void;
+  fetchMock.mockReturnValueOnce(new Promise<Response>((resolve) => { releasePlan = resolve; }));
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    return sse(system.includes('test planner') ? testPlan : code, reported ? { total_tokens: 50 } : null);
+  });
+  build.mockResolvedValueOnce({ status: 'failed', errors: ['Compile error'], checkedFiles: [] })
+    .mockResolvedValueOnce({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const snapshots: Promise<StudioProject>[] = [];
+  const stream = live.liveEventStream(projectId, 0, (event) => {
+    if (event.type === 'plan_ready' || event.type === 'code_ready') snapshots.push(live.liveRequest('GET', `/api/studio/projects/${projectId}`).then((result) => structuredClone((result as { project: StudioProject }).project)));
+  }, new AbortController().signal);
+  releasePlan(sse(plan, reported ? { total_tokens: 30 } : null));
+  await stream;
+  const projects = await Promise.all(snapshots);
+  expect(projects).toHaveLength(3);
+  projects.forEach((project, index) => {
+    expect(project.status).toBe('running');
+    expect(project.generationMetrics).toMatchObject({ elapsedMs: null, reportedTokens: reported ? 30 + index * 50 : 0, reportedUsageTasks: reported ? index + 1 : 0, missingUsageTasks: reported ? 0 : index + 1 });
+  });
+  const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: StudioProject };
+  expect(project.status).toBe('ready_for_review');
+  expect(project.generationMetrics).toMatchObject({ reportedTokens: reported ? 130 : 0, reportedUsageTasks: reported ? 3 : 0 });
+  expect(project.generationMetrics?.reportedTokens).toBe(projects.at(-1)?.generationMetrics?.reportedTokens);
+  expect(project.generationMetrics?.elapsedMs).toEqual(expect.any(Number));
 });
 
 it('cancel stops the run with a cancelled event', async () => {
@@ -184,8 +214,8 @@ it('a custom provider runs without a key against the server the visitor entered'
   expect(new Set(fetchMock.mock.calls.map(([url]) => url))).toEqual(new Set(['http://localhost:11434/v1/chat/completions']));
 });
 
-const review = (verdict: 'check-wrong' | 'app-wrong') => ({ verdicts: [{ name: 'Adds one', verdict, reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
-const routed = (verdict: 'check-wrong' | 'app-wrong') => async (_url: string, init: RequestInit) => {
+const review = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => ({ verdicts: [{ name: 'Adds one', verdict, reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : verdict === 'unsupported' ? 'Cannot read canvas pixels.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
+const routed = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => async (_url: string, init: RequestInit) => {
   const system: string = JSON.parse(String(init.body)).messages[0].content;
   return sse(system.includes('project manager') ? plan : system.includes('You review failing browser checks') ? review(verdict) : system.includes('test planner') ? testPlan : code);
 };
@@ -261,4 +291,39 @@ it('a Coder reply that is not valid JSON goes back to the Coder instead of endin
   expect(coderCalls).toBe(2);
   expect(events.find((event) => event.type === 'build_failed')?.round).toBe(1);
   expect(events.at(-1)?.type).toBe('ready_for_review');
+});
+
+it.each([false, true])('drops unsupported checks and reruns the rest before repair (remaining failure: %s)', async (remainingFailure) => {
+  const remaining = { name: 'Title', actions: [], selector: 'h1', expected: 'Counter' };
+  fetchMock.mockImplementation(async (url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    return system.includes('test planner') ? sse({ ...testPlan, checks: [...testPlan.checks, remaining], limitations: ['Existing limitation'] }) : routed('unsupported')(url, init);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  const title = { name: 'Title', status: remainingFailure ? 'failed' : 'passed', actual: 'Counter' };
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '0' }, title], errors: [] })
+    .mockResolvedValue({ results: [title], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 0, dropped: 1, verdicts: expect.arrayContaining([expect.objectContaining({ name: 'Adds one', verdict: 'unsupported' })]) });
+  expect(checks.mock.calls[1][1]).toEqual([remaining]);
+  expect(build).toHaveBeenCalledTimes(remainingFailure ? 2 : 1);
+  const saved = await live.liveRequest('GET', `/api/studio/projects/${projectId}/test-plans`) as { plans: { result: { output: { checks: unknown[]; limitations: string[] } } }[] };
+  expect(saved.plans[0].result.output).toMatchObject({ checks: [remaining], limitations: ['Existing limitation', 'Not checked: Adds one: Cannot read canvas pixels.'] });
+  if (remainingFailure) {
+    const repair = fetchMock.mock.calls.map(([, init]) => JSON.parse(String((init as RequestInit).body)).messages[1].content as string).filter((user) => user.startsWith('Task:')).at(-1)!;
+    expect(repair).toContain('Title');
+    expect(repair).not.toContain('Adds one');
+  } else expect(events.filter((event) => event.type === 'browser_run_finished').at(-1)?.data).toMatchObject({ status: 'passed', passed: 1 });
+});
+
+it('retains an unsupported check when dropping it would empty the plan', async () => {
+  fetchMock.mockImplementation(routed('unsupported'));
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'failed', actual: '0' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ revised: 0, dropped: 0 });
+  expect(events.filter((event) => event.type === 'browser_run_finished').every((event) => event.data?.status === 'failed')).toBe(true);
+  expect(checks.mock.calls.every((call) => (call[1] as unknown[]).length === 1)).toBe(true);
 });
