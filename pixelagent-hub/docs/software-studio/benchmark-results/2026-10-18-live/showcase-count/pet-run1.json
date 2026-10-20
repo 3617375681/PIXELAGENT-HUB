@@ -1,0 +1,511 @@
+{
+  "caseId": "pet",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "7/8",
+  "finalChecks": "7/8",
+  "reviewTriggered": true,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "7/8",
+    "7/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 36,
+  "reportedTokens": 19477,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T14:27:27.885Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T14:27:27.885Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T14:27:31.577Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Virtual Pet"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T14:27:31.577Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T14:27:40.302Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T14:27:40.302Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T14:27:40.721Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T14:27:40.722Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5af10973-ead1-45cc-8992-0c467e14d60d"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T14:27:43.269Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5af10973-ead1-45cc-8992-0c467e14d60d",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T14:27:43.270Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "testPlanId": "5af10973-ead1-45cc-8992-0c467e14d60d",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Initial mood text and bars rendered",
+        "passed": true,
+        "actual": "I'm feeling great!"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Pet creature is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Three stat bar fills exist",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Feed button visible and labeled",
+        "passed": true,
+        "actual": "Feed"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Play button visible and labeled",
+        "passed": true,
+        "actual": "Play"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Sleep button visible and labeled",
+        "passed": true,
+        "actual": "Sleep"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Hunger bar width is full initially",
+        "passed": false,
+        "actual": "width: 100%;"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "name": "Mood text has polite live region",
+        "passed": true,
+        "actual": "polite"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T14:27:47.881Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "7f86ac1e-e72a-42bc-86a5-8a38d4724198",
+        "status": "failed",
+        "passed": 7,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T14:27:47.885Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5af10973-ead1-45cc-8992-0c467e14d60d",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T14:27:49.090Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5af10973-ead1-45cc-8992-0c467e14d60d",
+        "checks": 8,
+        "review": true,
+        "revised": 0,
+        "verdicts": [
+          {
+            "name": "Hunger bar width is full initially",
+            "verdict": "app-wrong",
+            "reason": "The style attribute contains the full inline style string (\"width: 100%;\"), not just the width value. The requirement is about the bar width, so the check should assert the computed width property rat"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T14:27:49.091Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-20T14:27:57.265Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-20T14:27:57.265Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-20T14:27:57.284Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-20T14:27:57.284Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "testPlanId": "5af10973-ead1-45cc-8992-0c467e14d60d",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Initial mood text and bars rendered",
+        "passed": true,
+        "actual": "I'm feeling great!"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Pet creature is visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Three stat bar fills exist",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Feed button visible and labeled",
+        "passed": true,
+        "actual": "Feed"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Play button visible and labeled",
+        "passed": true,
+        "actual": "Play"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Sleep button visible and labeled",
+        "passed": true,
+        "actual": "Sleep"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Hunger bar width is full initially",
+        "passed": false,
+        "actual": "width: 100%;"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "name": "Mood text has polite live region",
+        "passed": true,
+        "actual": "polite"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-20T14:28:01.882Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "757a5732-95f5-4f9d-a51e-c0950d979dd8",
+        "status": "failed",
+        "passed": 7,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-20T14:28:01.885Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial mood text and bars rendered",
+        "actions": [],
+        "selector": "#mood",
+        "expected": "I'm feeling great!",
+        "assertion": "text"
+      },
+      {
+        "name": "Pet creature is visible",
+        "actions": [],
+        "selector": "#pet",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Three stat bar fills exist",
+        "actions": [],
+        "selector": ".bar-fill",
+        "expected": "3",
+        "assertion": "count"
+      },
+      {
+        "name": "Feed button visible and labeled",
+        "actions": [],
+        "selector": "#feed-btn",
+        "expected": "Feed",
+        "assertion": "text"
+      },
+      {
+        "name": "Play button visible and labeled",
+        "actions": [],
+        "selector": "#play-btn",
+        "expected": "Play",
+        "assertion": "text"
+      },
+      {
+        "name": "Sleep button visible and labeled",
+        "actions": [],
+        "selector": "#sleep-btn",
+        "expected": "Sleep",
+        "assertion": "text"
+      },
+      {
+        "name": "Hunger bar width is full initially",
+        "actions": [],
+        "selector": "#hunger-bar",
+        "expected": "100%",
+        "assertion": "attribute",
+        "attribute": "style"
+      },
+      {
+        "name": "Mood text has polite live region",
+        "actions": [],
+        "selector": "#mood",
+        "expected": "polite",
+        "assertion": "attribute",
+        "attribute": "aria-live"
+      }
+    ],
+    "limitations": [
+      "Bar fill widths are set via inline style; the attribute check on style may match the full inline declaration string rather than a computed width, and CSS transitions mean computed widths are not reliably assertable without timing.",
+      "Mood text changes triggered by Feed/Play/Sleep depend on internal numeric thresholds; since all stats start at 100, single clicks cannot drive a stat below the 60 or 30 thresholds, so mood-change behavior after actions is not observable from a fresh-load single-action sequence without many repeated ",
+      "Exact pixel width/percentage changes of bars after button clicks cannot be asserted without JS evaluation or timing, which are unsupported.",
+      "Keyboard operability (Enter/Space activation) and focus outlines cannot be verified with synthetic DOM key events or pixel assertions.",
+      "Responsive layout at 360px cannot be verified without viewport control.",
+      "CSS-drawn pixel-art appearance (colors, shapes, pixelation) cannot be asserted."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3473,
+      "completion_tokens": 455,
+      "total_tokens": 3928,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 3089
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Virtual Pet</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-card\">\n    <h1>Pixel Pet</h1>\n    <div class=\"pet-container\" aria-hidden=\"true\">\n      <div class=\"pet\" id=\"pet\">\n        <div class=\"pet-eye left\"></div>\n        <div class=\"pet-eye right\"></div>\n        <div class=\"pet-mouth\"></div>\n      </div>\n    </div>\n    <p class=\"mood\" id=\"mood\" aria-live=\"polite\">I'm feeling great!</p>\n    <div class=\"stats\">\n      <div class=\"stat\">\n        <span class=\"stat-label\">Hunger</span>\n        <div class=\"bar-bg\"><div class=\"bar-fill hunger\" id=\"hunger-bar\"></div></div>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Happiness</span>\n        <div class=\"bar-bg\"><div class=\"bar-fill happiness\" id=\"happiness-bar\"></div></div>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Energy</span>\n        <div class=\"bar-bg\"><div class=\"bar-fill energy\" id=\"energy-bar\"></div></div>\n      </div>\n    </div>\n    <div class=\"controls\">\n      <button id=\"feed-btn\" aria-label=\"Feed your pet\">Feed</button>\n      <button id=\"play-btn\" aria-label=\"Play with your pet\">Play</button>\n      <button id=\"sleep-btn\" aria-label=\"Put your pet to sleep\">Sleep</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML document with game card, pet, stat bars, mood text, and control buttons."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2e;\n  --card-bg: #2a2a3c;\n  --text: #cdd6f4;\n  --accent: #89b4fa;\n  --accent-hover: #b4c6f0;\n  --bar-hunger: #f38ba8;\n  --bar-happiness: #a6e3a1;\n  --bar-energy: #f9e2af;\n  --shadow: rgba(0,0,0,0.3);\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: var(--font);\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  font-size: 16px;\n}\n\n.game-card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  padding: 24px;\n  width: 100%;\n  max-width: 400px;\n  box-shadow: 0 8px 24px var(--shadow);\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 16px;\n}\n\nh1 {\n  font-size: 1.75rem;\n  font-weight: 700;\n  letter-spacing: 1px;\n  color: var(--accent);\n}\n\n.pet-container {\n  width: 120px;\n  height: 120px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.pet {\n  width: 80px;\n  height: 80px;\n  background: var(--accent);\n  border-radius: 12px;\n  position: relative;\n  image-rendering: pixelated;\n  box-shadow: 0 0 0 4px var(--accent-hover);\n  transition: transform 0.2s ease;\n}\n\n.pet:hover {\n  transform: scale(1.05);\n}\n\n.pet-eye {\n  position: absolute;\n  width: 12px;\n  height: 12px;\n  background: var(--bg);\n  border-radius: 50%;\n  top: 20px;\n}\n\n.pet-eye.left { left: 18px; }\n.pet-eye.right { right: 18px; }\n\n.pet-mouth {\n  position: absolute;\n  width: 24px;\n  height: 8px;\n  background: var(--bg);\n  border-radius: 0 0 12px 12px;\n  bottom: 18px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.mood {\n  font-size: 1.125rem;\n  font-weight: 600;\n  color: var(--accent-hover);\n  text-align: center;\n  min-height: 1.5em;\n}\n\n.stats {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.stat {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n.stat-label {\n  width: 80px;\n  font-size: 0.875rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: var(--text);\n  flex-shrink: 0;\n}\n\n.bar-bg {\n  flex: 1;\n  height: 16px;\n  background: var(--bg);\n  border-radius: 8px;\n  overflow: hidden;\n}\n\n.bar-fill {\n  height: 100%;\n  width: 100%;\n  border-radius: 8px;\n  transition: width 0.3s ease;\n}\n\n.bar-fill.hunger { background: var(--bar-hunger); }\n.bar-fill.happiness { background: var(--bar-happiness); }\n.bar-fill.energy { background: var(--bar-energy); }\n\n.controls {\n  display: flex;\n  gap: 12px;\n  width: 100%;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\nbutton {\n  font-family: var(--font);\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 10px 20px;\n  border: none;\n  border-radius: 8px;\n  background: var(--accent);\n  color: var(--bg);\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  min-width: 80px;\n}\n\nbutton:hover {\n  background: var(--accent-hover);\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--accent-hover);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.95);\n}\n\n@media (max-width: 400px) {\n  .game-card {\n    padding: 16px;\n  }\n  .stat-label {\n    width: 60px;\n    font-size: 0.75rem;\n  }\n  button {\n    padding: 8px 16px;\n    font-size: 0.9rem;\n  }\n}",
+      "description": "Stylesheet with themed palette, pixel pet visuals, stat bars, button states, and responsive layout."
+    },
+    {
+      "path": "script.js",
+      "content": "const state = {\n  hunger: 100,\n  happiness: 100,\n  energy: 100\n};\n\nconst moodEl = document.getElementById('mood');\nconst hungerBar = document.getElementById('hunger-bar');\nconst happinessBar = document.getElementById('happiness-bar');\nconst energyBar = document.getElementById('energy-bar');\n\nfunction clamp(value) {\n  return Math.max(0, Math.min(100, value));\n}\n\nfunction updateUI() {\n  hungerBar.style.width = state.hunger + '%';\n  happinessBar.style.width = state.happiness + '%';\n  energyBar.style.width = state.energy + '%';\n\n  let mood = \"I'm feeling great!\";\n  if (state.hunger < 30) mood = \"I'm hungry...\";\n  else if (state.energy < 30) mood = \"I'm sleepy...\";\n  else if (state.happiness < 30) mood = \"I'm bored...\";\n  else if (state.hunger < 60 || state.happiness < 60 || state.energy < 60) mood = \"I'm okay.\";\n\n  moodEl.textContent = mood;\n}\n\nfunction feed() {\n  state.hunger = clamp(state.hunger + 15);\n  state.happiness = clamp(state.happiness + 5);\n  state.energy = clamp(state.energy - 5);\n  updateUI();\n}\n\nfunction play() {\n  state.happiness = clamp(state.happiness + 20);\n  state.energy = clamp(state.energy - 15);\n  state.hunger = clamp(state.hunger - 10);\n  updateUI();\n}\n\nfunction sleep() {\n  state.energy = clamp(state.energy + 30);\n  state.hunger = clamp(state.hunger - 5);\n  state.happiness = clamp(state.happiness - 5);\n  updateUI();\n}\n\ndocument.getElementById('feed-btn').addEventListener('click', feed);\ndocument.getElementById('play-btn').addEventListener('click', play);\ndocument.getElementById('sleep-btn').addEventListener('click', sleep);\n\nupdateUI();",
+      "description": "Game logic: state management, stat updates, mood calculation, and button event listeners."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Virtual Pet\n\nA fully offline, accessible browser-based virtual pet game built with plain HTML, CSS, and JavaScript. No external dependencies, no network requests.\n\n## Features\n\n- CSS-drawn pixel-art creature\n- Three stat bars: Hunger, Happiness, Energy\n- Feed, Play, and Sleep buttons with keyboard accessibility\n- Mood text updates based on stat thresholds\n- Responsive layout down to 360px wide\n- Cohesive dark palette with visible hover, focus, and pressed states\n\n## How to Run\n\nOpen `index.html` in any modern browser. No server or build step required.\n\n## Controls\n\n- **Feed**: Increases hunger and happiness, decreases energy slightly\n- **Play**: Increases happiness, decreases energy and hunger\n- **Sleep**: Restores energy, decreases hunger and happiness slightly\n\nAll buttons are focusable and operable via keyboard (Tab to focus, Enter/Space to activate).\n\n## Accessibility\n\n- Buttons have `aria-label` attributes\n- Mood text uses `aria-live=\"polite\"` for screen reader announcements\n- Visible focus outlines on all interactive elements\n- Minimum font size of 16px on body\n\n## Palette\n\n- Background: `#1e1e2e`\n- Card: `#2a2a3c`\n- Text: `#cdd6f4`\n- Accent: `#89b4fa`\n- Accent hover: `#b4c6f0`\n- Bar colors: `#f38ba8` (hunger), `#a6e3a1` (happiness), `#f9e2af` (energy)\n\n## Files\n\n- `index.html` — markup and structure\n- `styles.css` — all styling and responsive rules\n- `script.js` — game state and interaction logic\n- `README.md` — this file",
+      "description": "Project documentation with features, run instructions, controls, accessibility notes, and palette."
+    }
+  ]
+}

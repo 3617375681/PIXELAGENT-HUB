@@ -1,0 +1,656 @@
+{
+  "caseId": "palette",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "6/8",
+  "finalChecks": "6/8",
+  "reviewTriggered": true,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "6/8",
+    "6/8",
+    "6/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 51,
+  "reportedTokens": 22772,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T14:31:38.161Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T14:31:38.161Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T14:31:42.086Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Palette Generator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T14:31:42.086Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T14:31:52.929Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T14:31:52.929Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T14:31:53.346Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T14:31:53.346Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T14:31:55.663Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T14:31:55.664Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "testPlanId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Initial palette shows 5 swatches with hex codes",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Each swatch displays a hex code",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Lock toggle exists on every swatch",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Generate button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Locking first swatch keeps its checkbox checked",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Locking a swatch keeps its hex code after generating",
+        "passed": false,
+        "actual": "Color #4CCE3B"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Lock icon title reflects locked state",
+        "passed": true,
+        "actual": "Unlock color"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T14:32:02.339Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "name": "Unlocking a swatch restores lock title",
+        "passed": true,
+        "actual": "Lock color"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T14:32:02.340Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "5c5cecab-8703-4414-b7d0-37c680403223",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T14:32:02.343Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T14:32:05.191Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9",
+        "checks": 8,
+        "review": true,
+        "revised": 1,
+        "verdicts": [
+          {
+            "name": "Locking first swatch keeps its checkbox checked",
+            "verdict": "app-wrong",
+            "reason": "The check clicks the label element #lock-0 (the input's id is lock-0, but the clickable lock is the label with htmlFor lock-0). Clicking the input via #lock-0 may toggle it, but asserting the boolean "
+          },
+          {
+            "name": "Locking a swatch keeps its hex code after generating",
+            "verdict": "check-wrong",
+            "reason": "The expected value is wrong: the requirement is that the locked swatch keeps its hex code, not that the aria-label equals '#'. The check should capture the hex text before generating and compare it af"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T14:32:05.192Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "testPlanId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Initial palette shows 5 swatches with hex codes",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Each swatch displays a hex code",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Lock toggle exists on every swatch",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Generate button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Locking first swatch keeps its checkbox checked",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Locking a swatch keeps its hex code after generating",
+        "passed": false,
+        "actual": "#3E60DA"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Lock icon title reflects locked state",
+        "passed": true,
+        "actual": "Unlock color"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "name": "Unlocking a swatch restores lock title",
+        "passed": true,
+        "actual": "Lock color"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-20T14:32:11.793Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f52f6977-b838-409c-bf65-baf29b6ea566",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-20T14:32:11.798Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-20T14:32:20.602Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-20T14:32:20.602Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-20T14:32:20.626Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-20T14:32:20.627Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "testPlanId": "02ac6d50-bc16-42ec-975b-ec61e9a74df9",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Initial palette shows 5 swatches with hex codes",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Each swatch displays a hex code",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Lock toggle exists on every swatch",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Generate button is enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Locking first swatch keeps its checkbox checked",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Locking a swatch keeps its hex code after generating",
+        "passed": false,
+        "actual": "#3BED7F"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Lock icon title reflects locked state",
+        "passed": true,
+        "actual": "Unlock color"
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "name": "Unlocking a swatch restores lock title",
+        "passed": true,
+        "actual": "Lock color"
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-20T14:32:27.255Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "63beff79-297d-4df9-88b4-5b796f531986",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-20T14:32:27.259Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial palette shows 5 swatches with hex codes",
+        "actions": [],
+        "selector": ".swatch",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Each swatch displays a hex code",
+        "actions": [],
+        "selector": ".hex-code",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Lock toggle exists on every swatch",
+        "actions": [],
+        "selector": ".lock-checkbox",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Generate button is enabled",
+        "actions": [],
+        "selector": "#generate",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Locking first swatch keeps its checkbox checked",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#lock-0"
+          }
+        ],
+        "selector": "#lock-0",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "checked"
+      },
+      {
+        "name": "Locking a swatch keeps its hex code after generating",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "label[for='lock-0']"
+          },
+          {
+            "type": "click",
+            "selector": "#generate"
+          }
+        ],
+        "selector": "#palette .swatch:nth-child(1) .hex-code",
+        "expected": "#4CCE3B",
+        "assertion": "text"
+      },
+      {
+        "name": "Lock icon title reflects locked state",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#lock-2"
+          }
+        ],
+        "selector": "#palette .swatch:nth-child(3) .lock-label",
+        "expected": "Unlock color",
+        "assertion": "attribute",
+        "attribute": "title"
+      },
+      {
+        "name": "Unlocking a swatch restores lock title",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#lock-1"
+          },
+          {
+            "type": "click",
+            "selector": "#lock-1"
+          }
+        ],
+        "selector": "#palette .swatch:nth-child(2) .lock-label",
+        "expected": "Lock color",
+        "assertion": "attribute",
+        "attribute": "title"
+      }
+    ],
+    "limitations": [
+      "Random palette values cannot be predicted, so checks assert structure, counts, and lock behavior rather than specific colors.",
+      "Harmony of generated palettes (hue relationships) is not observable from the DOM and is not checked.",
+      "The exact hex code retained after locking is not asserted because the initial color is random; only checkbox state and lock metadata are verified.",
+      "Visual styling of swatches, lock icons, and hover/focus states are not asserted.",
+      "Keyboard activation (Enter/Space) is not tested since synthetic key events are not trusted browser input."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4002,
+      "completion_tokens": 496,
+      "total_tokens": 4498,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "prompt_cache_hit_tokens": 512,
+      "prompt_cache_miss_tokens": 3490
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Palette Generator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header>\n      <h1>Pixel Palette</h1>\n      <p class=\"subtitle\">Generate harmonious 5-color palettes. Lock colors you love.</p>\n    </header>\n    <div id=\"palette\" class=\"palette\" role=\"group\" aria-label=\"Color palette\"></div>\n    <button id=\"generate\" class=\"generate-btn\" type=\"button\">Generate New Palette</button>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML page"
+    },
+    {
+      "path": "styles.css",
+      "content": "* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: #1e1e2f;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  color: #e8e8f0;\n  padding: 16px;\n}\n\n.card {\n  background: #2a2a3d;\n  border-radius: 16px;\n  padding: 32px 24px;\n  max-width: 800px;\n  width: 100%;\n  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);\n}\n\nheader {\n  text-align: center;\n  margin-bottom: 28px;\n}\n\nh1 {\n  font-size: 1.8rem;\n  font-weight: 700;\n  letter-spacing: -0.5px;\n  color: #ffffff;\n}\n\n.subtitle {\n  margin-top: 6px;\n  font-size: 1rem;\n  color: #a0a0b8;\n}\n\n.palette {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));\n  gap: 12px;\n  margin-bottom: 28px;\n}\n\n.swatch {\n  border-radius: 12px;\n  overflow: hidden;\n  background: #3a3a50;\n  transition: transform 0.15s ease, box-shadow 0.15s ease;\n}\n\n.swatch:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n}\n\n.swatch-color {\n  height: 100px;\n  width: 100%;\n}\n\n.swatch-footer {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 8px 10px;\n  background: #202030;\n  gap: 6px;\n}\n\n.hex-code {\n  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;\n  font-size: 0.9rem;\n  font-weight: 600;\n  letter-spacing: 0.5px;\n  color: #e0e0f0;\n  user-select: all;\n}\n\n.lock-label {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  border-radius: 8px;\n  cursor: pointer;\n  font-size: 1.1rem;\n  background: transparent;\n  color: #8888aa;\n  transition: background 0.15s, color 0.15s, transform 0.1s;\n  flex-shrink: 0;\n}\n\n.lock-label:hover {\n  background: #3a3a55;\n  color: #c0c0e0;\n}\n\n.lock-label:active {\n  transform: scale(0.92);\n}\n\n.lock-checkbox {\n  position: absolute;\n  opacity: 0;\n  width: 1px;\n  height: 1px;\n  pointer-events: none;\n}\n\n.lock-checkbox:focus-visible + .lock-label {\n  outline: 2px solid #7c8cf8;\n  outline-offset: 2px;\n}\n\n.lock-checkbox:checked + .lock-label {\n  color: #f8c84c;\n  background: #3a3a55;\n}\n\n.lock-icon {\n  display: inline-block;\n  line-height: 1;\n}\n\n.generate-btn {\n  display: block;\n  width: 100%;\n  padding: 16px 24px;\n  font-family: inherit;\n  font-size: 1.1rem;\n  font-weight: 600;\n  color: #ffffff;\n  background: #5c6cf0;\n  border: none;\n  border-radius: 12px;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;\n  letter-spacing: 0.3px;\n}\n\n.generate-btn:hover {\n  background: #4a5ae0;\n  box-shadow: 0 4px 16px rgba(92, 108, 240, 0.4);\n}\n\n.generate-btn:focus-visible {\n  outline: 3px solid #a0b0ff;\n  outline-offset: 3px;\n}\n\n.generate-btn:active {\n  transform: scale(0.98);\n  background: #3a4ad0;\n}\n\n@media (max-width: 480px) {\n  .card {\n    padding: 24px 16px;\n  }\n\n  h1 {\n    font-size: 1.5rem;\n  }\n\n  .palette {\n    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));\n    gap: 8px;\n  }\n\n  .swatch-color {\n    height: 70px;\n  }\n\n  .hex-code {\n    font-size: 0.8rem;\n  }\n\n  .lock-label {\n    width: 32px;\n    height: 32px;\n  }\n}\n\n@media (max-width: 360px) {\n  .palette {\n    grid-template-columns: repeat(2, 1fr);\n  }\n\n  .swatch:last-child {\n    grid-column: span 2;\n  }\n}",
+      "description": "Stylesheet"
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  const paletteEl = document.getElementById('palette');\n  const generateBtn = document.getElementById('generate');\n\n  const NUM_SWATCHES = 5;\n\n  /**\n   * Generate a harmonious palette of 5 HSL colors.\n   * Uses a base hue with analogous/complementary offsets.\n   * @returns {Array<{h: number, s: number, l: number}>}\n   */\n  function generateHarmoniousPalette() {\n    const baseHue = Math.floor(Math.random() * 360);\n    const baseSat = 60 + Math.floor(Math.random() * 25); // 60-84\n    const baseLight = 45 + Math.floor(Math.random() * 15); // 45-59\n\n    // Harmonious hue offsets: analogous + complementary accent\n    const hueOffsets = [0, 30, 60, 180, 210];\n    const satVariation = [0, -10, 10, -5, 5];\n    const lightVariation = [0, 10, -10, 15, -15];\n\n    return hueOffsets.map((offset, i) => ({\n      h: (baseHue + offset + 360) % 360,\n      s: Math.max(30, Math.min(90, baseSat + satVariation[i])),\n      l: Math.max(25, Math.min(80, baseLight + lightVariation[i]))\n    }));\n  }\n\n  function hslToHex(h, s, l) {\n    s /= 100;\n    l /= 100;\n    const a = s * Math.min(l, 1 - l);\n    const f = (n) => {\n      const k = (n + h / 30) % 12;\n      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);\n      return Math.round(255 * color).toString(16).padStart(2, '0');\n    };\n    return `#${f(0)}${f(8)}${f(4)}`;\n  }\n\n  function hslToCss(h, s, l) {\n    return `hsl(${h}, ${s}%, ${l}%)`;\n  }\n\n  // State: array of { h, s, l, locked }\n  let palette = [];\n\n  function initPalette() {\n    const colors = generateHarmoniousPalette();\n    palette = colors.map((c) => ({ ...c, locked: false }));\n  }\n\n  function regeneratePalette() {\n    const fresh = generateHarmoniousPalette();\n    palette = palette.map((swatch, i) => {\n      if (swatch.locked) return swatch;\n      return { ...fresh[i], locked: false };\n    });\n  }\n\n  function render() {\n    paletteEl.innerHTML = '';\n\n    palette.forEach((swatch, index) => {\n      const hex = hslToHex(swatch.h, swatch.s, swatch.l);\n      const cssColor = hslToCss(swatch.h, swatch.s, swatch.l);\n\n      const swatchEl = document.createElement('div');\n      swatchEl.className = 'swatch';\n\n      const colorEl = document.createElement('div');\n      colorEl.className = 'swatch-color';\n      colorEl.style.backgroundColor = cssColor;\n\n      const footer = document.createElement('div');\n      footer.className = 'swatch-footer';\n\n      const hexEl = document.createElement('span');\n      hexEl.className = 'hex-code';\n      hexEl.textContent = hex.toUpperCase();\n      hexEl.setAttribute('aria-label', `Color ${hex.toUpperCase()}`);\n\n      const checkboxId = `lock-${index}`;\n      const checkbox = document.createElement('input');\n      checkbox.type = 'checkbox';\n      checkbox.className = 'lock-checkbox';\n      checkbox.id = checkboxId;\n      checkbox.checked = swatch.locked;\n      checkbox.setAttribute('aria-label', `Lock color ${hex.toUpperCase()}`);\n\n      const label = document.createElement('label');\n      label.className = 'lock-label';\n      label.htmlFor = checkboxId;\n      label.setAttribute('title', swatch.locked ? 'Unlock color' : 'Lock color');\n\n      const icon = document.createElement('span');\n      icon.className = 'lock-icon';\n      icon.textContent = swatch.locked ? '\\uD83D\\uDD12' : '\\uD83D\\uDD13';\n      icon.setAttribute('aria-hidden', 'true');\n\n      label.appendChild(icon);\n\n      checkbox.addEventListener('change', () => {\n        palette[index].locked = checkbox.checked;\n        label.setAttribute('title', checkbox.checked ? 'Unlock color' : 'Lock color');\n        icon.textContent = checkbox.checked ? '\\uD83D\\uDD12' : '\\uD83D\\uDD13';\n      });\n\n      footer.appendChild(hexEl);\n      footer.appendChild(checkbox);\n      footer.appendChild(label);\n\n      swatchEl.appendChild(colorEl);\n      swatchEl.appendChild(footer);\n      paletteEl.appendChild(swatchEl);\n    });\n  }\n\n  function handleGenerate() {\n    regeneratePalette();\n    render();\n  }\n\n  generateBtn.addEventListener('click', handleGenerate);\n\n  // Initialize\n  initPalette();\n  render();\n})();",
+      "description": "Palette generation and UI logic"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Palette Generator\n\nA fully offline, single-page browser app that generates harmonious 5-color palettes with hex codes, per-swatch lock toggles, and a Generate button. Built with only HTML, CSS, and plain JavaScript.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Click **Generate New Palette** to create a new harmonious 5-color palette.\n3. Click the lock icon on any swatch to keep that color across future generations.\n4. Locked swatches retain their color and hex code when you generate a new palette.\n\n## Controls\n\n- **Generate New Palette** button: creates a new harmonious palette while preserving locked swatches.\n- **Lock toggle** (per swatch): a native checkbox styled as a lock icon. Checked = locked, unchecked = unlocked.\n\n## Accessibility\n\n- All controls are keyboard-accessible via Tab navigation.\n- Enter/Space activates the Generate button and lock toggles.\n- Visible focus rings on all interactive elements.\n- Lock toggles use native checkboxes with associated labels and `aria-label` attributes.\n- Hex codes are announced with `aria-label`.\n\n## Constraints\n\n- No imports, packages, network requests, external assets, iframes, or server code.\n- All files use relative paths and `.html`, `.css`, `.js`, `.md` extensions.\n- Layout works from 360px wide and up.\n- System fonts, 16px or larger base font size.\n\n## Files\n\n- `index.html` — page structure\n- `styles.css` — styling and responsive layout\n- `app.js` — palette generation logic and DOM rendering\n- `README.md` — this file",
+      "description": "Documentation"
+    }
+  ]
+}
