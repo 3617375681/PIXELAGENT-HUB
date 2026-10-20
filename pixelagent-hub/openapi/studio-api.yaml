@@ -1340,7 +1340,9 @@ components:
             - visible
             - count
             - attribute
-          description: Defaults to text; disabled and visible require expected "true" or "false". Visible requires a non-empty box, no visibility:hidden, and no computed opacity 0 on the element or any ancestor. Count compares the number of selector matches (including zero), with expected matching ^\d{1,4}$. All other assertions and action selectors require exactly one element. Attribute compares exactly without whitespace collapse; missing attributes read as "", and value reads the live property for input, textarea and select; checked reads a checkbox or radio's live state as "true" or "false".
+            - changed
+            - unchanged
+          description: Changed and unchanged compare collapsed rendered text with its baseline before the first action, also accepting matching textContent; expected must be "", attribute is forbidden, and at least one action is required. Changed polls up to 2 s for a difference; unchanged samples every 50 ms for 500 ms and fails on the first difference. Both require exactly one match before actions and on every sample. Defaults to text; disabled and visible require expected "true" or "false". Visible requires a non-empty box, no visibility:hidden, and no computed opacity 0 on the element or any ancestor. Count compares the number of selector matches (including zero), with expected matching ^\d{1,4}$. All other assertions and action selectors require exactly one element. Attribute compares exactly without whitespace collapse; missing attributes read as "", and value reads the live property for input, textarea and select; checked reads a checkbox or radio's live state as "true" or "false".
         attribute:
           type: string
           pattern: ^[a-z][a-z0-9-]{0,49}$

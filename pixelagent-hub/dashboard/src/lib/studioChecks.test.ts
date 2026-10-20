@@ -143,3 +143,50 @@ it('reads live checked state before and after a checkbox click', async () => {
   ]);
   expect(results.map(({ status, actual }) => ({ status, actual }))).toEqual([{ status: 'passed', actual: 'false' }, { status: 'passed', actual: 'true' }]);
 });
+
+
+it('compares text with its baseline before actions and catches delayed changes', async () => {
+  let output = { innerText: ' A ', textContent: 'A' };
+  const other = { textContent: '0' };
+  const buttons = {
+    '#replace': { click: () => { output = { innerText: 'B', textContent: 'B' }; } },
+    '#other': { click: () => { other.textContent = '1'; } },
+    '#delay': { click: () => { setTimeout(() => { output.innerText = output.textContent = 'C'; }, 200); } },
+  };
+  const document = { querySelectorAll: (selector: string) => selector === '#value' ? [output] : buttons[selector as keyof typeof buttons] ? [buttons[selector as keyof typeof buttons]] : [] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Replaced', actions: [{ type: 'click', selector: '#replace' }], selector: '#value', assertion: 'changed', expected: '' },
+    { name: 'Same', actions: [{ type: 'click', selector: '#other' }], selector: '#value', assertion: 'changed', expected: '' },
+    { name: 'Kept', actions: [{ type: 'click', selector: '#other' }], selector: '#value', assertion: 'unchanged', expected: '' },
+    { name: 'Delayed', actions: [{ type: 'click', selector: '#delay' }], selector: '#value', assertion: 'unchanged', expected: '' },
+    { name: 'Missing baseline', actions: [{ type: 'click', selector: '#replace' }], selector: '#missing', assertion: 'changed', expected: '' },
+  ]);
+  expect(results.map(({ status }) => status)).toEqual(['passed', 'failed', 'passed', 'failed', 'failed']);
+  expect(results.map(({ actual }) => actual)).toEqual(['B', 'B', 'B', 'C', '']);
+  expect(results[1].error).toBe('Expected text to change from "B"');
+  expect(results[3].error).toBe('Expected text to stay "B", observed "C"');
+  expect(results[4].error).toContain('found 0');
+  expect(output.textContent).toBe('C');
+});
+
+it('relative assertions accept source text and reject missing or ambiguous later matches', async () => {
+  for (const assertion of ['changed', 'unchanged'] as const) {
+    let targets = [{ innerText: ' A  B ', textContent: 'A B' }];
+    const button = { click: () => { targets = [{ innerText: 'A B', textContent: 'A B' }]; setTimeout(() => { targets = []; }, 100); } };
+    const document = { querySelectorAll: (selector: string) => selector === '#value' ? targets : [button] } as unknown as Document;
+    const [result] = await runDOMChecks(document, [{ name: assertion, actions: [{ type: 'click', selector: '#button' }], selector: '#value', assertion, expected: '' }]);
+    expect(result.status).toBe('failed');
+    expect(result.error).toContain('found 0');
+    targets = [{ innerText: 'A', textContent: 'A' }, { innerText: 'A', textContent: 'A' }];
+    const [ambiguous] = await runDOMChecks(document, [{ name: assertion, actions: [{ type: 'click', selector: '#button' }], selector: '#value', assertion, expected: '' }]);
+    expect(ambiguous.error).toContain('found 2');
+  }
+  const output = { innerText: 'A B', textContent: 'A B' };
+  const button = { click: () => { output.innerText = 'A\n\nB'; } };
+  const document = { querySelectorAll: (selector: string) => selector === '#value' ? [output] : [button] } as unknown as Document;
+  const [result] = await runDOMChecks(document, [{ name: 'Whitespace', actions: [{ type: 'click', selector: '#button' }], selector: '#value', assertion: 'unchanged', expected: '' }]);
+  expect(result.status).toBe('passed');
+  button.click = () => { output.innerText = 'A B!'; };
+  const [source] = await runDOMChecks(document, [{ name: 'Source fallback', actions: [{ type: 'click', selector: '#button' }], selector: '#value', assertion: 'unchanged', expected: '' }]);
+  expect(source).toMatchObject({ status: 'passed', actual: 'A B!' });
+});

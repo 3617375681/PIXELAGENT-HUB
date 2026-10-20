@@ -91,6 +91,11 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
       if (plan.isolation === 'fresh' && index > 0) await loadApp();
       let actual = '';
       try {
+        const assertion = check.assertion || 'text';
+        const relative = assertion === 'changed' || assertion === 'unchanged';
+        const target = frame.locator(`css=${check.selector}`);
+        if (relative && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
+        const expected = relative ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();
           const target = frame.locator(`css=${action.selector}`);
@@ -102,21 +107,20 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           }
           else await target.press(action.key);
         }
-        const target = frame.locator(`css=${check.selector}`);
         if (check.assertion !== 'count' && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
-        const deadline = Date.now() + 2000;
+        const deadline = Date.now() + (assertion === 'unchanged' ? 500 : 2000);
         // Text matches either what is rendered (innerText: paragraph breaks, CSS casing) or the source
         // text (textContent), with runs of whitespace as one space; the rendered text is reported.
         // Visibility uses Playwright plus no opacity:0 on the element or ancestors.
-        const assertion = check.assertion || 'text';
-        const expected = assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         let matched = false;
         do {
           controller.signal.throwIfAborted();
-          if (assertion === 'text') {
+          if (relative && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
+          if (assertion === 'text' || relative) {
             const [rendered, source] = await target.evaluate((element) => [(element as HTMLElement).innerText ?? '', element.textContent ?? '']);
             actual = collapseWhitespace(rendered);
             matched = actual === expected || collapseWhitespace(source) === expected;
+            if (assertion === 'changed') matched = !matched;
           } else {
             actual = assertion === 'count' ? String(await target.count())
               : assertion === 'attribute' ? await target.evaluate((element, attribute) => attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
@@ -128,9 +132,11 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
                 }));
             matched = actual === expected;
           }
-          if (matched) break;
+          if (assertion === 'unchanged' ? !matched : matched) break;
+          if (Date.now() >= deadline) break;
           await new Promise((resolve) => setTimeout(resolve, 50));
-        } while (Date.now() < deadline);
+        } while (assertion === 'unchanged' ? matched : !matched);
+        if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected text to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual.slice(0, 300))}` : `Expected text to change from ${JSON.stringify(expected)}`);
         if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
         run.checks.push({ name: check.name, status: 'passed', actual: actual.slice(0, 300) });
       } catch (error) {

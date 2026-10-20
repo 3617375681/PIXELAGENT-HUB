@@ -197,3 +197,24 @@ test('real browser visibility includes ancestor opacity and checked reads live s
     assert.deepEqual(run.checks.map((check) => check.actual), ['false', 'false', 'true', 'false', 'true']);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+
+test('real browser compares text before actions and detects delayed changes', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-relative-'));
+  try {
+    const content = '<html><body><output>A</output><div id="other">0</div><button id="replace">Replace</button><button id="keep">Keep</button><button id="delay">Delay</button><script>document.querySelector("#replace").onclick=()=>document.querySelector("output").outerHTML="<output>B</output>";document.querySelector("#keep").onclick=()=>document.querySelector("#other").textContent="1";document.querySelector("#delay").onclick=()=>setTimeout(()=>document.querySelector("output").textContent="B",200)</script></body></html>';
+    const checks = { checks: [
+      { name: 'Replaced', actions: [{ type: 'click', selector: '#replace' }], selector: 'output', assertion: 'changed', expected: '' },
+      { name: 'Same', actions: [{ type: 'click', selector: '#keep' }], selector: 'output', assertion: 'changed', expected: '' },
+      { name: 'Kept', actions: [{ type: 'click', selector: '#keep' }], selector: 'output', assertion: 'unchanged', expected: '' },
+      { name: 'Delayed', actions: [{ type: 'click', selector: '#delay' }], selector: 'output', assertion: 'unchanged', expected: '' },
+      { name: 'Missing baseline', actions: [{ type: 'click', selector: '#replace' }], selector: '#missing', assertion: 'changed', expected: '' },
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map((check) => check.status), ['passed', 'failed', 'passed', 'failed', 'failed'], JSON.stringify(run));
+    assert.deepEqual(run.checks.map((check) => check.actual), ['B', 'A', 'A', 'B', '']);
+    assert.equal(run.checks[1].error, 'Expected text to change from "A"');
+    assert.equal(run.checks[3].error, 'Expected text to stay "A", observed "B"');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
