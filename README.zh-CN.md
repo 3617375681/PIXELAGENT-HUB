@@ -78,7 +78,7 @@ Builder 会把真实的 esbuild 报错交给 Coder（第 1 轮 → 第 2 轮）�
   - 结果：先规划再写码 13/15 完整通过，直接写码 12/15。
   - 代价：规划平均每个应用多花约 1,200 token，没有可测的收益。
   - 每一次失败都逐条列出。
-- **[PLAY LIVE 基准](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-live/README.md)**：5 个固定用例 × 3 次，在真实的静态站点里用 `deepseek-chat` 运行。修正 Tester 提示后，完整通过从 8/15 提高到 **11/15**，再加上空白字符修正后为 **14/15**。每一次失败都来自 Tester 写的检查计划（算错、没设下拉框、跳过步骤、计划格式不合法），而不是应用本身。因此现在 Tester 会在归咎 Coder 之前先复查失败的检查。在 6 个更难的想法（贪吃蛇、番茄钟、宠物等）上，修好这一轮暴露的问题后，完整通过从 7/18 提高到 **11/18**，也不再出现运行崩溃或没有检查就交付的情况（原来有 4 次）。之后又经过两轮，提高到 **17/18**：检查语言新增了“数元素个数”和“读属性值”，`visible` 也改成把透明的遮罩层当作隐藏，和人眼看到的一致。几乎每一次提升都来自修正检查本身，而不是应用。
+- **[PLAY LIVE 基准](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-live/README.md)**：5 个固定用例 × 3 次，在真实的静态站点里用 `deepseek-chat` 运行。修正 Tester 提示后，完整通过从 8/15 提高到 **11/15**，再加上空白字符修正后为 **14/15**。每一次失败都来自 Tester 写的检查计划（算错、没设下拉框、跳过步骤、计划格式不合法），而不是应用本身。因此现在 Tester 会在归咎 Coder 之前先复查失败的检查。在 6 个更难的想法（贪吃蛇、番茄钟、宠物等）上，修好这一轮暴露的问题后，完整通过从 7/18 提高到 **11/18**，也不再出现运行崩溃或没有检查就交付的情况（原来有 4 次）。之后又经过两轮，提高到 **17/18**：检查语言新增了“数元素个数”和“读属性值”，`visible` 也改成把透明的遮罩层当作隐藏，和人眼看到的一致。几乎每一次提升都来自修正检查本身，而不是应用。2026-10-20 的复测中，5 个固定用例首次达到 [15/15](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-20-live/README.md)。
 - **[真实模型展示](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-18-showcase/README.md)**：6 个想法共 10 次尝试，其中 5 个最终全部检查通过；像素宠物 3 次都没能生成出来。有一次失败的原因是 Tester 写错了计划，而不是应用本身有问题，这促成了"每项检查重新加载页面"的改进。
 - **[受控故障返修](pixelagent-hub/docs/software-studio/benchmark-results/2026-10-09-real-repair-source-context/README.md)**：把计数器故意改成 `+= 2`，浏览器检查发现了这个故障；返修只改了 1 行，另外 3 个文件逐字节不变。
 - 完整复盘：[我让 4 个 AI Agent 分工写代码，测了 30 次，结果并不比 1 个强](pixelagent-hub/docs/articles/multi-agent-not-better.zh-CN.md)。

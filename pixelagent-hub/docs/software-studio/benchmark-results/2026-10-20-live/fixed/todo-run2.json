@@ -1,0 +1,467 @@
+{
+  "caseId": "todo",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 20,
+  "reportedTokens": 8800,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T16:21:37.778Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T16:21:37.778Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T16:21:41.428Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Offline Pixel-Style Task List"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T16:21:41.428Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T16:21:49.071Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T16:21:49.072Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T16:21:49.612Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T16:21:49.612Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "17af9a73-594e-47b6-bc43-785c1ac94135"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T16:21:52.727Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "17af9a73-594e-47b6-bc43-785c1ac94135",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T16:21:52.728Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "testPlanId": "17af9a73-594e-47b6-bc43-785c1ac94135",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Initial counts are zero and no tasks listed",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Initial incomplete count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Adding a trimmed task renders first task with required IDs and counts",
+        "passed": true,
+        "actual": "Buy milk"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Total count increments after adding a task",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Incomplete count increments after adding a task",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Blank input adds nothing",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Toggling checkbox decreases incomplete count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Deleting a task removes it and updates total count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Second task gets increasing numeric ID",
+        "passed": true,
+        "actual": "Second"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "name": "Adding via Enter key adds task",
+        "passed": true,
+        "actual": "Enter task"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T16:21:55.970Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "c32390af-1cc6-4595-a287-6ad30fbaad2e",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T16:21:55.971Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial counts are zero and no tasks listed",
+        "actions": [],
+        "selector": "#todo-total",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial incomplete count is zero",
+        "actions": [],
+        "selector": "#remaining",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Adding a trimmed task renders first task with required IDs and counts",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "  Buy milk  "
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-text-1",
+        "expected": "Buy milk",
+        "assertion": "text"
+      },
+      {
+        "name": "Total count increments after adding a task",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-total",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Incomplete count increments after adding a task",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#remaining",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Blank input adds nothing",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "   "
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": ".todo-item",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Toggling checkbox decreases incomplete count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-check-1"
+          }
+        ],
+        "selector": "#remaining",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Deleting a task removes it and updates total count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-delete-1"
+          }
+        ],
+        "selector": "#todo-total",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Second task gets increasing numeric ID",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "First"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          },
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Second"
+          },
+          {
+            "type": "click",
+            "selector": "#todo-add"
+          }
+        ],
+        "selector": "#todo-text-2",
+        "expected": "Second",
+        "assertion": "text"
+      },
+      {
+        "name": "Adding via Enter key adds task",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#todo-input",
+            "value": "Enter task"
+          },
+          {
+            "type": "key",
+            "selector": "#todo-input",
+            "key": "Enter"
+          }
+        ],
+        "selector": "#todo-text-1",
+        "expected": "Enter task",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Cannot verify absence of localStorage/sessionStorage usage beyond source inspection; no storage API assertions are possible through DOM checks.",
+      "Cannot verify the 240 source line limit or README content through browser interactions.",
+      "Cannot verify that state resets on refresh programmatically beyond fresh-page isolation.",
+      "Cannot verify visual pixel styling, colors, or layout.",
+      "Cannot verify accessibility semantics beyond presence of IDs and labels; screen reader behavior is not observable.",
+      "Cannot verify that IDs are numeric versus any other increasing scheme beyond the sequential ID selectors tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3227,
+      "completion_tokens": 697,
+      "total_tokens": 3924,
+      "prompt_tokens_details": {
+        "cached_tokens": 640
+      },
+      "prompt_cache_hit_tokens": 640,
+      "prompt_cache_miss_tokens": 2587
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Task List</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Tasks</h1>\n    <div class=\"counts\">\n      <span>Total: <strong id=\"todo-total\">0</strong></span>\n      <span>Incomplete: <strong id=\"remaining\">0</strong></span>\n    </div>\n    <form id=\"todo-form\" class=\"input-row\">\n      <label for=\"todo-input\" class=\"sr-only\">New task</label>\n      <input id=\"todo-input\" type=\"text\" placeholder=\"Add a task...\" autocomplete=\"off\">\n      <button id=\"todo-add\" type=\"submit\" aria-label=\"Add task\">+</button>\n    </form>\n    <ul id=\"todo-list\" class=\"todo-list\" aria-live=\"polite\"></ul>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --muted: #8a8fa8;\n  --border: #2a2a4a;\n}\n* { box-sizing: border-box; }\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n.card {\n  background: var(--card);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  padding: 24px;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 8px 8px 0 rgba(0,0,0,0.4);\n}\nh1 {\n  margin: 0 0 16px;\n  font-size: 1.5rem;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n}\n.counts {\n  display: flex;\n  gap: 24px;\n  margin-bottom: 20px;\n  font-size: 0.95rem;\n  color: var(--muted);\n}\n.counts strong { color: var(--text); }\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 20px;\n}\n#todo-input {\n  flex: 1;\n  padding: 10px 12px;\n  font-size: 1rem;\n  background: var(--bg);\n  border: 2px solid var(--border);\n  color: var(--text);\n  border-radius: 0;\n  outline: none;\n}\n#todo-input:focus { border-color: var(--accent); }\n#todo-add {\n  width: 48px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  background: var(--accent);\n  color: #fff;\n  border: 2px solid var(--accent);\n  border-radius: 0;\n  cursor: pointer;\n  transition: transform 0.05s;\n}\n#todo-add:hover { filter: brightness(1.15); }\n#todo-add:active { transform: translate(2px, 2px); }\n#todo-add:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }\n.todo-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n.todo-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 8px 10px;\n  background: var(--bg);\n  border: 2px solid var(--border);\n}\n.todo-item input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  accent-color: var(--accent);\n  cursor: pointer;\n  flex-shrink: 0;\n}\n.todo-item input[type=\"checkbox\"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n.todo-text {\n  flex: 1;\n  word-break: break-word;\n  font-size: 1rem;\n}\n.todo-item.done .todo-text { text-decoration: line-through; color: var(--muted); }\n.todo-delete {\n  background: transparent;\n  border: 2px solid var(--border);\n  color: var(--muted);\n  width: 32px;\n  height: 32px;\n  font-size: 1rem;\n  cursor: pointer;\n  border-radius: 0;\n  flex-shrink: 0;\n  line-height: 1;\n}\n.todo-delete:hover { border-color: var(--accent); color: var(--accent); }\n.todo-delete:active { transform: translate(1px, 1px); }\n.todo-delete:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n.sr-only {\n  position: absolute;\n  width: 1px; height: 1px;\n  padding: 0; margin: -1px;\n  overflow: hidden;\n  clip: rect(0,0,0,0);\n  border: 0;\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const input = document.getElementById('todo-input');\nconst addBtn = document.getElementById('todo-add');\nconst list = document.getElementById('todo-list');\nconst totalEl = document.getElementById('todo-total');\nconst remainingEl = document.getElementById('remaining');\n\nlet nextId = 1;\nconst tasks = [];\n\nfunction updateCounts() {\n  totalEl.textContent = String(tasks.length);\n  remainingEl.textContent = String(tasks.filter(t => !t.done).length);\n}\n\nfunction renderTask(task) {\n  const li = document.createElement('li');\n  li.className = 'todo-item' + (task.done ? ' done' : '');\n  li.dataset.id = task.id;\n\n  const checkbox = document.createElement('input');\n  checkbox.type = 'checkbox';\n  checkbox.id = 'todo-check-' + task.id;\n  checkbox.checked = task.done;\n  checkbox.setAttribute('aria-label', 'Toggle task: ' + task.text);\n  checkbox.addEventListener('change', () => {\n    task.done = checkbox.checked;\n    li.classList.toggle('done', task.done);\n    updateCounts();\n  });\n\n  const span = document.createElement('span');\n  span.className = 'todo-text';\n  span.id = 'todo-text-' + task.id;\n  span.textContent = task.text;\n\n  const del = document.createElement('button');\n  del.type = 'button';\n  del.className = 'todo-delete';\n  del.id = 'todo-delete-' + task.id;\n  del.textContent = '\\u00d7';\n  del.setAttribute('aria-label', 'Delete task: ' + task.text);\n  del.addEventListener('click', () => {\n    const idx = tasks.indexOf(task);\n    if (idx !== -1) tasks.splice(idx, 1);\n    li.remove();\n    updateCounts();\n  });\n\n  li.append(checkbox, span, del);\n  list.appendChild(li);\n}\n\nfunction addTask() {\n  const text = input.value.trim();\n  if (!text) return;\n  const task = { id: nextId++, text, done: false };\n  tasks.push(task);\n  renderTask(task);\n  input.value = '';\n  input.focus();\n  updateCounts();\n}\n\naddBtn.addEventListener('click', addTask);\ninput.addEventListener('keydown', (e) => {\n  if (e.key === 'Enter') { e.preventDefault(); addTask(); }\n});\n\nupdateCounts();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Task List\n\nAn offline, pixel-styled task list built with plain HTML, CSS, and JavaScript. No frameworks, no network requests, no storage.\n\n## Usage\n\nOpen `index.html` in any modern browser. Type a task and press Enter or click the **+** button. Toggle the checkbox to mark a task complete. Click **×** to delete a task.\n\nCounts update automatically:\n- **Total** — number of tasks.\n- **Incomplete** — tasks not yet checked.\n\nAll state is in memory only; refreshing the page resets everything.\n\n## Features\n\n- Pixel-inspired card UI with a cohesive dark palette.\n- Required IDs: `#todo-input`, `#todo-add`, `#todo-total`, `#remaining`, `#todo-text-1`, `#todo-check-1`, `#todo-delete-1`.\n- Blank input is ignored; text is trimmed.\n- Keyboard accessible: labels, focus rings, Enter to add.\n- Responsive from 360px wide.\n\n## Files\n\n- `index.html` — markup and required IDs.\n- `styles.css` — pixel styling and layout.\n- `app.js` — state, rendering, and event handling.\n\n## Notes\n\n- Under 240 source lines total.\n- No imports, packages, external assets, or storage.\n- Counts are integers only.",
+      "description": ""
+    }
+  ]
+}

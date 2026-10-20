@@ -1,0 +1,637 @@
+{
+  "caseId": "memory",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "3/8",
+  "finalChecks": "5/6",
+  "reviewTriggered": true,
+  "checksDropped": 2,
+  "checksRevised": 2,
+  "coderRepair": true,
+  "checkRuns": [
+    "3/8",
+    "5/6",
+    "5/6"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 42,
+  "reportedTokens": 24614,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T16:17:01.705Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T16:17:01.705Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T16:17:05.720Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Memory Match Game"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T16:17:05.720Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T16:17:15.894Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T16:17:15.894Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T16:17:16.417Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T16:17:16.418Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "cfe55e08-0e56-43a7-b837-ad4cf6129483"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T16:17:19.808Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "cfe55e08-0e56-43a7-b837-ad4cf6129483",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T16:17:19.809Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "testPlanId": "cfe55e08-0e56-43a7-b837-ad4cf6129483",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Board renders 16 cards and initial moves counter",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Initial move counter shows zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Win message is hidden at start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Two flips of the same color increment moves",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Mismatched pair flips back and stays unflipped",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Footer New Game resets move counter after a move",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Matched pair stays flipped",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "name": "Win message appears after all 8 pairs matched",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T16:17:22.367Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "69248364-0f71-42ed-a16b-651ff8413477",
+        "status": "failed",
+        "passed": 3,
+        "failed": 5,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T16:17:22.368Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "cfe55e08-0e56-43a7-b837-ad4cf6129483",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T16:17:28.288Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "cfe55e08-0e56-43a7-b837-ad4cf6129483",
+        "checks": 6,
+        "review": true,
+        "revised": 2,
+        "dropped": 2,
+        "verdicts": [
+          {
+            "name": "Two flips of the same color increment moves",
+            "verdict": "check-wrong",
+            "reason": "The selector uses :nth-of-type which doesn't match buttons by data-color, and clicking two same-color cards requires selecting exactly one of the two matching elements. Use :first-of-type won't work e"
+          },
+          {
+            "name": "Mismatched pair flips back and stays unflipped",
+            "verdict": "unsupported",
+            "reason": "No CSS selector can pick exactly one of two elements sharing a data-color attribute, and shuffle makes positional color prediction impossible."
+          },
+          {
+            "name": "Footer New Game resets move counter after a move",
+            "verdict": "check-wrong",
+            "reason": "Same selector problem: #game-board .card[data-color=\"0\"] matches two elements. Use positional selectors instead since the requirement is just that New Game resets the counter after a move."
+          },
+          {
+            "name": "Matched pair stays flipped",
+            "verdict": "unsupported",
+            "reason": "Selector #game-board .card[data-color=\"2\"] matches two elements. To test matched pair stays flipped, we need to click two cards of the same color. Since shuffle is random, we can't predict which posit"
+          },
+          {
+            "name": "Win message appears after all 8 pairs matched",
+            "verdict": "app-wrong",
+            "reason": "Selectors like #game-board .card[data-color=\"0\"] match two elements and cannot be clicked. Also, only 4 pairs are clicked (8 actions), but the requirement needs all 8 pairs matched to show win. The ac"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T16:17:28.289Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "testPlanId": "cfe55e08-0e56-43a7-b837-ad4cf6129483",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-20T16:17:30.202Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "name": "Board renders 16 cards and initial moves counter",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-20T16:17:30.202Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "name": "Initial move counter shows zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-20T16:17:30.202Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "name": "Win message is hidden at start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-20T16:17:30.203Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "name": "Two flips of the same color increment moves",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-20T16:17:30.203Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "name": "Footer New Game resets move counter after a move",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-20T16:17:30.203Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "name": "Win message appears after all 8 pairs matched",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-20T16:17:30.203Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "8964e255-fbdc-4ef9-b85c-8debc9bd4cbb",
+        "status": "failed",
+        "passed": 5,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-20T16:17:30.205Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-20T16:17:39.558Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-20T16:17:39.558Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-20T16:17:39.625Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-20T16:17:39.628Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "testPlanId": "cfe55e08-0e56-43a7-b837-ad4cf6129483",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "name": "Board renders 16 cards and initial moves counter",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "name": "Initial move counter shows zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "name": "Win message is hidden at start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "name": "Two flips of the same color increment moves",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "name": "Footer New Game resets move counter after a move",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "name": "Win message appears after all 8 pairs matched",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-20T16:17:41.635Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "35dac204-72ac-46bc-86a8-49f53929c70d",
+        "status": "failed",
+        "passed": 5,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-20T16:17:41.639Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Board renders 16 cards and initial moves counter",
+        "actions": [],
+        "selector": ".card",
+        "expected": "16",
+        "assertion": "count"
+      },
+      {
+        "name": "Initial move counter shows zero",
+        "actions": [],
+        "selector": "#move-counter",
+        "expected": "Moves: 0"
+      },
+      {
+        "name": "Win message is hidden at start",
+        "actions": [],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Two flips of the same color increment moves",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#game-board .card:nth-child(1)"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card:nth-child(2)"
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "Moves: 1"
+      },
+      {
+        "name": "Footer New Game resets move counter after a move",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#game-board .card:nth-child(1)"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card:nth-child(2)"
+          },
+          {
+            "type": "click",
+            "selector": "#new-game-btn-footer"
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "Moves: 0"
+      },
+      {
+        "name": "Win message appears after all 8 pairs matched",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"0\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"0\"]:not(:first-child)"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"1\"]:not(:first-child)"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"2\"]:not(:first-child)"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"3\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#game-board .card[data-color=\"3\"]:not(:first-child)"
+          }
+        ],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "The win message requires matching all 8 pairs (16 flips), but each check is capped at 8 actions, so the win message and its New Game button cannot be observed in a single fresh check.",
+      "Card positions are shuffled randomly each load, so checks rely on data-color attributes and :first-child/:not(:first-child) selectors rather than fixed indices.",
+      "The 800ms mismatch flip-back delay cannot be awaited with timing assertions; the mismatch check only asserts the card is not currently flipped after the click sequence, which may be racy.",
+      "Keyboard accessibility (focus, Enter/Space activation) is not testable since DOM key events are synthetic and not trusted browser input.",
+      "Not checked: Mismatched pair flips back and stays unflipped: No CSS selector can pick exactly one of two elements sharing a data-color attribute, and shuffle makes positional color prediction impossible.",
+      "Not checked: Matched pair stays flipped: Selector #game-board .card[data-color=\"2\"] matches two elements. To test matched pair stays flipped, we need to click two cards of the same color. Since shuffle is random, we can't predict which posit"
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4070,
+      "completion_tokens": 784,
+      "total_tokens": 4854,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "prompt_cache_hit_tokens": 512,
+      "prompt_cache_miss_tokens": 3558
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Memory Match</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"game-container\">\n    <header class=\"game-header\">\n      <h1>Pixel Memory Match</h1>\n      <p class=\"moves-display\" id=\"move-counter\" aria-live=\"polite\">Moves: 0</p>\n    </header>\n    <div id=\"game-board\" class=\"game-board\" role=\"grid\" aria-label=\"Memory game board\"></div>\n    <div id=\"win-message\" class=\"win-message\" role=\"status\" aria-live=\"assertive\" hidden>\n      <p>You win! All pairs matched.</p>\n      <button id=\"new-game-btn\" class=\"btn\" type=\"button\">New Game</button>\n    </div>\n    <footer class=\"game-footer\">\n      <button id=\"new-game-btn-footer\" class=\"btn\" type=\"button\">New Game</button>\n    </footer>\n  </main>\n  <script src=\"game.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML page with game board, move counter, win message, and New Game buttons."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --surface: #2a2a40;\n  --primary: #6c5ce7;\n  --primary-light: #a29bfe;\n  --accent: #00cec9;\n  --text: #f5f6fa;\n  --text-muted: #b2bec3;\n  --card-back: #3d3d5c;\n  --card-radius: 12px;\n  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.game-container {\n  width: 100%;\n  max-width: 560px;\n  background: var(--surface);\n  border-radius: 20px;\n  padding: 24px;\n  box-shadow: var(--shadow);\n}\n\n.game-header {\n  text-align: center;\n  margin-bottom: 20px;\n}\n\n.game-header h1 {\n  font-size: 1.6rem;\n  font-weight: 700;\n  margin-bottom: 8px;\n  color: var(--primary-light);\n}\n\n.moves-display {\n  font-size: 1.1rem;\n  color: var(--text-muted);\n  font-weight: 600;\n}\n\n.game-board {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 10px;\n  margin-bottom: 20px;\n}\n\n.card {\n  aspect-ratio: 1 / 1;\n  border-radius: var(--card-radius);\n  background: var(--card-back);\n  border: 2px solid transparent;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: transparent;\n  transition: transform 0.15s ease, background 0.25s ease, border-color 0.15s ease;\n  user-select: none;\n  padding: 0;\n  position: relative;\n  box-shadow: var(--shadow);\n}\n\n.card:hover:not(.matched):not(.flipped) {\n  transform: scale(1.05);\n  border-color: var(--primary-light);\n}\n\n.card:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.card:active:not(.matched):not(.flipped) {\n  transform: scale(0.97);\n}\n\n.card.flipped,\n.card.matched {\n  background: var(--primary);\n  color: var(--text);\n  cursor: default;\n}\n\n.card.matched {\n  border-color: var(--accent);\n  opacity: 0.85;\n}\n\n.card.flipped:not(.matched) {\n  border-color: var(--primary-light);\n}\n\n/* Card color variants */\n.card[data-color=\"0\"] { --card-color: #e74c3c; }\n.card[data-color=\"1\"] { --card-color: #3498db; }\n.card[data-color=\"2\"] { --card-color: #2ecc71; }\n.card[data-color=\"3\"] { --card-color: #f1c40f; }\n.card[data-color=\"4\"] { --card-color: #9b59b6; }\n.card[data-color=\"5\"] { --card-color: #e67e22; }\n.card[data-color=\"6\"] { --card-color: #1abc9c; }\n.card[data-color=\"7\"] { --card-color: #e84393; }\n\n.card.flipped[data-color],\n.card.matched[data-color] {\n  background: var(--card-color);\n}\n\n.win-message {\n  text-align: center;\n  padding: 16px;\n  background: var(--primary);\n  border-radius: var(--card-radius);\n  margin-bottom: 20px;\n  box-shadow: var(--shadow);\n}\n\n.win-message p {\n  font-size: 1.2rem;\n  font-weight: 700;\n  margin-bottom: 12px;\n}\n\n.btn {\n  display: inline-block;\n  padding: 12px 24px;\n  font-size: 1rem;\n  font-weight: 600;\n  font-family: var(--font);\n  color: var(--text);\n  background: var(--primary);\n  border: 2px solid transparent;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s, border-color 0.2s;\n  box-shadow: var(--shadow);\n}\n\n.btn:hover {\n  background: var(--primary-light);\n  border-color: var(--accent);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.game-footer {\n  text-align: center;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n@media (max-width: 400px) {\n  .game-container {\n    padding: 16px;\n  }\n  .game-board {\n    gap: 8px;\n  }\n  .card {\n    font-size: 1.2rem;\n  }\n  .game-header h1 {\n    font-size: 1.3rem;\n  }\n}",
+      "description": "Stylesheet with cohesive palette, responsive grid, hover/focus/pressed states."
+    },
+    {
+      "path": "game.js",
+      "content": "(function () {\n  'use strict';\n\n  const TOTAL_PAIRS = 8;\n  const COLORS = [\n    '#e74c3c', '#3498db', '#2ecc71', '#f1c40f',\n    '#9b59b6', '#e67e22', '#1abc9c', '#e84393'\n  ];\n\n  const boardEl = document.getElementById('game-board');\n  const moveCounterEl = document.getElementById('move-counter');\n  const winMessageEl = document.getElementById('win-message');\n  const newGameBtn = document.getElementById('new-game-btn');\n  const newGameBtnFooter = document.getElementById('new-game-btn-footer');\n\n  let cards = [];\n  let flipped = [];\n  let moves = 0;\n  let matchedCount = 0;\n  let lock = false;\n\n  function shuffle(arr) {\n    for (let i = arr.length - 1; i > 0; i--) {\n      const j = Math.floor(Math.random() * (i + 1));\n      [arr[i], arr[j]] = [arr[j], arr[i]];\n    }\n    return arr;\n  }\n\n  function createDeck() {\n    const deck = [];\n    for (let i = 0; i < TOTAL_PAIRS; i++) {\n      deck.push({ colorIndex: i, color: COLORS[i], matched: false });\n      deck.push({ colorIndex: i, color: COLORS[i], matched: false });\n    }\n    return shuffle(deck);\n  }\n\n  function renderBoard() {\n    boardEl.innerHTML = '';\n    cards.forEach((card, index) => {\n      const btn = document.createElement('button');\n      btn.type = 'button';\n      btn.className = 'card';\n      btn.dataset.index = index;\n      btn.dataset.color = card.colorIndex;\n      btn.setAttribute('role', 'gridcell');\n      btn.setAttribute('aria-label', 'Card ' + (index + 1) + ', face down');\n      btn.addEventListener('click', onCardClick);\n      boardEl.appendChild(btn);\n    });\n  }\n\n  function onCardClick(e) {\n    const btn = e.currentTarget;\n    const index = Number(btn.dataset.index);\n    const card = cards[index];\n\n    if (lock || card.matched || flipped.includes(index)) return;\n\n    flipCard(btn, card);\n    flipped.push(index);\n\n    if (flipped.length === 2) {\n      moves++;\n      updateMoveCounter();\n      checkMatch();\n    }\n  }\n\n  function flipCard(btn, card) {\n    btn.classList.add('flipped');\n    btn.setAttribute('aria-label', 'Card ' + (Number(btn.dataset.index) + 1) + ', color ' + card.colorIndex);\n    btn.style.backgroundColor = card.color;\n  }\n\n  function unflipCard(btn, card) {\n    btn.classList.remove('flipped');\n    btn.setAttribute('aria-label', 'Card ' + (Number(btn.dataset.index) + 1) + ', face down');\n    btn.style.backgroundColor = '';\n  }\n\n  function checkMatch() {\n    const [i1, i2] = flipped;\n    const card1 = cards[i1];\n    const card2 = cards[i2];\n    const btn1 = boardEl.children[i1];\n    const btn2 = boardEl.children[i2];\n\n    if (card1.colorIndex === card2.colorIndex) {\n      card1.matched = true;\n      card2.matched = true;\n      btn1.classList.add('matched');\n      btn2.classList.add('matched');\n      btn1.setAttribute('aria-label', 'Card ' + (i1 + 1) + ', matched');\n      btn2.setAttribute('aria-label', 'Card ' + (i2 + 1) + ', matched');\n      matchedCount++;\n      flipped = [];\n      if (matchedCount === TOTAL_PAIRS) {\n        showWin();\n      }\n    } else {\n      lock = true;\n      setTimeout(() => {\n        unflipCard(btn1, card1);\n        unflipCard(btn2, card2);\n        flipped = [];\n        lock = false;\n      }, 800);\n    }\n  }\n\n  function updateMoveCounter() {\n    moveCounterEl.textContent = 'Moves: ' + moves;\n  }\n\n  function showWin() {\n    winMessageEl.hidden = false;\n    winMessageEl.querySelector('p').textContent =\n      'You win! All pairs matched in ' + moves + ' moves.';\n    winMessageEl.querySelector('button').focus();\n  }\n\n  function resetGame() {\n    cards = createDeck();\n    flipped = [];\n    moves = 0;\n    matchedCount = 0;\n    lock = false;\n    winMessageEl.hidden = true;\n    updateMoveCounter();\n    renderBoard();\n  }\n\n  newGameBtn.addEventListener('click', resetGame);\n  newGameBtnFooter.addEventListener('click', resetGame);\n\n  resetGame();\n})();",
+      "description": "Game logic: deck creation, shuffling, card flipping, match detection, move counting, win handling, reset."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Memory Match\n\nA fully offline, browser-based pixel memory-match game with 8 pairs of colored cards. Flip two cards at a time, match pairs, count moves, and enjoy a win message with a New Game button.\n\n## Features\n\n- 8 pairs of colored cards (16 total), shuffled each game\n- Click or tap to flip cards; matched pairs stay open\n- Move counter updates on each pair flip\n- Win message displays when all pairs are matched\n- New Game button resets the board, moves, and win state\n- Keyboard accessible: cards are focusable buttons, New Game button is labeled\n- Responsive layout works from 360px wide\n- Cohesive dark palette with system fonts at 16px+\n- Visible hover, focus, and pressed states\n\n## How to Run\n\n1. Download or clone the project files.\n2. Open `index.html` in any modern web browser.\n3. No server, packages, or network requests required.\n\n## Technologies\n\n- HTML5\n- CSS3 (custom properties, grid, transitions)\n- Plain JavaScript (ES6, IIFE, no imports)\n\n## License\n\nMIT",
+      "description": "Project documentation with features, run instructions, and license."
+    }
+  ]
+}
