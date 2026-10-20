@@ -3,6 +3,15 @@
 ## [Unreleased]
 
 ### Added
+- `count` check assertion: how many elements the selector matches (the only assertion where it may match several or none), for "16 cards" or "5 swatches"
+- `attribute` check assertion with an `attribute` field: one attribute compared exactly (`aria-valuenow`, `aria-pressed`, …; `value` reads the live input value). 5 of the 7 failed showcase runs were correct apps the old language could not check
+
+### Fixed
+- PLAY LIVE checks run in an unthrottled frame: the off-screen hidden frame froze CSS transitions and slowed timers to about 1 Hz, so checks saw a different app than the visitor
+
+## [2.2.0] — 2026-10-19
+
+### Added
 - `visible` check assertion ("true"/"false"): Playwright `isVisible` on the server, element box and visibility in the page
 - PLAY LIVE benchmark on six harder ideas (`config/live-showcase-cases.json`): 7/18 → 9/18 → 11/18 full passes over three rounds of fixes
 

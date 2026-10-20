@@ -27,11 +27,11 @@ export const parseCodeOutput = (object: unknown) => {
   return { language, files, explanation, dependencies };
 };
 
-/** Model-written checks: `assertion: null` means a text assertion. */
+/** Model-written checks: null optional assertion/attribute fields mean omitted. */
 const normaliseCheck = (check: unknown) => {
   if (!check || typeof check !== 'object' || Array.isArray(check)) return check;
-  const { assertion, ...rest } = check as Record<string, unknown>;
-  return assertion === null || assertion === undefined ? rest : { ...rest, assertion };
+  const { assertion, attribute, ...rest } = check as Record<string, unknown>;
+  return { ...rest, ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
 };
 
 /**
@@ -46,8 +46,8 @@ const normalisePlan = (object: unknown) => {
   let list = checks;
   if (Array.isArray(checks)) {
     const valid = checks.map(normaliseCheck).filter((check) => browserCheckSchema.safeParse(check).success);
+    if (valid.length) list = valid;
     if (valid.length && valid.length < checks.length) {
-      list = valid;
       notes.unshift(`${checks.length - valid.length} planned check(s) were dropped because they did not match the check format.`);
     }
   }

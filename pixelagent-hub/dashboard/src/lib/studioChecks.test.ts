@@ -84,3 +84,44 @@ it('text matches the source text when CSS changes how it is rendered (text-trans
   const [wrong] = await runDOMChecks(document, [{ name: 'Label', actions: [], selector: '#toggle', expected: 'Start' }]);
   expect(wrong.status).toBe('failed');
 });
+
+it('counts all matching cards, including zero, and polls for added cards', async () => {
+  const cards = Array.from({ length: 16 }, () => ({ textContent: 'Card' }));
+  const remove = { click: () => { cards.pop(); } };
+  const document = { querySelectorAll: (selector: string) => selector === '.card' ? cards : selector === '#remove' ? [remove] : [] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Full board', actions: [], selector: '.card', assertion: 'count', expected: '16' },
+    { name: 'Missing card', actions: [{ type: 'click', selector: '#remove' }], selector: '.card', assertion: 'count', expected: '16' },
+    { name: 'Empty', actions: [], selector: '.absent', assertion: 'count', expected: '0' },
+    { name: 'Ambiguous action', actions: [{ type: 'click', selector: '.card' }], selector: '.card', assertion: 'count', expected: '15' },
+  ]);
+  expect(results.map((result) => result.status)).toEqual(['passed', 'failed', 'passed', 'failed']);
+  expect(results.slice(0, 3).map((result) => result.actual)).toEqual(['16', '15', '0']);
+  expect(results[3].error).toContain('found 15');
+  setTimeout(() => cards.push({ textContent: 'Card' }), 100);
+  const [added] = await runDOMChecks(document, [{ name: 'Added later', actions: [], selector: '.card', assertion: 'count', expected: '16' }]);
+  expect(added).toMatchObject({ status: 'passed', actual: '16' });
+});
+
+it('reads exact attributes after clicks, polls updates and reports missing attributes as empty', async () => {
+  let hunger = '100';
+  const bar = { getAttribute: (name: string) => name === 'aria-valuenow' ? hunger : name === 'title' ? '  hungry  now ' : null };
+  const button = { click: () => { setTimeout(() => { hunger = '90'; }, 100); } };
+  const document = { querySelectorAll: (selector: string) => selector === '#hungerBar' ? [bar] : [button] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Hunger changes', actions: [{ type: 'click', selector: '#play' }], selector: '#hungerBar', assertion: 'attribute', attribute: 'aria-valuenow', expected: '90' },
+    { name: 'Exact whitespace', actions: [], selector: '#hungerBar', assertion: 'attribute', attribute: 'title', expected: '  hungry  now ' },
+    { name: 'Missing', actions: [], selector: '#hungerBar', assertion: 'attribute', attribute: 'data-state', expected: 'ready' },
+  ]);
+  expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'failed']);
+  expect(results.map((result) => result.actual)).toEqual(['90', '  hungry  now ', '']);
+});
+
+it('reads live input, textarea and select values after input actions', async () => {
+  for (const tagName of ['INPUT', 'TEXTAREA', 'SELECT']) {
+    const input = { tagName, value: 'initial', getAttribute: () => 'initial', dispatchEvent: () => true };
+    const document = { querySelectorAll: () => [input] } as unknown as Document;
+    const [result] = await runDOMChecks(document, [{ name: tagName, actions: [{ type: 'input', selector: '#input', value: '  updated ' }], selector: '#input', assertion: 'attribute', attribute: 'value', expected: '  updated ' }]);
+    expect(result).toMatchObject({ status: 'passed', actual: '  updated ' });
+  }
+});

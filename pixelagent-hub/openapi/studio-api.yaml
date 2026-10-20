@@ -1337,7 +1337,14 @@ components:
           enum:
             - text
             - disabled
-          description: Defaults to text; disabled requires expected "true" or "false".
+            - visible
+            - count
+            - attribute
+          description: Defaults to text; disabled and visible require expected "true" or "false". Count compares the number of selector matches (including zero), with expected matching ^\d{1,4}$. All other assertions and action selectors require exactly one element. Attribute compares exactly without whitespace collapse; missing attributes read as "", and value reads the live property for input, textarea and select.
+        attribute:
+          type: string
+          pattern: ^[a-z][a-z0-9-]{0,49}$
+          description: Required only for assertion attribute; forbidden otherwise.
       additionalProperties: false
     TestPlan:
       type: object
