@@ -125,3 +125,21 @@ it('reads live input, textarea and select values after input actions', async () 
     expect(result).toMatchObject({ status: 'passed', actual: '  updated ' });
   }
 });
+
+it.each(['element', 'ancestor', 'partial'])('visibility accounts for %s opacity', async (mode) => {
+  const parent = { opacity: mode === 'ancestor' ? '0' : '1', parentElement: null };
+  const target = { opacity: mode === 'element' ? '0' : '0.5', parentElement: parent, getBoundingClientRect: () => ({ width: 100, height: 20 }) };
+  const document = { querySelectorAll: () => [target], defaultView: { getComputedStyle: (element: { opacity: string }) => ({ visibility: 'visible', opacity: element.opacity }) } } as unknown as Document;
+  const [result] = await runDOMChecks(document, [{ name: mode, actions: [], selector: '#overlay', assertion: 'visible', expected: String(mode === 'partial') }]);
+  expect(result.status).toBe('passed');
+});
+
+it('reads live checked state before and after a checkbox click', async () => {
+  const input = { tagName: 'INPUT', checked: false, getAttribute: () => null, click: () => { input.checked = !input.checked; } };
+  const document = { querySelectorAll: () => [input] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Before', actions: [], selector: '#check', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+    { name: 'After', actions: [{ type: 'click', selector: '#check' }], selector: '#check', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+  ]);
+  expect(results.map(({ status, actual }) => ({ status, actual }))).toEqual([{ status: 'passed', actual: 'false' }, { status: 'passed', actual: 'true' }]);
+});

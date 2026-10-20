@@ -75,7 +75,7 @@ test('a Tester review only revises a failing check with a valid corrected check 
     { name: 'Resets', verdict: 'check-wrong', reason: 'no corrected check given' },
     { name: 'Renamed', verdict: 'check-wrong', reason: 'x', check: { ...fixed, name: 'Something else' } },
     { name: 'Not failing', verdict: 'check-wrong', reason: 'ignored', check: { ...fixed, name: 'Not failing' } },
-  ] }, ['Adds one', 'Resets', 'Renamed', 'Missing']);
+  ] }, ['Adds one', 'Resets', 'Renamed', 'Missing'], 5);
   assert.deepEqual(verdicts.map((item) => item.verdict), ['check-wrong', 'app-wrong', 'app-wrong', 'app-wrong']);
   assert.deepEqual(verdicts[0].check, fixed);
 });
@@ -88,11 +88,11 @@ test('real-world Tester replies: bad items are dropped or defaulted, not fatal',
     { name: 'Win hidden', verdict: 'check-wrong', reason: null, check: good },
     { name: 'Intro text', verdict: 'check-wrong', reason: 'x'.repeat(900), check: { name: 'Intro text', actions: [], selector: '#intro', expected: 'Hi', assertion: null } },
     { name: 'Broken', verdict: 'check-wrong', reason: 'r', check: { name: 'Broken', actions: [{ type: 'wait' }], selector: '#a', expected: '1' } },
-  ] }, ['Win hidden', 'Intro text', 'Broken']);
+  ] }, ['Win hidden', 'Intro text', 'Broken'], 3);
   assert.deepEqual(verdicts.map((item) => item.verdict), ['check-wrong', 'check-wrong', 'app-wrong']);
   assert.equal(verdicts[1].check?.assertion, undefined);
   assert.equal(verdicts[1].reason.length, 500);
-  assert.throws(() => parseTesterReview({ notVerdicts: [] }, ['x']), /no verdicts list/);
+  assert.throws(() => parseTesterReview({ notVerdicts: [] }, ['x'], 1), /no verdicts list/);
 
   const plan = parseTestPlanOutput({ checks: [good, { name: 'Bad', actions: [{ type: 'wait' }], selector: '#a', expected: '1' }, { ...good, name: 'Null assertion', assertion: null, expected: 'Hi' }], limitations: [] });
   assert.deepEqual(plan.checks.map((check) => check.name), ['Win hidden', 'Null assertion']);
@@ -131,4 +131,21 @@ test('repair notes identify the counted selector and the compared attribute', as
   const notes = browserFailureNotes(checks, checks.map((check) => ({ name: check.name, status: 'failed', actual: '' })));
   assert.match(notes[0], /selector=".card", assertion="count"/);
   assert.match(notes[1], /assertion="attribute", attribute="aria-valuenow"/);
+});
+
+test('unsupported reviews require a reason, ignore passing checks and cap drops in reply order by plan size', async () => {
+  const { parseTesterReview } = await import('./parse.js');
+  const reply = { verdicts: [
+    { name: 'Passing', verdict: 'unsupported', reason: 'ignored' },
+    { name: 'Blank', verdict: 'unsupported', reason: '  ' },
+    ...['Third', 'Second', 'First'].map((name) => ({ name, verdict: 'unsupported', reason: 'Cannot read canvas pixels' })),
+  ] };
+  const failing = ['First', 'Second', 'Third', 'Blank'];
+  for (const [size, expected] of [[4, ['app-wrong', 'app-wrong', 'unsupported', 'app-wrong']], [6, ['app-wrong', 'unsupported', 'unsupported', 'app-wrong']]] as const) {
+    const verdicts = parseTesterReview(reply, failing, size);
+    assert.deepEqual(verdicts.map((item) => item.verdict), expected);
+    assert.ok(verdicts.every((item) => item.check === undefined));
+    assert.ok(!verdicts.some((item) => item.name === 'Passing'));
+  }
+  assert.equal(parseTesterReview({ verdicts: [reply.verdicts[2]] }, ['Third'], 1)[0].verdict, 'unsupported');
 });

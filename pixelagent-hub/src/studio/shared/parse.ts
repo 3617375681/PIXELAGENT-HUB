@@ -59,9 +59,9 @@ export const parseTestPlanOutput = (object: unknown) => parseWith(testPlanSchema
 /**
  * Tester review, validated verdict by verdict: a "check-wrong" verdict counts only for a check that
  * actually failed and only with a valid corrected check of the same name; anything else leaves the
- * failure standing. Only a reply without a verdicts list is rejected.
+ * failure standing, except bounded unsupported verdicts with a reason. Only a reply without a verdicts list is rejected.
  */
-export const parseTesterReview = (object: unknown, failing: readonly string[]) => {
+export const parseTesterReview = (object: unknown, failing: readonly string[], planSize: number) => {
   const raw = object && typeof object === 'object' && !Array.isArray(object) ? (object as { verdicts?: unknown }).verdicts : undefined;
   if (!Array.isArray(raw)) throw new Error('The test review did not match the expected format: no verdicts list');
   const verdicts = raw.flatMap((item) => {
@@ -75,9 +75,16 @@ export const parseTesterReview = (object: unknown, failing: readonly string[]) =
       check: check?.success ? check.data : undefined,
     }];
   });
+  const unsupported = new Set<string>();
+  const seen = new Set<string>();
+  for (const item of raw) {
+    if (!item || typeof item !== 'object' || !failing.includes(item.name) || seen.has(item.name)) continue;
+    seen.add(item.name);
+    if (item.verdict === 'unsupported' && typeof item.reason === 'string' && item.reason.trim() && unsupported.size < Math.max(1, Math.floor(planSize / 3))) unsupported.add(item.name);
+  }
   return failing.map((name) => {
     const verdict = verdicts.find((item) => item.name === name);
     const corrected = verdict?.verdict === 'check-wrong' && verdict.check?.name === name ? verdict.check : undefined;
-    return { name, verdict: corrected ? 'check-wrong' as const : 'app-wrong' as const, reason: verdict?.reason || '', check: corrected };
+    return { name, verdict: corrected ? 'check-wrong' as const : unsupported.has(name) ? 'unsupported' as const : 'app-wrong' as const, reason: verdict?.reason || '', check: corrected };
   });
 };

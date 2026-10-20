@@ -214,8 +214,8 @@ it('a custom provider runs without a key against the server the visitor entered'
   expect(new Set(fetchMock.mock.calls.map(([url]) => url))).toEqual(new Set(['http://localhost:11434/v1/chat/completions']));
 });
 
-const review = (verdict: 'check-wrong' | 'app-wrong') => ({ verdicts: [{ name: 'Adds one', verdict, reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
-const routed = (verdict: 'check-wrong' | 'app-wrong') => async (_url: string, init: RequestInit) => {
+const review = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => ({ verdicts: [{ name: 'Adds one', verdict, reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : verdict === 'unsupported' ? 'Cannot read canvas pixels.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
+const routed = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => async (_url: string, init: RequestInit) => {
   const system: string = JSON.parse(String(init.body)).messages[0].content;
   return sse(system.includes('project manager') ? plan : system.includes('You review failing browser checks') ? review(verdict) : system.includes('test planner') ? testPlan : code);
 };
@@ -291,4 +291,39 @@ it('a Coder reply that is not valid JSON goes back to the Coder instead of endin
   expect(coderCalls).toBe(2);
   expect(events.find((event) => event.type === 'build_failed')?.round).toBe(1);
   expect(events.at(-1)?.type).toBe('ready_for_review');
+});
+
+it.each([false, true])('drops unsupported checks and reruns the rest before repair (remaining failure: %s)', async (remainingFailure) => {
+  const remaining = { name: 'Title', actions: [], selector: 'h1', expected: 'Counter' };
+  fetchMock.mockImplementation(async (url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    return system.includes('test planner') ? sse({ ...testPlan, checks: [...testPlan.checks, remaining], limitations: ['Existing limitation'] }) : routed('unsupported')(url, init);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  const title = { name: 'Title', status: remainingFailure ? 'failed' : 'passed', actual: 'Counter' };
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '0' }, title], errors: [] })
+    .mockResolvedValue({ results: [title], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 0, dropped: 1, verdicts: expect.arrayContaining([expect.objectContaining({ name: 'Adds one', verdict: 'unsupported' })]) });
+  expect(checks.mock.calls[1][1]).toEqual([remaining]);
+  expect(build).toHaveBeenCalledTimes(remainingFailure ? 2 : 1);
+  const saved = await live.liveRequest('GET', `/api/studio/projects/${projectId}/test-plans`) as { plans: { result: { output: { checks: unknown[]; limitations: string[] } } }[] };
+  expect(saved.plans[0].result.output).toMatchObject({ checks: [remaining], limitations: ['Existing limitation', 'Not checked: Adds one: Cannot read canvas pixels.'] });
+  if (remainingFailure) {
+    const repair = fetchMock.mock.calls.map(([, init]) => JSON.parse(String((init as RequestInit).body)).messages[1].content as string).filter((user) => user.startsWith('Task:')).at(-1)!;
+    expect(repair).toContain('Title');
+    expect(repair).not.toContain('Adds one');
+  } else expect(events.filter((event) => event.type === 'browser_run_finished').at(-1)?.data).toMatchObject({ status: 'passed', passed: 1 });
+});
+
+it('retains an unsupported check when dropping it would empty the plan', async () => {
+  fetchMock.mockImplementation(routed('unsupported'));
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'failed', actual: '0' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ revised: 0, dropped: 0 });
+  expect(events.filter((event) => event.type === 'browser_run_finished').every((event) => event.data?.status === 'failed')).toBe(true);
+  expect(checks.mock.calls.every((call) => (call[1] as unknown[]).length === 1)).toBe(true);
 });

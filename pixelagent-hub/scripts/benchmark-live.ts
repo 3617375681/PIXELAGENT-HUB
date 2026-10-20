@@ -73,6 +73,7 @@ try {
       firstChecks: browserRuns[0] ? `${browserRuns[0].passed}/${browserRuns[0].passed + browserRuns[0].failed}` : null,
       finalChecks: browserRuns.at(-1) ? `${browserRuns.at(-1)!.passed}/${browserRuns.at(-1)!.passed + browserRuns.at(-1)!.failed}` : null,
       reviewTriggered: reviews.length > 0,
+      checksDropped: reviews.reduce((sum, event) => sum + (Number(event.data?.dropped) || 0), 0),
       checksRevised: reviews.reduce((sum, event) => sum + (Number(event.data?.revised) || 0), 0),
       coderRepair: record.project.rounds.length > 1 + compileFailures,
       checkRuns: browserRuns.map((run) => `${run.passed}/${run.passed + run.failed}`),

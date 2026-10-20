@@ -86,7 +86,19 @@ it('a Tester review that revises its checks clears the feedback edge; one that s
   expect(reducePipeline(failed).stages.find((stage) => stage.id === 'tester')?.label).toBe('Reviewing its checks…');
   const revised = reducePipeline([...failed, ev('test_plan_ready', undefined, { review: true, revised: 1 })]);
   expect(revised.feedback).toBeNull();
-  expect(revised.stages.find((stage) => stage.id === 'tester')?.label).toBe('1 checks revised');
+  expect(revised.stages.find((stage) => stage.id === 'tester')?.label).toBe('1 check revised');
   expect(reducePipeline([...failed, ev('test_plan_ready', undefined, { review: true, revised: 0 })]).feedback?.from).toBe('tester');
   expect(describeEvent(ev('test_plan_ready', undefined, { review: true, revised: 2 }))).toBe('Tester corrected 2 of its own checks');
+});
+
+it('reports dropped checks and clears feedback only when a review changed the plan', () => {
+  const failed = [ev('browser_check', undefined, { name: 'Canvas', passed: false, actual: '' })];
+  for (const revised of [0, 1]) {
+    const event = ev('test_plan_ready', undefined, { review: true, revised, dropped: 1 });
+    const view = reducePipeline([...failed, event]);
+    expect(view.feedback).toBeNull();
+    expect(view.stages.find((stage) => stage.id === 'tester')?.label).toBe(revised ? '1 check revised, 1 dropped as uncheckable' : '1 dropped as uncheckable');
+    expect(describeEvent(event)).toBe(`Tester corrected ${revised} and dropped 1 uncheckable check`);
+  }
+  expect(reducePipeline([...failed, ev('test_plan_ready', undefined, { review: true, revised: 0, dropped: 0 })]).feedback?.from).toBe('tester');
 });

@@ -180,3 +180,20 @@ test('real browser counts matches and reads exact attributes and live values', {
     assert.deepEqual(run.checks.slice(0, 7).map((check) => check.actual), ['15', '16', '0', '90', '  hungry  now ', 'updated', '']);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('real browser visibility includes ancestor opacity and checked reads live state', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-opacity-checked-'));
+  try {
+    const content = '<html><body><div id="transparent" style="opacity:0">Hidden</div><div style="opacity:0"><div id="child">Hidden child</div></div><div id="partial" style="opacity:0.5">Shown</div><input id="check" type="checkbox"></body></html>';
+    const checks = { checks: [
+      { name: 'Transparent', actions: [], selector: '#transparent', assertion: 'visible', expected: 'false' },
+      { name: 'Ancestor', actions: [], selector: '#child', assertion: 'visible', expected: 'false' },
+      { name: 'Partial', actions: [], selector: '#partial', assertion: 'visible', expected: 'true' },
+      { name: 'Unchecked', actions: [], selector: '#check', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+      { name: 'Checked', actions: [{ type: 'click', selector: '#check' }], selector: '#check', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.deepEqual(run.checks.map((check) => check.actual), ['false', 'false', 'true', 'false', 'true']);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

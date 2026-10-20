@@ -28,7 +28,7 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       }
       const target = check.assertion === 'count' ? undefined : element(check.selector);
       // Same rules as the server's browser runs: rendered text with runs of whitespace as one space,
-      // visibility like Playwright (a non-empty box, not visibility:hidden), and up to 2 s for the
+      // visibility like Playwright plus no opacity:0 on the element or ancestors, and up to 2 s for the
       // expected value to appear (timers, transitions).
       const assertion = check.assertion || 'text';
       const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
@@ -36,12 +36,15 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       const visible = () => {
         const box = target!.getBoundingClientRect?.();
         const style = document.defaultView?.getComputedStyle?.(target!);
+        for (let element = target; element; element = element.parentElement ?? undefined) {
+          if (parseFloat(document.defaultView?.getComputedStyle(element).opacity ?? '') === 0) return false;
+        }
         return !!box && box.width > 0 && box.height > 0 && style?.visibility !== 'hidden';
       };
       // Text matches either the rendered text (innerText: paragraph breaks, CSS casing) or the source
       // text (textContent); the rendered text is reported.
       const read = () => assertion === 'count' ? String(document.querySelectorAll(check.selector).length)
-        : assertion === 'attribute' ? (check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : target!.getAttribute(check.attribute!) ?? '')
+        : assertion === 'attribute' ? (check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : check.attribute === 'checked' && target!.tagName === 'INPUT' ? String((target as HTMLInputElement).checked) : target!.getAttribute(check.attribute!) ?? '')
         : assertion === 'disabled' ? String(target!.matches(':disabled'))
         : assertion === 'visible' ? String(visible())
           : collapse(target!.innerText ?? target!.textContent ?? '');
