@@ -100,3 +100,35 @@ test('real-world Tester replies: bad items are dropped or defaulted, not fatal',
   assert.throws(() => parseTestPlanOutput({ checks: [{ name: 'Bad', actions: [{ type: 'wait' }], selector: '#a', expected: '1' }], limitations: [] }), /did not match/);
   assert.throws(() => parseTestPlanOutput({ checks: [{ ...good, expected: 'shown' }], limitations: [] }), /did not match/);
 });
+
+test('count and attribute schemas enforce their expected values and attribute names', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'Board', actions: [], selector: '.card', expected: '16', assertion: 'count' };
+  for (const expected of ['0', '16', '9999', '0016']) assert.equal(browserCheckSchema.safeParse({ ...check, expected }).success, true);
+  for (const expected of ['abc', '-1', '1.5', '10000', '', ' 16']) assert.equal(browserCheckSchema.safeParse({ ...check, expected }).success, false);
+  for (const attribute of ['aria-valuenow', 'aria-pressed', 'data-state', 'value', 'class', 'title', 'a'.repeat(50)]) {
+    assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, true);
+  }
+  for (const change of [{ assertion: 'attribute' }, { assertion: 'text', attribute: 'title' }, { attribute: 'title' }, ...['', 'Title', 'aria_value', 'a'.repeat(51)].map((attribute) => ({ assertion: 'attribute', attribute }))]) {
+    assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
+  }
+  assert.equal(browserCheckSchema.safeParse({ ...check, assertion: undefined, attribute: 'title' }).success, false);
+});
+
+test('null optional check fields are normalised even when every check is valid', () => {
+  const check = { name: 'Text', actions: [], selector: '#text', expected: 'Hi' };
+  const parsed = parseTestPlanOutput({ checks: [{ ...check, assertion: null, attribute: null }], limitations: [] });
+  assert.deepEqual(parsed.checks, [check]);
+  assert.throws(() => parseTestPlanOutput({ checks: [{ ...check, assertion: 'attribute', attribute: null }] }), /did not match/);
+});
+
+test('repair notes identify the counted selector and the compared attribute', async () => {
+  const { browserFailureNotes } = await import('./repair.js');
+  const checks = [
+    { name: 'Cards', actions: [], selector: '.card', expected: '16', assertion: 'count' as const },
+    { name: 'Hunger', actions: [], selector: '#hungerBar', expected: '90', assertion: 'attribute' as const, attribute: 'aria-valuenow' },
+  ];
+  const notes = browserFailureNotes(checks, checks.map((check) => ({ name: check.name, status: 'failed', actual: '' })));
+  assert.match(notes[0], /selector=".card", assertion="count"/);
+  assert.match(notes[1], /assertion="attribute", attribute="aria-valuenow"/);
+});

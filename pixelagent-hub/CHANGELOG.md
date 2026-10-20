@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+- `count` check assertion: how many elements the selector matches (the only assertion where it may match several or none), for "16 cards" or "5 swatches"
+- `attribute` check assertion with an `attribute` field: one attribute compared exactly (`aria-valuenow`, `aria-pressed`, …; `value` reads the live input value). 5 of the 7 failed showcase runs were correct apps the old language could not check
+
+### Fixed
+- PLAY LIVE checks run in an unthrottled frame: the off-screen hidden frame froze CSS transitions and slowed timers to about 1 Hz, so checks saw a different app than the visitor
+
 ## [2.2.0] — 2026-10-19
 
 ### Added

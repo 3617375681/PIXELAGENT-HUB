@@ -103,7 +103,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           else await target.press(action.key);
         }
         const target = frame.locator(`css=${check.selector}`);
-        if (await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
+        if (check.assertion !== 'count' && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
         const deadline = Date.now() + 2000;
         // Text matches either what is rendered (innerText: paragraph breaks, CSS casing) or the source
         // text (textContent), with runs of whitespace as one space; the rendered text is reported.
@@ -117,7 +117,9 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
             actual = collapseWhitespace(rendered);
             matched = actual === expected || collapseWhitespace(source) === expected;
           } else {
-            actual = assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible());
+            actual = assertion === 'count' ? String(await target.count())
+              : assertion === 'attribute' ? await target.evaluate((element, attribute) => attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : element.getAttribute(attribute) ?? '', check.attribute!)
+                : assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible());
             matched = actual === expected;
           }
           if (matched) break;
