@@ -1,0 +1,595 @@
+{
+  "caseId": "pomodoro-cycles",
+  "run": 3,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 52,
+  "reportedTokens": 20336,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T10:39:56.558Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T10:39:56.559Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T10:40:00.582Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Interval Trainer"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T10:40:00.582Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:40:19.858Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unterminated string in JSON at position 30798 (line 14 column 25753) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:40:19.859Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:40:29.993Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:40:29.993Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:40:30.508Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:40:30.509Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "cf7eddb3-babb-4e96-ab5c-ea2193da7752"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:40:33.796Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "cf7eddb3-babb-4e96-ab5c-ea2193da7752",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:40:33.796Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "testPlanId": "cf7eddb3-babb-4e96-ab5c-ea2193da7752",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Initial ready state",
+        "passed": true,
+        "actual": "READY"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Start shows work phase and round 1",
+        "passed": true,
+        "actual": "WORK"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Round counter after start",
+        "passed": true,
+        "actual": "Round: 1 / 2"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Work transitions to rest",
+        "passed": true,
+        "actual": "REST"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Rest transitions to round 2 work",
+        "passed": true,
+        "actual": "Round: 2 / 2"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Single round completes",
+        "passed": true,
+        "actual": "WORKOUT COMPLETE"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Timer counts down during work",
+        "passed": true,
+        "actual": "00:04"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Reset returns to ready",
+        "passed": true,
+        "actual": "READY"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Start hidden while running",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:40:44.738Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "name": "Reset visible while running",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T10:40:44.739Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "33c638b9-80b9-4a63-9daf-198f3b850761",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T10:40:44.741Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial ready state",
+        "actions": [],
+        "selector": "#phase",
+        "expected": "Ready",
+        "assertion": "text"
+      },
+      {
+        "name": "Start shows work phase and round 1",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#phase",
+        "expected": "Work",
+        "assertion": "text"
+      },
+      {
+        "name": "Round counter after start",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#round",
+        "expected": "Round: 1 / 2",
+        "assertion": "text"
+      },
+      {
+        "name": "Work transitions to rest",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 1500
+          }
+        ],
+        "selector": "#phase",
+        "expected": "Rest",
+        "assertion": "text"
+      },
+      {
+        "name": "Rest transitions to round 2 work",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 2500
+          }
+        ],
+        "selector": "#round",
+        "expected": "Round: 2 / 2",
+        "assertion": "text"
+      },
+      {
+        "name": "Single round completes",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 2500
+          }
+        ],
+        "selector": "#phase",
+        "expected": "Workout complete",
+        "assertion": "text"
+      },
+      {
+        "name": "Timer counts down during work",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 1200
+          }
+        ],
+        "selector": "#timer",
+        "expected": "^00:0[1-4]$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Reset returns to ready",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#phase",
+        "expected": "Ready",
+        "assertion": "text"
+      },
+      {
+        "name": "Start hidden while running",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#start",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Reset visible while running",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#reset",
+        "expected": "true",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "No trusted keyboard input or audio announcements are tested; only DOM clicks and text are observed.",
+      "Progress bar fill is drawn via a CSS pseudo-element, so its visual width cannot be asserted.",
+      "Timing checks use short waits and may be sensitive to slow CI environments.",
+      "Input validation for zero/negative or non-numeric values is not covered."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4606,
+      "completion_tokens": 890,
+      "total_tokens": 5496,
+      "prompt_tokens_details": {
+        "cached_tokens": 1536
+      },
+      "prompt_cache_hit_tokens": 1536,
+      "prompt_cache_miss_tokens": 3070
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unterminated string in JSON at position 30798 (line 14 column 25753) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Interval Trainer</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Interval Trainer</h1>\n    <div class=\"controls\">\n      <label for=\"work\">Work (seconds)</label>\n      <input type=\"number\" id=\"work\" min=\"1\" value=\"30\" aria-label=\"Work duration in seconds\">\n      <label for=\"rest\">Rest (seconds)</label>\n      <input type=\"number\" id=\"rest\" min=\"1\" value=\"15\" aria-label=\"Rest duration in seconds\">\n      <label for=\"rounds\">Rounds</label>\n      <input type=\"number\" id=\"rounds\" min=\"1\" value=\"3\" aria-label=\"Number of rounds\">\n      <button id=\"start\" type=\"button\">Start</button>\n      <button id=\"reset\" type=\"button\" hidden>Reset</button>\n    </div>\n    <div class=\"display\" aria-live=\"polite\">\n      <div id=\"phase\" class=\"phase\">Ready</div>\n      <div id=\"round\" class=\"round\">Round: 0</div>\n      <div id=\"timer\" class=\"timer\">00:00</div>\n    </div>\n    <div id=\"progress\" class=\"progress\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"0\"></div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file for the Pixel Interval Trainer app."
+    },
+    {
+      "path": "style.css",
+      "content": "/* Palette: #1e1e2f (bg), #2a2a40 (card), #e0e0ff (text), #6c5ce7 (accent), #00d2d3 (highlight) */\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: #1e1e2f;\n  color: #e0e0ff;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: #2a2a40;\n  border-radius: 12px;\n  padding: 32px 24px;\n  max-width: 480px;\n  width: 100%;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);\n}\n\nh1 {\n  font-size: 1.8rem;\n  text-align: center;\n  margin-bottom: 24px;\n  color: #00d2d3;\n  letter-spacing: 1px;\n}\n\n.controls {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\nlabel {\n  font-weight: 600;\n  font-size: 1rem;\n}\n\ninput[type=\"number\"] {\n  background: #1e1e2f;\n  border: 2px solid #6c5ce7;\n  border-radius: 8px;\n  color: #e0e0ff;\n  font-size: 1.1rem;\n  padding: 10px 12px;\n  width: 100%;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ninput[type=\"number\"]:focus {\n  outline: none;\n  border-color: #00d2d3;\n  box-shadow: 0 0 0 3px rgba(0, 210, 211, 0.3);\n}\n\nbutton {\n  background: #6c5ce7;\n  border: none;\n  border-radius: 8px;\n  color: #fff;\n  cursor: pointer;\n  font-size: 1.1rem;\n  font-weight: 600;\n  padding: 12px 16px;\n  transition: background 0.2s, transform 0.1s;\n}\n\nbutton:hover {\n  background: #5a4bd1;\n}\n\nbutton:focus-visible {\n  outline: 3px solid #00d2d3;\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.97);\n}\n\n.display {\n  text-align: center;\n  margin-bottom: 24px;\n}\n\n.phase {\n  font-size: 1.4rem;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  margin-bottom: 8px;\n  color: #00d2d3;\n}\n\n.round {\n  font-size: 1.2rem;\n  margin-bottom: 8px;\n}\n\n.timer {\n  font-size: 3rem;\n  font-weight: 800;\n  font-variant-numeric: tabular-nums;\n  letter-spacing: 4px;\n  color: #e0e0ff;\n}\n\n.progress {\n  height: 12px;\n  background: #1e1e2f;\n  border-radius: 6px;\n  overflow: hidden;\n  position: relative;\n}\n\n.progress::after {\n  content: '';\n  display: block;\n  height: 100%;\n  width: 0%;\n  background: linear-gradient(90deg, #6c5ce7, #00d2d3);\n  transition: width 0.3s linear;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 16px;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .timer {\n    font-size: 2.5rem;\n  }\n}",
+      "description": "Stylesheet for the Pixel Interval Trainer, defining layout, colors, and interactive states."
+    },
+    {
+      "path": "script.js",
+      "content": "const workInput = document.getElementById('work');\nconst restInput = document.getElementById('rest');\nconst roundsInput = document.getElementById('rounds');\nconst startBtn = document.getElementById('start');\nconst resetBtn = document.getElementById('reset');\nconst phaseEl = document.getElementById('phase');\nconst roundEl = document.getElementById('round');\nconst timerEl = document.getElementById('timer');\nconst progressEl = document.getElementById('progress');\n\nlet timerId = null;\nlet endTime = 0;\nlet phase = 'idle'; // 'work', 'rest', 'complete'\nlet currentRound = 0;\nlet totalRounds = 0;\nlet workSeconds = 0;\nlet restSeconds = 0;\nlet phaseDuration = 0;\nlet phaseStartTime = 0;\n\nfunction formatTime(seconds) {\n  const m = Math.floor(seconds / 60).toString().padStart(2, '0');\n  const s = (seconds % 60).toString().padStart(2, '0');\n  return `${m}:${s}`;\n}\n\nfunction updateDisplay(remaining) {\n  timerEl.textContent = formatTime(Math.ceil(remaining));\n  const elapsed = phaseDuration - remaining;\n  const percent = phaseDuration > 0 ? Math.min(100, (elapsed / phaseDuration) * 100) : 0;\n  progressEl.style.setProperty('--progress', percent + '%');\n  progressEl.setAttribute('aria-valuenow', Math.round(percent));\n}\n\nfunction startPhase(newPhase, duration) {\n  phase = newPhase;\n  phaseDuration = duration;\n  phaseStartTime = performance.now();\n  endTime = phaseStartTime + duration * 1000;\n  if (newPhase === 'work') {\n    phaseEl.textContent = 'Work';\n  } else if (newPhase === 'rest') {\n    phaseEl.textContent = 'Rest';\n  }\n  updateDisplay(duration);\n}\n\nfunction tick() {\n  const now = performance.now();\n  const remaining = (endTime - now) / 1000;\n  if (remaining <= 0) {\n    if (phase === 'work') {\n      if (restSeconds > 0) {\n        startPhase('rest', restSeconds);\n      } else {\n        nextRound();\n      }\n    } else if (phase === 'rest') {\n      nextRound();\n    }\n  } else {\n    updateDisplay(remaining);\n  }\n}\n\nfunction nextRound() {\n  currentRound++;\n  if (currentRound > totalRounds) {\n    completeWorkout();\n  } else {\n    roundEl.textContent = `Round: ${currentRound} / ${totalRounds}`;\n    startPhase('work', workSeconds);\n  }\n}\n\nfunction completeWorkout() {\n  clearInterval(timerId);\n  timerId = null;\n  phase = 'complete';\n  phaseEl.textContent = 'Workout complete';\n  roundEl.textContent = '';\n  timerEl.textContent = '00:00';\n  progressEl.style.setProperty('--progress', '100%');\n  progressEl.setAttribute('aria-valuenow', '100');\n  startBtn.hidden = false;\n  resetBtn.hidden = true;\n}\n\nfunction startWorkout() {\n  workSeconds = Math.max(1, parseInt(workInput.value) || 30);\n  restSeconds = Math.max(0, parseInt(restInput.value) || 15);\n  totalRounds = Math.max(1, parseInt(roundsInput.value) || 3);\n  currentRound = 1;\n  roundEl.textContent = `Round: ${currentRound} / ${totalRounds}`;\n  startBtn.hidden = true;\n  resetBtn.hidden = false;\n  startPhase('work', workSeconds);\n  timerId = setInterval(tick, 100);\n}\n\nfunction resetWorkout() {\n  clearInterval(timerId);\n  timerId = null;\n  phase = 'idle';\n  phaseEl.textContent = 'Ready';\n  roundEl.textContent = 'Round: 0';\n  timerEl.textContent = '00:00';\n  progressEl.style.setProperty('--progress', '0%');\n  progressEl.setAttribute('aria-valuenow', '0');\n  startBtn.hidden = false;\n  resetBtn.hidden = true;\n}\n\nstartBtn.addEventListener('click', startWorkout);\nresetBtn.addEventListener('click', resetWorkout);\n\n// Initialize progress bar via CSS variable\nprogressEl.style.setProperty('--progress', '0%');\n// Override the pseudo-element width using the variable\nconst style = document.createElement('style');\nstyle.textContent = '.progress::after { width: var(--progress, 0%); }';\ndocument.head.appendChild(style);",
+      "description": "JavaScript logic for the interval trainer: timer, phase transitions, round tracking, and completion."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Interval Trainer\n\nA simple offline browser app for interval training. Set work seconds, rest seconds, and rounds, then start. The app counts down work and rest phases, displays the current phase and round, and announces 'Workout complete' at the end.\n\n## Features\n- Configurable work duration, rest duration, and number of rounds.\n- Visual countdown timer with phase and round display.\n- Progress bar showing phase progress.\n- Keyboard-accessible controls with focus states.\n- Responsive design for screens as narrow as 360px.\n- No external dependencies, works completely offline.\n\n## Usage\n1. Open `index.html` in any modern browser.\n2. Enter desired work seconds, rest seconds, and rounds.\n3. Click **Start** to begin the workout.\n4. The timer will count down work, then rest, for each round.\n5. When all rounds are complete, the app displays 'Workout complete'.\n6. Click **Reset** to stop and reset the timer.\n\n## Files\n- `index.html` – Main HTML structure.\n- `style.css` – Styling and layout.\n- `script.js` – Timer and interaction logic.\n\n## License\nMIT",
+      "description": "README with project description, features, and usage instructions."
+    }
+  ]
+}
