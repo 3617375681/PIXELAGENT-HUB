@@ -257,3 +257,24 @@ test('real browser input actions select radios and set checkboxes', { skip: proc
     assert.equal(run.checks.length, 5);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+
+test('real browser reads inline styles, untransformed text and stability after actions', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-stable-style-'));
+  try {
+    const content = '<html><body><div id="bar" style="width:90%"></div><div id="summary" style="text-transform:uppercase"><div>Min 10</div><div style="text-transform:uppercase">Max 30</div></div><output>25:00</output><button>Pause</button><script>document.querySelector("button").onclick=()=>{document.querySelector("output").textContent="00:30";setTimeout(()=>document.querySelector("output").textContent="00:29",300)}</script></body></html>';
+    const checks = { checks: [
+      { name: 'Width', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.width', expected: '90%' },
+      { name: 'Missing', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.left', expected: '' },
+      { name: 'Case', actions: [], selector: '#summary', expected: 'Min 10 Max 30' },
+      { name: 'Pattern', actions: [], selector: '#summary', assertion: 'matches', expected: '^Min 10 Max 30$' },
+      { name: 'Static', actions: [], selector: 'output', assertion: 'stable', expected: '' },
+      { name: 'Changes', actions: [{ type: 'click', selector: 'button' }], selector: 'output', assertion: 'stable', expected: '' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map((check) => check.status), ['passed', 'passed', 'passed', 'passed', 'passed', 'failed'], JSON.stringify(run));
+    assert.deepEqual(run.checks.map((check) => check.actual), ['90%', '', 'MIN 10 MAX 30', 'MIN 10 MAX 30', '25:00', '00:29']);
+    assert.equal(run.checks[5].error, 'Expected text to stay "00:30" after the actions, observed "00:29"');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

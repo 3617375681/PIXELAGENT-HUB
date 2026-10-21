@@ -36,7 +36,7 @@ const normaliseCheck = (check: unknown) => {
     const { nth, ...rest } = action;
     return { ...rest, ...(nth == null ? {} : { nth }) };
   }) : actions;
-  return { ...rest, actions: normalisedActions, ...(nth == null ? {} : { nth }), ...(['changed', 'unchanged'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
+  return { ...rest, actions: normalisedActions, ...(nth == null ? {} : { nth }), ...(['changed', 'unchanged', 'stable'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
 };
 
 /**

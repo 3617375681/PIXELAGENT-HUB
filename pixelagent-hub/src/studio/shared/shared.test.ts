@@ -210,3 +210,14 @@ test('review facts derive verdicts, override legacy verdicts and keep unsupporte
     assert.equal(parseTesterReview({ verdicts: [{ ...item, reason: ' ' }] }, ['Fixed'], 1)[0].verdict, 'app-wrong');
   }
 });
+
+
+test('inline style names are strict and stable allows zero actions with normalised expected', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'Stable', actions: [], selector: '#timer', assertion: 'stable', expected: '' };
+  assert.equal(browserCheckSchema.safeParse(check).success, true);
+  for (const change of [{ attribute: 'style.width' }, { expected: '25:00' }]) assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
+  assert.equal(parseTestPlanOutput({ checks: [{ ...check, expected: '25:00' }], limitations: [] }).checks[0].expected, '');
+  for (const attribute of ['style.width', 'style.background-color', 'style.left']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, true);
+  for (const attribute of ['style.', 'style.Width', 'style.width1', 'style.' + 'a'.repeat(41)]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, false);
+});

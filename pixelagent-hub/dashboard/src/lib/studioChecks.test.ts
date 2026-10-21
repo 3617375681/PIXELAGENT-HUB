@@ -226,3 +226,40 @@ it.each(['radio', 'checkbox'])('input clicks a %s into the wanted checked state 
   // Clicked only when the state had to change: on, (already on), off, (already off), on.
   expect(clicks).toEqual([true, false, true]);
 });
+
+
+it('reads trimmed inline style values and missing properties', async () => {
+  const bar = { style: { getPropertyValue: (name: string) => name === 'width' ? ' 90% ' : '' } };
+  const document = { querySelectorAll: () => [bar] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Width', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.width', expected: '90%' },
+    { name: 'Missing', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.left', expected: '' },
+  ]);
+  expect(results.map(({ status, actual }) => ({ status, actual }))).toEqual([{ status: 'passed', actual: '90%' }, { status: 'passed', actual: '' }]);
+});
+
+it('accepts untransformed rendered text and restores inline values and priorities', async () => {
+  const style = (value: string, priority = '') => ({ textTransform: value, priority, getPropertyValue() { return this.textTransform; }, getPropertyPriority() { return this.priority; }, setProperty(_name: string, value: string, priority: string) { this.textTransform = value; this.priority = priority; }, removeProperty() { this.textTransform = ''; } });
+  const child = { style: style('uppercase', 'important') };
+  const output = { style: style(''), querySelectorAll: () => [child], textContent: 'Min 10Max 30', get innerText() { return this.style.textTransform === 'none' && child.style.textTransform === 'none' ? 'Min 10 Max 30' : 'MIN 10 MAX 30'; } };
+  const document = { querySelectorAll: () => [output] } as unknown as Document;
+  for (const assertion of ['text', 'matches'] as const) {
+    const [result] = await runDOMChecks(document, [{ name: 'Case', actions: [], selector: '#summary', assertion, expected: assertion === 'text' ? 'Min 10 Max 30' : '^Min 10 Max 30$' }]);
+    expect(result).toMatchObject({ status: 'passed', actual: 'MIN 10 MAX 30' });
+    expect(output.style.textTransform).toBe('');
+    expect(child.style.textTransform).toBe('uppercase');
+    expect(child.style.priority).toBe('important');
+  }
+});
+
+it('stable captures after actions, accepts static text and fails on a delayed change', async () => {
+  const output = { textContent: '25:00' };
+  const button = { click: () => { output.textContent = '00:30'; setTimeout(() => { output.textContent = '00:29'; }, 300); } };
+  const document = { querySelectorAll: (selector: string) => selector === '#timer' ? [output] : [button] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Static', actions: [], selector: '#timer', assertion: 'stable', expected: '' },
+    { name: 'Changes', actions: [{ type: 'click', selector: '#pause' }], selector: '#timer', assertion: 'stable', expected: '' },
+  ]);
+  expect(results[0]).toMatchObject({ status: 'passed', actual: '25:00' });
+  expect(results[1]).toMatchObject({ status: 'failed', actual: '00:29', error: 'Expected text to stay "00:30" after the actions, observed "00:29"' });
+});

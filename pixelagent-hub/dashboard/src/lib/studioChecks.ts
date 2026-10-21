@@ -1,4 +1,4 @@
-export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string; nth?: number } | { type: 'input'; selector: string; nth?: number; value: string } | { type: 'key'; selector: string; nth?: number; key: string })[]; selector: string; nth?: number; expected: string; assertion?: 'text' | 'matches' | 'disabled' | 'visible' | 'count' | 'attribute' | 'changed' | 'unchanged'; attribute?: string };
+export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string; nth?: number } | { type: 'input'; selector: string; nth?: number; value: string } | { type: 'key'; selector: string; nth?: number; key: string })[]; selector: string; nth?: number; expected: string; assertion?: 'text' | 'matches' | 'disabled' | 'visible' | 'count' | 'attribute' | 'changed' | 'unchanged' | 'stable'; attribute?: string };
 export type BrowserCheckResult = { name: string; status: 'passed' | 'failed'; actual: string; error?: string };
 
 // This function is serialized into the sandbox. Keep all helpers local; no eval or model code.
@@ -10,15 +10,30 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
     if (nth === undefined && matches.length !== 1) throw new Error(`Selector must match exactly one element: ${selector} (found ${matches.length})`);
     return matches[nth ?? 0] as HTMLElement;
   };
+  const untransformed = (element: HTMLElement) => {
+    const elements = [element, ...Array.from(element.querySelectorAll?.('*') ?? []) as HTMLElement[]].filter((item) => item.style);
+    const previous = elements.map((item) => [item.style.getPropertyValue('text-transform'), item.style.getPropertyPriority('text-transform')]);
+    try {
+      for (const item of elements) item.style.textTransform = 'none';
+      return element.innerText ?? element.textContent ?? '';
+    } finally {
+      elements.forEach((item, index) => {
+        const [value, priority] = previous[index];
+        if (value) item.style.setProperty('text-transform', value, priority);
+        else item.style.removeProperty('text-transform');
+      });
+    }
+  };
   for (const check of checks) {
     let actual = '';
     try {
       const previousErrors = errorCount();
       const assertion = check.assertion || 'text';
       const relative = assertion === 'changed' || assertion === 'unchanged';
+      const steady = assertion === 'unchanged' || assertion === 'stable';
       const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
       const baseline = relative ? element(check.selector, check.nth) : undefined;
-      const expected = baseline ? collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
+      let expected = baseline ? collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
       for (const action of check.actions) {
         const target = element(action.selector, action.nth);
         if (action.type === 'click') target.click();
@@ -38,7 +53,7 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         } else throw new Error('Unsupported check action');
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      let target = check.assertion === 'count' ? undefined : element(check.selector, check.nth);
+      let target = assertion === 'count' || assertion === 'stable' ? undefined : element(check.selector, check.nth);
       // Same rules as the server's browser runs: rendered text with runs of whitespace as one space,
       // visibility like Playwright plus no opacity:0 on the element or ancestors, and up to 2 s for the
       // expected value to appear (timers, transitions).
@@ -50,28 +65,33 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         }
         return !!box && box.width > 0 && box.height > 0 && style?.visibility !== 'hidden';
       };
-      // Text matches either the rendered text (innerText: paragraph breaks, CSS casing) or the source
-      // text (textContent); the rendered text is reported.
+      // Text accepts rendered, source or untransformed rendered text; rendered text is reported.
       const read = () => assertion === 'count' ? String(document.querySelectorAll(check.selector).length)
-        : assertion === 'attribute' ? (check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : check.attribute === 'checked' && target!.tagName === 'INPUT' ? String((target as HTMLInputElement).checked) : target!.getAttribute(check.attribute!) ?? '')
+        : assertion === 'attribute' ? (check.attribute!.startsWith('style.') ? target!.style.getPropertyValue(check.attribute!.slice(6)).trim() : check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : check.attribute === 'checked' && target!.tagName === 'INPUT' ? String((target as HTMLInputElement).checked) : target!.getAttribute(check.attribute!) ?? '')
         : assertion === 'disabled' ? String(target!.matches(':disabled'))
         : assertion === 'visible' ? String(visible())
           : collapse(target!.innerText ?? target!.textContent ?? '');
       const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
-      const matches = (observed: string) => pattern ? pattern.test(observed) || pattern.test(collapse(target!.textContent ?? '')) : observed === expected || ((assertion === 'text' || relative) && collapse(target!.textContent ?? '') === expected);
+      const matches = (observed: string) => pattern ? pattern.test(observed) || pattern.test(collapse(target!.textContent ?? '')) || pattern.test(collapse(untransformed(target!))) : observed === expected || ((assertion === 'text' || relative || assertion === 'stable') && (collapse(target!.textContent ?? '') === expected || collapse(untransformed(target!)) === expected));
+      if (assertion === 'stable') {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        target = element(check.selector, check.nth);
+        expected = read();
+      }
       let observed = '';
       let matched = false;
-      const deadline = Date.now() + (assertion === 'unchanged' ? 500 : 2000);
+      const deadline = Date.now() + (assertion === 'stable' ? 1500 : assertion === 'unchanged' ? 500 : 2000);
       do {
-        if (relative) target = element(check.selector, check.nth);
+        if (relative || assertion === 'stable') target = element(check.selector, check.nth);
         observed = read();
         actual = observed.slice(0, 300);
         matched = assertion === 'changed' ? !matches(observed) : matches(observed);
-        if (assertion === 'unchanged' ? !matched : matched) break;
+        if (steady ? !matched : matched) break;
         if (Date.now() >= deadline) break;
-        await new Promise((resolve) => setTimeout(resolve, 50));
-      } while (assertion === 'unchanged' ? matched : !matched);
+        await new Promise((resolve) => setTimeout(resolve, assertion === 'stable' ? 100 : 50));
+      } while (steady ? matched : !matched);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
+      if (!matched && assertion === 'stable') throw new Error(`Expected text to stay ${JSON.stringify(expected)} after the actions, observed ${JSON.stringify(actual)}`);
       if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected text to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual)}` : `Expected text to change from ${JSON.stringify(expected)}`);
       if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
       results.push({ name: check.name, status: 'passed', actual });
