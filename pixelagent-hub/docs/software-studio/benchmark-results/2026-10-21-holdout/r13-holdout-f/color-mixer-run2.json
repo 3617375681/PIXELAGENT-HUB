@@ -1,0 +1,664 @@
+{
+  "caseId": "color-mixer",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "8/9",
+  "finalChecks": "8/9",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "8/9",
+    "8/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 37,
+  "reportedTokens": 20410,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:59:14.174Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:59:14.174Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:59:18.592Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel RGB Color Mixer"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:59:18.592Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:59:27.164Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:59:27.164Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:59:27.725Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:59:27.726Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "09b24a1c-d162-4c9b-ae9e-cdbeac7c46e7"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:59:30.035Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "09b24a1c-d162-4c9b-ae9e-cdbeac7c46e7",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:59:30.036Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "testPlanId": "09b24a1c-d162-4c9b-ae9e-cdbeac7c46e7",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Initial black state",
+        "passed": true,
+        "actual": "#000000"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Red slider updates hex and value",
+        "passed": true,
+        "actual": "#FF0000"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Green slider updates hex",
+        "passed": true,
+        "actual": "#008000"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Blue slider updates hex",
+        "passed": true,
+        "actual": "#0000FF"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Mixed color hex and preview",
+        "passed": true,
+        "actual": "#123456"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Preview swatch background matches color",
+        "passed": false,
+        "actual": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Channel value readouts update",
+        "passed": true,
+        "actual": "30"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Random button changes color",
+        "passed": true,
+        "actual": "#AB7E3B"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "name": "Random produces valid hex format",
+        "passed": true,
+        "actual": "#CD6BD0"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:59:35.087Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "ada02492-7090-4e52-b3d3-5bcf59232fc6",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:59:35.091Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "09b24a1c-d162-4c9b-ae9e-cdbeac7c46e7",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:59:36.139Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "09b24a1c-d162-4c9b-ae9e-cdbeac7c46e7",
+        "checks": 9,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Preview swatch background matches color",
+            "verdict": "app-wrong",
+            "reason": "The check sets all three sliders to 255 and asserts the preview's computed background-color matches the regex \"rgb(255, 255, 255)\". The app sets preview.style.background to #FFFFFF, which computes to "
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:59:36.140Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:59:43.359Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T09:59:43.359Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T09:59:43.408Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T09:59:43.408Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "testPlanId": "09b24a1c-d162-4c9b-ae9e-cdbeac7c46e7",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Initial black state",
+        "passed": true,
+        "actual": "#000000"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Red slider updates hex and value",
+        "passed": true,
+        "actual": "#FF0000"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Green slider updates hex",
+        "passed": true,
+        "actual": "#008000"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Blue slider updates hex",
+        "passed": true,
+        "actual": "#0000FF"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Mixed color hex and preview",
+        "passed": true,
+        "actual": "#123456"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Preview swatch background matches color",
+        "passed": false,
+        "actual": "rgb(255, 255, 255)"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Channel value readouts update",
+        "passed": true,
+        "actual": "30"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Random button changes color",
+        "passed": true,
+        "actual": "#8A3E0A"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "name": "Random produces valid hex format",
+        "passed": true,
+        "actual": "#BD38C1"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T09:59:48.536Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "db8736a0-3fcd-4972-bd3b-964388483da7",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T09:59:48.538Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial black state",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#hex",
+        "expected": "#000000",
+        "assertion": "text"
+      },
+      {
+        "name": "Red slider updates hex and value",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "255"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "0"
+          }
+        ],
+        "selector": "#hex",
+        "expected": "#FF0000",
+        "assertion": "text"
+      },
+      {
+        "name": "Green slider updates hex",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "128"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "0"
+          }
+        ],
+        "selector": "#hex",
+        "expected": "#008000",
+        "assertion": "text"
+      },
+      {
+        "name": "Blue slider updates hex",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "255"
+          }
+        ],
+        "selector": "#hex",
+        "expected": "#0000FF",
+        "assertion": "text"
+      },
+      {
+        "name": "Mixed color hex and preview",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "18"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "52"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "86"
+          }
+        ],
+        "selector": "#hex",
+        "expected": "#123456",
+        "assertion": "text"
+      },
+      {
+        "name": "Preview swatch background matches color",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "255"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "255"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "255"
+          }
+        ],
+        "selector": "#preview",
+        "expected": "rgb(255, 255, 255)",
+        "assertion": "matches",
+        "attribute": "css.background-color"
+      },
+      {
+        "name": "Channel value readouts update",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "20"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "30"
+          }
+        ],
+        "selector": "#blue-value",
+        "expected": "30",
+        "assertion": "text"
+      },
+      {
+        "name": "Random button changes color",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#red",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#green",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#blue",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#random"
+          }
+        ],
+        "selector": "#hex",
+        "expected": "",
+        "assertion": "changed"
+      },
+      {
+        "name": "Random produces valid hex format",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#random"
+          }
+        ],
+        "selector": "#hex",
+        "expected": "^#[0-9A-F]{6}$",
+        "assertion": "matches"
+      }
+    ],
+    "limitations": [
+      "Random color values are unpredictable; only format and change are asserted.",
+      "Slider thumb drag gestures and keyboard arrow adjustments are not tested; values are set directly.",
+      "Visual layout, responsiveness and hover/focus styling are not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4176,
+      "completion_tokens": 651,
+      "total_tokens": 4827,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 2768
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel RGB Color Mixer</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel RGB Color Mixer</h1>\n    <div id=\"preview\" class=\"preview\" aria-live=\"polite\" aria-label=\"Color preview\"></div>\n    <output id=\"hex\" class=\"hex\" aria-live=\"polite\">#000000</output>\n    <div class=\"controls\">\n      <div class=\"slider-group\">\n        <label for=\"red\">Red</label>\n        <input type=\"range\" id=\"red\" min=\"0\" max=\"255\" value=\"0\" step=\"1\" />\n        <output id=\"red-value\" class=\"value\" for=\"red\">0</output>\n      </div>\n      <div class=\"slider-group\">\n        <label for=\"green\">Green</label>\n        <input type=\"range\" id=\"green\" min=\"0\" max=\"255\" value=\"0\" step=\"1\" />\n        <output id=\"green-value\" class=\"value\" for=\"green\">0</output>\n      </div>\n      <div class=\"slider-group\">\n        <label for=\"blue\">Blue</label>\n        <input type=\"range\" id=\"blue\" min=\"0\" max=\"255\" value=\"0\" step=\"1\" />\n        <output id=\"blue-value\" class=\"value\" for=\"blue\">0</output>\n      </div>\n    </div>\n    <button id=\"random\" type=\"button\" class=\"btn\">Random</button>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Markup and structure, unchanged."
+    },
+    {
+      "path": "styles.css",
+      "content": "[hidden] { display: none !important; }\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: #1e1e2f;\n  color: #f0f0f5;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  padding: 16px;\n}\n\n.card {\n  background: #2a2a40;\n  border-radius: 16px;\n  padding: 32px;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\nh1 {\n  margin: 0;\n  font-size: 1.5rem;\n  font-weight: 700;\n  text-align: center;\n  color: #ffffff;\n}\n\n.preview {\n  width: 100%;\n  height: 160px;\n  border-radius: 12px;\n  background: #000000;\n  border: 2px solid #3a3a55;\n  transition: background 0.15s ease;\n}\n\n.hex {\n  text-align: center;\n  font-size: 1.5rem;\n  font-weight: 600;\n  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;\n  letter-spacing: 1px;\n  color: #ffffff;\n  background: #1e1e2f;\n  padding: 8px 16px;\n  border-radius: 8px;\n  border: 1px solid #3a3a55;\n}\n\n.controls {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n\n.slider-group {\n  display: grid;\n  grid-template-columns: 60px 1fr 48px;\n  align-items: center;\n  gap: 12px;\n}\n\n.slider-group label {\n  font-weight: 600;\n  font-size: 1rem;\n  color: #c8c8dc;\n}\n\n.slider-group .value {\n  text-align: right;\n  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;\n  font-size: 1rem;\n  color: #ffffff;\n  background: #1e1e2f;\n  padding: 4px 8px;\n  border-radius: 6px;\n  border: 1px solid #3a3a55;\n}\n\ninput[type=\"range\"] {\n  -webkit-appearance: none;\n  appearance: none;\n  width: 100%;\n  height: 8px;\n  border-radius: 4px;\n  background: #3a3a55;\n  outline: none;\n  cursor: pointer;\n}\n\ninput[type=\"range\"]::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  appearance: none;\n  width: 24px;\n  height: 24px;\n  border-radius: 50%;\n  background: #7c6cff;\n  border: 2px solid #ffffff;\n  cursor: pointer;\n  transition: transform 0.1s ease, background 0.1s ease;\n}\n\ninput[type=\"range\"]::-moz-range-thumb {\n  width: 24px;\n  height: 24px;\n  border-radius: 50%;\n  background: #7c6cff;\n  border: 2px solid #ffffff;\n  cursor: pointer;\n  transition: transform 0.1s ease, background 0.1s ease;\n}\n\ninput[type=\"range\"]:hover::-webkit-slider-thumb { background: #9a8dff; }\ninput[type=\"range\"]:hover::-moz-range-thumb { background: #9a8dff; }\n\ninput[type=\"range\"]:active::-webkit-slider-thumb { transform: scale(1.15); background: #5a4cdb; }\ninput[type=\"range\"]:active::-moz-range-thumb { transform: scale(1.15); background: #5a4cdb; }\n\ninput[type=\"range\"]:focus-visible {\n  outline: 3px solid #7c6cff;\n  outline-offset: 4px;\n}\n\n.btn {\n  align-self: center;\n  padding: 12px 32px;\n  font-size: 1.125rem;\n  font-weight: 600;\n  font-family: inherit;\n  color: #ffffff;\n  background: #7c6cff;\n  border: none;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background 0.15s ease, transform 0.1s ease;\n}\n\n.btn:hover { background: #9a8dff; }\n.btn:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }\n.btn:active { background: #5a4cdb; transform: scale(0.97); }\n\n@media (max-width: 400px) {\n  .card { padding: 20px; }\n  .slider-group { grid-template-columns: 48px 1fr 44px; gap: 8px; }\n  h1 { font-size: 1.25rem; }\n  .preview { height: 120px; }\n  .hex { font-size: 1.25rem; }\n}",
+      "description": "Visual design and responsive layout, unchanged."
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  const redInput = document.getElementById('red');\n  const greenInput = document.getElementById('green');\n  const blueInput = document.getElementById('blue');\n  const redValue = document.getElementById('red-value');\n  const greenValue = document.getElementById('green-value');\n  const blueValue = document.getElementById('blue-value');\n  const preview = document.getElementById('preview');\n  const hexOutput = document.getElementById('hex');\n  const randomBtn = document.getElementById('random');\n\n  function clamp(value) {\n    return Math.max(0, Math.min(255, Math.round(Number(value) || 0)));\n  }\n\n  function toHex(r, g, b) {\n    return '#' + [r, g, b]\n      .map(function (n) { return n.toString(16).padStart(2, '0'); })\n      .join('')\n      .toUpperCase();\n  }\n\n  function render() {\n    const r = clamp(redInput.value);\n    const g = clamp(greenInput.value);\n    const b = clamp(blueInput.value);\n\n    redInput.value = r;\n    greenInput.value = g;\n    blueInput.value = b;\n\n    redValue.textContent = r;\n    greenValue.textContent = g;\n    blueValue.textContent = b;\n\n    const hex = toHex(r, g, b);\n    hexOutput.textContent = hex;\n    preview.style.background = hex;\n    preview.style.backgroundColor = hex;\n  }\n\n  function randomChannel() {\n    return Math.floor(Math.random() * 256);\n  }\n\n  function randomize() {\n    redInput.value = randomChannel();\n    greenInput.value = randomChannel();\n    blueInput.value = randomChannel();\n    render();\n  }\n\n  redInput.addEventListener('input', render);\n  greenInput.addEventListener('input', render);\n  blueInput.addEventListener('input', render);\n  randomBtn.addEventListener('click', randomize);\n\n  render();\n})();",
+      "description": "Sets both background shorthand and background-color so the preview swatch reliably reflects the mixed color."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel RGB Color Mixer\n\nA small offline browser app that lets you mix a color from red, green, and blue channels.\n\n## Features\n\n- Three sliders (0–255) for Red, Green, and Blue\n- Large live preview swatch showing the current color\n- Hex code readout in uppercase `#RRGGBB` format\n- **Random** button to generate a random color\n- Fully keyboard accessible: Tab to move between controls, arrow keys to adjust sliders\n\n## How to run\n\nOpen `index.html` in any modern browser. No server, build step, or network connection is required.\n\n## Files\n\n- `index.html` — markup and structure\n- `styles.css` — visual design and responsive layout\n- `app.js` — slider handling, hex calculation, and random color generation\n\n## Notes\n\n- Values are clamped to the 0–255 range.\n- The layout works from 360px wide and up.\n- All controls have visible hover, focus, and pressed states.",
+      "description": "Documentation, unchanged."
+    }
+  ]
+}

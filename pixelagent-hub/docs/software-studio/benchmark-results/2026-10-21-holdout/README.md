@@ -186,3 +186,81 @@ Set E had 15/16 full passes. The dip from 14 to 13 strict comes from two passes 
 | Random sequences | simon 2 | clicks every pad, "hoping one is wrong" |
 
 The first two are language gaps and are next. The rest are model judgement errors.
+
+## Round 12 on `e769484`
+
+The round-12 changes (commit `e769484`):
+- `attribute: "class"` now passes when the element has the listed classes.
+- `changed`, `unchanged` and `stable` can compare an attribute, such as `style.height`.
+
+Set F (8 new ideas, commit `7f0d675`) is this round's clean set.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Coder repairs | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set F**](r12-holdout-f/) (clean) | 16 | 13/16 | **12/16** | 1 | 3 | 24 s | 218,658 |
+| [Set E](r12-holdout-e/) (used for round 12) | 16 | 15/16 | 14/16 | 2 | 1 | 27 s | 200,365 |
+| [Showcase](r12-showcase/) | 18 | **17/18** | **17/18** | 0 | 2 | 24 s | 208,658 |
+| [Fixed cases](r12-fixed/) | 15 | **15/15** | 15/15 | 0 | 0 | 19 s | 132,456 |
+
+**Results:**
+- The showcase reaches its best strict score: 17/18.
+- The fixed cases pass 15/15 for the seventh round running.
+- On the clean sets, strict passes over rounds 8–12 were 10, 12, 14, 13, 12. **They have plateaued at 12–14 of 16.**
+
+**Most remaining failures are no longer gaps in the language.**
+
+| Run | Cause |
+| --- | --- |
+| typing trainer 2 (E) | **Real app bug, caught.** `.result { display: flex }` overrides the `hidden` attribute, so the result panel shows before the user has typed anything. This is the fourth app with this bug. The others were the memory win message, the loan results and the mortgage results. |
+| accordion 1 (F) | **App behaviour, as judged by the review.** Opening a second question leaves the first one open, which is the opposite of what the requirement asks. |
+| accordion 2 (F), memory 1 | **No way to read a computed style.** The arrow rotates through a CSS class, so the inline `style.transform` stays empty. |
+| dice race 2 (F) | **Ambiguous key handling.** Space pressed on the page body is ignored when focus is on the roll button. |
+| sort visualizer 2 (E, pass only with drops) | **Tester arithmetic.** The check expects one bubble-sort step to change a bar, and 8 steps to sort 10 bars. |
+
+So the next round changes the app side as well as the checks:
+- the Coder is told to make `hidden` always hide;
+- checks can read computed styles.
+
+## Round 13 on `7d3e8d9`
+
+The round-13 changes (commit `7d3e8d9`):
+- **Apps:** the Coder's constraints ask for `[hidden] { display: none !important; }`. This is the first change in these rounds aimed at the apps rather than the checks.
+- **Checks:** `attribute: "css.<property>"` reads computed styles.
+
+Set G (8 new ideas, commit `49961f9`) is this round's clean set.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Apps with the `[hidden]` rule | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set G**](r13-holdout-g/) (clean) | 16 | 13/16 | **13/16** | 0 | 16/16 | 36 s | 249,718 |
+| [Set F](r13-holdout-f/) (used for round 13) | 16 | 15/16 | 14/16 | 1 | 16/16 | 25 s | 209,678 |
+| [Showcase](r13-showcase/) | 18 | 16/18 | 15/18 | 1 | 18/18 | 28 s | 225,451 |
+| [Fixed cases](r13-fixed/) | 15 | **15/15** | 15/15 | 0 | 15/15 | 20 s | 134,596 |
+
+**The app-side fix held.** Every app of the round includes the rule, and no failure came from a `display` rule overriding `hidden`. In rounds 9–12, four apps had failed that way.
+
+**The remaining failures are model reasoning errors:**
+- **Maze 1 and 2:** the Tester traced a path through the maze and miscounted the steps. The review re-traced it and still miscounted.
+- **Focus log 2:** counted `#entries-list`, the list itself, instead of its items.
+- **Colour mixer 2:** wrote the pattern `rgb(255, 255, 255)` without escaping the parentheses. Since then, a pattern also matches its own text literally (commit after `7d3e8d9`; not measured).
+- **Memory and pet (showcase):** an invented reshuffle check, and mood thresholds the requirement does not state.
+
+## Where this leaves the held-out score
+
+| Round | Clean set | Strict | Full |
+| --- | --- | ---: | ---: |
+| baseline | A | 10/16 | 11/16 |
+| 8 | B | 10/16 | 12/16 |
+| 9 | C | 12/16 | 12/16 |
+| 10 | D | 14/16 | 15/16 |
+| 11 | E | 13/16 | 15/16 |
+| 12 | F | 12/16 | 13/16 |
+| 13 | G | 13/16 | 13/16 |
+
+On ideas the pipeline has never seen, `deepseek-chat` now produces an app that passes every one of its own Tester's checks in about **13 of 16 runs (80%)**. At the start of this work it was 10 of 16. The fixed cases passed 15/15 in eight rounds running.
+
+The failures still left are model reasoning errors:
+- tracing a maze;
+- arithmetic;
+- choosing a selector.
+
+Most of them are the Tester's. Further gains are more likely from a stronger model for the Tester than from more check vocabulary.

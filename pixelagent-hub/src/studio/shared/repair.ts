@@ -9,7 +9,7 @@ export function browserFailureNotes(planned: PlannedCheck[], results: CheckResul
   return [
     ...results.filter((check) => check.status === 'failed').map((check) => {
       const plan = planned.find((item) => item.name === check.name)!;
-      return `Browser check ${JSON.stringify(check.name)}: selector=${JSON.stringify(plan.selector)}, assertion=${JSON.stringify(plan.assertion || 'text')}${plan.assertion === 'attribute' ? `, attribute=${JSON.stringify(plan.attribute)}` : ''}${plan.nth === undefined ? '' : `, nth=${plan.nth}`}, ${plan.assertion === 'matches' ? 'pattern' : 'expected'}=${JSON.stringify(plan.expected)}, actual=${JSON.stringify(check.actual)}, failure=${JSON.stringify(check.error || 'Assertion failed')}, actions=${JSON.stringify(plan.actions)}`;
+      return `Browser check ${JSON.stringify(check.name)}: selector=${JSON.stringify(plan.selector)}, assertion=${JSON.stringify(plan.assertion || 'text')}${plan.attribute ? `, attribute=${JSON.stringify(plan.attribute)}` : ''}${plan.nth === undefined ? '' : `, nth=${plan.nth}`}, ${plan.assertion === 'matches' ? 'pattern' : 'expected'}=${JSON.stringify(plan.expected)}, actual=${JSON.stringify(check.actual)}, failure=${JSON.stringify(check.error || 'Assertion failed')}, actions=${JSON.stringify(plan.actions)}`;
     }),
     ...runtimeErrors.map((error) => `Browser runtime/console error: ${error}`),
     ...blockedRequests.map((request) => `Blocked network request from offline app: ${request}`),

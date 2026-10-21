@@ -197,6 +197,12 @@ it('matches hex formats against rendered or source text and rejects short values
   expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'failed']);
 });
 
+it('a pattern also matches its own text literally, so unescaped parentheses still mean that string', async () => {
+  const document = { querySelectorAll: (selector: string) => [{ innerText: selector === '#same' ? 'rgb(255, 255, 255)' : 'rgb(1, 2, 3)', textContent: '' }] } as unknown as Document;
+  const results = await runDOMChecks(document, ['#same', '#other'].map((selector) => ({ name: selector, actions: [], selector, assertion: 'matches', expected: 'rgb(255, 255, 255)' })));
+  expect(results.map((result) => result.status)).toEqual(['passed', 'failed']);
+});
+
 it('selects nth for actions and checks, including relative checks and out-of-range errors', async () => {
   const buttons = [{ textContent: 'First', click: () => { throw new Error('Wrong button'); } }, { textContent: 'Second', click: () => { buttons[1].textContent = 'Clicked'; } }];
   const document = { querySelectorAll: () => buttons } as unknown as Document;
@@ -303,5 +309,71 @@ it('waits the full action duration before checking delayed text', async () => {
     await vi.advanceTimersByTimeAsync(1);
     expect(await pending).toEqual([{ name: 'Delayed', status: 'passed', actual: 'Ready' }]);
     expect(Date.now() - started).toBe(300);
+  } finally { vi.useRealTimers(); }
+});
+
+
+it('checks class membership while reporting and matching the full string', async () => {
+  vi.useFakeTimers();
+  try {
+    let classes = 'lamp red on';
+    const target = { getAttribute: () => classes, classList: { contains: (token: string) => classes.split(/\s+/).includes(token), get length() { return classes.trim() ? classes.trim().split(/\s+/).length : 0; } } };
+    const document = { querySelectorAll: () => [target] } as unknown as Document;
+    const pending = runDOMChecks(document, ['on', 'on red', 'off', ''].map((expected) => ({ name: expected || 'Empty', actions: [], selector: '#lamp', assertion: 'attribute', attribute: 'class', expected })));
+    await vi.runAllTimersAsync();
+    const results = await pending;
+    expect(results.map(({ status }) => status)).toEqual(['passed', 'passed', 'failed', 'failed']);
+    expect(results.every(({ actual }) => actual === classes)).toBe(true);
+    classes = '';
+    expect((await runDOMChecks(document, [{ name: 'Empty', actions: [], selector: '#lamp', assertion: 'attribute', attribute: 'class', expected: '' }]))[0].status).toBe('passed');
+    classes = 'lamp red on';
+    expect((await runDOMChecks(document, [{ name: 'Pattern', actions: [], selector: '#lamp', assertion: 'matches', attribute: 'class', expected: '^lamp red on$' }]))[0].status).toBe('passed');
+  } finally { vi.useRealTimers(); }
+});
+
+it('compares attribute baselines and samples including created elements', async () => {
+  vi.useFakeTimers();
+  try {
+    let height = '10px', classes = 'lamp red on', created = false;
+    const target = { textContent: '', style: { getPropertyValue: () => height }, getAttribute: () => classes };
+    const button = { click: () => { height = '20px'; created = true; setTimeout(() => { classes = 'lamp red'; height = '30px'; }, 300); } };
+    const document = { querySelectorAll: (selector: string) => selector === 'button' ? [button] : selector === '#created' && !created ? [] : [target] } as unknown as Document;
+    const actions = [{ type: 'click' as const, selector: 'button' }];
+    const pending = runDOMChecks(document, [
+      { name: 'Height', actions, selector: '#bar', assertion: 'changed', attribute: 'style.height', expected: '' },
+      { name: 'Class', actions, selector: '#bar', assertion: 'stable', attribute: 'class', expected: '' },
+      { name: 'Unchanged', actions: [{ type: 'wait', ms: 50 }], selector: '#bar', assertion: 'unchanged', attribute: 'style.height', expected: '' },
+    ]);
+    await vi.runAllTimersAsync();
+    const results = await pending;
+    expect(results.map(({ status }) => status)).toEqual(['passed', 'failed', 'passed']);
+    expect(results[0].actual).toBe('20px');
+    expect(results[1].error).toBe('Expected attribute class to stay "lamp red on" after the actions, observed "lamp red"');
+    created = false;
+    const deferred = runDOMChecks(document, [{ name: 'Created', actions, selector: '#created', assertion: 'changed', attribute: 'style.height', expected: '' }]);
+    await vi.runAllTimersAsync();
+    expect((await deferred)[0]).toMatchObject({ status: 'passed', actual: '30px' });
+  } finally { vi.useRealTimers(); }
+});
+
+
+it('reads computed styles and compares class-driven changes and stable samples', async () => {
+  vi.useFakeTimers();
+  try {
+    const target = { className: '', style: { getPropertyValue: () => '' } };
+    const button = { click: () => { target.className = target.className ? '' : 'open'; } };
+    const document = { querySelectorAll: (selector: string) => selector === 'button' ? [button] : [target], defaultView: { getComputedStyle: (element: typeof target) => ({ getPropertyValue: (name: string) => name === 'transform' ? ' matrix(-1, 0, 0, -1, 0, 0) ' : element.className === 'open' ? ' rgb(255, 0, 0) ' : ' rgb(0, 0, 0) ' }) } } as unknown as Document;
+    const pending = runDOMChecks(document, [
+      { name: 'Transform', actions: [], selector: '#arrow', assertion: 'attribute', attribute: 'css.transform', expected: 'matrix(-1, 0, 0, -1, 0, 0)' },
+      { name: 'Inline', actions: [], selector: '#arrow', assertion: 'attribute', attribute: 'style.transform', expected: '' },
+      { name: 'Colour', actions: [{ type: 'click', selector: 'button' }], selector: '#arrow', assertion: 'changed', attribute: 'css.background-color', expected: '' },
+      { name: 'Pattern', actions: [], selector: '#arrow', assertion: 'matches', attribute: 'css.background-color', expected: '^rgb\\(255, ' },
+      { name: 'Unchanged', actions: [{ type: 'wait', ms: 50 }], selector: '#arrow', assertion: 'unchanged', attribute: 'css.background-color', expected: '' },
+      { name: 'Stable', actions: [], selector: '#arrow', assertion: 'stable', attribute: 'css.background-color', expected: '' },
+    ]);
+    await vi.runAllTimersAsync();
+    const results = await pending;
+    expect(results.map(({ status }) => status)).toEqual(Array(6).fill('passed'));
+    expect(results.map(({ actual }) => actual)).toEqual(['matrix(-1, 0, 0, -1, 0, 0)', '', ...Array(4).fill('rgb(255, 0, 0)')]);
   } finally { vi.useRealTimers(); }
 });

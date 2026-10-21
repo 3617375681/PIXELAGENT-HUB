@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+## [2.6.0] — 2026-10-21
+
+### Added
+- `wait` action: 50–6000 ms, with at most 8 s per check. It covers random delays, timers and automatic changes.
+- `attribute: "css.<property>"` reads a computed style.
+- `changed`, `unchanged` and `stable` can compare an attribute.
+- `attribute: "class"` passes when the listed classes are present.
+- Held-out rounds 11–13. Across seven clean sets of unseen ideas, strict passes settle at about 13/16, up from 10/16. The fixed cases passed 15/15 in eight rounds running.
+
+### Changed
+- The Coder is asked for `[hidden] { display: none !important; }`. Four generated apps had let a `display` rule override `hidden`; after the change, none did.
+- The Tester reads fixed data (taken items, starting values, prices) from the source before choosing inputs.
+- A `matches` pattern also matches its own text literally.
+
 ## [2.5.0] — 2026-10-21
 
 ### Added

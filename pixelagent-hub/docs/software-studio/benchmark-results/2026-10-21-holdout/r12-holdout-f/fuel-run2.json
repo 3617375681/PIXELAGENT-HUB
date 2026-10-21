@@ -1,0 +1,580 @@
+{
+  "caseId": "fuel",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 22,
+  "reportedTokens": 9347,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:11:36.290Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:11:36.291Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:11:39.043Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Trip Fuel Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:11:39.043Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:11:47.559Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:11:47.559Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:11:48.065Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:11:48.066Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "ce4e9a35-6f04-4d6c-a4f3-65d909965c66"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:11:51.448Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "ce4e9a35-6f04-4d6c-a4f3-65d909965c66",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:11:51.448Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "testPlanId": "ce4e9a35-6f04-4d6c-a4f3-65d909965c66",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Basic calculation 350km 6.5L 1.75€",
+        "passed": true,
+        "actual": "22.75 L"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Total cost two decimals",
+        "passed": true,
+        "actual": "€39.81"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Rounding to two decimals",
+        "passed": true,
+        "actual": "€14.59"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Zero distance gives zero",
+        "passed": true,
+        "actual": "0.00 L"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Reset clears inputs and results",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Reset clears litres display",
+        "passed": true,
+        "actual": "–"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Reset clears total cost display",
+        "passed": true,
+        "actual": "–"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Invalid empty input shows error",
+        "passed": true,
+        "actual": "Please enter valid non-negative numbers."
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Negative input rejected",
+        "passed": true,
+        "actual": "Please enter valid non-negative numbers."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "name": "Success message after calculation",
+        "passed": true,
+        "actual": "Calculation complete."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:11:54.735Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "fe8b4971-843b-4b99-b9a2-7a2aeeedc9b0",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:11:54.738Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Basic calculation 350km 6.5L 1.75€",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "350"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#litres-needed",
+        "expected": "22.75 L",
+        "assertion": "text"
+      },
+      {
+        "name": "Total cost two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "350"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#total-cost",
+        "expected": "€39.81",
+        "assertion": "text"
+      },
+      {
+        "name": "Rounding to two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "7.3"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.999"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#total-cost",
+        "expected": "€14.59",
+        "assertion": "text"
+      },
+      {
+        "name": "Zero distance gives zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#litres-needed",
+        "expected": "0.00 L",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset clears inputs and results",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "350"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#distance",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Reset clears litres display",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "350"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#litres-needed",
+        "expected": "–",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset clears total cost display",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "350"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#total-cost",
+        "expected": "–",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid empty input shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": ""
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Please enter valid non-negative numbers.",
+        "assertion": "text"
+      },
+      {
+        "name": "Negative input rejected",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "-10"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Please enter valid non-negative numbers.",
+        "assertion": "text"
+      },
+      {
+        "name": "Success message after calculation",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "200"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Calculation complete.",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "No canvas/pixel assertions; visual styling of the pixel theme is not verified.",
+      "Keyboard focus behavior after Reset is not asserted.",
+      "Responsive layout at 360px is not tested.",
+      "Exact rounding of edge cases like .005 is not covered beyond the chosen values."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4039,
+      "completion_tokens": 980,
+      "total_tokens": 5019,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 2631
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Trip Fuel Calculator</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>⛽ Pixel Trip Fuel</h1>\n    <p class=\"subtitle\">Estimate fuel needed and total cost for your trip.</p>\n\n    <form id=\"fuel-form\" novalidate>\n      <div class=\"field\">\n        <label for=\"distance\">Distance (km)</label>\n        <input type=\"number\" id=\"distance\" name=\"distance\" min=\"0\" step=\"any\" placeholder=\"e.g. 350\" required>\n      </div>\n      <div class=\"field\">\n        <label for=\"consumption\">Consumption (L/100 km)</label>\n        <input type=\"number\" id=\"consumption\" name=\"consumption\" min=\"0\" step=\"any\" placeholder=\"e.g. 6.5\" required>\n      </div>\n      <div class=\"field\">\n        <label for=\"price\">Price per litre (€)</label>\n        <input type=\"number\" id=\"price\" name=\"price\" min=\"0\" step=\"any\" placeholder=\"e.g. 1.75\" required>\n      </div>\n\n      <div class=\"actions\">\n        <button type=\"submit\" id=\"calculate-btn\" class=\"btn primary\">Calculate</button>\n        <button type=\"button\" id=\"reset-btn\" class=\"btn secondary\">Reset</button>\n      </div>\n    </form>\n\n    <section id=\"result\" class=\"result\" aria-live=\"polite\">\n      <div class=\"result-row\">\n        <span class=\"result-label\">Fuel needed</span>\n        <span id=\"litres-needed\" class=\"result-value\">–</span>\n      </div>\n      <div class=\"result-row total\">\n        <span class=\"result-label\">Total cost</span>\n        <span id=\"total-cost\" class=\"result-value\">–</span>\n      </div>\n      <p id=\"message\" class=\"message\" role=\"status\"></p>\n    </section>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --primary: #f4a261;\n  --primary-hover: #e76f51;\n  --text: #e0e0e0;\n  --text-muted: #a0a0b0;\n  --border: #3f3f5a;\n  --focus: #f4a261;\n  --success: #2a9d8f;\n  --error: #e76f51;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  line-height: 1.5;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 20px;\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);\n  border: 1px solid var(--border);\n}\n\nh1 {\n  font-size: 1.75rem;\n  font-weight: 700;\n  margin-bottom: 4px;\n  color: var(--primary);\n}\n\n.subtitle {\n  color: var(--text-muted);\n  font-size: 0.95rem;\n  margin-bottom: 24px;\n}\n\n.field {\n  margin-bottom: 20px;\n}\n\nlabel {\n  display: block;\n  font-weight: 600;\n  font-size: 0.95rem;\n  margin-bottom: 6px;\n  color: var(--text);\n}\n\ninput[type=\"number\"] {\n  width: 100%;\n  padding: 12px 14px;\n  font-size: 1rem;\n  font-family: inherit;\n  background: var(--bg);\n  color: var(--text);\n  border: 2px solid var(--border);\n  border-radius: 10px;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ninput[type=\"number\"]:hover {\n  border-color: var(--text-muted);\n}\n\ninput[type=\"number\"]:focus {\n  outline: none;\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(244, 162, 97, 0.3);\n}\n\ninput::placeholder {\n  color: var(--text-muted);\n  opacity: 0.7;\n}\n\n.actions {\n  display: flex;\n  gap: 12px;\n  margin-top: 8px;\n}\n\n.btn {\n  flex: 1;\n  padding: 14px 20px;\n  font-size: 1rem;\n  font-weight: 700;\n  font-family: inherit;\n  border: none;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--primary);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.btn.primary {\n  background: var(--primary);\n  color: #1e1e2f;\n}\n\n.btn.primary:hover {\n  background: var(--primary-hover);\n}\n\n.btn.secondary {\n  background: transparent;\n  color: var(--text);\n  border: 2px solid var(--border);\n}\n\n.btn.secondary:hover {\n  background: var(--border);\n}\n\n.result {\n  margin-top: 28px;\n  padding-top: 24px;\n  border-top: 1px solid var(--border);\n}\n\n.result-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  padding: 10px 0;\n  font-size: 1.1rem;\n}\n\n.result-row.total {\n  font-size: 1.3rem;\n  font-weight: 700;\n  color: var(--primary);\n}\n\n.result-label {\n  color: var(--text-muted);\n}\n\n.result-value {\n  font-variant-numeric: tabular-nums;\n  font-weight: 600;\n}\n\n.message {\n  margin-top: 12px;\n  font-size: 0.9rem;\n  min-height: 1.4em;\n  color: var(--error);\n}\n\n.message.success {\n  color: var(--success);\n}\n\n@media (max-width: 360px) {\n  .card {\n    padding: 24px 16px;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .actions {\n    flex-direction: column;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const form = document.getElementById('fuel-form');\nconst distanceInput = document.getElementById('distance');\nconst consumptionInput = document.getElementById('consumption');\nconst priceInput = document.getElementById('price');\nconst litresEl = document.getElementById('litres-needed');\nconst costEl = document.getElementById('total-cost');\nconst messageEl = document.getElementById('message');\nconst resetBtn = document.getElementById('reset-btn');\n\nfunction calculate(e) {\n  e.preventDefault();\n  const distance = parseFloat(distanceInput.value);\n  const consumption = parseFloat(consumptionInput.value);\n  const price = parseFloat(priceInput.value);\n\n  if (!isFinite(distance) || !isFinite(consumption) || !isFinite(price) ||\n      distance < 0 || consumption < 0 || price < 0) {\n    messageEl.textContent = 'Please enter valid non-negative numbers.';\n    messageEl.classList.remove('success');\n    litresEl.textContent = '–';\n    costEl.textContent = '–';\n    return;\n  }\n\n  const litres = (distance / 100) * consumption;\n  const cost = litres * price;\n\n  litresEl.textContent = litres.toFixed(2) + ' L';\n  costEl.textContent = '€' + cost.toFixed(2);\n  messageEl.textContent = 'Calculation complete.';\n  messageEl.classList.add('success');\n}\n\nfunction reset() {\n  form.reset();\n  litresEl.textContent = '–';\n  costEl.textContent = '–';\n  messageEl.textContent = '';\n  messageEl.classList.remove('success');\n  distanceInput.focus();\n}\n\nform.addEventListener('submit', calculate);\nresetBtn.addEventListener('click', reset);",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Trip Fuel Calculator\n\nA simple offline browser app to estimate fuel needed and total cost for a trip.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter distance in kilometres, fuel consumption in litres per 100 km, and price per litre.\n3. Click **Calculate** to see litres needed and total cost (rounded to two decimals).\n4. Click **Reset** to clear all fields and results.\n\n## Features\n\n- Fully offline: no network requests, external assets, or packages.\n- Responsive layout works from 360px wide.\n- Keyboard accessible with visible focus, hover, and pressed states.\n- Uses only HTML, CSS, and plain JavaScript.\n\n## Files\n\n- `index.html` – structure and content\n- `style.css` – theming and layout\n- `script.js` – calculation and reset logic\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

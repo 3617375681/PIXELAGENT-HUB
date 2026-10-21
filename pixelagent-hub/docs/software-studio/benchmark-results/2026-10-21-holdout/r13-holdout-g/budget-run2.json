@@ -1,0 +1,706 @@
+{
+  "caseId": "budget",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 36,
+  "reportedTokens": 19670,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:50:00.148Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:50:00.149Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:50:04.763Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Monthly Budget"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:50:04.763Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:50:17.521Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:50:17.521Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:50:18.015Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:50:18.016Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5dfcc383-e5df-45d4-b5aa-0ceeda02c1ea"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:50:21.201Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5dfcc383-e5df-45d4-b5aa-0ceeda02c1ea",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:50:21.202Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "testPlanId": "5dfcc383-e5df-45d4-b5aa-0ceeda02c1ea",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Initial remaining and empty states",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Income sets remaining",
+        "passed": true,
+        "actual": "$1000.00"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Add Food expense updates remaining",
+        "passed": true,
+        "actual": "$750.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Expense appears in list",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Category bar shows total",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Four category bars rendered",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Negative remaining turns red",
+        "passed": true,
+        "actual": "rgb(255, 92, 92)"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Negative remaining text",
+        "passed": true,
+        "actual": "$-50.00"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Invalid amount shows error",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "name": "Delete expense restores remaining",
+        "passed": true,
+        "actual": "$500.00"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:50:24.607Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f695d090-182f-43f4-840d-38b464f16c51",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:50:24.610Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5dfcc383-e5df-45d4-b5aa-0ceeda02c1ea",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:50:26.093Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5dfcc383-e5df-45d4-b5aa-0ceeda02c1ea",
+        "checks": 10,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Category bar shows total",
+            "verdict": "check-wrong",
+            "reason": "The check adds a $120 Fun expense and reads the bar value, but the selector #bars-container .bar-row .bar-value matches all four category rows, so it cannot resolve to a single element. The requiremen"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:50:26.095Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "testPlanId": "5dfcc383-e5df-45d4-b5aa-0ceeda02c1ea",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Initial remaining and empty states",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Income sets remaining",
+        "passed": true,
+        "actual": "$1000.00"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Add Food expense updates remaining",
+        "passed": true,
+        "actual": "$750.00"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Expense appears in list",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Category bar shows total",
+        "passed": true,
+        "actual": "$120.00"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Four category bars rendered",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Negative remaining turns red",
+        "passed": true,
+        "actual": "rgb(255, 92, 92)"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Negative remaining text",
+        "passed": true,
+        "actual": "$-50.00"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Invalid amount shows error",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "name": "Delete expense restores remaining",
+        "passed": true,
+        "actual": "$500.00"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T09:50:29.396Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "81023e7d-8c19-4e6d-9811-0a09e0de9328",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T09:50:29.402Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial remaining and empty states",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#remaining-amount",
+        "expected": "$0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Income sets remaining",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "1000"
+          }
+        ],
+        "selector": "#remaining-amount",
+        "expected": "$1000.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Add Food expense updates remaining",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "1000"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Food"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "250"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#remaining-amount",
+        "expected": "$750.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Expense appears in list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "1000"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Rent"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "400"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#expense-list .expense-item",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "Category bar shows total",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "1000"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Fun"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "120"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#bars-container .bar-row .bar-value",
+        "nth": 2,
+        "expected": "$120.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Four category bars rendered",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "1000"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Other"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#bars-container .bar-row",
+        "expected": "4",
+        "assertion": "count"
+      },
+      {
+        "name": "Negative remaining turns red",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Rent"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "300"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#remaining-amount",
+        "expected": "^rgb\\(255, 92, 92\\)$",
+        "assertion": "matches",
+        "attribute": "css.color"
+      },
+      {
+        "name": "Negative remaining text",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Food"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "150"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#remaining-amount",
+        "expected": "$-50.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid amount shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Food"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          }
+        ],
+        "selector": "#error-message",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Delete expense restores remaining",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#income-input",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#category-select",
+            "value": "Fun"
+          },
+          {
+            "type": "input",
+            "selector": "#amount-input",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-list .btn-delete"
+          }
+        ],
+        "selector": "#remaining-amount",
+        "expected": "$500.00",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Bar fill width is inline style percentage; not asserted because exact scaling is visual and transition-dependent.",
+      "Delete button aria-label text is not asserted.",
+      "No persistence across reloads is tested; state is in-memory only.",
+      "Keyboard focus and hover styling are not tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 5968,
+      "completion_tokens": 939,
+      "total_tokens": 6907,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 4560
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Monthly Budget</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"app-title\">\n    <h1 id=\"app-title\">Pixel Monthly Budget</h1>\n\n    <section class=\"section\" aria-labelledby=\"income-heading\">\n      <h2 id=\"income-heading\" class=\"section-title\">Income</h2>\n      <div class=\"field\">\n        <label for=\"income-input\">Monthly income</label>\n        <input id=\"income-input\" type=\"number\" min=\"0\" step=\"0.01\" placeholder=\"0.00\" inputmode=\"decimal\" />\n      </div>\n    </section>\n\n    <section class=\"section\" aria-labelledby=\"expense-heading\">\n      <h2 id=\"expense-heading\" class=\"section-title\">Add expense</h2>\n      <form id=\"expense-form\" class=\"expense-form\" novalidate>\n        <div class=\"field\">\n          <label for=\"category-select\">Category</label>\n          <select id=\"category-select\">\n            <option value=\"Food\">Food</option>\n            <option value=\"Rent\">Rent</option>\n            <option value=\"Fun\">Fun</option>\n            <option value=\"Other\">Other</option>\n          </select>\n        </div>\n        <div class=\"field\">\n          <label for=\"amount-input\">Amount</label>\n          <input id=\"amount-input\" type=\"number\" min=\"0.01\" step=\"0.01\" placeholder=\"0.00\" inputmode=\"decimal\" />\n        </div>\n        <button type=\"submit\" class=\"btn btn-primary\">Add expense</button>\n      </form>\n      <p id=\"error-message\" class=\"error\" role=\"alert\" hidden></p>\n    </section>\n\n    <section class=\"section\" aria-labelledby=\"remaining-heading\">\n      <h2 id=\"remaining-heading\" class=\"section-title\">Remaining</h2>\n      <p id=\"remaining-amount\" class=\"remaining\" aria-live=\"polite\">$0.00</p>\n    </section>\n\n    <section class=\"section\" aria-labelledby=\"bars-heading\">\n      <h2 id=\"bars-heading\" class=\"section-title\">Spending by category</h2>\n      <div id=\"bars-container\" class=\"bars\"></div>\n      <p id=\"bars-empty\" class=\"empty-state\">No expenses yet.</p>\n    </section>\n\n    <section class=\"section\" aria-labelledby=\"list-heading\">\n      <h2 id=\"list-heading\" class=\"section-title\">Expenses</h2>\n      <ul id=\"expense-list\" class=\"expense-list\"></ul>\n      <p id=\"list-empty\" class=\"empty-state\">No expenses added.</p>\n    </section>\n  </main>\n\n  <script src=\"app.js\"></script>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e2430;\n  --card: #2b3445;\n  --text: #f2f5f9;\n  --muted: #a9b4c4;\n  --accent: #4cc9f0;\n  --accent-dark: #3aa8cc;\n  --danger: #ff5c5c;\n  --bar-food: #f4a261;\n  --bar-rent: #e76f51;\n  --bar-fun: #2a9d8f;\n  --bar-other: #8e7dbe;\n}\n\n* {\n  box-sizing: border-box;\n}\n\n[hidden] {\n  display: none !important;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n}\n\n.card {\n  width: 100%;\n  max-width: 520px;\n  background: var(--card);\n  border-radius: 18px;\n  padding: 24px 20px 28px;\n  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);\n}\n\nh1 {\n  margin: 0 0 20px;\n  font-size: 1.6rem;\n  letter-spacing: 0.02em;\n}\n\n.section {\n  margin-bottom: 22px;\n}\n\n.section-title {\n  margin: 0 0 10px;\n  font-size: 1rem;\n  font-weight: 600;\n  color: var(--muted);\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n}\n\n.field {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  margin-bottom: 12px;\n}\n\nlabel {\n  font-size: 0.95rem;\n  color: var(--muted);\n}\n\ninput,\nselect {\n  width: 100%;\n  padding: 12px 14px;\n  font-size: 1rem;\n  font-family: inherit;\n  color: var(--text);\n  background: #222a37;\n  border: 2px solid #3a4558;\n  border-radius: 10px;\n  transition: border-color 0.15s ease, box-shadow 0.15s ease;\n}\n\ninput:hover,\nselect:hover {\n  border-color: var(--accent);\n}\n\ninput:focus-visible,\nselect:focus-visible,\nbutton:focus-visible {\n  outline: none;\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.35);\n}\n\n.expense-form {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n  align-items: flex-end;\n}\n\n.expense-form .field {\n  flex: 1 1 140px;\n  margin-bottom: 0;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 18px;\n  border: none;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background 0.15s ease, transform 0.1s ease;\n}\n\n.btn-primary {\n  background: var(--accent);\n  color: #08222b;\n}\n\n.btn-primary:hover {\n  background: var(--accent-dark);\n}\n\n.btn-primary:active {\n  transform: translateY(1px);\n}\n\n.btn-delete {\n  background: transparent;\n  color: var(--danger);\n  border: 2px solid var(--danger);\n  padding: 6px 10px;\n  font-size: 0.9rem;\n}\n\n.btn-delete:hover {\n  background: rgba(255, 92, 92, 0.15);\n}\n\n.btn-delete:active {\n  transform: translateY(1px);\n}\n\n.error {\n  margin: 10px 0 0;\n  color: var(--danger);\n  font-size: 0.95rem;\n}\n\n.remaining {\n  margin: 0;\n  font-size: 2rem;\n  font-weight: 700;\n  color: var(--accent);\n}\n\n.remaining.negative {\n  color: var(--danger);\n}\n\n.bars {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.bar-row {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.bar-label {\n  flex: 0 0 64px;\n  font-size: 0.95rem;\n  color: var(--muted);\n}\n\n.bar-track {\n  flex: 1;\n  height: 14px;\n  background: #222a37;\n  border-radius: 7px;\n  overflow: hidden;\n}\n\n.bar-fill {\n  height: 100%;\n  border-radius: 7px;\n  transition: width 0.25s ease;\n}\n\n.bar-food { background: var(--bar-food); }\n.bar-rent { background: var(--bar-rent); }\n.bar-fun { background: var(--bar-fun); }\n.bar-other { background: var(--bar-other); }\n\n.bar-value {\n  flex: 0 0 78px;\n  text-align: right;\n  font-size: 0.95rem;\n  color: var(--text);\n}\n\n.expense-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.expense-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n  padding: 10px 12px;\n  background: #222a37;\n  border-radius: 10px;\n  font-size: 0.95rem;\n}\n\n.expense-info {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px 12px;\n}\n\n.expense-category {\n  font-weight: 600;\n}\n\n.expense-amount {\n  color: var(--muted);\n}\n\n.empty-state {\n  margin: 0;\n  color: var(--muted);\n  font-size: 0.95rem;\n}\n\n@media (max-width: 420px) {\n  .expense-form {\n    flex-direction: column;\n    align-items: stretch;\n  }\n  .bar-label {\n    flex-basis: 48px;\n  }\n  .bar-value {\n    flex-basis: 64px;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var CATEGORIES = ['Food', 'Rent', 'Fun', 'Other'];\n\n  var state = {\n    income: 0,\n    expenses: []\n  };\n\n  var incomeInput = document.getElementById('income-input');\n  var expenseForm = document.getElementById('expense-form');\n  var categorySelect = document.getElementById('category-select');\n  var amountInput = document.getElementById('amount-input');\n  var errorMessage = document.getElementById('error-message');\n  var remainingAmount = document.getElementById('remaining-amount');\n  var barsContainer = document.getElementById('bars-container');\n  var barsEmpty = document.getElementById('bars-empty');\n  var expenseList = document.getElementById('expense-list');\n  var listEmpty = document.getElementById('list-empty');\n\n  function formatMoney(value) {\n    return '$' + value.toFixed(2);\n  }\n\n  function totalExpenses() {\n    return state.expenses.reduce(function (sum, expense) {\n      return sum + expense.amount;\n    }, 0);\n  }\n\n  function categoryTotals() {\n    var totals = {};\n    CATEGORIES.forEach(function (category) {\n      totals[category] = 0;\n    });\n    state.expenses.forEach(function (expense) {\n      totals[expense.category] += expense.amount;\n    });\n    return totals;\n  }\n\n  function showError(message) {\n    errorMessage.textContent = message;\n    errorMessage.hidden = false;\n  }\n\n  function clearError() {\n    errorMessage.textContent = '';\n    errorMessage.hidden = true;\n  }\n\n  function renderRemaining() {\n    var remaining = state.income - totalExpenses();\n    remainingAmount.textContent = formatMoney(remaining);\n    remainingAmount.classList.toggle('negative', remaining < 0);\n  }\n\n  function renderBars() {\n    var totals = categoryTotals();\n    var max = 0;\n    CATEGORIES.forEach(function (category) {\n      if (totals[category] > max) {\n        max = totals[category];\n      }\n    });\n\n    barsContainer.textContent = '';\n\n    if (max === 0) {\n      barsEmpty.hidden = false;\n      return;\n    }\n    barsEmpty.hidden = true;\n\n    CATEGORIES.forEach(function (category) {\n      var value = totals[category];\n      var percent = Math.max(0, Math.min(100, (value / max) * 100));\n\n      var row = document.createElement('div');\n      row.className = 'bar-row';\n\n      var label = document.createElement('span');\n      label.className = 'bar-label';\n      label.textContent = category;\n\n      var track = document.createElement('div');\n      track.className = 'bar-track';\n\n      var fill = document.createElement('div');\n      fill.className = 'bar-fill bar-' + category.toLowerCase();\n      fill.style.width = percent + '%';\n      track.appendChild(fill);\n\n      var valueEl = document.createElement('span');\n      valueEl.className = 'bar-value';\n      valueEl.textContent = formatMoney(value);\n\n      row.appendChild(label);\n      row.appendChild(track);\n      row.appendChild(valueEl);\n      barsContainer.appendChild(row);\n    });\n  }\n\n  function renderExpenseList() {\n    expenseList.textContent = '';\n\n    if (state.expenses.length === 0) {\n      listEmpty.hidden = false;\n      return;\n    }\n    listEmpty.hidden = true;\n\n    state.expenses.forEach(function (expense) {\n      var item = document.createElement('li');\n      item.className = 'expense-item';\n\n      var info = document.createElement('span');\n      info.className = 'expense-info';\n\n      var category = document.createElement('span');\n      category.className = 'expense-category';\n      category.textContent = expense.category;\n\n      var amount = document.createElement('span');\n      amount.className = 'expense-amount';\n      amount.textContent = formatMoney(expense.amount);\n\n      info.appendChild(category);\n      info.appendChild(amount);\n\n      var deleteButton = document.createElement('button');\n      deleteButton.type = 'button';\n      deleteButton.className = 'btn btn-delete';\n      deleteButton.textContent = 'Delete';\n      deleteButton.setAttribute('aria-label', 'Delete ' + expense.category + ' expense of ' + formatMoney(expense.amount));\n      deleteButton.addEventListener('click', function () {\n        removeExpense(expense.id);\n      });\n\n      item.appendChild(info);\n      item.appendChild(deleteButton);\n      expenseList.appendChild(item);\n    });\n  }\n\n  function render() {\n    renderRemaining();\n    renderBars();\n    renderExpenseList();\n  }\n\n  function removeExpense(id) {\n    state.expenses = state.expenses.filter(function (expense) {\n      return expense.id !== id;\n    });\n    render();\n  }\n\n  function addExpense(event) {\n    event.preventDefault();\n    clearError();\n\n    var category = categorySelect.value;\n    var rawAmount = amountInput.value.trim();\n    var amount = parseFloat(rawAmount);\n\n    if (!CATEGORIES.includes(category)) {\n      showError('Please choose a valid category.');\n      return;\n    }\n    if (rawAmount === '' || isNaN(amount) || amount <= 0) {\n      showError('Please enter a positive amount greater than zero.');\n      amountInput.focus();\n      return;\n    }\n\n    state.expenses.push({\n      id: Date.now() + '-' + Math.random().toString(16).slice(2),\n      category: category,\n      amount: Math.round(amount * 100) / 100\n    });\n\n    amountInput.value = '';\n    amountInput.focus();\n    render();\n  }\n\n  function updateIncome() {\n    var value = parseFloat(incomeInput.value);\n    state.income = isNaN(value) || value < 0 ? 0 : Math.round(value * 100) / 100;\n    render();\n  }\n\n  incomeInput.addEventListener('input', updateIncome);\n  expenseForm.addEventListener('submit', addExpense);\n\n  render();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Monthly Budget\n\nAn offline, single-page budget tracker built with HTML, CSS, and plain JavaScript. No packages, network requests, or external assets.\n\n## Features\n\n- Set a monthly income.\n- Add expenses with a category (Food, Rent, Fun, Other) and amount.\n- See remaining money, which turns red when negative.\n- Horizontal bar per category scaled to that category's total.\n- Delete individual expenses.\n- Keyboard-accessible labeled controls with visible focus, hover, and pressed states.\n- Responsive layout that works from 360px wide.\n\n## Run\n\nOpen `index.html` directly in any modern browser. No server required.\n\n## Notes\n\n- State is kept in memory only; refreshing the page resets income and expenses.\n- Amounts must be positive numbers; invalid input shows an inline error.\n\n## Files\n\n- `index.html` — structure and controls\n- `styles.css` — theme, layout, states\n- `app.js` — state, rendering, validation\n",
+      "description": ""
+    }
+  ]
+}

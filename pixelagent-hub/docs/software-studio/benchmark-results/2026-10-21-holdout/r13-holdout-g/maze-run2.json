@@ -1,0 +1,695 @@
+{
+  "caseId": "maze",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "6/7",
+  "finalChecks": "6/7",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "6/7",
+    "6/7",
+    "6/7"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 38,
+  "reportedTokens": 19302,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:51:12.248Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:51:12.249Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:51:15.977Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Maze Escape"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:51:15.977Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:51:23.271Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:51:23.271Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:51:23.784Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:51:23.785Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:51:26.358Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808",
+        "checks": 7
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:51:26.359Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "testPlanId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Initial grid and counter",
+        "passed": true,
+        "actual": "49"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Initial step counter zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Wall blocks movement",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Valid move increments steps",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Escape step count",
+        "passed": false,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Restart resets steps",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "name": "Restart hides message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:51:30.921Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "23a0fa9e-ec04-47cc-bee2-c1a9cd679233",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:51:30.923Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808",
+        "review": true
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:51:32.364Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808",
+        "checks": 7,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Escape step count",
+            "verdict": "check-wrong",
+            "reason": "The check presses Right,Right,Down,Down,Down,Down,Right,Right and expects 8 steps. Tracing the maze from start (1,1): Right→(1,2), Right→(1,3), Down→(2,3), Down→(3,3), Down→(4,3) is a wall so blocked,"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:51:32.365Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "testPlanId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Initial grid and counter",
+        "passed": true,
+        "actual": "49"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Initial step counter zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Wall blocks movement",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Valid move increments steps",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Escape step count",
+        "passed": false,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Restart resets steps",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "name": "Restart hides message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T09:51:36.906Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f9b15db4-31ee-46cd-93ca-af337ff21e25",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T09:51:36.909Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T09:51:43.663Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T09:51:43.663Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T09:51:43.708Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T09:51:43.710Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "testPlanId": "433ad5ce-d2b8-4858-af9f-29ac5fb2d808",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Initial grid and counter",
+        "passed": true,
+        "actual": "49"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Initial step counter zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Wall blocks movement",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Valid move increments steps",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Escape step count",
+        "passed": false,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Restart resets steps",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "name": "Restart hides message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T09:51:48.255Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "96ed2650-1513-46c8-bd2e-5709387f8067",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T09:51:48.257Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial grid and counter",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#maze .cell",
+        "expected": "49",
+        "assertion": "count"
+      },
+      {
+        "name": "Initial step counter zero",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#step-counter",
+        "expected": "0"
+      },
+      {
+        "name": "Wall blocks movement",
+        "actions": [
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowUp"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowLeft"
+          }
+        ],
+        "selector": "#step-counter",
+        "expected": "0"
+      },
+      {
+        "name": "Valid move increments steps",
+        "actions": [
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          }
+        ],
+        "selector": "#step-counter",
+        "expected": "1"
+      },
+      {
+        "name": "Escape step count",
+        "actions": [
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          }
+        ],
+        "selector": "#step-counter",
+        "expected": "7"
+      },
+      {
+        "name": "Restart resets steps",
+        "actions": [
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "click",
+            "selector": "#restart-btn"
+          }
+        ],
+        "selector": "#step-counter",
+        "expected": "0"
+      },
+      {
+        "name": "Restart hides message",
+        "actions": [
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowDown"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          },
+          {
+            "type": "key",
+            "selector": "body",
+            "key": "ArrowRight"
+          }
+        ],
+        "selector": "#message",
+        "expected": "false",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "Synthetic keydown events are used; real browser key handling is not exercised.",
+      "Pixel colors and visual styling of walls, player and exit are not asserted.",
+      "Movement after winning is not verified beyond the message and counter checks."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3939,
+      "completion_tokens": 681,
+      "total_tokens": 4620,
+      "prompt_tokens_details": {
+        "cached_tokens": 1536
+      },
+      "prompt_cache_hit_tokens": 1536,
+      "prompt_cache_miss_tokens": 2403
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Maze Escape</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Maze Escape</h1>\n    <p class=\"subtitle\">Use arrow keys to reach the exit.</p>\n    <div class=\"stats\">\n      <span>Steps: <strong id=\"step-counter\">0</strong></span>\n    </div>\n    <div id=\"maze\" class=\"maze\" role=\"grid\" aria-label=\"7 by 7 maze grid\"></div>\n    <p id=\"message\" class=\"message\" hidden>You escaped!</p>\n    <button id=\"restart-btn\" type=\"button\">Restart</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file"
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --wall: #4a4a6a;\n  --floor: #3a3a5a;\n  --player: #ffd166;\n  --exit: #06d6a0;\n  --text: #f0f0f0;\n  --accent: #ffd166;\n  --accent-hover: #ffdd88;\n  --accent-active: #e6b800;\n  --focus: #06d6a0;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  padding: 24px;\n  max-width: 480px;\n  width: 100%;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n  text-align: center;\n}\n\nh1 {\n  margin: 0 0 8px;\n  font-size: 1.75rem;\n  letter-spacing: 1px;\n}\n\n.subtitle {\n  margin: 0 0 16px;\n  font-size: 1rem;\n  opacity: 0.8;\n}\n\n.stats {\n  font-size: 1.1rem;\n  margin-bottom: 16px;\n}\n\n.stats strong {\n  color: var(--accent);\n}\n\n.maze {\n  display: grid;\n  grid-template-columns: repeat(7, 1fr);\n  gap: 2px;\n  background: var(--bg);\n  padding: 4px;\n  border-radius: 8px;\n  aspect-ratio: 1 / 1;\n  width: 100%;\n  max-width: 420px;\n  margin: 0 auto 16px;\n}\n\n.cell {\n  background: var(--floor);\n  border-radius: 2px;\n  transition: background 0.1s;\n}\n\n.cell.wall {\n  background: var(--wall);\n}\n\n.cell.player {\n  background: var(--player);\n  box-shadow: 0 0 8px var(--player);\n}\n\n.cell.exit {\n  background: var(--exit);\n  box-shadow: 0 0 8px var(--exit);\n}\n\n.message {\n  font-size: 1.5rem;\n  font-weight: bold;\n  color: var(--exit);\n  margin: 0 0 16px;\n  animation: pop 0.3s ease;\n}\n\n@keyframes pop {\n  0% { transform: scale(0.8); opacity: 0; }\n  100% { transform: scale(1); opacity: 1; }\n}\n\nbutton {\n  font: inherit;\n  font-size: 1.1rem;\n  padding: 12px 32px;\n  border: none;\n  border-radius: 8px;\n  background: var(--accent);\n  color: #1e1e2f;\n  font-weight: bold;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s;\n}\n\nbutton:hover {\n  background: var(--accent-hover);\n}\n\nbutton:active {\n  background: var(--accent-active);\n  transform: scale(0.97);\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 16px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n  button {\n    padding: 10px 24px;\n  }\n}",
+      "description": "Stylesheet"
+    },
+    {
+      "path": "script.js",
+      "content": "const SIZE = 7;\nconst WALL = 1;\nconst FLOOR = 0;\n\n// Fixed maze layout: 1 = wall, 0 = floor\nconst mazeLayout = [\n  [1,1,1,1,1,1,1],\n  [1,0,0,0,1,0,1],\n  [1,0,1,0,1,0,1],\n  [1,0,1,0,0,0,1],\n  [1,0,1,1,1,0,1],\n  [1,0,0,0,0,0,1],\n  [1,1,1,1,1,1,1]\n];\n\nconst START = { r: 1, c: 1 };\nconst EXIT = { r: 5, c: 5 };\n\nconst mazeEl = document.getElementById('maze');\nconst stepEl = document.getElementById('step-counter');\nconst messageEl = document.getElementById('message');\nconst restartBtn = document.getElementById('restart-btn');\n\nlet player = { ...START };\nlet steps = 0;\nlet won = false;\n\nfunction buildGrid() {\n  mazeEl.innerHTML = '';\n  for (let r = 0; r < SIZE; r++) {\n    for (let c = 0; c < SIZE; c++) {\n      const cell = document.createElement('div');\n      cell.className = 'cell';\n      if (mazeLayout[r][c] === WALL) cell.classList.add('wall');\n      if (r === EXIT.r && c === EXIT.c) cell.classList.add('exit');\n      mazeEl.appendChild(cell);\n    }\n  }\n}\n\nfunction render() {\n  const cells = mazeEl.children;\n  for (let r = 0; r < SIZE; r++) {\n    for (let c = 0; c < SIZE; c++) {\n      const idx = r * SIZE + c;\n      const cell = cells[idx];\n      cell.classList.toggle('player', r === player.r && c === player.c);\n    }\n  }\n  stepEl.textContent = steps;\n  messageEl.hidden = !won;\n}\n\nfunction move(dr, dc) {\n  if (won) return;\n  const nr = player.r + dr;\n  const nc = player.c + dc;\n  if (nr < 0 || nr >= SIZE || nc < 0 || nc >= SIZE) return;\n  if (mazeLayout[nr][nc] === WALL) return;\n  player.r = nr;\n  player.c = nc;\n  steps++;\n  if (nr === EXIT.r && nc === EXIT.c) {\n    won = true;\n  }\n  render();\n}\n\nfunction restart() {\n  player = { ...START };\n  steps = 0;\n  won = false;\n  render();\n}\n\ndocument.addEventListener('keydown', (e) => {\n  const key = e.key;\n  if (key === 'ArrowUp') { e.preventDefault(); move(-1, 0); }\n  else if (key === 'ArrowDown') { e.preventDefault(); move(1, 0); }\n  else if (key === 'ArrowLeft') { e.preventDefault(); move(0, -1); }\n  else if (key === 'ArrowRight') { e.preventDefault(); move(0, 1); }\n});\n\nrestartBtn.addEventListener('click', restart);\n\nbuildGrid();\nrender();",
+      "description": "Game logic"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Maze Escape\n\nA simple offline browser game built with HTML, CSS, and plain JavaScript.\n\n## How to Play\n\n- Use the **arrow keys** to move the player (yellow square) through the maze.\n- Walls (dark squares) block movement.\n- Reach the green exit square to win.\n- The step counter tracks how many moves you've made.\n- Click **Restart** to reset the game.\n\n## Features\n\n- 7x7 fixed maze layout\n- Keyboard controls with arrow keys\n- Step counter\n- Win message \"You escaped!\"\n- Restart button\n- Responsive design down to 360px wide\n- Accessible focus states and labeled controls\n\n## Setup\n\nOpen `index.html` in any modern browser. No server or network required.",
+      "description": "Documentation"
+    }
+  ]
+}
