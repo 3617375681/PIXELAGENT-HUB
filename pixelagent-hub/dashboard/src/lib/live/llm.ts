@@ -3,9 +3,9 @@
  * own key. Keys go only to the chosen provider's API, never into URLs, logs or error messages.
  * Every provider listed here answers CORS preflights from the Pages origin (checked 2026-10-18).
  */
-export type LiveProvider = { id: string; label: string; endpoint: string; protocol: 'openai' | 'anthropic'; models: readonly string[]; keyPage: string; custom?: boolean; jsonMode?: boolean };
+export type LiveProvider = { id: string; label: string; endpoint: string; protocol: 'openai' | 'anthropic'; models: readonly string[]; keyPage: string; custom?: boolean; jsonMode?: boolean; maxTokens?: number };
 export const LIVE_PROVIDERS: readonly LiveProvider[] = [
-  { id: 'deepseek', jsonMode: true, label: 'DeepSeek', endpoint: 'https://api.deepseek.com/chat/completions', protocol: 'openai', models: ['deepseek-chat', 'deepseek-v4-pro'], keyPage: 'https://platform.deepseek.com/api_keys' },
+  { id: 'deepseek', jsonMode: true, maxTokens: 8192, label: 'DeepSeek', endpoint: 'https://api.deepseek.com/chat/completions', protocol: 'openai', models: ['deepseek-chat', 'deepseek-v4-pro'], keyPage: 'https://platform.deepseek.com/api_keys' },
   { id: 'anthropic', label: 'Anthropic (Claude)', endpoint: 'https://api.anthropic.com/v1/messages', protocol: 'anthropic', models: ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'], keyPage: 'https://platform.claude.com/settings/keys' },
   { id: 'openai', jsonMode: true, label: 'OpenAI', endpoint: 'https://api.openai.com/v1/chat/completions', protocol: 'openai', models: ['gpt-4o-mini', 'gpt-4o'], keyPage: 'https://platform.openai.com/api-keys' },
   { id: 'openrouter', label: 'OpenRouter', endpoint: 'https://openrouter.ai/api/v1/chat/completions', protocol: 'openai', models: ['deepseek/deepseek-chat', 'anthropic/claude-sonnet-5-5', 'openai/gpt-4o-mini'], keyPage: 'https://openrouter.ai/keys' },
@@ -50,12 +50,13 @@ const statusMessage = (provider: string, model: string, status: number, body: st
           : `${provider} API error (${status})${body ? `: ${body.slice(0, 200)}` : ''}`;
 
 /** OpenAI-compatible streaming chat completion. */
-export async function streamChat(options: { apiKey: string; model: string; system: string; user: string; signal?: AbortSignal; fetchImpl?: typeof fetch; endpoint?: string; provider?: string; withUsage?: boolean; json?: boolean; temperature?: number }): Promise<LlmReply> {
+export async function streamChat(options: { apiKey: string; model: string; system: string; user: string; signal?: AbortSignal; fetchImpl?: typeof fetch; endpoint?: string; provider?: string; withUsage?: boolean; withoutOptional?: boolean; json?: boolean; temperature?: number }): Promise<LlmReply> {
   const fetchImpl = options.fetchImpl || fetch;
-  const withUsage = options.withUsage ?? true;
+  const withUsage = !options.withoutOptional && (options.withUsage ?? true);
   const endpoint = options.endpoint || DEEPSEEK_ENDPOINT;
   const provider = options.provider || 'DeepSeek';
-  const json = options.json && LIVE_PROVIDERS.some((item) => item.endpoint === endpoint && item.jsonMode);
+  const maxTokens = !options.withoutOptional && LIVE_PROVIDERS.find((item) => item.endpoint === endpoint)?.maxTokens;
+  const json = !options.withoutOptional && options.json && LIVE_PROVIDERS.some((item) => item.endpoint === endpoint && item.jsonMode);
   let res: Response;
   try {
     res = await fetchImpl(endpoint, {
@@ -63,7 +64,7 @@ export async function streamChat(options: { apiKey: string; model: string; syste
       // Local servers often need no key; then no Authorization header is sent at all.
       headers: { 'Content-Type': 'application/json', ...(options.apiKey ? { Authorization: `Bearer ${options.apiKey}` } : {}) },
       body: JSON.stringify({
-        model: options.model, temperature: options.temperature ?? 0.7, ...(json ? { response_format: { type: 'json_object' } } : {}), stream: true, ...(withUsage ? { stream_options: { include_usage: true } } : {}),
+        model: options.model, ...(maxTokens ? { max_tokens: maxTokens } : {}), temperature: options.temperature ?? 0.7, ...(json ? { response_format: { type: 'json_object' } } : {}), stream: true, ...(withUsage ? { stream_options: { include_usage: true } } : {}),
         messages: [{ role: 'system', content: options.system }, { role: 'user', content: options.user }],
       }),
     });
@@ -74,9 +75,8 @@ export async function streamChat(options: { apiKey: string; model: string; syste
       ? `Could not reach ${host.host}. Is the server running, and does it allow this page's origin (CORS)? For Ollama, start it with OLLAMA_ORIGINS set.`
       : `Could not reach ${host.host}. Check your connection.`);
   }
-  if (res.status === 400 && json) return streamChat({ ...options, json: false });
-  // Some OpenAI-compatible servers reject stream_options; ask once more without it.
-  if (res.status === 400 && withUsage) return streamChat({ ...options, withUsage: false });
+  // Retry once without optional parameters rejected by some compatible servers.
+  if (res.status === 400 && (json || withUsage || maxTokens)) return streamChat({ ...options, withoutOptional: true });
   if (!res.ok || !res.body) throw new LiveModelError(statusMessage(provider, options.model, res.status, redact(await res.text().catch(() => ''), options.apiKey)), res.status);
   const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
   let buffer = '';

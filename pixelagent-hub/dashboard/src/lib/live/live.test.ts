@@ -344,18 +344,40 @@ it.each(['deepseek', 'custom'])('JSON mode follows provider support: %s', async 
   expect(body.response_format).toEqual(provider === 'deepseek' ? { type: 'json_object' } : undefined);
 });
 
-it.each([1, 2, 3])('400 fallbacks remove JSON mode and usage once each (%s errors)', async (errors) => {
+it.each([1, 2, 3])('400 fallback removes all optional parameters once (%s errors)', async (errors) => {
   const { liveChat } = await import('./llm');
   for (let i = 0; i < errors; i++) fetchMock.mockResolvedValueOnce(new Response('', { status: 400 }));
   fetchMock.mockResolvedValueOnce(sse(plan));
   const reply = liveChat({ provider: 'deepseek', key: '', model: 'test' }, { system: 'JSON', user: 'u' }, undefined, { json: true, temperature: 0.2 });
-  if (errors === 3) await expect(reply).rejects.toThrow('400');
+  if (errors >= 2) await expect(reply).rejects.toThrow('400');
   else await reply;
   const bodies = fetchMock.mock.calls.map(([, init]) => JSON.parse(String(init.body)));
-  expect(bodies).toHaveLength(Math.min(errors + 1, 3));
+  expect(bodies).toHaveLength(2);
   expect(bodies[0].response_format).toEqual({ type: 'json_object' });
   expect(bodies[1].response_format).toBeUndefined();
-  expect(bodies[1].stream_options).toEqual({ include_usage: true });
-  if (errors > 1) expect(bodies[2].stream_options).toBeUndefined();
+  expect(bodies[0].max_tokens).toBe(8192);
+  expect(bodies[1].max_tokens).toBeUndefined();
+  expect(bodies[1].stream_options).toBeUndefined();
   expect(bodies.every((body) => body.temperature === 0.2)).toBe(true);
+});
+
+it.each(['json', 'schema'])('an invalid review gets one correction (%s)', async (invalid) => {
+  let reviews = 0;
+  fetchMock.mockImplementation(async (url: string, init: RequestInit) => {
+    const body = JSON.parse(String(init.body));
+    if (!body.messages[0].content.includes('You review failing browser checks')) return routed('check-wrong')(url, init);
+    reviews++;
+    if (reviews === 1) return invalid === 'schema' ? sse({}) : new Response(`data: ${JSON.stringify({ choices: [{ delta: { content: '{"verdicts":[' } }] })}\n\ndata: [DONE]\n\n`);
+    expect(body.messages[1].content).toContain('Your previous review was rejected:');
+    return sse(review('check-wrong'));
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '0' }], errors: [] })
+    .mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(reviews).toBe(2);
+  expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 1 });
+  expect((checks.mock.calls[1][1] as { actions: unknown[] }[])[0].actions).toEqual([{ type: 'click', selector: '#add' }]);
+  expect(build).toHaveBeenCalledTimes(1);
 });

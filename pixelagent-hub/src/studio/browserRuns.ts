@@ -102,9 +102,10 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           return nth === undefined ? locator : locator.nth(nth);
         };
         let target = frame.locator(`css=${check.selector}`);
-        if (relative) target = await element(check.selector, check.nth);
+        const deferredBaseline = assertion === 'changed' && await target.count() === 0;
+        if (relative && !deferredBaseline) target = await element(check.selector, check.nth);
         const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
-        let expected = relative ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
+        let expected = relative && !deferredBaseline ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();
           const target = await element(action.selector, action.nth);
@@ -120,6 +121,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           else await target.press(action.key);
         }
         if (assertion !== 'count' && assertion !== 'stable') target = await element(check.selector, check.nth);
+        if (deferredBaseline) expected = collapseWhitespace(await target.innerText());
         if (assertion === 'stable') {
           await new Promise((resolve) => setTimeout(resolve, 100));
           target = await element(check.selector, check.nth);
@@ -132,7 +134,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         do {
           controller.signal.throwIfAborted();
           if (relative || assertion === 'stable') target = await element(check.selector, check.nth);
-          if (assertion === 'text' || pattern || relative || assertion === 'stable') {
+          if (assertion === 'text' || (pattern && !check.attribute) || relative || assertion === 'stable') {
             // Inline on purpose: a named helper inside evaluate() gets a `__name` wrapper from
             // tsx/esbuild that does not exist in the page.
             const [rendered, source, plain] = await target.evaluate((element) => {
@@ -158,14 +160,14 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
             if (assertion === 'changed') matched = !matched;
           } else {
             actual = assertion === 'count' ? String(await target.count())
-              : assertion === 'attribute' ? await target.evaluate((element, attribute) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
+              : assertion === 'attribute' || (pattern && check.attribute) ? await target.evaluate((element, attribute) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
                 : assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible() && await target.evaluate((element) => {
                   for (let current: Element | null = element; current; current = current.parentElement) {
                     if (parseFloat(getComputedStyle(current).opacity) === 0) return false;
                   }
                   return true;
                 }));
-            matched = actual === expected;
+            matched = pattern ? pattern.test(actual) : actual === expected;
           }
           if (steady ? !matched : matched) break;
           if (Date.now() >= deadline) break;

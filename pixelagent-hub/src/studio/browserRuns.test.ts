@@ -278,3 +278,19 @@ test('real browser reads inline styles, untransformed text and stability after a
     assert.equal(run.checks[5].error, 'Expected text to stay "00:30" after the actions, observed "00:29"');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('real browser captures created timers and matches attributes', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-created-pattern-'));
+  try {
+    const content = '<html><body><button>Add</button><input value="initial" type="checkbox" aria-label="Card 2, revealed" title="  spaced  " style="width:90%">text<script>document.querySelector("button").onclick=()=>{const timer=document.createElement("output");timer.textContent="0";document.body.append(timer);setInterval(()=>timer.textContent=String(Number(timer.textContent)+1),200)}</script></body></html>';
+    const actions = [{ type: 'click', selector: 'button' }];
+    const checks = { checks: [
+      { name: 'Needs baseline', actions, selector: 'output', assertion: 'unchanged', expected: '' },
+      { name: 'Created timer', actions, selector: 'output', assertion: 'changed', expected: '' },
+      ...[['aria-label', '^Card \\d+, revealed$'], ['value', '^initial$'], ['checked', '^false$'], ['style.width', '^90%$'], ['title', '^  spaced  $'], ['missing', '^$'], ['missing', '^text$']].map(([attribute, expected], index) => ({ name: `Attribute ${index}`, actions: [], selector: 'input', assertion: 'matches', attribute, expected })),
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map(({ status }) => status), ['failed', 'passed', 'passed', 'passed', 'passed', 'passed', 'passed', 'passed', 'failed'], JSON.stringify(run));
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

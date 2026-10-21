@@ -1,5 +1,5 @@
 import { strToU8, zipSync } from 'fflate';
-import { coderPrompt, invalidCodeReplyNote, invalidPlanFeedback, isInvalidPlanError, isInvalidReplyError, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
+import { coderPrompt, invalidCodeReplyNote, invalidPlanFeedback, invalidReviewFeedback, isInvalidPlanError, isInvalidReplyError, managerPrompt, testerPrompt, testerReviewPrompt, REPAIR_INSTRUCTIONS, STUDIO_CONSTRAINTS, STUDIO_DELIVERABLE, type Prompt } from '@studio-shared/prompts';
 import { browserFailureNotes } from '@studio-shared/repair';
 import { dependencyNote, unsupportedDependencies } from '@studio-shared/dependencies';
 import type { BrowserCheck, BrowserCheckResult } from '../studioChecks';
@@ -279,7 +279,18 @@ async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: Brows
   emit(entry, 'test_plan_started', { planId, review: true });
   try {
     const failures = failing.map((result) => ({ check: checks.find((check) => check.name === result.name), actual: result.actual, error: result.error }));
-    const reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name), checks.length) }), signal, AGENT_TIMEOUT_MS, 0.2);
+    let reply;
+    let feedback;
+    for (let attempt = 1; ; attempt++) {
+      try {
+        reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures, ...(feedback ? { invalidReviewFeedback: feedback } : {}) }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name), checks.length) }), signal, AGENT_TIMEOUT_MS, 0.2);
+        break;
+      } catch (error) {
+        const invalid = error instanceof SyntaxError || (error instanceof Error && isInvalidReplyError(error.message));
+        if (signal.aborted || !invalid || attempt >= 2) throw error;
+        feedback = invalidReviewFeedback(error.message);
+      }
+    }
     const { verdicts } = reply.output;
     const unsupported = verdicts.filter((verdict) => verdict.verdict === 'unsupported');
     const removed = checks.some((check) => !unsupported.some((verdict) => verdict.name === check.name)) ? unsupported : [];

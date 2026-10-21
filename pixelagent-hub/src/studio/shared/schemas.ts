@@ -36,7 +36,7 @@ export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), a
   .refine((check) => !['changed', 'unchanged', 'stable'].includes(check.assertion || '') || check.expected === '', 'Changed, unchanged and stable require expected empty')
   .refine((check) => !['changed', 'unchanged'].includes(check.assertion || '') || check.actions.length > 0, 'changed and unchanged need at least one action')
   .refine((check) => check.assertion !== 'count' || /^\d{1,4}$/.test(check.expected), 'Count assertions require expected to be 1–4 digits')
-  .refine((check) => (check.assertion === 'attribute') === (check.attribute !== undefined), 'Attribute is required only for attribute assertions');
+  .refine((check) => check.assertion === 'attribute' ? check.attribute !== undefined : check.attribute === undefined || check.assertion === 'matches', 'Attribute is required for attribute assertions and optional for matches');
 // isolation: 'shared' (default; saved and fixed plans) runs checks in order on one page; 'fresh' reloads the app before each check.
 export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min(1).max(10), limitations: z.array(z.string().max(300)).max(10), isolation: z.enum(['shared', 'fresh']).optional() }).strict().refine((plan) => new Set(plan.checks.map((check) => check.name)).size === plan.checks.length, 'Check names must be unique');
 

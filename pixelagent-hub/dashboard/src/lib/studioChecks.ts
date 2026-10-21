@@ -32,7 +32,7 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       const relative = assertion === 'changed' || assertion === 'unchanged';
       const steady = assertion === 'unchanged' || assertion === 'stable';
       const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
-      const baseline = relative ? element(check.selector, check.nth) : undefined;
+      const baseline = relative && !(assertion === 'changed' && document.querySelectorAll(check.selector).length === 0) ? element(check.selector, check.nth) : undefined;
       let expected = baseline ? collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
       for (const action of check.actions) {
         const target = element(action.selector, action.nth);
@@ -67,12 +67,13 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       };
       // Text accepts rendered, source or untransformed rendered text; rendered text is reported.
       const read = () => assertion === 'count' ? String(document.querySelectorAll(check.selector).length)
-        : assertion === 'attribute' ? (check.attribute!.startsWith('style.') ? target!.style.getPropertyValue(check.attribute!.slice(6)).trim() : check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : check.attribute === 'checked' && target!.tagName === 'INPUT' ? String((target as HTMLInputElement).checked) : target!.getAttribute(check.attribute!) ?? '')
+        : assertion === 'attribute' || (assertion === 'matches' && check.attribute) ? (check.attribute!.startsWith('style.') ? target!.style.getPropertyValue(check.attribute!.slice(6)).trim() : check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : check.attribute === 'checked' && target!.tagName === 'INPUT' ? String((target as HTMLInputElement).checked) : target!.getAttribute(check.attribute!) ?? '')
         : assertion === 'disabled' ? String(target!.matches(':disabled'))
         : assertion === 'visible' ? String(visible())
           : collapse(target!.innerText ?? target!.textContent ?? '');
+      if (assertion === 'changed' && !baseline) expected = read();
       const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
-      const matches = (observed: string) => pattern ? pattern.test(observed) || pattern.test(collapse(target!.textContent ?? '')) || pattern.test(collapse(untransformed(target!))) : observed === expected || ((assertion === 'text' || relative || assertion === 'stable') && (collapse(target!.textContent ?? '') === expected || collapse(untransformed(target!)) === expected));
+      const matches = (observed: string) => pattern ? pattern.test(observed) || (!check.attribute && (pattern.test(collapse(target!.textContent ?? '')) || pattern.test(collapse(untransformed(target!))))) : observed === expected || ((assertion === 'text' || relative || assertion === 'stable') && (collapse(target!.textContent ?? '') === expected || collapse(untransformed(target!)) === expected));
       if (assertion === 'stable') {
         await new Promise((resolve) => setTimeout(resolve, 100));
         target = element(check.selector, check.nth);
