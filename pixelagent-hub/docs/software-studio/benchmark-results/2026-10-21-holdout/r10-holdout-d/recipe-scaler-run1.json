@@ -1,0 +1,408 @@
+{
+  "caseId": "recipe-scaler",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 23,
+  "reportedTokens": 9308,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:38:43.713Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:38:43.714Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:38:47.736Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Recipe Scaler"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:38:47.736Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:38:56.569Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:38:56.570Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:38:57.060Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:38:57.061Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "77ba8788-58a4-46f0-83b2-e22b2312c2fc"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:38:59.583Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "77ba8788-58a4-46f0-83b2-e22b2312c2fc",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:38:59.583Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "testPlanId": "77ba8788-58a4-46f0-83b2-e22b2312c2fc",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Initial 4-serving amounts",
+        "passed": true,
+        "actual": "All-purpose flour 200 g Butter 100 g Sugar 80 g Eggs 2 Milk 150 ml"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Five ingredient rows",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Scale to 2 servings",
+        "passed": true,
+        "actual": "All-purpose flour 100 g Butter 50 g Sugar 40 g Eggs 1 Milk 75 ml"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Scale to 1 serving rounds one decimal",
+        "passed": true,
+        "actual": "All-purpose flour 50 g Butter 25 g Sugar 20 g Eggs 0.5 Milk 37.5 ml"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Scale to 12 servings",
+        "passed": true,
+        "actual": "All-purpose flour 600 g Butter 300 g Sugar 240 g Eggs 6 Milk 450 ml"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Increase button adds a serving",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Decrease button removes a serving",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Increase updates amounts live",
+        "passed": true,
+        "actual": "All-purpose flour 250 g Butter 125 g Sugar 100 g Eggs 2.5 Milk 187.5 ml"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Decrease updates amounts live",
+        "passed": true,
+        "actual": "All-purpose flour 150 g Butter 75 g Sugar 60 g Eggs 1.5 Milk 112.5 ml"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "name": "Servings input has min and max",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:39:02.790Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "601665e9-a94b-4d27-be5b-a23e77782761",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:39:02.793Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial 4-serving amounts",
+        "actions": [],
+        "selector": "#ingredients",
+        "expected": "All-purpose flour 200 g Butter 100 g Sugar 80 g Eggs 2 Milk 150 ml",
+        "assertion": "text"
+      },
+      {
+        "name": "Five ingredient rows",
+        "actions": [],
+        "selector": "#ingredients li",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Scale to 2 servings",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "2"
+          }
+        ],
+        "selector": "#ingredients",
+        "expected": "All-purpose flour 100 g Butter 50 g Sugar 40 g Eggs 1 Milk 75 ml",
+        "assertion": "text"
+      },
+      {
+        "name": "Scale to 1 serving rounds one decimal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "1"
+          }
+        ],
+        "selector": "#ingredients",
+        "expected": "All-purpose flour 50 g Butter 25 g Sugar 20 g Eggs 0.5 Milk 37.5 ml",
+        "assertion": "text"
+      },
+      {
+        "name": "Scale to 12 servings",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "12"
+          }
+        ],
+        "selector": "#ingredients",
+        "expected": "All-purpose flour 600 g Butter 300 g Sugar 240 g Eggs 6 Milk 450 ml",
+        "assertion": "text"
+      },
+      {
+        "name": "Increase button adds a serving",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          }
+        ],
+        "selector": "#servings",
+        "expected": "5",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Decrease button removes a serving",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#servings",
+        "expected": "3",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Increase updates amounts live",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          }
+        ],
+        "selector": "#ingredients",
+        "expected": "All-purpose flour 250 g Butter 125 g Sugar 100 g Eggs 2.5 Milk 187.5 ml",
+        "assertion": "text"
+      },
+      {
+        "name": "Decrease updates amounts live",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#ingredients",
+        "expected": "All-purpose flour 150 g Butter 75 g Sugar 60 g Eggs 1.5 Milk 112.5 ml",
+        "assertion": "text"
+      },
+      {
+        "name": "Servings input has min and max",
+        "actions": [],
+        "selector": "#servings",
+        "expected": "^1$",
+        "assertion": "matches",
+        "attribute": "min"
+      }
+    ],
+    "limitations": [
+      "Cannot verify max attribute in same check; only min checked.",
+      "Typing out-of-range values and blur clamping not covered due to action limits.",
+      "Rounding of repeating decimals like 1/3 servings not directly observable via integer servings.",
+      "No pixel/visual layout assertions."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3893,
+      "completion_tokens": 579,
+      "total_tokens": 4472,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 3637
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Recipe Scaler</title>\n  <link rel=\"stylesheet\" href=\"style.css\" />\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"title\">\n    <h1 id=\"title\">Pixel Recipe Scaler</h1>\n    <p class=\"subtitle\">Base recipe for 4 servings</p>\n\n    <div class=\"control\">\n      <label for=\"servings\">Servings (1–12)</label>\n      <div class=\"control-row\">\n        <button id=\"decrease\" type=\"button\" aria-label=\"Decrease servings\">−</button>\n        <input\n          id=\"servings\"\n          type=\"number\"\n          min=\"1\"\n          max=\"12\"\n          step=\"1\"\n          value=\"4\"\n          inputmode=\"numeric\"\n          aria-describedby=\"servings-hint\"\n        />\n        <button id=\"increase\" type=\"button\" aria-label=\"Increase servings\">+</button>\n      </div>\n      <p id=\"servings-hint\" class=\"hint\">Use the arrows or type a number.</p>\n    </div>\n\n    <ul id=\"ingredients\" class=\"ingredients\" aria-live=\"polite\"></ul>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1f2933;\n  --card: #f5f7fa;\n  --ink: #1f2933;\n  --muted: #52606d;\n  --accent: #2f855a;\n  --accent-press: #276749;\n  --line: #cbd2d9;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  background: radial-gradient(circle at top, #323f4b, var(--bg));\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 17px;\n  color: var(--ink);\n}\n\n.card {\n  width: 100%;\n  max-width: 460px;\n  background: var(--card);\n  border-radius: 16px;\n  padding: 28px 24px 32px;\n  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);\n}\n\nh1 {\n  margin: 0;\n  font-size: 1.6rem;\n  letter-spacing: 0.01em;\n}\n\n.subtitle {\n  margin: 6px 0 24px;\n  color: var(--muted);\n  font-size: 1rem;\n}\n\n.control {\n  margin-bottom: 24px;\n}\n\nlabel {\n  display: block;\n  font-weight: 600;\n  margin-bottom: 8px;\n}\n\n.control-row {\n  display: flex;\n  gap: 10px;\n  align-items: stretch;\n}\n\nbutton,\ninput {\n  font: inherit;\n  border-radius: 10px;\n  border: 2px solid var(--line);\n  background: #fff;\n  color: var(--ink);\n  padding: 10px 12px;\n  transition: background 0.15s, border-color 0.15s, transform 0.05s;\n}\n\nbutton {\n  min-width: 48px;\n  cursor: pointer;\n  font-weight: 700;\n  font-size: 1.2rem;\n  line-height: 1;\n}\n\nbutton:hover {\n  border-color: var(--accent);\n  background: #eef7f1;\n}\n\nbutton:active {\n  background: var(--accent-press);\n  border-color: var(--accent-press);\n  color: #fff;\n  transform: translateY(1px);\n}\n\ninput {\n  flex: 1;\n  min-width: 0;\n  text-align: center;\n  font-weight: 600;\n  font-size: 1.15rem;\n}\n\ninput:hover {\n  border-color: var(--accent);\n}\n\nbutton:focus-visible,\ninput:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n  border-color: var(--accent);\n}\n\n.hint {\n  margin: 8px 0 0;\n  font-size: 0.9rem;\n  color: var(--muted);\n}\n\n.ingredients {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  border-top: 2px solid var(--line);\n}\n\n.ingredients li {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  gap: 12px;\n  padding: 12px 2px;\n  border-bottom: 1px solid var(--line);\n}\n\n.ingredients li:last-child {\n  border-bottom: none;\n}\n\n.name {\n  min-width: 0;\n  overflow-wrap: anywhere;\n}\n\n.amount {\n  flex-shrink: 0;\n  font-variant-numeric: tabular-nums;\n  font-weight: 700;\n  color: var(--accent-press);\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 22px 16px 26px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  \"use strict\";\n\n  var BASE_SERVINGS = 4;\n  var MIN_SERVINGS = 1;\n  var MAX_SERVINGS = 12;\n\n  var RECIPE = [\n    { name: \"All-purpose flour\", amount: 200, unit: \"g\" },\n    { name: \"Butter\", amount: 100, unit: \"g\" },\n    { name: \"Sugar\", amount: 80, unit: \"g\" },\n    { name: \"Eggs\", amount: 2, unit: \"\" },\n    { name: \"Milk\", amount: 150, unit: \"ml\" }\n  ];\n\n  var servingsInput = document.getElementById(\"servings\");\n  var decreaseBtn = document.getElementById(\"decrease\");\n  var increaseBtn = document.getElementById(\"increase\");\n  var list = document.getElementById(\"ingredients\");\n\n  function roundOne(value) {\n    return Math.round((value + Number.EPSILON) * 10) / 10;\n  }\n\n  function clampServings(value) {\n    var n = parseInt(value, 10);\n    if (isNaN(n)) return BASE_SERVINGS;\n    if (n < MIN_SERVINGS) return MIN_SERVINGS;\n    if (n > MAX_SERVINGS) return MAX_SERVINGS;\n    return n;\n  }\n\n  function formatAmount(value, unit) {\n    var rounded = roundOne(value);\n    var text = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);\n    return unit ? text + \" \" + unit : text;\n  }\n\n  function render() {\n    var servings = clampServings(servingsInput.value);\n    var factor = servings / BASE_SERVINGS;\n\n    list.textContent = \"\";\n    RECIPE.forEach(function (item) {\n      var li = document.createElement(\"li\");\n\n      var name = document.createElement(\"span\");\n      name.className = \"name\";\n      name.textContent = item.name;\n\n      var amount = document.createElement(\"span\");\n      amount.className = \"amount\";\n      amount.textContent = formatAmount(item.amount * factor, item.unit);\n\n      li.appendChild(name);\n      li.appendChild(amount);\n      list.appendChild(li);\n    });\n  }\n\n  function setServings(next) {\n    var clamped = clampServings(next);\n    servingsInput.value = String(clamped);\n    render();\n  }\n\n  servingsInput.addEventListener(\"input\", function () {\n    var raw = servingsInput.value;\n    if (raw === \"\") return;\n    var n = parseInt(raw, 10);\n    if (!isNaN(n) && n >= MIN_SERVINGS && n <= MAX_SERVINGS) {\n      render();\n    }\n  });\n\n  servingsInput.addEventListener(\"change\", function () {\n    setServings(servingsInput.value);\n  });\n\n  servingsInput.addEventListener(\"blur\", function () {\n    setServings(servingsInput.value);\n  });\n\n  decreaseBtn.addEventListener(\"click\", function () {\n    setServings(clampServings(servingsInput.value) - 1);\n  });\n\n  increaseBtn.addEventListener(\"click\", function () {\n    setServings(clampServings(servingsInput.value) + 1);\n  });\n\n  render();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Recipe Scaler\n\nA tiny offline browser app that shows a built-in 5-ingredient recipe for 4 servings and rescales the amounts live as you change the serving count.\n\n## Features\n\n- Built-in recipe of 5 ingredients with amounts for 4 servings.\n- Servings control from 1 to 12 (number input plus − / + buttons).\n- Amounts rescale live and are rounded to one decimal.\n- Keyboard accessible: labeled input, focus-visible outlines, and buttons reachable via Tab.\n- Responsive centered card that works from 360px wide.\n- No network requests, packages, imports, or external assets. Works fully offline.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Change the servings with the number input or the − / + buttons.\n3. The ingredient amounts update immediately, rounded to one decimal.\n\n## Files\n\n- `index.html` — page structure and controls.\n- `style.css` — palette, layout, and interaction states.\n- `script.js` — recipe data, rescaling logic, and event wiring.\n\n## Notes\n\n- Amounts are scaled by `servings / 4` and rounded with a single rounding helper to avoid floating-point display artifacts.\n- Servings values outside 1–12 are clamped automatically.\n",
+      "description": ""
+    }
+  ]
+}

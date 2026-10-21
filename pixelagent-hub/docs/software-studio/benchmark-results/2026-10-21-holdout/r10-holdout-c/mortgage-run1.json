@@ -1,0 +1,797 @@
+{
+  "caseId": "mortgage",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 3,
+  "compileFailures": 2,
+  "firstChecks": "8/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 2,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 53,
+  "reportedTokens": 23417,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:51:12.366Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:51:12.366Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:51:17.067Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Loan Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:51:17.067Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:51:27.052Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nmonthlyR\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:51:27.052Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:51:37.365Z",
+      "type": "build_failed",
+      "round": 2,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nM = P * \"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:51:37.365Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:51:46.736Z",
+      "type": "code_ready",
+      "round": 3,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:51:46.736Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:51:47.289Z",
+      "type": "build_passed",
+      "round": 3
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:51:47.290Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "bf2333b3-010f-491d-91a7-f55d7e97fba9"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:51:50.700Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "bf2333b3-010f-491d-91a7-f55d7e97fba9",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:51:50.701Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "testPlanId": "bf2333b3-010f-491d-91a7-f55d7e97fba9",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Standard loan results",
+        "passed": true,
+        "actual": "$106.07"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Total paid two decimals",
+        "passed": false,
+        "actual": "$12727.86"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Total interest two decimals",
+        "passed": false,
+        "actual": "$2727.86"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Zero interest loan",
+        "passed": true,
+        "actual": "$100.00"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Zero interest total interest",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Invalid amount shows error",
+        "passed": true,
+        "actual": "Please enter a valid loan amount greater than 0."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Negative rate shows error",
+        "passed": true,
+        "actual": "Please enter a valid interest rate (0 or greater)."
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Invalid years shows error",
+        "passed": true,
+        "actual": "Please enter a valid loan term in years greater than 0."
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Error resets results",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "name": "Results visible after calculate",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T07:51:57.949Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "4d002fea-7be5-40fe-b5bb-ce6c4e122efd",
+        "status": "failed",
+        "passed": 8,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T07:51:57.953Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "bf2333b3-010f-491d-91a7-f55d7e97fba9",
+        "review": true
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T07:51:59.991Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "bf2333b3-010f-491d-91a7-f55d7e97fba9",
+        "checks": 10,
+        "review": true,
+        "revised": 2,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Total paid two decimals",
+            "verdict": "check-wrong",
+            "reason": "The check computes total paid for $10000 at 5% over 10 years. The correct amortization monthly payment is 10000*0.0041667*(1.0041667)^120/((1.0041667)^120-1) ≈ 106.0655, and total paid = 106.0655*120 "
+          },
+          {
+            "name": "Total interest two decimals",
+            "verdict": "check-wrong",
+            "reason": "Total interest = total paid − principal = 12727.86 − 10000 = 2727.86, which is what the app shows. The check's expected $2728.18 is an arithmetic error."
+          }
+        ]
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T07:51:59.991Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "testPlanId": "bf2333b3-010f-491d-91a7-f55d7e97fba9",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Standard loan results",
+        "passed": true,
+        "actual": "$106.07"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Total paid two decimals",
+        "passed": true,
+        "actual": "$12727.86"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Total interest two decimals",
+        "passed": true,
+        "actual": "$2727.86"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Zero interest loan",
+        "passed": true,
+        "actual": "$100.00"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Zero interest total interest",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Invalid amount shows error",
+        "passed": true,
+        "actual": "Please enter a valid loan amount greater than 0."
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Negative rate shows error",
+        "passed": true,
+        "actual": "Please enter a valid interest rate (0 or greater)."
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Invalid years shows error",
+        "passed": true,
+        "actual": "Please enter a valid loan term in years greater than 0."
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Error resets results",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "name": "Results visible after calculate",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T07:52:03.160Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "9d6bdd28-48b7-4de3-a140-19471a1c2d97",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T07:52:03.168Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v3/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Standard loan results",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "10000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#monthly-payment",
+        "expected": "^\\$106\\.07$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Total paid two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "10000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#total-paid",
+        "expected": "^\\$12727\\.86$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Total interest two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "10000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#total-interest",
+        "expected": "^\\$2727\\.86$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Zero interest loan",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "1200"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#monthly-payment",
+        "expected": "^\\$100\\.00$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Zero interest total interest",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "1200"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#total-interest",
+        "expected": "^\\$0\\.00$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Invalid amount shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#error-message",
+        "expected": "Please enter a valid loan amount greater than 0.",
+        "assertion": "text"
+      },
+      {
+        "name": "Negative rate shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "10000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "-1"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#error-message",
+        "expected": "Please enter a valid interest rate (0 or greater).",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid years shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "10000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#error-message",
+        "expected": "Please enter a valid loan term in years greater than 0.",
+        "assertion": "text"
+      },
+      {
+        "name": "Error resets results",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "10000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#monthly-payment",
+        "expected": "—",
+        "assertion": "text"
+      },
+      {
+        "name": "Results visible after calculate",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#loan-amount",
+            "value": "5000"
+          },
+          {
+            "type": "input",
+            "selector": "#interest-rate",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#loan-years",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#calculate-btn"
+          }
+        ],
+        "selector": "#results",
+        "expected": "true",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "Cannot verify pixel-art rendering, fonts, colors or layout visually.",
+      "Cannot test pressing Enter to submit; only button clicks are used.",
+      "Cannot verify aria-live announcements or screen reader behavior.",
+      "Rounding of exact cent values depends on JS floating point; only fixed examples checked."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4100,
+      "completion_tokens": 1012,
+      "total_tokens": 5112,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 3076
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nmonthlyR\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nM = P * \"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 3,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Loan Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"calculator\" aria-labelledby=\"app-title\">\n    <h1 id=\"app-title\">Pixel Loan Calculator</h1>\n    <form id=\"loan-form\" novalidate>\n      <div class=\"field\">\n        <label for=\"loan-amount\">Loan amount ($)</label>\n        <input type=\"number\" id=\"loan-amount\" name=\"loan-amount\" min=\"0.01\" step=\"0.01\" placeholder=\"e.g. 10000\" required>\n      </div>\n      <div class=\"field\">\n        <label for=\"interest-rate\">Yearly interest rate (%)</label>\n        <input type=\"number\" id=\"interest-rate\" name=\"interest-rate\" min=\"0\" step=\"0.01\" placeholder=\"e.g. 5.5\" required>\n      </div>\n      <div class=\"field\">\n        <label for=\"loan-years\">Loan term (years)</label>\n        <input type=\"number\" id=\"loan-years\" name=\"loan-years\" min=\"0.1\" step=\"0.1\" placeholder=\"e.g. 10\" required>\n      </div>\n      <button type=\"submit\" id=\"calculate-btn\">Calculate</button>\n    </form>\n    <section id=\"results\" class=\"results\" aria-live=\"polite\" aria-atomic=\"true\">\n      <h2>Results</h2>\n      <div class=\"result-item\">\n        <span class=\"result-label\">Monthly payment:</span>\n        <span class=\"result-value\" id=\"monthly-payment\">—</span>\n      </div>\n      <div class=\"result-item\">\n        <span class=\"result-label\">Total paid:</span>\n        <span class=\"result-value\" id=\"total-paid\">—</span>\n      </div>\n      <div class=\"result-item\">\n        <span class=\"result-label\">Total interest:</span>\n        <span class=\"result-value\" id=\"total-interest\">—</span>\n      </div>\n      <p id=\"error-message\" class=\"error\" role=\"alert\" hidden></p>\n    </section>\n    <footer class=\"footer\">\n      <p>Pixel Loan Calculator — offline, no data leaves your device.</p>\n    </footer>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file with form and results section."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --color-bg: #1a1a2e;\n  --color-card: #16213e;\n  --color-primary: #e94560;\n  --color-secondary: #0f3460;\n  --color-text: #eaeaea;\n  --color-accent: #f5c542;\n  --font-base: 18px;\n  --border-width: 4px;\n  --shadow-offset: 6px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background-color: var(--color-bg);\n  font-family: 'Courier New', Courier, monospace;\n  font-size: var(--font-base);\n  color: var(--color-text);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  min-height: 100vh;\n  padding: 1rem;\n  line-height: 1.5;\n}\n\n.calculator {\n  background-color: var(--color-card);\n  border: var(--border-width) solid var(--color-primary);\n  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-secondary);\n  padding: 2rem;\n  width: 100%;\n  max-width: 500px;\n  image-rendering: pixelated;\n}\n\nh1 {\n  font-size: 1.8rem;\n  text-align: center;\n  margin-bottom: 2rem;\n  color: var(--color-accent);\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  text-shadow: 3px 3px 0 var(--color-secondary);\n}\n\n.field {\n  margin-bottom: 1.5rem;\n}\n\nlabel {\n  display: block;\n  margin-bottom: 0.5rem;\n  font-weight: bold;\n  color: var(--color-accent);\n}\n\ninput {\n  width: 100%;\n  padding: 0.75rem;\n  font-family: inherit;\n  font-size: 1rem;\n  background-color: var(--color-bg);\n  border: var(--border-width) solid var(--color-secondary);\n  color: var(--color-text);\n  outline: none;\n}\n\ninput:focus-visible {\n  border-color: var(--color-accent);\n  box-shadow: 0 0 0 3px var(--color-accent);\n}\n\nbutton {\n  width: 100%;\n  padding: 1rem;\n  font-family: inherit;\n  font-size: 1.2rem;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  background-color: var(--color-primary);\n  color: var(--color-bg);\n  border: var(--border-width) solid var(--color-accent);\n  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-secondary);\n  cursor: pointer;\n  transition: transform 0.1s, box-shadow 0.1s;\n}\n\nbutton:hover {\n  background-color: var(--color-accent);\n  color: var(--color-bg);\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--color-accent);\n  outline-offset: 3px;\n}\n\nbutton:active {\n  transform: translate(var(--shadow-offset), var(--shadow-offset));\n  box-shadow: none;\n}\n\n.results {\n  margin-top: 2rem;\n  padding-top: 1.5rem;\n  border-top: var(--border-width) dashed var(--color-secondary);\n}\n\nh2 {\n  font-size: 1.4rem;\n  margin-bottom: 1rem;\n  color: var(--color-accent);\n  text-transform: uppercase;\n}\n\n.result-item {\n  display: flex;\n  justify-content: space-between;\n  padding: 0.5rem 0;\n  border-bottom: 2px solid var(--color-secondary);\n}\n\n.result-label {\n  font-weight: bold;\n}\n\n.result-value {\n  font-weight: bold;\n  color: var(--color-accent);\n}\n\n.error {\n  color: var(--color-primary);\n  font-weight: bold;\n  margin-top: 1rem;\n  text-align: center;\n}\n\n.footer {\n  margin-top: 2rem;\n  text-align: center;\n  font-size: 0.9rem;\n  color: var(--color-secondary);\n}\n\n@media (max-width: 400px) {\n  .calculator {\n    padding: 1.5rem;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  button {\n    font-size: 1rem;\n  }\n}",
+      "description": "Pixel-styled CSS with responsive layout, hover/focus/active states."
+    },
+    {
+      "path": "app.js",
+      "content": "document.addEventListener('DOMContentLoaded', () => {\n  const form = document.getElementById('loan-form');\n  const loanAmountInput = document.getElementById('loan-amount');\n  const interestRateInput = document.getElementById('interest-rate');\n  const loanYearsInput = document.getElementById('loan-years');\n  const monthlyPaymentEl = document.getElementById('monthly-payment');\n  const totalPaidEl = document.getElementById('total-paid');\n  const totalInterestEl = document.getElementById('total-interest');\n  const errorMessageEl = document.getElementById('error-message');\n\n  function calculateLoan(principal, annualRate, years) {\n    const monthlyRate = annualRate / 100 / 12;\n    const numberOfPayments = years * 12;\n    let monthlyPayment;\n\n    if (monthlyRate === 0) {\n      monthlyPayment = principal / numberOfPayments;\n    } else {\n      monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);\n    }\n\n    const totalPaid = monthlyPayment * numberOfPayments;\n    const totalInterest = totalPaid - principal;\n\n    return { monthlyPayment, totalPaid, totalInterest };\n  }\n\n  function formatCurrency(value) {\n    return value.toFixed(2);\n  }\n\n  function displayResults(principal, annualRate, years) {\n    const { monthlyPayment, totalPaid, totalInterest } = calculateLoan(principal, annualRate, years);\n    monthlyPaymentEl.textContent = '$' + formatCurrency(monthlyPayment);\n    totalPaidEl.textContent = '$' + formatCurrency(totalPaid);\n    totalInterestEl.textContent = '$' + formatCurrency(totalInterest);\n  }\n\n  function showError(message) {\n    errorMessageEl.textContent = message;\n    errorMessageEl.hidden = false;\n    monthlyPaymentEl.textContent = '—';\n    totalPaidEl.textContent = '—';\n    totalInterestEl.textContent = '—';\n  }\n\n  function clearError() {\n    errorMessageEl.textContent = '';\n    errorMessageEl.hidden = true;\n  }\n\n  form.addEventListener('submit', (e) => {\n    e.preventDefault();\n    clearError();\n\n    const principal = parseFloat(loanAmountInput.value);\n    const annualRate = parseFloat(interestRateInput.value);\n    const years = parseFloat(loanYearsInput.value);\n\n    if (isNaN(principal) || principal <= 0) {\n      showError('Please enter a valid loan amount greater than 0.');\n      return;\n    }\n    if (isNaN(annualRate) || annualRate < 0) {\n      showError('Please enter a valid interest rate (0 or greater).');\n      return;\n    }\n    if (isNaN(years) || years <= 0) {\n      showError('Please enter a valid loan term in years greater than 0.');\n      return;\n    }\n\n    displayResults(principal, annualRate, years);\n  });\n});",
+      "description": "JavaScript logic for loan calculation, validation, and DOM updates."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Loan Calculator\n\nA simple offline loan calculator with a pixel aesthetic. Enter loan amount, yearly interest rate (%), and loan term (years) to see the monthly payment, total paid, and total interest.\n\n## How to Use\n\n1. Open `index.html` in any modern browser.\n2. Fill in the three fields (all positive numbers; interest rate can be 0).\n3. Click **Calculate** or press Enter.\n4. Results appear below with two decimal places.\n\nNo network requests, no external assets, no server needed.\n\n## Files\n\n- `index.html` — structure and form\n- `styles.css` — pixel-themed styling and responsive layout\n- `app.js` — calculation and validation logic\n\n## Calculation\n\nMonthly payment uses the standard amortization formula. For 0% interest, it divides the principal by the number of months. Total paid = monthly payment × number of months. Total interest = total paid − principal.\n\n## Development\n\nBuilt with plain HTML, CSS, and JavaScript. No dependencies.\n",
+      "description": ""
+    }
+  ]
+}

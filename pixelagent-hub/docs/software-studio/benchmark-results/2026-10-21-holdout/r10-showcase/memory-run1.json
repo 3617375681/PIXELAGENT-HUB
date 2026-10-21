@@ -1,0 +1,507 @@
+{
+  "caseId": "memory",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "7/8",
+  "finalChecks": "8/8",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "7/8",
+    "8/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 29,
+  "reportedTokens": 13196,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:59:40.695Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:59:40.695Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:59:44.969Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Memory Match"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:59:44.970Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:59:54.728Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:59:54.729Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:59:55.274Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:59:55.274Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "e93b86fc-7572-4029-a6b8-6dab9d7c103a"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:59:57.428Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "e93b86fc-7572-4029-a6b8-6dab9d7c103a",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:59:57.429Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "testPlanId": "e93b86fc-7572-4029-a6b8-6dab9d7c103a",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "Board has 16 cards",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "Initial moves zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "Win message hidden initially",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "New Game button visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "First flip shows card",
+        "passed": false,
+        "actual": "card flipped"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "Two flips increment moves",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "New Game resets moves",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "name": "New Game reshuffles board",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:00:02.074Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "05bc5fc9-f452-4f46-a7c9-1a489c78b1bd",
+        "status": "failed",
+        "passed": 7,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:00:02.076Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "e93b86fc-7572-4029-a6b8-6dab9d7c103a",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:00:03.740Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "e93b86fc-7572-4029-a6b8-6dab9d7c103a",
+        "checks": 8,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "First flip shows card",
+            "verdict": "check-wrong",
+            "reason": "The check compares the whole class attribute to \"flipped\", but the card's class is \"card flipped\" (the base class plus the flipped state). The requirement is that flipping a card shows it, which the a"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:00:03.741Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "testPlanId": "e93b86fc-7572-4029-a6b8-6dab9d7c103a",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "Board has 16 cards",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "Initial moves zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "Win message hidden initially",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "New Game button visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "First flip shows card",
+        "passed": true,
+        "actual": "card flipped"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "Two flips increment moves",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "New Game resets moves",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T08:00:06.307Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "name": "New Game reshuffles board",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T08:00:06.308Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d715062d-9bb9-48d2-a58f-83757639d9c2",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T08:00:06.311Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Board has 16 cards",
+        "actions": [],
+        "selector": ".card",
+        "expected": "16",
+        "assertion": "count"
+      },
+      {
+        "name": "Initial moves zero",
+        "actions": [],
+        "selector": "#move-count",
+        "expected": "0"
+      },
+      {
+        "name": "Win message hidden initially",
+        "actions": [],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "New Game button visible",
+        "actions": [],
+        "selector": "#new-game",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "First flip shows card",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 0
+          }
+        ],
+        "selector": ".card",
+        "nth": 0,
+        "expected": "(^|\\s)flipped(\\s|$)",
+        "assertion": "matches",
+        "attribute": "class"
+      },
+      {
+        "name": "Two flips increment moves",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 1
+          }
+        ],
+        "selector": "#move-count",
+        "expected": "1"
+      },
+      {
+        "name": "New Game resets moves",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": "#new-game"
+          }
+        ],
+        "selector": "#move-count",
+        "expected": "0"
+      },
+      {
+        "name": "New Game reshuffles board",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#new-game"
+          }
+        ],
+        "selector": ".card",
+        "expected": "16",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "Cannot verify matched pairs stay open or win message without knowing shuffled positions.",
+      "Cannot assert random shuffle order or colors.",
+      "No timing assertions for the 800ms mismatch flip-back delay.",
+      "Keyboard Enter/Space flipping not tested via synthetic key events."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4013,
+      "completion_tokens": 367,
+      "total_tokens": 4380,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 2989
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Memory Match</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-container\">\n    <header>\n      <h1>Pixel Memory Match</h1>\n      <p class=\"moves\" aria-live=\"polite\">Moves: <span id=\"move-count\">0</span></p>\n    </header>\n    <div id=\"game-board\" class=\"board\" role=\"grid\" aria-label=\"Memory game board\"></div>\n    <p id=\"win-message\" class=\"win-message\" aria-live=\"assertive\" hidden>You win! 🎉</p>\n    <button id=\"new-game\" type=\"button\">New Game</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-back: #2d2d44;\n  --card-front: #f0f0f5;\n  --accent: #f5a623;\n  --text: #e0e0e0;\n  --matched: #4caf50;\n  --focus: #f5a623;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  padding: 16px;\n}\n\n.game-container {\n  max-width: 600px;\n  width: 100%;\n  text-align: center;\n}\n\nheader {\n  margin-bottom: 24px;\n}\n\nh1 {\n  font-size: 2rem;\n  font-weight: 700;\n  margin-bottom: 8px;\n  color: var(--accent);\n}\n\n.moves {\n  font-size: 1.1rem;\n  opacity: 0.9;\n}\n\n.board {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\n.card {\n  aspect-ratio: 1 / 1;\n  background: var(--card-back);\n  border-radius: 12px;\n  cursor: pointer;\n  position: relative;\n  transition: transform 0.2s, background 0.2s;\n  border: 3px solid transparent;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 2rem;\n  user-select: none;\n  outline: none;\n}\n\n.card::before {\n  content: '?';\n  color: var(--text);\n  opacity: 0.6;\n}\n\n.card.flipped {\n  background: var(--card-front);\n  cursor: default;\n}\n\n.card.flipped::before {\n  content: '';\n}\n\n.card.matched {\n  background: var(--matched);\n  cursor: default;\n  border-color: var(--accent);\n}\n\n.card:focus-visible {\n  border-color: var(--focus);\n  box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.4);\n}\n\n.card:not(.flipped):not(.matched):hover {\n  transform: scale(1.05);\n  background: #3a3a55;\n}\n\n.card:not(.flipped):not(.matched):active {\n  transform: scale(0.95);\n}\n\n.card .color-dot {\n  width: 60%;\n  height: 60%;\n  border-radius: 50%;\n  display: none;\n}\n\n.card.flipped .color-dot,\n.card.matched .color-dot {\n  display: block;\n}\n\n.win-message {\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: var(--accent);\n  margin-bottom: 16px;\n}\n\n#new-game {\n  background: var(--accent);\n  color: #1e1e2f;\n  border: none;\n  border-radius: 8px;\n  padding: 14px 32px;\n  font-size: 1.1rem;\n  font-weight: 700;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n\n#new-game:hover {\n  background: #ffb84d;\n}\n\n#new-game:active {\n  transform: scale(0.96);\n}\n\n#new-game:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 3px;\n}\n\n@media (max-width: 480px) {\n  .board {\n    gap: 8px;\n  }\n  h1 {\n    font-size: 1.6rem;\n  }\n  .card {\n    border-radius: 8px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function() {\n  'use strict';\n\n  const COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22', '#1abc9c', '#e84393'];\n  const board = document.getElementById('game-board');\n  const moveCountEl = document.getElementById('move-count');\n  const winMessage = document.getElementById('win-message');\n  const newGameBtn = document.getElementById('new-game');\n\n  let deck = [];\n  let flipped = [];\n  let matchedCount = 0;\n  let moves = 0;\n  let lock = false;\n\n  function shuffle(arr) {\n    for (let i = arr.length - 1; i > 0; i--) {\n      const j = Math.floor(Math.random() * (i + 1));\n      [arr[i], arr[j]] = [arr[j], arr[i]];\n    }\n    return arr;\n  }\n\n  function createDeck() {\n    const pairs = [];\n    COLORS.forEach((color, index) => {\n      pairs.push({ color, pairId: index });\n      pairs.push({ color, pairId: index });\n    });\n    return shuffle(pairs);\n  }\n\n  function renderBoard() {\n    board.innerHTML = '';\n    deck.forEach((cardData, i) => {\n      const card = document.createElement('div');\n      card.className = 'card';\n      card.setAttribute('role', 'gridcell');\n      card.setAttribute('tabindex', '0');\n      card.setAttribute('aria-label', 'Hidden card');\n      card.dataset.index = i;\n\n      const dot = document.createElement('span');\n      dot.className = 'color-dot';\n      dot.style.backgroundColor = cardData.color;\n      card.appendChild(dot);\n\n      card.addEventListener('click', handleCardClick);\n      card.addEventListener('keydown', handleKeyDown);\n      board.appendChild(card);\n    });\n  }\n\n  function handleKeyDown(e) {\n    if (e.key === 'Enter' || e.key === ' ') {\n      e.preventDefault();\n      handleCardClick.call(e.currentTarget);\n    }\n  }\n\n  function handleCardClick() {\n    if (lock) return;\n    const card = this;\n    if (card.classList.contains('flipped') || card.classList.contains('matched')) return;\n\n    const index = parseInt(card.dataset.index, 10);\n    const cardData = deck[index];\n\n    card.classList.add('flipped');\n    card.setAttribute('aria-label', 'Color card');\n    flipped.push({ element: card, data: cardData });\n\n    if (flipped.length === 2) {\n      lock = true;\n      moves++;\n      moveCountEl.textContent = moves;\n      checkMatch();\n    }\n  }\n\n  function checkMatch() {\n    const [first, second] = flipped;\n    if (first.data.pairId === second.data.pairId) {\n      first.element.classList.add('matched');\n      second.element.classList.add('matched');\n      first.element.setAttribute('aria-label', 'Matched card');\n      second.element.setAttribute('aria-label', 'Matched card');\n      matchedCount++;\n      flipped = [];\n      lock = false;\n      if (matchedCount === COLORS.length) {\n        winMessage.hidden = false;\n      }\n    } else {\n      setTimeout(() => {\n        first.element.classList.remove('flipped');\n        second.element.classList.remove('flipped');\n        first.element.setAttribute('aria-label', 'Hidden card');\n        second.element.setAttribute('aria-label', 'Hidden card');\n        flipped = [];\n        lock = false;\n      }, 800);\n    }\n  }\n\n  function resetGame() {\n    deck = createDeck();\n    flipped = [];\n    matchedCount = 0;\n    moves = 0;\n    lock = false;\n    moveCountEl.textContent = '0';\n    winMessage.hidden = true;\n    renderBoard();\n  }\n\n  newGameBtn.addEventListener('click', resetGame);\n\n  resetGame();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Memory Match\n\nA pixel memory-match game with 8 pairs of colored cards. Flip two at a time, matched pairs stay open, count moves, and see a win message with a New Game button.\n\n## How to Run\n\nOpen `index.html` in any modern browser. No server or build step required.\n\n## Controls\n\n- **Click** or **tap** a card to flip it.\n- **Keyboard**: Tab to focus a card, press **Enter** or **Space** to flip.\n- **New Game** button resets the board, moves, and win message.\n\n## Features\n\n- 8 pairs (16 cards) of colored cards, shuffled each game.\n- Move counter increments per pair of flips.\n- Matched pairs stay open with a green highlight.\n- Win message appears when all pairs are matched.\n- Fully keyboard accessible with ARIA live regions for moves and win message.\n- Responsive layout works from 360px wide.\n\n## File Structure\n\n- `index.html` — markup and structure\n- `styles.css` — styling and responsive design\n- `script.js` — game logic\n- `README.md` — this file\n\n## Palette\n\n- Background: `#1e1e2f`\n- Card back: `#2d2d44`\n- Card front: `#f0f0f5`\n- Accent: `#f5a623`\n- Matched: `#4caf50`\n\n## Constraints\n\n- Offline, no network requests, no imports, no external assets.\n- Uses only HTML, CSS, and plain JavaScript.\n- All interactions via `addEventListener`; no inline handlers.",
+      "description": ""
+    }
+  ]
+}

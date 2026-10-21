@@ -1,0 +1,683 @@
+{
+  "caseId": "reaction",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "5/10",
+  "finalChecks": "5/7",
+  "reviewTriggered": true,
+  "checksDropped": 3,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "5/10",
+    "5/7",
+    "5/7"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 56,
+  "reportedTokens": 20755,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:47:25.206Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:47:25.206Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:47:29.585Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Reaction-Time Test"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:47:29.585Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:47:38.948Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:47:38.948Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:47:39.448Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:47:39.449Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:47:42.136Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:47:42.136Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "testPlanId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Initial state shows Press Start and dash stats",
+        "passed": true,
+        "actual": "Press Start"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Start disables button and shows waiting message",
+        "passed": true,
+        "actual": "Wait for green..."
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Start button disabled while waiting",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Early click shows Too soon",
+        "passed": true,
+        "actual": "Too soon!"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Early click re-enables Start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Box turns green after delay",
+        "passed": false,
+        "actual": "box"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Green box shows Click prompt",
+        "passed": false,
+        "actual": "Wait for green..."
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Clicking green box shows ms result",
+        "passed": false,
+        "actual": "Too soon!"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Best time recorded after valid round",
+        "passed": false,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "name": "Last time recorded after valid round",
+        "passed": false,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:47:55.516Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d9a097ba-8594-433f-ac44-93904dbba24d",
+        "status": "failed",
+        "passed": 5,
+        "failed": 5,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:47:55.518Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:47:58.536Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645",
+        "checks": 7,
+        "review": true,
+        "revised": 0,
+        "dropped": 3,
+        "verdicts": [
+          {
+            "name": "Box turns green after delay",
+            "verdict": "unsupported",
+            "reason": "The check clicks Start and immediately asserts the box class contains 'ready'. The requirements specify a random delay (1–5 s) before the box turns green, so an app that fully meets the requirements w"
+          },
+          {
+            "name": "Green box shows Click prompt",
+            "verdict": "unsupported",
+            "reason": "The check clicks Start and immediately expects the message 'Click!', but the requirements mandate a random 1–5 s delay before the box turns green. A correct app would still show 'Wait for green...' at"
+          },
+          {
+            "name": "Clicking green box shows ms result",
+            "verdict": "unsupported",
+            "reason": "The check clicks Start then immediately clicks the box, which in a correct app is an early click and legitimately shows 'Too soon!'. The requirements require waiting for the box to turn green before c"
+          },
+          {
+            "name": "Best time recorded after valid round",
+            "verdict": "app-wrong",
+            "reason": "The check clicks Start then immediately clicks the box, producing an early click ('Too soon!') rather than a valid round, so no best time is recorded. The requirements require waiting for green before"
+          },
+          {
+            "name": "Last time recorded after valid round",
+            "verdict": "app-wrong",
+            "reason": "The check clicks Start then immediately clicks the box, which is an early click in a correct app, so the last time stays '—'. The requirements require waiting for the box to turn green before clicking"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:47:58.537Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "testPlanId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Initial state shows Press Start and dash stats",
+        "passed": true,
+        "actual": "Press Start"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Start disables button and shows waiting message",
+        "passed": true,
+        "actual": "Wait for green..."
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Start button disabled while waiting",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Early click shows Too soon",
+        "passed": true,
+        "actual": "Too soon!"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Early click re-enables Start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Best time recorded after valid round",
+        "passed": false,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "name": "Last time recorded after valid round",
+        "passed": false,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T07:48:04.864Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "bdda1959-6c13-498e-96c8-c734de8196d7",
+        "status": "failed",
+        "passed": 5,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T07:48:04.866Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T07:48:13.622Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T07:48:13.622Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T07:48:13.644Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T07:48:13.645Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "testPlanId": "c2a0aa2b-e40e-4f27-86d0-054bd81cc645",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Initial state shows Press Start and dash stats",
+        "passed": true,
+        "actual": "Press Start"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Start disables button and shows waiting message",
+        "passed": true,
+        "actual": "Wait for green..."
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Start button disabled while waiting",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Early click shows Too soon",
+        "passed": true,
+        "actual": "Too soon!"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Early click re-enables Start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Best time recorded after valid round",
+        "passed": false,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "name": "Last time recorded after valid round",
+        "passed": false,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-21T07:48:19.999Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f0834ac7-880e-46be-a660-ff24225ccc8a",
+        "status": "failed",
+        "passed": 5,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-21T07:48:20.001Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows Press Start and dash stats",
+        "actions": [],
+        "selector": "#message",
+        "expected": "Press Start",
+        "assertion": "text"
+      },
+      {
+        "name": "Start disables button and shows waiting message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Wait for green...",
+        "assertion": "text"
+      },
+      {
+        "name": "Start button disabled while waiting",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          }
+        ],
+        "selector": "#start-btn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Early click shows Too soon",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#box"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Too soon!",
+        "assertion": "text"
+      },
+      {
+        "name": "Early click re-enables Start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#box"
+          }
+        ],
+        "selector": "#start-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Best time recorded after valid round",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#box"
+          }
+        ],
+        "selector": "#best-time",
+        "expected": "^\\d+ ms$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Last time recorded after valid round",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#box"
+          }
+        ],
+        "selector": "#last-time",
+        "expected": "^\\d+ ms$",
+        "assertion": "matches"
+      }
+    ],
+    "limitations": [
+      "Random 1-5s delay cannot be waited for deterministically; green-state checks may fail if box not yet green.",
+      "No timing control means early-click checks may race the random delay.",
+      "Best time persistence across reloads not tested due to fresh isolation.",
+      "Keyboard Enter/Space activation not tested since only synthetic key events are available.",
+      "Not checked: Box turns green after delay: The check clicks Start and immediately asserts the box class contains 'ready'. The requirements specify a random delay (1–5 s) before the box turns green, so an app that fully meets the requirements w",
+      "Not checked: Green box shows Click prompt: The check clicks Start and immediately expects the message 'Click!', but the requirements mandate a random 1–5 s delay before the box turns green. A correct app would still show 'Wait for green...' at",
+      "Not checked: Clicking green box shows ms result: The check clicks Start then immediately clicks the box, which in a correct app is an early click and legitimately shows 'Too soon!'. The requirements require waiting for the box to turn green before c"
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3888,
+      "completion_tokens": 534,
+      "total_tokens": 4422,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 2864
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Reaction-Time Test</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Reaction Time Test</h1>\n    <p class=\"subtitle\">Click the box when it turns green.</p>\n\n    <div class=\"stats\">\n      <div class=\"stat\">\n        <span class=\"stat-label\">Last</span>\n        <span id=\"last-time\" class=\"stat-value\">—</span>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Best</span>\n        <span id=\"best-time\" class=\"stat-value\">—</span>\n      </div>\n    </div>\n\n    <div id=\"box\" class=\"box\" role=\"button\" tabindex=\"0\" aria-label=\"Reaction box. Click or press Enter when it turns green.\">\n      <p id=\"message\" class=\"box-message\">Press Start</p>\n    </div>\n\n    <button id=\"start-btn\" class=\"btn\" aria-label=\"Start the reaction test\">Start</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with stats, reaction box and Start button."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card: #2a2a40;\n  --text: #e0e0f0;\n  --accent: #4caf50;\n  --danger: #e74c3c;\n  --muted: #8888aa;\n  --radius: 12px;\n  --gap: 1.5rem;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1rem;\n}\n\n.card {\n  background: var(--card);\n  border-radius: var(--radius);\n  padding: 2rem;\n  width: 100%;\n  max-width: 480px;\n  text-align: center;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n  display: flex;\n  flex-direction: column;\n  gap: var(--gap);\n}\n\nh1 {\n  font-size: 1.75rem;\n  font-weight: 700;\n  letter-spacing: -0.02em;\n}\n\n.subtitle {\n  color: var(--muted);\n  font-size: 1rem;\n}\n\n.stats {\n  display: flex;\n  justify-content: center;\n  gap: 2rem;\n}\n\n.stat {\n  display: flex;\n  flex-direction: column;\n  gap: 0.25rem;\n}\n\n.stat-label {\n  font-size: 0.875rem;\n  color: var(--muted);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\n.stat-value {\n  font-size: 1.5rem;\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n}\n\n.box {\n  background: var(--muted);\n  border-radius: var(--radius);\n  min-height: 160px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  user-select: none;\n  padding: 1rem;\n  outline: none;\n}\n\n.box:hover {\n  filter: brightness(1.1);\n}\n\n.box:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.box:active {\n  transform: scale(0.98);\n}\n\n.box.ready {\n  background: var(--accent);\n}\n\n.box.early {\n  background: var(--danger);\n}\n\n.box-message {\n  font-size: 1.25rem;\n  font-weight: 600;\n  color: var(--text);\n  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1.125rem;\n  font-weight: 600;\n  padding: 0.875rem 2rem;\n  border: none;\n  border-radius: var(--radius);\n  background: var(--accent);\n  color: var(--text);\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n\n.btn:hover {\n  background: #5bc45f;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--text);\n  outline-offset: 3px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.btn:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 1.25rem;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .box {\n    min-height: 120px;\n  }\n}",
+      "description": "Themed responsive styling with hover, focus and pressed states."
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const box = document.getElementById('box');\n  const message = document.getElementById('message');\n  const startBtn = document.getElementById('start-btn');\n  const lastTimeEl = document.getElementById('last-time');\n  const bestTimeEl = document.getElementById('best-time');\n\n  let state = 'idle'; // idle | waiting | ready | result | early\n  let timeoutId = null;\n  let startTime = 0;\n  let bestTime = null;\n\n  // Load best time from localStorage if available\n  try {\n    const stored = localStorage.getItem('reactionBestTime');\n    if (stored !== null) {\n      bestTime = parseInt(stored, 10);\n      if (!isNaN(bestTime)) bestTimeEl.textContent = bestTime + ' ms';\n    }\n  } catch (e) {\n    // localStorage unavailable, ignore\n  }\n\n  function setState(newState) {\n    state = newState;\n    box.classList.remove('ready', 'early');\n    if (state === 'ready') box.classList.add('ready');\n    if (state === 'early') box.classList.add('early');\n  }\n\n  function resetBox() {\n    if (timeoutId) {\n      clearTimeout(timeoutId);\n      timeoutId = null;\n    }\n    setState('idle');\n    message.textContent = 'Press Start';\n    startBtn.disabled = false;\n  }\n\n  function startGame() {\n    if (state === 'waiting' || state === 'ready') return;\n    resetBox();\n    setState('waiting');\n    message.textContent = 'Wait for green...';\n    startBtn.disabled = true;\n\n    const delay = 1000 + Math.random() * 4000; // 1–5 seconds\n    timeoutId = setTimeout(function () {\n      timeoutId = null;\n      setState('ready');\n      message.textContent = 'Click!';\n      startTime = performance.now();\n    }, delay);\n  }\n\n  function handleBoxClick() {\n    if (state === 'waiting') {\n      // Clicked too early\n      if (timeoutId) {\n        clearTimeout(timeoutId);\n        timeoutId = null;\n      }\n      setState('early');\n      message.textContent = 'Too soon!';\n      startBtn.disabled = false;\n      return;\n    }\n\n    if (state === 'ready') {\n      const reaction = Math.round(performance.now() - startTime);\n      setState('result');\n      message.textContent = reaction + ' ms';\n      lastTimeEl.textContent = reaction + ' ms';\n\n      if (bestTime === null || reaction < bestTime) {\n        bestTime = reaction;\n        bestTimeEl.textContent = bestTime + ' ms';\n        try {\n          localStorage.setItem('reactionBestTime', bestTime);\n        } catch (e) {\n          // ignore\n        }\n      }\n\n      startBtn.disabled = false;\n      return;\n    }\n\n    if (state === 'idle' || state === 'result' || state === 'early') {\n      // Clicking the box when not in a round does nothing (or could restart)\n      // We'll just ignore to avoid accidental restarts.\n    }\n  }\n\n  startBtn.addEventListener('click', startGame);\n\n  box.addEventListener('click', handleBoxClick);\n\n  box.addEventListener('keydown', function (e) {\n    if (e.key === 'Enter' || e.key === ' ') {\n      e.preventDefault();\n      handleBoxClick();\n    }\n  });\n\n  // Initialize\n  resetBox();\n})();",
+      "description": "Game logic with random delay, early-click detection, timing and best-time persistence."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Reaction-Time Test\n\nA simple offline browser app to test your reaction time. Click the box when it turns green and see your time in milliseconds. Clicking too early shows \"Too soon!\". Your best time is saved locally.\n\n## How to use\n\n1. Open `index.html` in any modern browser.\n2. Press the **Start** button.\n3. Wait for the box to turn green (random delay between 1–5 seconds).\n4. Click the box as soon as it turns green.\n5. Your reaction time appears. Try to beat your best!\n\n## Features\n\n- Random delay between 1 and 5 seconds.\n- Early click detection with \"Too soon!\" message.\n- Best time tracking using `localStorage` (falls back gracefully if unavailable).\n- Keyboard accessible: use Tab to focus, Enter or Space to activate the box and Start button.\n- Responsive layout down to 360px width.\n- No external dependencies, network requests, or assets.\n\n## Files\n\n- `index.html` – main HTML structure.\n- `style.css` – styling and theme.\n- `script.js` – game logic.\n\n## Development\n\nJust edit the files and refresh the browser. No build step required.\n\n## License\n\nMIT",
+      "description": "Project overview, usage instructions and feature list."
+    }
+  ]
+}

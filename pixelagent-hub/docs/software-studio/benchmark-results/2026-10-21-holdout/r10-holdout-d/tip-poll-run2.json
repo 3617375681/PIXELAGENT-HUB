@@ -1,0 +1,449 @@
+{
+  "caseId": "tip-poll",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 20,
+  "reportedTokens": 8491,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:45:10.700Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:45:10.700Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:45:14.547Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Poll"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:45:14.547Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:45:22.780Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:45:22.781Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:45:23.347Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:45:23.348Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "e3ea9f7d-5654-4dd3-937e-2dba97001c35"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:45:26.282Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "e3ea9f7d-5654-4dd3-937e-2dba97001c35",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:45:26.283Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "testPlanId": "e3ea9f7d-5654-4dd3-937e-2dba97001c35",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Four options render with zero votes",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Vote increments count and bar",
+        "passed": true,
+        "actual": "1 vote"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Vote shows 100% bar width",
+        "passed": true,
+        "actual": "100%"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Selected option aria-pressed true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Status message after voting",
+        "passed": true,
+        "actual": "You voted for Modern pixel."
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Changing vote moves count",
+        "passed": true,
+        "actual": "0 votes"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Changed vote bar resets to 0%",
+        "passed": true,
+        "actual": "0%"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Reset clears votes",
+        "passed": true,
+        "actual": "0 votes"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Reset clears selection",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "name": "Reset status message",
+        "passed": true,
+        "actual": "Votes reset."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:45:29.544Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "bc13520a-afc5-4955-bc62-6738db7281d6",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:45:29.549Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Four options render with zero votes",
+        "actions": [],
+        "selector": ".option",
+        "expected": "4",
+        "assertion": "count"
+      },
+      {
+        "name": "Vote increments count and bar",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 0,
+        "expected": "1 vote"
+      },
+      {
+        "name": "Vote shows 100% bar width",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 1
+          }
+        ],
+        "selector": ".option .bar-fill",
+        "nth": 1,
+        "expected": "100%",
+        "assertion": "attribute",
+        "attribute": "style.width"
+      },
+      {
+        "name": "Selected option aria-pressed true",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 2
+          }
+        ],
+        "selector": ".option",
+        "nth": 2,
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Status message after voting",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 3
+          }
+        ],
+        "selector": "#status-message",
+        "expected": "You voted for Modern pixel."
+      },
+      {
+        "name": "Changing vote moves count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 1
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 0,
+        "expected": "0 votes"
+      },
+      {
+        "name": "Changed vote bar resets to 0%",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 1
+          }
+        ],
+        "selector": ".option .bar-fill",
+        "nth": 0,
+        "expected": "0%",
+        "assertion": "attribute",
+        "attribute": "style.width"
+      },
+      {
+        "name": "Reset clears votes",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 0,
+        "expected": "0 votes"
+      },
+      {
+        "name": "Reset clears selection",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": ".option",
+        "nth": 0,
+        "expected": "false",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Reset status message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#status-message",
+        "expected": "Votes reset."
+      }
+    ],
+    "limitations": [
+      "Bar width transition animation not verified; only inline style width is checked.",
+      "Status message auto-clears after 2s; not tested due to timing.",
+      "No persistence across reloads is specified, so none is tested.",
+      "Keyboard focus styling and responsive layout are not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3528,
+      "completion_tokens": 591,
+      "total_tokens": 4119,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2376
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Poll</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"poll-card\" aria-labelledby=\"poll-question\">\n    <h1 id=\"poll-question\">Which pixel art style do you prefer?</h1>\n    <div id=\"options-container\" class=\"options\" role=\"group\" aria-labelledby=\"poll-question\">\n      <!-- Options will be injected by JavaScript -->\n    </div>\n    <button id=\"reset-btn\" class=\"reset-btn\" type=\"button\">Reset votes</button>\n    <p id=\"status-message\" class=\"status\" aria-live=\"polite\"></p>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a3c;\n  --text: #e0e0e0;\n  --accent: #f0a500;\n  --accent-hover: #ffc107;\n  --bar-bg: #3a3a4c;\n  --bar-fill: #f0a500;\n  --focus: #ffd54f;\n  --border-radius: 12px;\n  --padding: 20px;\n  --font-size: 18px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: var(--font-size);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  padding: 16px;\n}\n\n.poll-card {\n  background: var(--card-bg);\n  border-radius: var(--border-radius);\n  padding: var(--padding);\n  width: 100%;\n  max-width: 600px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\nh1 {\n  font-size: 1.4em;\n  text-align: center;\n  color: var(--accent);\n  line-height: 1.3;\n}\n\n.options {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.option {\n  background: var(--bar-bg);\n  border-radius: 8px;\n  padding: 12px 16px;\n  cursor: pointer;\n  border: 2px solid transparent;\n  transition: background 0.2s, border-color 0.2s;\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n  text-align: left;\n  font: inherit;\n  color: inherit;\n  width: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n.option:hover {\n  background: #4a4a5c;\n}\n\n.option:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.option.selected {\n  border-color: var(--accent);\n}\n\n.option:active {\n  transform: scale(0.98);\n}\n\n.option-label {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-weight: 600;\n  z-index: 1;\n}\n\n.vote-count {\n  font-size: 0.9em;\n  color: var(--text);\n  opacity: 0.8;\n}\n\n.bar-container {\n  height: 12px;\n  background: var(--bar-bg);\n  border-radius: 6px;\n  overflow: hidden;\n  z-index: 1;\n}\n\n.bar-fill {\n  height: 100%;\n  background: var(--bar-fill);\n  width: 0%;\n  border-radius: 6px;\n  transition: width 0.4s ease;\n}\n\n.reset-btn {\n  background: transparent;\n  border: 2px solid var(--accent);\n  color: var(--accent);\n  padding: 12px 24px;\n  border-radius: 8px;\n  font: inherit;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, color 0.2s, transform 0.1s;\n  align-self: center;\n  min-width: 160px;\n}\n\n.reset-btn:hover {\n  background: var(--accent);\n  color: var(--bg);\n}\n\n.reset-btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.reset-btn:active {\n  transform: scale(0.96);\n}\n\n.status {\n  text-align: center;\n  font-size: 0.9em;\n  min-height: 1.2em;\n  color: var(--accent);\n}\n\n@media (max-width: 400px) {\n  :root {\n    --padding: 16px;\n    --font-size: 16px;\n  }\n  h1 {\n    font-size: 1.2em;\n  }\n  .option {\n    padding: 10px 12px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const options = [\n  { id: 'opt1', label: '8-bit' },\n  { id: 'opt2', label: '16-bit' },\n  { id: 'opt3', label: '32-bit' },\n  { id: 'opt4', label: 'Modern pixel' }\n];\n\nlet votes = options.map(() => 0);\nlet userVote = null; // index of selected option, null if none\n\nconst container = document.getElementById('options-container');\nconst resetBtn = document.getElementById('reset-btn');\nconst statusMsg = document.getElementById('status-message');\n\nfunction render() {\n  const total = votes.reduce((a, b) => a + b, 0);\n  container.innerHTML = '';\n  options.forEach((opt, i) => {\n    const btn = document.createElement('button');\n    btn.className = 'option' + (userVote === i ? ' selected' : '');\n    btn.type = 'button';\n    btn.setAttribute('aria-pressed', userVote === i ? 'true' : 'false');\n    btn.setAttribute('aria-label', `${opt.label}, ${votes[i]} votes, ${total ? Math.round((votes[i] / total) * 100) : 0}%`);\n    btn.dataset.index = i;\n    btn.innerHTML = `\n      <span class=\"option-label\">\n        <span>${opt.label}</span>\n        <span class=\"vote-count\">${votes[i]} vote${votes[i] !== 1 ? 's' : ''}</span>\n      </span>\n      <div class=\"bar-container\">\n        <div class=\"bar-fill\" style=\"width: ${total ? (votes[i] / total) * 100 : 0}%\"></div>\n      </div>\n    `;\n    btn.addEventListener('click', () => handleVote(i));\n    container.appendChild(btn);\n  });\n  statusMsg.textContent = userVote !== null ? `You voted for ${options[userVote].label}.` : '';\n}\n\nfunction handleVote(index) {\n  if (userVote === index) return; // already voted for this\n  if (userVote !== null) {\n    votes[userVote]--;\n  }\n  votes[index]++;\n  userVote = index;\n  render();\n}\n\nresetBtn.addEventListener('click', () => {\n  votes = options.map(() => 0);\n  userVote = null;\n  render();\n  statusMsg.textContent = 'Votes reset.';\n  setTimeout(() => { if (statusMsg.textContent === 'Votes reset.') statusMsg.textContent = ''; }, 2000);\n});\n\n// Initial render\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Poll\n\nA simple offline browser-based poll app with 4 options. Vote by clicking an option, see live vote counts and percentage bars, change your vote, and reset all votes.\n\n## Features\n\n- 4 poll options with vote counts and percentage bars\n- Click to vote; click another option to change your vote\n- Reset votes button clears all votes\n- Keyboard accessible with visible focus states\n- Responsive layout (works from 360px wide)\n- No external dependencies or network requests\n\n## Usage\n\nOpen `index.html` in any modern browser. No server or build step required.\n\n## Files\n\n- `index.html` – main page structure\n- `styles.css` – styling and layout\n- `script.js` – poll logic\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

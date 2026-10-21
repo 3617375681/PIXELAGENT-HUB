@@ -105,3 +105,43 @@ Set C (8 new ideas, commit `1365e3f`) is the clean set this round.
 - Word counter: a plan was cut off at 16,853 characters again. DeepSeek's default output cap is 4,096 tokens, and the 100-character rule did not stop the Tester from writing long sample texts.
 - Memory 1: a plan failed validation twice.
 - Memory 3: a check needed a pattern on an attribute, `aria-label` `"Card 1, revealed"`, but `matches` only reads text.
+
+## Round 10 on `a1c8986`
+
+The round-10 changes (commit `a1c8986`):
+- DeepSeek replies may run to 8,192 tokens.
+- A review reply that is not valid JSON gets one retry.
+- `changed` on an element that the actions create takes its baseline right after the actions.
+- `matches` can test an attribute.
+
+Set D (8 new ideas, commit `bb1cafe`) is this round's clean set.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Reviews (revised) | Coder repairs | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set D**](r10-holdout-d/) (clean) | 16 | 15/16 | **14/16** | 3 | 3 (0) | 2 | 23 s | 174,310 |
+| [Set C](r10-holdout-c/) (used for round 10) | 16 | 14/16 | 13/16 | 5 | 7 (7) | 2 | 29 s | 220,275 |
+| [Showcase](r10-showcase/) | 18 | 16/18 | **16/18** | 0 | 5 (4) | 2 | 23 s | 213,136 |
+| [Fixed cases](r10-fixed/) | 15 | **15/15** | 15/15 | 0 | 0 | 0 | 20 s | 121,579 |
+
+**The clean held-out score, strict:**
+
+| Round | Clean set | Score |
+| --- | --- | --- |
+| 8 | B | 10/16 |
+| 9 | C | 12/16 |
+| 10 | D | **14/16** |
+
+Each round is measured on ideas its fixes never saw. The showcase holds at 16/18 strict, and the fixed cases pass 15/15 for the fifth round running.
+
+**The remaining failures:**
+
+| Run | Cause |
+| --- | --- |
+| seat picker 1 (D) | **Tester mistake.** The check selects B4, but the app's source lists B4 as already taken. The review answered that a correct app would pass. |
+| streak clicker 1 (D, a pass only with drops) | **Tester arithmetic.** Three checks click 8 times and expect a purchase that costs 10. The review dropped them as `unsupported`. |
+| mortgage 2 (C) | **Real app bug, caught.** Total paid is $10,789.52, but the amortization gives $10,789.56. Two further checks expected an error message that the browser's own `min` validation pre-empts; the review corrected them. |
+| reaction 1 (C) | **No way to wait.** The box turns green after a random 1–5 s delay, and checks act immediately. Three checks were dropped as `unsupported`, and the cap kept two. |
+| tip calculator 1 (showcase) | **Real app bug, caught.** $55.55 split 2 ways shows $27.77; floating-point rounding of 27.775 should give $27.78. |
+| pet 3 (showcase) | **The review's correction asserted a change the requirement does not cause.** |
+
+Two of the six are real app bugs that a person would notice. That is the job of the checks. The rest are model judgement errors (arithmetic, not reading the source) plus one language gap: there is no action that waits.

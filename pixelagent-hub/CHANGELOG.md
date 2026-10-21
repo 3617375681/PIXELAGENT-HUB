@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+## [2.5.0] — 2026-10-21
+
+### Added
+- Held-out benchmark (`2026-10-21-holdout/`): four pre-registered sets of 8 new ideas, each committed before its runs and never used for tuning. On the clean sets, strict passes rose from 10/16 to 12/16 to 14/16 over rounds 8–10.
+- `stable` assertion: after the actions, the text must not change for 1.5 s (a paused timer).
+- `attribute: "style.<property>"` reads one inline style value (`style.width` reads "90%").
+- `matches` can test an attribute.
+- `changed` on an element the actions create takes its baseline right after the actions.
+- An `input` action on a checkbox or radio clicks it into the wanted state.
+
+### Changed
+- The Tester review answers one factual question, `correctAppPasses`, and the verdict is derived from it in code. It no longer explains a check's mistake and then blames the app.
+- PLAY LIVE requests JSON mode (DeepSeek, OpenAI, Qwen) and up to 8,192 output tokens (DeepSeek). The Tester plans and reviews at temperature 0.2. An invalid review reply gets one retry.
+- Text checks also accept the rendered text with CSS `text-transform` switched off.
+
 ## [2.4.0] — 2026-10-20
 
 ### Added

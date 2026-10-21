@@ -1,0 +1,434 @@
+{
+  "caseId": "quiz",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 22,
+  "reportedTokens": 9193,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:06:40.163Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:06:40.164Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:06:45.588Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Offline Pixel-Style Two-Question Quiz"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:06:45.588Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:06:54.084Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:06:54.084Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:06:54.562Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:06:54.563Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8ac10dcb-a728-4cfe-8628-216e6ecae779"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:06:57.034Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8ac10dcb-a728-4cfe-8628-216e6ecae779",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:06:57.036Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "testPlanId": "8ac10dcb-a728-4cfe-8628-216e6ecae779",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Initial question and answers",
+        "passed": true,
+        "actual": "2 + 2 = ?"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Initial answer buttons show 4 and 5",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Initial score is 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Correct answer increments score",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Answering locks both answers",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Wrong answer keeps score 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Next shows second question",
+        "passed": true,
+        "actual": "3 + 3 = ?"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Second question answers 5 and 6",
+        "passed": true,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Next after second answer finishes",
+        "passed": true,
+        "actual": "Finished"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "name": "Restart resets question and score",
+        "passed": true,
+        "actual": "2 + 2 = ?"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:07:00.272Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "596a5a36-e2c1-45ad-9295-ff0e4ff414fb",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:07:00.276Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial question and answers",
+        "actions": [],
+        "selector": "#question",
+        "expected": "2 + 2 = ?",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial answer buttons show 4 and 5",
+        "actions": [],
+        "selector": "#answer-a",
+        "expected": "4",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial score is 0",
+        "actions": [],
+        "selector": "#score",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Correct answer increments score",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          }
+        ],
+        "selector": "#score",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Answering locks both answers",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          }
+        ],
+        "selector": "#answer-b",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Wrong answer keeps score 0",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          }
+        ],
+        "selector": "#score",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Next shows second question",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          }
+        ],
+        "selector": "#question",
+        "expected": "3 + 3 = ?",
+        "assertion": "text"
+      },
+      {
+        "name": "Second question answers 5 and 6",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          }
+        ],
+        "selector": "#answer-b",
+        "expected": "6",
+        "assertion": "text"
+      },
+      {
+        "name": "Next after second answer finishes",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          }
+        ],
+        "selector": "#question",
+        "expected": "Finished",
+        "assertion": "text"
+      },
+      {
+        "name": "Restart resets question and score",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#answer-a"
+          },
+          {
+            "type": "click",
+            "selector": "#next"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-b"
+          },
+          {
+            "type": "click",
+            "selector": "#restart"
+          }
+        ],
+        "selector": "#question",
+        "expected": "2 + 2 = ?",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "No check verifies README content or the under-230-lines constraint.",
+      "No check verifies offline behavior, absence of storage, or absence of packages.",
+      "No check verifies pixel styling, labels, or accessibility beyond button text.",
+      "Restart check does not separately assert score reset to 0."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3599,
+      "completion_tokens": 525,
+      "total_tokens": 4124,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2447
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel Quiz</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Quiz</h1>\n    <p id=\"question\" class=\"question\">2 + 2 = ?</p>\n    <div class=\"answers\" role=\"group\" aria-label=\"Answer choices\">\n      <label class=\"answer-label\" for=\"answer-a\">Answer A</label>\n      <button id=\"answer-a\" class=\"btn answer\" type=\"button\">4</button>\n      <label class=\"answer-label\" for=\"answer-b\">Answer B</label>\n      <button id=\"answer-b\" class=\"btn answer\" type=\"button\">5</button>\n    </div>\n    <p class=\"score-line\">Score: <span id=\"score\">0</span></p>\n    <div class=\"controls\">\n      <button id=\"next\" class=\"btn\" type=\"button\">Next</button>\n      <button id=\"restart\" class=\"btn\" type=\"button\">Restart</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #29366f;\n  --text: #f4f4f4;\n  --accent: #41a6f6;\n  --correct: #38b764;\n  --wrong: #b13e53;\n  --font: \"Courier New\", Courier, monospace;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  background: var(--bg);\n  color: var(--text);\n  font-family: var(--font);\n  font-size: 16px;\n  line-height: 1.5;\n  image-rendering: pixelated;\n}\n\n.card {\n  width: 100%;\n  max-width: 420px;\n  padding: 24px;\n  background: var(--card);\n  border: 4px solid var(--text);\n  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);\n  text-align: center;\n}\n\nh1 {\n  margin: 0 0 16px;\n  font-size: 20px;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n}\n\n.question {\n  margin: 0 0 24px;\n  font-size: 28px;\n  font-weight: bold;\n  min-height: 42px;\n}\n\n.answers {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  margin-bottom: 16px;\n  text-align: left;\n}\n\n.answer-label {\n  font-size: 14px;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  opacity: 0.8;\n}\n\n.btn {\n  font-family: var(--font);\n  font-size: 18px;\n  font-weight: bold;\n  color: var(--text);\n  background: var(--bg);\n  border: 3px solid var(--text);\n  padding: 12px 16px;\n  cursor: pointer;\n  transition: background 0.1s, transform 0.1s;\n  min-height: 48px;\n}\n\n.btn:hover { background: var(--accent); color: var(--bg); }\n.btn:focus-visible { outline: 4px solid var(--accent); outline-offset: 2px; }\n.btn:active { transform: translate(2px, 2px); }\n.btn:disabled { cursor: not-allowed; opacity: 0.6; }\n\n.answer.correct { background: var(--correct); color: var(--bg); border-color: var(--correct); }\n.answer.wrong { background: var(--wrong); color: var(--text); border-color: var(--wrong); }\n\n.score-line {\n  margin: 0 0 16px;\n  font-size: 18px;\n}\n\n#score { font-weight: bold; color: var(--accent); }\n\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n}\n\n.controls .btn { flex: 1; }\n\n@media (max-width: 360px) {\n  .card { padding: 16px; }\n  .question { font-size: 24px; }\n  .answers { grid-template-columns: 1fr; }\n  .controls { flex-direction: column; }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var questions = [\n    { text: '2 + 2 = ?', a: '4', b: '5', correct: 'a' },\n    { text: '3 + 3 = ?', a: '5', b: '6', correct: 'b' }\n  ];\n\n  var state = { index: 0, answered: false, score: 0 };\n\n  var questionEl = document.getElementById('question');\n  var answerA = document.getElementById('answer-a');\n  var answerB = document.getElementById('answer-b');\n  var scoreEl = document.getElementById('score');\n  var nextBtn = document.getElementById('next');\n  var restartBtn = document.getElementById('restart');\n\n  function render() {\n    var q = questions[state.index];\n    questionEl.textContent = q.text;\n    answerA.textContent = q.a;\n    answerB.textContent = q.b;\n    scoreEl.textContent = String(state.score);\n    answerA.disabled = state.answered;\n    answerB.disabled = state.answered;\n    answerA.classList.remove('correct', 'wrong');\n    answerB.classList.remove('correct', 'wrong');\n  }\n\n  function lockAnswers() {\n    state.answered = true;\n    answerA.disabled = true;\n    answerB.disabled = true;\n  }\n\n  function handleAnswer(choice) {\n    if (state.answered) return;\n    var q = questions[state.index];\n    lockAnswers();\n    if (choice === q.correct) {\n      state.score += 1;\n      (choice === 'a' ? answerA : answerB).classList.add('correct');\n    } else {\n      (choice === 'a' ? answerA : answerB).classList.add('wrong');\n      (q.correct === 'a' ? answerA : answerB).classList.add('correct');\n    }\n    scoreEl.textContent = String(state.score);\n  }\n\n  answerA.addEventListener('click', function () { handleAnswer('a'); });\n  answerB.addEventListener('click', function () { handleAnswer('b'); });\n\n  nextBtn.addEventListener('click', function () {\n    if (!state.answered) return;\n    if (state.index < questions.length - 1) {\n      state.index += 1;\n      state.answered = false;\n      render();\n    } else {\n      questionEl.textContent = 'Finished';\n      answerA.disabled = true;\n      answerB.disabled = true;\n      answerA.classList.remove('correct', 'wrong');\n      answerB.classList.remove('correct', 'wrong');\n    }\n  });\n\n  restartBtn.addEventListener('click', function () {\n    state.index = 0;\n    state.answered = false;\n    state.score = 0;\n    render();\n  });\n\n  render();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Quiz\n\nAn offline, pixel-style two-question arithmetic quiz built with plain HTML, CSS, and JavaScript. No packages, network requests, storage, or external assets.\n\n## Run\n\nOpen `index.html` in any modern browser. No server or build step required.\n\n## Features\n\n- Two fixed questions: `2 + 2 = ?` (answers 4 / 5) and `3 + 3 = ?` (answers 5 / 6).\n- Clicking an answer locks both answer buttons and increments the integer score once if correct.\n- `#next` advances to the second question, then sets `#question` to `Finished` after the second answer.\n- `#restart` resets to the first question with score `0` and unlocked answers.\n- Pixel-style card on a themed background, responsive down to 360px wide.\n- Keyboard-accessible controls with visible hover, focus, and pressed states.\n\n## Controls\n\n- **Answer A / Answer B**: choose an answer (locks after first selection).\n- **Next**: advance to the next question or finish.\n- **Restart**: reset the quiz.\n\n## Files\n\n- `index.html` — structure and labeled controls.\n- `styles.css` — pixel-style theme and responsive layout.\n- `script.js` — quiz state, scoring, and event handling.\n",
+      "description": ""
+    }
+  ]
+}

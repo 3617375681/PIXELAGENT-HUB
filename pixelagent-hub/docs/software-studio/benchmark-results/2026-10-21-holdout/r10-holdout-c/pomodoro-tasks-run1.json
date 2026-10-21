@@ -1,0 +1,622 @@
+{
+  "caseId": "pomodoro-tasks",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/9",
+    "9/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 33,
+  "reportedTokens": 14508,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:50:09.882Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:50:09.882Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:50:14.708Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Task Timer"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:50:14.709Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:50:24.609Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:50:24.609Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:50:25.102Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:50:25.102Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "638fd5b2-e7d6-43bc-bb45-1ebd90614083"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:50:28.069Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "638fd5b2-e7d6-43bc-bb45-1ebd90614083",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:50:28.070Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "testPlanId": "638fd5b2-e7d6-43bc-bb45-1ebd90614083",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Empty state visible initially",
+        "passed": true,
+        "actual": "No tasks yet. Add one above!"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Add task shows row and hides empty state",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "New task shows 00:00 and Start",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Start button toggles to Stop",
+        "passed": true,
+        "actual": "Stop"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Timer counts up after start",
+        "passed": true,
+        "actual": "00:01"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Only one task runs at a time",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Remove deletes the task",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Removing last task restores empty state",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "name": "Stop freezes elapsed time",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:50:33.714Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "5b5bed6d-3069-4676-a2da-fb2caa6897e7",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:50:33.718Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "638fd5b2-e7d6-43bc-bb45-1ebd90614083",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:50:36.162Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "638fd5b2-e7d6-43bc-bb45-1ebd90614083",
+        "checks": 9,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Only one task runs at a time",
+            "verdict": "check-wrong",
+            "reason": "The check adds two tasks, then clicks the Start button of the first task (nth 0) and the Start button of the second task (nth 1). After starting the first task, its button becomes a Stop button, so on"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:50:36.163Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "testPlanId": "638fd5b2-e7d6-43bc-bb45-1ebd90614083",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Empty state visible initially",
+        "passed": true,
+        "actual": "No tasks yet. Add one above!"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Add task shows row and hides empty state",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "New task shows 00:00 and Start",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Start button toggles to Stop",
+        "passed": true,
+        "actual": "Stop"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Timer counts up after start",
+        "passed": true,
+        "actual": "00:01"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Only one task runs at a time",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Remove deletes the task",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Removing last task restores empty state",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "name": "Stop freezes elapsed time",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T07:50:41.811Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "ca1e95d5-dbbf-4d43-9e57-7068810bd5bd",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T07:50:41.816Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Empty state visible initially",
+        "actions": [],
+        "selector": "#empty-state",
+        "expected": "No tasks yet. Add one above!",
+        "assertion": "text"
+      },
+      {
+        "name": "Add task shows row and hides empty state",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Write docs"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          }
+        ],
+        "selector": ".task-item",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "New task shows 00:00 and Start",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Write docs"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          }
+        ],
+        "selector": ".task-time",
+        "expected": "00:00",
+        "assertion": "text"
+      },
+      {
+        "name": "Start button toggles to Stop",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Write docs"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.start"
+          }
+        ],
+        "selector": ".task-item .btn.stop",
+        "expected": "Stop",
+        "assertion": "text"
+      },
+      {
+        "name": "Timer counts up after start",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Write docs"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.start"
+          }
+        ],
+        "selector": ".task-time",
+        "expected": "",
+        "assertion": "changed"
+      },
+      {
+        "name": "Only one task runs at a time",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Task A"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Task B"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.start",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".task-item:nth-child(2) .btn.start"
+          }
+        ],
+        "selector": ".task-item .btn.stop",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "Remove deletes the task",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Temp"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.remove"
+          }
+        ],
+        "selector": ".task-item",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Removing last task restores empty state",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Temp"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.remove"
+          }
+        ],
+        "selector": "#empty-state",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Stop freezes elapsed time",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Pause me"
+          },
+          {
+            "type": "click",
+            "selector": "#task-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.start"
+          },
+          {
+            "type": "click",
+            "selector": ".task-item .btn.stop"
+          }
+        ],
+        "selector": ".task-time",
+        "expected": "",
+        "assertion": "stable"
+      }
+    ],
+    "limitations": [
+      "Cannot assert exact mm:ss values since timing is real-time and non-deterministic.",
+      "Cannot verify elapsed time is preserved across stop/restart without waiting for known durations.",
+      "Synthetic key events are not trusted browser input; Enter-to-submit is not tested.",
+      "Pixel styling and responsive layout are not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4115,
+      "completion_tokens": 758,
+      "total_tokens": 4873,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 3091
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Task Timer</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Task Timer</h1>\n    <form id=\"task-form\" class=\"add-form\">\n      <label for=\"task-input\" class=\"visually-hidden\">Task name</label>\n      <input type=\"text\" id=\"task-input\" placeholder=\"Enter a task...\" autocomplete=\"off\" required>\n      <button type=\"submit\" class=\"btn primary\">Add</button>\n    </form>\n    <p id=\"empty-state\" class=\"empty-state\">No tasks yet. Add one above!</p>\n    <ul id=\"task-list\" class=\"task-list\"></ul>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card: #2a2a40;\n  --text: #e0e0e0;\n  --accent: #6c5ce7;\n  --accent-hover: #5a4bd1;\n  --running: #00b894;\n  --danger: #e17055;\n  --border: #3a3a55;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  padding: 1rem;\n}\n\n.card {\n  background: var(--card);\n  border-radius: 12px;\n  padding: 2rem;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 1.5rem;\n  text-align: center;\n  color: var(--accent);\n}\n\n.add-form {\n  display: flex;\n  gap: 0.5rem;\n  margin-bottom: 1.5rem;\n}\n\n.add-form input {\n  flex: 1;\n  padding: 0.75rem 1rem;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  background: var(--bg);\n  color: var(--text);\n  font-size: 1rem;\n  outline: none;\n  transition: border-color 0.2s;\n}\n\n.add-form input:focus {\n  border-color: var(--accent);\n}\n\n.btn {\n  padding: 0.75rem 1.25rem;\n  border: none;\n  border-radius: 8px;\n  font-size: 1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  color: #fff;\n}\n\n.btn:active {\n  transform: scale(0.96);\n}\n\n.btn.primary {\n  background: var(--accent);\n}\n\n.btn.primary:hover {\n  background: var(--accent-hover);\n}\n\n.btn.primary:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.task-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n}\n\n.task-item {\n  display: flex;\n  align-items: center;\n  gap: 0.75rem;\n  padding: 0.75rem 1rem;\n  background: var(--bg);\n  border-radius: 8px;\n  border: 2px solid transparent;\n  transition: border-color 0.2s;\n}\n\n.task-item.running {\n  border-color: var(--running);\n}\n\n.task-name {\n  flex: 1;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-weight: 500;\n}\n\n.task-time {\n  font-variant-numeric: tabular-nums;\n  font-weight: 700;\n  color: var(--accent);\n  min-width: 3.5rem;\n  text-align: right;\n}\n\n.task-item.running .task-time {\n  color: var(--running);\n}\n\n.btn.small {\n  padding: 0.4rem 0.75rem;\n  font-size: 0.875rem;\n}\n\n.btn.start {\n  background: var(--running);\n}\n\n.btn.start:hover {\n  background: #00a383;\n}\n\n.btn.stop {\n  background: var(--danger);\n}\n\n.btn.stop:hover {\n  background: #c95a3e;\n}\n\n.btn.remove {\n  background: transparent;\n  color: var(--danger);\n  border: 2px solid var(--danger);\n}\n\n.btn.remove:hover {\n  background: var(--danger);\n  color: #fff;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.empty-state {\n  text-align: center;\n  color: #888;\n  padding: 1rem 0;\n}\n\n.empty-state.hidden {\n  display: none;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 1.25rem;\n  }\n  .add-form {\n    flex-direction: column;\n  }\n  .task-item {\n    flex-wrap: wrap;\n  }\n  .task-name {\n    flex-basis: 100%;\n  }\n  .task-time {\n    text-align: left;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const taskForm = document.getElementById('task-form');\nconst taskInput = document.getElementById('task-input');\nconst taskList = document.getElementById('task-list');\nconst emptyState = document.getElementById('empty-state');\n\nlet tasks = [];\nlet activeTaskId = null;\nlet intervalId = null;\nlet nextId = 1;\n\nfunction formatTime(seconds) {\n  const m = Math.floor(seconds / 60).toString().padStart(2, '0');\n  const s = (seconds % 60).toString().padStart(2, '0');\n  return `${m}:${s}`;\n}\n\nfunction render() {\n  taskList.innerHTML = '';\n  emptyState.classList.toggle('hidden', tasks.length > 0);\n\n  tasks.forEach(task => {\n    const li = document.createElement('li');\n    li.className = 'task-item' + (task.id === activeTaskId ? ' running' : '');\n    li.dataset.id = task.id;\n\n    const nameSpan = document.createElement('span');\n    nameSpan.className = 'task-name';\n    nameSpan.textContent = task.name;\n\n    const timeSpan = document.createElement('span');\n    timeSpan.className = 'task-time';\n    timeSpan.textContent = formatTime(task.elapsed);\n\n    const toggleBtn = document.createElement('button');\n    toggleBtn.className = 'btn small ' + (task.id === activeTaskId ? 'stop' : 'start');\n    toggleBtn.textContent = task.id === activeTaskId ? 'Stop' : 'Start';\n    toggleBtn.setAttribute('aria-pressed', task.id === activeTaskId);\n    toggleBtn.setAttribute('aria-label', (task.id === activeTaskId ? 'Stop' : 'Start') + ' timer for ' + task.name);\n    toggleBtn.addEventListener('click', () => toggleTask(task.id));\n\n    const removeBtn = document.createElement('button');\n    removeBtn.className = 'btn small remove';\n    removeBtn.textContent = 'Remove';\n    removeBtn.setAttribute('aria-label', 'Remove task ' + task.name);\n    removeBtn.addEventListener('click', () => removeTask(task.id));\n\n    li.append(nameSpan, timeSpan, toggleBtn, removeBtn);\n    taskList.appendChild(li);\n  });\n}\n\nfunction startTimer(taskId) {\n  if (intervalId) {\n    clearInterval(intervalId);\n    intervalId = null;\n  }\n  activeTaskId = taskId;\n  intervalId = setInterval(() => {\n    const task = tasks.find(t => t.id === activeTaskId);\n    if (task) {\n      task.elapsed++;\n      const timeEl = taskList.querySelector(`[data-id=\"${task.id}\"] .task-time`);\n      if (timeEl) timeEl.textContent = formatTime(task.elapsed);\n    }\n  }, 1000);\n  render();\n}\n\nfunction stopTimer() {\n  if (intervalId) {\n    clearInterval(intervalId);\n    intervalId = null;\n  }\n  activeTaskId = null;\n  render();\n}\n\nfunction toggleTask(taskId) {\n  if (activeTaskId === taskId) {\n    stopTimer();\n  } else {\n    startTimer(taskId);\n  }\n}\n\nfunction removeTask(taskId) {\n  if (activeTaskId === taskId) {\n    stopTimer();\n  }\n  tasks = tasks.filter(t => t.id !== taskId);\n  render();\n}\n\ntaskForm.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const name = taskInput.value.trim();\n  if (!name) return;\n  tasks.push({ id: nextId++, name, elapsed: 0 });\n  taskInput.value = '';\n  taskInput.focus();\n  render();\n});\n\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Task Timer\n\nA simple offline browser app to track time spent on tasks. Add tasks, start/stop timers (only one runs at a time), and remove tasks. Time is shown in mm:ss format.\n\n## Features\n\n- Add tasks via a labeled input and button.\n- Each task has its own Start/Stop button and a Remove button.\n- Only one timer can run at a time; starting a new one stops the previous.\n- Elapsed time is preserved when stopping and restarting.\n- Keyboard accessible with visible focus states.\n- Responsive layout down to 360px wide.\n- No external dependencies, network requests, or inline event handlers.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type a task name and click **Add** (or press Enter).\n3. Click **Start** to begin timing; click **Stop** to pause.\n4. Click **Remove** to delete a task (stops timer if running).\n\n## Files\n\n- `index.html` – page structure\n- `style.css` – styling and responsive layout\n- `app.js` – task logic and timer engine\n\n## Notes\n\n- All files use relative paths and plain JavaScript.\n- Works entirely offline.\n- Timer uses `setInterval` with 1-second ticks; only the active task's display updates.\n",
+      "description": ""
+    }
+  ]
+}
