@@ -1,0 +1,760 @@
+{
+  "caseId": "door-lock",
+  "run": 2,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "4/7",
+  "finalChecks": "5/7",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 3,
+  "coderRepair": true,
+  "checkRuns": [
+    "4/7",
+    "5/7",
+    "5/7"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 49,
+  "reportedTokens": 23323,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T10:43:50.798Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T10:43:50.798Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T10:43:54.023Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Keypad Lock"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T10:43:54.023Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:44:03.001Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:44:03.001Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:44:03.516Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:44:03.517Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "0514a817-77c5-43d7-94cb-4802b5796fb9"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:44:06.715Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "0514a817-77c5-43d7-94cb-4802b5796fb9",
+        "checks": 7
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:44:06.716Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "testPlanId": "0514a817-77c5-43d7-94cb-4802b5796fb9",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Correct code unlocks",
+        "passed": true,
+        "actual": "Unlocked"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Display shows typed digits",
+        "passed": true,
+        "actual": "4271"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Clear resets display",
+        "passed": true,
+        "actual": "----"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Wrong code shows wrong message",
+        "passed": true,
+        "actual": "Wrong code (2 left)"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Three wrong tries lock keypad",
+        "passed": false,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Lockout countdown appears",
+        "passed": false,
+        "actual": "Enter 4 digits"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "name": "Keypad unlocks after 10 seconds",
+        "passed": false,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:44:15.063Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "7b4adf8c-8192-4322-b9b7-2bae0c6e680a",
+        "status": "failed",
+        "passed": 4,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:44:15.066Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "0514a817-77c5-43d7-94cb-4802b5796fb9",
+        "review": true
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:44:17.837Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "0514a817-77c5-43d7-94cb-4802b5796fb9",
+        "checks": 7,
+        "review": true,
+        "revised": 3,
+        "dropped": 0,
+        "llmModel": "deepseek-flash",
+        "verdicts": [
+          {
+            "name": "Three wrong tries lock keypad",
+            "verdict": "check-wrong",
+            "reason": "The check performs only two wrong attempts (1111 then 11, the second being incomplete and yielding 'Enter 4 digits'), so it never reaches 3 wrong tries. The requirement says the keypad locks after 3 w"
+          },
+          {
+            "name": "Lockout countdown appears",
+            "verdict": "check-wrong",
+            "reason": "The check only submits two wrong attempts (1111 and incomplete 11), so no lockout should occur; the app correctly shows 'Enter 4 digits'. The requirement triggers lockout only after 3 wrong tries, so "
+          },
+          {
+            "name": "Keypad unlocks after 10 seconds",
+            "verdict": "check-wrong",
+            "reason": "The check never reaches the lockout (only two wrong attempts, second incomplete), so it cannot test unlocking after 10 seconds. It also asserts disabled=true, which would be the locked state, not the "
+          }
+        ]
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:44:17.838Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "testPlanId": "0514a817-77c5-43d7-94cb-4802b5796fb9",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Correct code unlocks",
+        "passed": true,
+        "actual": "Unlocked"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Display shows typed digits",
+        "passed": true,
+        "actual": "4271"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Clear resets display",
+        "passed": true,
+        "actual": "----"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Wrong code shows wrong message",
+        "passed": true,
+        "actual": "Wrong code (2 left)"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Three wrong tries lock keypad",
+        "passed": false,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Lockout countdown appears",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "name": "Keypad unlocks after 10 seconds",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T10:44:24.144Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d81991f9-7b29-4261-974c-1427cadc035a",
+        "status": "failed",
+        "passed": 5,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T10:44:24.147Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T10:44:32.414Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T10:44:32.414Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T10:44:32.473Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T10:44:32.473Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "testPlanId": "0514a817-77c5-43d7-94cb-4802b5796fb9",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Correct code unlocks",
+        "passed": true,
+        "actual": "Unlocked"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Display shows typed digits",
+        "passed": true,
+        "actual": "4271"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Clear resets display",
+        "passed": true,
+        "actual": "----"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Wrong code shows wrong message",
+        "passed": true,
+        "actual": "Wrong code (2 left)"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Three wrong tries lock keypad",
+        "passed": false,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Lockout countdown appears",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "name": "Keypad unlocks after 10 seconds",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T10:44:38.930Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "8926bf81-8f0b-49be-b006-563a3b22eb23",
+        "status": "failed",
+        "passed": 5,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T10:44:38.935Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Correct code unlocks",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"4\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"7\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"enter\"]"
+          }
+        ],
+        "selector": "#status",
+        "expected": "Unlocked"
+      },
+      {
+        "name": "Display shows typed digits",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"4\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"7\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          }
+        ],
+        "selector": "#display",
+        "expected": "4271"
+      },
+      {
+        "name": "Clear resets display",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"9\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"8\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"clear\"]"
+          }
+        ],
+        "selector": "#display",
+        "expected": "----"
+      },
+      {
+        "name": "Wrong code shows wrong message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"enter\"]"
+          }
+        ],
+        "selector": "#status",
+        "expected": "^Wrong code",
+        "assertion": "matches"
+      },
+      {
+        "name": "Three wrong tries lock keypad",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"enter\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          }
+        ],
+        "selector": "[data-key=\"1\"]",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Lockout countdown appears",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"enter\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          }
+        ],
+        "selector": "#status",
+        "expected": "^Locked for \\d+s$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Keypad unlocks after 10 seconds",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"enter\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-key=\"1\"]"
+          }
+        ],
+        "selector": "[data-key=\"1\"]",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "Lockout expiry after 10s cannot be verified within the 8s action budget; only the locked state is checked.",
+      "Keyboard input is not tested because DOM key events are synthetic, not trusted browser input.",
+      "Pixel/visual styling is not asserted; only text and disabled state are checked."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4535,
+      "completion_tokens": 876,
+      "total_tokens": 5411,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 3127
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Keypad Lock</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Keypad Lock</h1>\n    <p class=\"subtitle\">Enter the 4-digit code</p>\n    <div id=\"display\" class=\"display\" aria-live=\"polite\" aria-atomic=\"true\">----</div>\n    <p id=\"status\" class=\"status\" role=\"status\" aria-live=\"polite\"></p>\n    <div class=\"keypad\" role=\"group\" aria-label=\"Keypad\">\n      <button class=\"key\" data-key=\"1\" aria-label=\"Digit 1\">1</button>\n      <button class=\"key\" data-key=\"2\" aria-label=\"Digit 2\">2</button>\n      <button class=\"key\" data-key=\"3\" aria-label=\"Digit 3\">3</button>\n      <button class=\"key\" data-key=\"4\" aria-label=\"Digit 4\">4</button>\n      <button class=\"key\" data-key=\"5\" aria-label=\"Digit 5\">5</button>\n      <button class=\"key\" data-key=\"6\" aria-label=\"Digit 6\">6</button>\n      <button class=\"key\" data-key=\"7\" aria-label=\"Digit 7\">7</button>\n      <button class=\"key\" data-key=\"8\" aria-label=\"Digit 8\">8</button>\n      <button class=\"key\" data-key=\"9\" aria-label=\"Digit 9\">9</button>\n      <button class=\"key key--action\" data-key=\"clear\" aria-label=\"Clear\">Clear</button>\n      <button class=\"key\" data-key=\"0\" aria-label=\"Digit 0\">0</button>\n      <button class=\"key key--action\" data-key=\"enter\" aria-label=\"Enter\">Enter</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Markup with keypad buttons and display"
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card-bg: #16213e;\n  --display-bg: #0f3460;\n  --key-bg: #533483;\n  --key-hover: #6b4a9e;\n  --key-active: #8a5fc4;\n  --text: #e0e0e0;\n  --accent: #e94560;\n  --success: #4ecca3;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n[hidden] {\n  display: none !important;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 380px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 8px;\n  color: var(--accent);\n  letter-spacing: 1px;\n}\n\n.subtitle {\n  font-size: 1rem;\n  color: #a0a0b8;\n  margin-bottom: 24px;\n}\n\n.display {\n  background: var(--display-bg);\n  border-radius: 8px;\n  padding: 16px;\n  font-size: 2rem;\n  font-family: 'Courier New', monospace;\n  letter-spacing: 8px;\n  margin-bottom: 8px;\n  min-height: 64px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: var(--success);\n  text-shadow: 0 0 8px rgba(78, 204, 163, 0.5);\n}\n\n.status {\n  font-size: 1rem;\n  min-height: 24px;\n  margin-bottom: 16px;\n  font-weight: 600;\n}\n\n.status.success {\n  color: var(--success);\n}\n\n.status.error {\n  color: var(--accent);\n}\n\n.status.lockout {\n  color: #f0a500;\n}\n\n.keypad {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n}\n\n.key {\n  font-family: inherit;\n  font-size: 1.25rem;\n  font-weight: 700;\n  padding: 16px 8px;\n  border: none;\n  border-radius: 10px;\n  background: var(--key-bg);\n  color: var(--text);\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;\n  min-height: 56px;\n  user-select: none;\n  -webkit-tap-highlight-color: transparent;\n}\n\n.key:hover:not(:disabled) {\n  background: var(--key-hover);\n}\n\n.key:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.key:active:not(:disabled) {\n  background: var(--key-active);\n  transform: scale(0.96);\n}\n\n.key:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n\n.key--action {\n  background: var(--accent);\n  color: #fff;\n  font-size: 1rem;\n}\n\n.key--action:hover:not(:disabled) {\n  background: #f05a72;\n}\n\n.key--action:active:not(:disabled) {\n  background: #c9304a;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 16px;\n  }\n  .display {\n    font-size: 1.5rem;\n    letter-spacing: 6px;\n  }\n  .key {\n    font-size: 1.1rem;\n    padding: 14px 6px;\n    min-height: 52px;\n  }\n}",
+      "description": "Pixel-themed responsive styling"
+    },
+    {
+      "path": "script.js",
+      "content": "const CORRECT_CODE = '4271';\nconst MAX_ATTEMPTS = 3;\nconst LOCKOUT_MS = 10000;\n\nconst displayEl = document.getElementById('display');\nconst statusEl = document.getElementById('status');\nconst keys = document.querySelectorAll('.key');\n\nlet buffer = '';\nlet wrongAttempts = 0;\nlet locked = false;\nlet lockoutTimer = null;\nlet countdownInterval = null;\n\nfunction updateDisplay() {\n  const shown = buffer.padEnd(4, '-');\n  displayEl.textContent = shown;\n}\n\nfunction setStatus(msg, type) {\n  statusEl.textContent = msg;\n  statusEl.className = 'status' + (type ? ' ' + type : '');\n}\n\nfunction clearBuffer() {\n  buffer = '';\n  updateDisplay();\n}\n\nfunction disableKeys(disabled) {\n  keys.forEach(k => { k.disabled = disabled; });\n}\n\nfunction startLockout() {\n  locked = true;\n  disableKeys(true);\n  let remaining = Math.ceil(LOCKOUT_MS / 1000);\n  setStatus('Locked for ' + remaining + 's', 'lockout');\n\n  countdownInterval = setInterval(() => {\n    remaining -= 1;\n    if (remaining > 0) {\n      setStatus('Locked for ' + remaining + 's', 'lockout');\n    }\n  }, 1000);\n\n  lockoutTimer = setTimeout(() => {\n    clearInterval(countdownInterval);\n    countdownInterval = null;\n    lockoutTimer = null;\n    locked = false;\n    wrongAttempts = 0;\n    disableKeys(false);\n    setStatus('Enter the code', '');\n    clearBuffer();\n  }, LOCKOUT_MS);\n}\n\nfunction handleEnter() {\n  if (buffer.length < 4) {\n    setStatus('Enter 4 digits', 'error');\n    return;\n  }\n  if (buffer === CORRECT_CODE) {\n    setStatus('Unlocked', 'success');\n    wrongAttempts = 0;\n    disableKeys(true);\n    setTimeout(() => {\n      clearBuffer();\n      disableKeys(false);\n      setStatus('Enter the code', '');\n    }, 2000);\n  } else {\n    wrongAttempts += 1;\n    if (wrongAttempts >= MAX_ATTEMPTS) {\n      clearBuffer();\n      startLockout();\n    } else {\n      const left = MAX_ATTEMPTS - wrongAttempts;\n      setStatus('Wrong code (' + left + ' left)', 'error');\n      clearBuffer();\n    }\n  }\n}\n\nfunction handleKey(key) {\n  if (locked) return;\n  if (key === 'clear') {\n    clearBuffer();\n    setStatus('Enter the code', '');\n    return;\n  }\n  if (key === 'enter') {\n    handleEnter();\n    return;\n  }\n  if (/^[0-9]$/.test(key)) {\n    if (buffer.length < 4) {\n      buffer += key;\n      updateDisplay();\n      setStatus('', '');\n    }\n  }\n}\n\nkeys.forEach(btn => {\n  btn.addEventListener('click', () => {\n    handleKey(btn.dataset.key);\n  });\n});\n\ndocument.addEventListener('keydown', (e) => {\n  if (locked) return;\n  if (/^[0-9]$/.test(e.key)) {\n    handleKey(e.key);\n  } else if (e.key === 'Enter') {\n    handleKey('enter');\n  } else if (e.key === 'Escape' || e.key === 'Delete' || e.key === 'Backspace') {\n    e.preventDefault();\n    handleKey('clear');\n  }\n});\n\n// Initialize\nupdateDisplay();\nsetStatus('Enter the code', '');",
+      "description": "Lock logic with immediate lockout on third wrong attempt"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Keypad Lock\n\nA pixel-style keypad lock built with plain HTML, CSS, and JavaScript. Works fully offline in any modern browser.\n\n## Features\n\n- Digits 0–9, Clear, and Enter buttons\n- Correct code: **4271** → shows \"Unlocked\"\n- Wrong code → shows \"Wrong code\" and remaining attempts\n- After 3 wrong attempts, the keypad locks for **10 seconds** with a visible countdown\n- Full keyboard support (digits, Enter, Escape/Backspace for clear)\n- Responsive layout from 360px wide\n\n## Usage\n\n1. Open `index.html` in a browser.\n2. Type or click the 4-digit code (4271).\n3. Press **Enter** to submit, **Clear** to reset.\n4. After 3 wrong tries, wait for the 10-second lockout to expire.\n\n## Files\n\n- `index.html` — markup and keypad structure\n- `style.css` — pixel-themed styling and responsive layout\n- `script.js` — lock logic, attempts, and lockout timer\n\n## Notes\n\nNo external assets, network requests, or packages. All code is self-contained.",
+      "description": "Documentation"
+    }
+  ]
+}

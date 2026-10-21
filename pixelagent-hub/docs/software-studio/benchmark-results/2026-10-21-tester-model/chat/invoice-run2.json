@@ -1,0 +1,579 @@
+{
+  "caseId": "invoice",
+  "run": 2,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 25,
+  "reportedTokens": 11922,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T10:37:47.332Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T10:37:47.333Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T10:37:51.603Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Invoice Builder"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T10:37:51.603Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:38:01.754Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:38:01.754Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:38:02.969Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:38:02.970Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "3b846658-db2a-4342-9383-552bdc96728d"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:38:06.476Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "3b846658-db2a-4342-9383-552bdc96728d",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:38:06.477Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "testPlanId": "3b846658-db2a-4342-9383-552bdc96728d",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:38:09.832Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Add item shows line total and subtotal",
+        "passed": true,
+        "actual": "$7.50"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Subtotal after adding item",
+        "passed": true,
+        "actual": "$7.50"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Tax computed from rate",
+        "passed": true,
+        "actual": "$0.75"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Grand total includes tax",
+        "passed": true,
+        "actual": "$8.25"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Two decimals formatting",
+        "passed": true,
+        "actual": "$1.50"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Empty message hidden after add",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Empty message visible initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Row count after two items",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Remove item updates subtotal",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "name": "Tax rate change updates tax",
+        "passed": true,
+        "actual": "$5.00"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:38:09.833Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "28e24aa4-434e-49d8-8847-fd2a20be2f0e",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:38:09.836Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add item shows line total and subtotal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "2.50"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          }
+        ],
+        "selector": "#items-body tr td:nth-child(4)",
+        "expected": "$7.50"
+      },
+      {
+        "name": "Subtotal after adding item",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "2.50"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          }
+        ],
+        "selector": "#subtotal",
+        "expected": "$7.50"
+      },
+      {
+        "name": "Tax computed from rate",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "2.50"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "10"
+          }
+        ],
+        "selector": "#tax",
+        "expected": "$0.75"
+      },
+      {
+        "name": "Grand total includes tax",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "2.50"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "10"
+          }
+        ],
+        "selector": "#grand-total",
+        "expected": "$8.25"
+      },
+      {
+        "name": "Two decimals formatting",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "Pen"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "1.5"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          }
+        ],
+        "selector": "#subtotal",
+        "expected": "^\\$\\d+\\.\\d{2}$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Empty message hidden after add",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "1.00"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          }
+        ],
+        "selector": "#empty-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Empty message visible initially",
+        "actions": [],
+        "selector": "#empty-message",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Row count after two items",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "A"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "1.00"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          },
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "B"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "2.00"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          }
+        ],
+        "selector": "#items-body tr",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Remove item updates subtotal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "A"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "5.00"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          },
+          {
+            "type": "click",
+            "selector": ".remove-btn"
+          }
+        ],
+        "selector": "#subtotal",
+        "expected": "$0.00"
+      },
+      {
+        "name": "Tax rate change updates tax",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#description",
+            "value": "A"
+          },
+          {
+            "type": "input",
+            "selector": "#quantity",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#unit-price",
+            "value": "100.00"
+          },
+          {
+            "type": "click",
+            "selector": "button.btn-primary"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "5"
+          }
+        ],
+        "selector": "#tax",
+        "expected": "$5.00"
+      }
+    ],
+    "limitations": [
+      "Cannot verify alert() messages for invalid input; browser dialogs are not observable.",
+      "No checks for keyboard-only interaction or responsive layout at 360px.",
+      "Rounding of tax uses toFixed; exact half-cent rounding behavior not tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4973,
+      "completion_tokens": 955,
+      "total_tokens": 5928,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 3565
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Invoice Builder</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Invoice Builder</h1>\n    <form id=\"invoice-form\">\n      <fieldset>\n        <legend>Add a line item</legend>\n        <div class=\"form-row\">\n          <label for=\"description\">Description</label>\n          <input type=\"text\" id=\"description\" placeholder=\"Item description\" required>\n        </div>\n        <div class=\"form-row\">\n          <label for=\"quantity\">Quantity</label>\n          <input type=\"number\" id=\"quantity\" min=\"1\" step=\"1\" value=\"1\" required>\n        </div>\n        <div class=\"form-row\">\n          <label for=\"unit-price\">Unit price ($)</label>\n          <input type=\"number\" id=\"unit-price\" min=\"0.01\" step=\"0.01\" value=\"0.00\" required>\n        </div>\n        <button type=\"submit\" class=\"btn-primary\">Add item</button>\n      </fieldset>\n    </form>\n\n    <section aria-labelledby=\"items-heading\">\n      <h2 id=\"items-heading\">Line items</h2>\n      <table id=\"items-table\">\n        <thead>\n          <tr>\n            <th scope=\"col\">Description</th>\n            <th scope=\"col\">Qty</th>\n            <th scope=\"col\">Unit price</th>\n            <th scope=\"col\">Line total</th>\n            <th scope=\"col\"><span class=\"visually-hidden\">Actions</span></th>\n          </tr>\n        </thead>\n        <tbody id=\"items-body\">\n          <!-- rows inserted dynamically -->\n        </tbody>\n      </table>\n      <p id=\"empty-message\">No items yet. Add one above.</p>\n    </section>\n\n    <section aria-labelledby=\"totals-heading\" class=\"totals\">\n      <h2 id=\"totals-heading\">Totals</h2>\n      <div class=\"form-row\">\n        <label for=\"tax-rate\">Tax rate (%)</label>\n        <input type=\"number\" id=\"tax-rate\" min=\"0\" step=\"0.01\" value=\"0.00\">\n      </div>\n      <dl>\n        <dt>Subtotal</dt>\n        <dd id=\"subtotal\">$0.00</dd>\n        <dt>Tax</dt>\n        <dd id=\"tax\">$0.00</dd>\n        <dt>Grand total</dt>\n        <dd id=\"grand-total\">$0.00</dd>\n      </dl>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": "/* Palette: background #f4f1de, card #ffffff, primary #3d405b, accent #e07a5f, text #2b2d42 */\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background-color: #f4f1de;\n  color: #2b2d42;\n  line-height: 1.5;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1rem;\n}\n\n.card {\n  background-color: #ffffff;\n  border-radius: 12px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);\n  padding: 2rem;\n  width: 100%;\n  max-width: 720px;\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 1.5rem;\n  color: #3d405b;\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin: 1.5rem 0 0.75rem;\n  color: #3d405b;\n}\n\nfieldset {\n  border: none;\n  margin-bottom: 1rem;\n}\n\nlegend {\n  font-weight: 600;\n  margin-bottom: 0.5rem;\n  color: #3d405b;\n}\n\n.form-row {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 0.5rem;\n  margin-bottom: 0.75rem;\n}\n\n.form-row label {\n  flex: 0 0 120px;\n  font-weight: 500;\n}\n\n.form-row input {\n  flex: 1 1 160px;\n  padding: 0.5rem 0.75rem;\n  border: 2px solid #d1d1d1;\n  border-radius: 6px;\n  font-size: 1rem;\n  font-family: inherit;\n  transition: border-color 0.2s;\n}\n\n.form-row input:focus {\n  outline: none;\n  border-color: #3d405b;\n  box-shadow: 0 0 0 3px rgba(61, 64, 91, 0.2);\n}\n\n.btn-primary {\n  background-color: #3d405b;\n  color: #ffffff;\n  border: none;\n  border-radius: 6px;\n  padding: 0.6rem 1.2rem;\n  font-size: 1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background-color 0.2s, transform 0.1s;\n}\n\n.btn-primary:hover {\n  background-color: #2b2d42;\n}\n\n.btn-primary:active {\n  transform: scale(0.98);\n}\n\n.btn-primary:focus-visible {\n  outline: 3px solid #e07a5f;\n  outline-offset: 2px;\n}\n\ntable {\n  width: 100%;\n  border-collapse: collapse;\n  margin-bottom: 0.5rem;\n}\n\nth, td {\n  text-align: left;\n  padding: 0.5rem 0.25rem;\n  border-bottom: 1px solid #e0e0e0;\n}\n\nth {\n  font-weight: 600;\n  color: #3d405b;\n  font-size: 0.9rem;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\ntd {\n  font-size: 1rem;\n}\n\n.remove-btn {\n  background: none;\n  border: 2px solid #e07a5f;\n  color: #e07a5f;\n  border-radius: 4px;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  cursor: pointer;\n  transition: background-color 0.2s, color 0.2s;\n}\n\n.remove-btn:hover {\n  background-color: #e07a5f;\n  color: #ffffff;\n}\n\n.remove-btn:active {\n  transform: scale(0.95);\n}\n\n.remove-btn:focus-visible {\n  outline: 3px solid #3d405b;\n  outline-offset: 2px;\n}\n\n#empty-message {\n  color: #6c757d;\n  font-style: italic;\n  padding: 0.5rem 0;\n}\n\n.totals dl {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 0.5rem 1rem;\n  margin-top: 1rem;\n}\n\n.totals dt {\n  font-weight: 500;\n}\n\n.totals dd {\n  text-align: right;\n  font-weight: 600;\n}\n\n#grand-total {\n  font-size: 1.25rem;\n  color: #3d405b;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n\n[hidden] {\n  display: none !important;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 1rem;\n  }\n  .form-row label {\n    flex: 1 1 100%;\n  }\n  .form-row input {\n    flex: 1 1 100%;\n  }\n  th, td {\n    font-size: 0.9rem;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "let items = [];\n\nconst form = document.getElementById('invoice-form');\nconst descriptionInput = document.getElementById('description');\nconst quantityInput = document.getElementById('quantity');\nconst unitPriceInput = document.getElementById('unit-price');\nconst taxRateInput = document.getElementById('tax-rate');\nconst itemsBody = document.getElementById('items-body');\nconst emptyMessage = document.getElementById('empty-message');\nconst subtotalEl = document.getElementById('subtotal');\nconst taxEl = document.getElementById('tax');\nconst grandTotalEl = document.getElementById('grand-total');\n\nfunction formatCurrency(value) {\n  return '$' + value.toFixed(2);\n}\n\nfunction updateTotals() {\n  const subtotal = items.reduce((sum, item) => sum + item.total, 0);\n  const taxRate = parseFloat(taxRateInput.value) || 0;\n  const tax = subtotal * (taxRate / 100);\n  const grandTotal = subtotal + tax;\n\n  subtotalEl.textContent = formatCurrency(subtotal);\n  taxEl.textContent = formatCurrency(tax);\n  grandTotalEl.textContent = formatCurrency(grandTotal);\n}\n\nfunction renderItems() {\n  itemsBody.innerHTML = '';\n  if (items.length === 0) {\n    emptyMessage.hidden = false;\n  } else {\n    emptyMessage.hidden = true;\n    items.forEach((item, index) => {\n      const tr = document.createElement('tr');\n      tr.innerHTML = `\n        <td>${escapeHtml(item.description)}</td>\n        <td>${item.quantity}</td>\n        <td>${formatCurrency(item.unitPrice)}</td>\n        <td>${formatCurrency(item.total)}</td>\n        <td><button class=\"remove-btn\" data-index=\"${index}\" aria-label=\"Remove ${escapeHtml(item.description)}\">Remove</button></td>\n      `;\n      itemsBody.appendChild(tr);\n    });\n  }\n  updateTotals();\n}\n\nfunction escapeHtml(text) {\n  const div = document.createElement('div');\n  div.textContent = text;\n  return div.innerHTML;\n}\n\nform.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const description = descriptionInput.value.trim();\n  const quantity = parseFloat(quantityInput.value);\n  const unitPrice = parseFloat(unitPriceInput.value);\n\n  if (!description) {\n    alert('Please enter a description.');\n    return;\n  }\n  if (isNaN(quantity) || quantity <= 0) {\n    alert('Quantity must be a positive number.');\n    return;\n  }\n  if (isNaN(unitPrice) || unitPrice <= 0) {\n    alert('Unit price must be a positive number.');\n    return;\n  }\n\n  items.push({\n    description,\n    quantity,\n    unitPrice,\n    total: quantity * unitPrice\n  });\n\n  renderItems();\n  form.reset();\n  quantityInput.value = '1';\n  unitPriceInput.value = '0.00';\n  descriptionInput.focus();\n});\n\nitemsBody.addEventListener('click', (e) => {\n  if (e.target.classList.contains('remove-btn')) {\n    const index = parseInt(e.target.dataset.index, 10);\n    items.splice(index, 1);\n    renderItems();\n  }\n});\n\ntaxRateInput.addEventListener('input', updateTotals);\n\n// Initial render\nrenderItems();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Invoice Builder\n\nA simple offline invoice builder built with plain HTML, CSS, and JavaScript. Add line items with description, quantity, and unit price; view line totals, subtotal, tax, and grand total. All calculations update dynamically.\n\n## Features\n\n- Add line items with description, quantity, and unit price.\n- Each line shows its total (quantity × unit price).\n- Subtotal, tax (based on user-entered tax rate), and grand total displayed to two decimals.\n- Remove items individually.\n- Keyboard-accessible and responsive (works from 360px wide).\n- No external dependencies, network requests, or server code.\n\n## How to Run\n\n1. Download or clone the repository.\n2. Open `index.html` in any modern web browser.\n\nNo build step or server required.\n\n## File Structure\n\n- `index.html` — main markup and structure.\n- `styles.css` — styling and theming.\n- `script.js` — application logic and calculations.\n- `README.md` — this file.\n\n## Accessibility\n\n- All form controls are labeled.\n- Buttons have visible focus states.\n- Table headers are properly scoped.\n- Remove buttons include descriptive `aria-label`.\n\n## Offline Usage\n\nThe app is fully self-contained and works offline. No external assets or network calls are made.",
+      "description": ""
+    }
+  ]
+}

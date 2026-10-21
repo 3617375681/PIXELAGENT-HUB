@@ -15,6 +15,7 @@ const sharedRunSchema = z.object({
   description: z.string().min(1).max(4000),
   provider: z.string().max(60),
   model: z.string().max(120),
+  testerModel: z.string().max(120).optional(),
   projectName: z.string().max(200).optional(),
   startedAt: z.string().max(40),
   finishedAt: z.string().max(40).optional(),

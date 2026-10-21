@@ -1,0 +1,502 @@
+{
+  "caseId": "invoice",
+  "run": 2,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-v4-pro",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "1/6",
+  "finalChecks": "1/6",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "1/6",
+    "1/6"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 95,
+  "reportedTokens": 23865,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T11:01:15.929Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat",
+        "testerModel": "deepseek-v4-pro"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T11:01:15.929Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T11:01:19.954Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Invoice Builder"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T11:01:19.954Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T11:01:29.362Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T11:01:29.362Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T11:01:29.865Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T11:01:29.865Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "6d896272-1471-4294-9d40-0f2529a5875a"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T11:02:24.532Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "6d896272-1471-4294-9d40-0f2529a5875a",
+        "checks": 6
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T11:02:24.533Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "testPlanId": "6d896272-1471-4294-9d40-0f2529a5875a",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "name": "Add line item increases count",
+        "passed": false,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "name": "Description input stores value",
+        "passed": true,
+        "actual": "Logo design"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "name": "Line total calculates quantity times price",
+        "passed": false,
+        "actual": "$20.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "name": "Subtotal sums line totals",
+        "passed": false,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "name": "Tax calculates from rate and subtotal",
+        "passed": false,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "name": "Grand total adds subtotal and tax",
+        "passed": false,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T11:02:32.552Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "8378de35-53ed-4d9e-959e-77d76772e336",
+        "status": "failed",
+        "passed": 1,
+        "failed": 5,
+        "source": "in-page",
+        "error": "Uncaught TypeError: Cannot read properties of null (reading 'value') (data:application/javascript;base64,KCgpID0+IHsKICAvLyBzY3JpcHQuanMKICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCJET01Db250ZW50TG9hZGVkIiwgKCkgPT4gewogICAgY29uc3QgbGluZUl0ZW1zQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImxpbmUtaXRlbXM"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T11:02:32.556Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T11:02:41.225Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T11:02:41.225Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T11:02:41.254Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T11:02:41.255Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "testPlanId": "6d896272-1471-4294-9d40-0f2529a5875a",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "name": "Add line item increases count",
+        "passed": false,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "name": "Description input stores value",
+        "passed": true,
+        "actual": "Logo design"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "name": "Line total calculates quantity times price",
+        "passed": false,
+        "actual": "$20.00"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "name": "Subtotal sums line totals",
+        "passed": false,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "name": "Tax calculates from rate and subtotal",
+        "passed": false,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "name": "Grand total adds subtotal and tax",
+        "passed": false,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T11:02:49.284Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "745c1ef2-c900-4f6b-8619-589fd5b69a5f",
+        "status": "failed",
+        "passed": 1,
+        "failed": 5,
+        "source": "in-page",
+        "error": "Uncaught TypeError: Cannot read properties of null (reading 'value') (data:application/javascript;base64,KCgpID0+IHsKICAvLyBzY3JpcHQuanMKICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCJET01Db250ZW50TG9hZGVkIiwgKCkgPT4gewogICAgY29uc3QgbGluZUl0ZW1zQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImxpbmUtaXRlbXM"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T11:02:49.287Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add line item increases count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#add-item"
+          }
+        ],
+        "selector": ".line-item",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Description input stores value",
+        "actions": [
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Item description\"]",
+            "nth": 0,
+            "value": "Logo design"
+          }
+        ],
+        "selector": ".line-item input[aria-label=\"Item description\"]",
+        "nth": 0,
+        "expected": "Logo design",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Line total calculates quantity times price",
+        "actions": [
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Quantity\"]",
+            "nth": 0,
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Unit price\"]",
+            "nth": 0,
+            "value": "10.00"
+          }
+        ],
+        "selector": ".line-total",
+        "nth": 0,
+        "expected": "$20.00"
+      },
+      {
+        "name": "Subtotal sums line totals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Quantity\"]",
+            "nth": 0,
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Unit price\"]",
+            "nth": 0,
+            "value": "10.00"
+          }
+        ],
+        "selector": "#subtotal",
+        "expected": "$20.00"
+      },
+      {
+        "name": "Tax calculates from rate and subtotal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Quantity\"]",
+            "nth": 0,
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Unit price\"]",
+            "nth": 0,
+            "value": "10.00"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "8.25"
+          }
+        ],
+        "selector": "#tax",
+        "expected": "$1.65"
+      },
+      {
+        "name": "Grand total adds subtotal and tax",
+        "actions": [
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Quantity\"]",
+            "nth": 0,
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": ".line-item input[aria-label=\"Unit price\"]",
+            "nth": 0,
+            "value": "10.00"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "8.25"
+          }
+        ],
+        "selector": "#grand-total",
+        "expected": "$21.65"
+      }
+    ],
+    "limitations": [
+      "No visual/pixel rendering tests",
+      "No remove item tests (not in requirements)",
+      "No keyboard/accessibility tests"
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4730,
+      "completion_tokens": 4092,
+      "total_tokens": 8822,
+      "prompt_tokens_details": {
+        "cached_tokens": 1536
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3342
+      },
+      "prompt_cache_hit_tokens": 1536,
+      "prompt_cache_miss_tokens": 3194
+    },
+    "llmModel": "deepseek-v4-pro",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Invoice Builder</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Invoice</h1>\n    <form id=\"invoice-form\" novalidate>\n      <div id=\"line-items\" class=\"line-items\" role=\"list\" aria-label=\"Line items\"></div>\n      <button type=\"button\" id=\"add-item\" class=\"btn\">+ Add Line Item</button>\n\n      <div class=\"tax-row\">\n        <label for=\"tax-rate\">Tax Rate (%)</label>\n        <input type=\"number\" id=\"tax-rate\" min=\"0\" step=\"0.01\" value=\"0\" aria-describedby=\"tax-help\">\n        <span id=\"tax-help\" class=\"help\">Enter a percentage, e.g. 8.25</span>\n      </div>\n\n      <div class=\"totals\" aria-live=\"polite\">\n        <div class=\"total-row\"><span>Subtotal</span><span id=\"subtotal\">$0.00</span></div>\n        <div class=\"total-row\"><span>Tax</span><span id=\"tax\">$0.00</span></div>\n        <div class=\"total-row grand\"><span>Grand Total</span><span id=\"grand-total\">$0.00</span></div>\n      </div>\n    </form>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #2b2b3c;\n  --card-bg: #f4f4f8;\n  --text: #1e1e2f;\n  --accent: #e06c75;\n  --accent-hover: #c55a62;\n  --accent-pressed: #a84a52;\n  --border: #1e1e2f;\n  --focus: #61afef;\n  --radius: 0px;\n  --space: 16px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n[hidden] {\n  display: none !important;\n}\n\nbody {\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: var(--space);\n}\n\n.card {\n  background: var(--card-bg);\n  border: 4px solid var(--border);\n  padding: calc(var(--space) * 2);\n  width: 100%;\n  max-width: 720px;\n  box-shadow: 8px 8px 0 var(--border);\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: var(--space);\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  border-bottom: 3px solid var(--border);\n  padding-bottom: 8px;\n}\n\n.line-items {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  margin-bottom: var(--space);\n}\n\n.line-item {\n  display: grid;\n  grid-template-columns: 1fr 80px 100px 100px auto;\n  gap: 8px;\n  align-items: center;\n  padding: 8px;\n  border: 2px solid var(--border);\n  background: #fff;\n}\n\n.line-item input {\n  width: 100%;\n  padding: 8px;\n  font-size: 1rem;\n  border: 2px solid var(--border);\n  background: var(--card-bg);\n  font-family: inherit;\n}\n\n.line-item input:focus {\n  outline: 3px solid var(--focus);\n  outline-offset: 1px;\n}\n\n.line-total {\n  font-weight: bold;\n  text-align: right;\n  padding-right: 4px;\n}\n\n.btn {\n  background: var(--accent);\n  color: #fff;\n  border: 3px solid var(--border);\n  padding: 10px 16px;\n  font-size: 1rem;\n  font-family: inherit;\n  cursor: pointer;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  transition: background 0.1s, transform 0.05s;\n}\n\n.btn:hover {\n  background: var(--accent-hover);\n}\n\n.btn:active {\n  background: var(--accent-pressed);\n  transform: translate(2px, 2px);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.btn.remove {\n  background: #fff;\n  color: var(--border);\n  padding: 4px 8px;\n  font-size: 0.875rem;\n}\n\n.btn.remove:hover {\n  background: #eee;\n}\n\n.tax-row {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 8px;\n  margin: var(--space) 0;\n  padding: 8px;\n  border: 2px solid var(--border);\n  background: #fff;\n}\n\n.tax-row label {\n  font-weight: bold;\n}\n\n.tax-row input {\n  width: 100px;\n  padding: 8px;\n  font-size: 1rem;\n  border: 2px solid var(--border);\n  background: var(--card-bg);\n  font-family: inherit;\n}\n\n.tax-row input:focus {\n  outline: 3px solid var(--focus);\n  outline-offset: 1px;\n}\n\n.help {\n  font-size: 0.875rem;\n  color: #555;\n  width: 100%;\n}\n\n.totals {\n  border-top: 3px solid var(--border);\n  padding-top: var(--space);\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.total-row {\n  display: flex;\n  justify-content: space-between;\n  font-size: 1.125rem;\n}\n\n.total-row.grand {\n  font-size: 1.375rem;\n  font-weight: bold;\n  border-top: 2px dashed var(--border);\n  padding-top: 8px;\n}\n\n@media (max-width: 600px) {\n  .line-item {\n    grid-template-columns: 1fr 1fr;\n  }\n  .line-item .line-total {\n    grid-column: span 2;\n    text-align: left;\n  }\n  .line-item .btn.remove {\n    grid-column: span 2;\n    justify-self: start;\n  }\n}\n\n@media (max-width: 360px) {\n  .card {\n    padding: var(--space);\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .line-item {\n    grid-template-columns: 1fr;\n  }\n  .line-item .line-total {\n    grid-column: span 1;\n  }\n  .line-item .btn.remove {\n    grid-column: span 1;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "document.addEventListener('DOMContentLoaded', () => {\n  const lineItemsContainer = document.getElementById('line-items');\n  const addButton = document.getElementById('add-item');\n  const taxRateInput = document.getElementById('tax-rate');\n  const subtotalEl = document.getElementById('subtotal');\n  const taxEl = document.getElementById('tax');\n  const grandTotalEl = document.getElementById('grand-total');\n\n  function addLineItem() {\n    const item = document.createElement('div');\n    item.className = 'line-item';\n    item.setAttribute('role', 'listitem');\n\n    const descId = 'desc-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);\n    const qtyId = 'qty-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);\n    const priceId = 'price-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);\n\n    item.innerHTML = `\n      <input type=\"text\" id=\"${descId}\" placeholder=\"Description\" aria-label=\"Item description\" value=\"\">\n      <input type=\"number\" id=\"${qtyId}\" min=\"1\" step=\"1\" value=\"1\" aria-label=\"Quantity\">\n      <input type=\"number\" id=\"${priceId}\" min=\"0\" step=\"0.01\" value=\"0.00\" aria-label=\"Unit price\">\n      <span class=\"line-total\" aria-label=\"Line total\">$0.00</span>\n      <button type=\"button\" class=\"btn remove\" aria-label=\"Remove item\">×</button>\n    `;\n\n    lineItemsContainer.appendChild(item);\n\n    const descInput = item.querySelector(`#${descId}`);\n    const qtyInput = item.querySelector(`#${qtyId}`);\n    const priceInput = item.querySelector(`#${priceId}`);\n    const lineTotalEl = item.querySelector('.line-total');\n    const removeBtn = item.querySelector('.remove');\n\n    function updateLineTotal() {\n      const qty = parseFloat(qtyInput.value) || 0;\n      const price = parseFloat(priceInput.value) || 0;\n      const total = qty * price;\n      lineTotalEl.textContent = '$' + total.toFixed(2);\n      updateTotals();\n    }\n\n    qtyInput.addEventListener('input', updateLineTotal);\n    priceInput.addEventListener('input', updateLineTotal);\n\n    removeBtn.addEventListener('click', () => {\n      item.remove();\n      updateTotals();\n    });\n\n    updateLineTotal();\n  }\n\n  function updateTotals() {\n    let subtotal = 0;\n    document.querySelectorAll('.line-item').forEach(item => {\n      const qty = parseFloat(item.querySelector('input[type=\"number\"]:nth-of-type(1)').value) || 0;\n      const price = parseFloat(item.querySelector('input[type=\"number\"]:nth-of-type(2)').value) || 0;\n      subtotal += qty * price;\n    });\n\n    const taxRate = parseFloat(taxRateInput.value) || 0;\n    const tax = subtotal * (taxRate / 100);\n    const grandTotal = subtotal + tax;\n\n    subtotalEl.textContent = '$' + subtotal.toFixed(2);\n    taxEl.textContent = '$' + tax.toFixed(2);\n    grandTotalEl.textContent = '$' + grandTotal.toFixed(2);\n  }\n\n  addButton.addEventListener('click', addLineItem);\n  taxRateInput.addEventListener('input', updateTotals);\n\n  // Add one initial line item\n  addLineItem();\n});",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Invoice Builder\n\nA simple, offline invoice builder with a pixel-art aesthetic. Add line items, set quantities and unit prices, enter a tax rate, and see the subtotal, tax, and grand total update in real time.\n\n## Features\n\n- Add and remove line items with description, quantity, and unit price.\n- Each line shows its total.\n- Tax rate input (percentage) with automatic tax and grand total calculation.\n- All amounts displayed to two decimal places.\n- Keyboard accessible with labeled controls.\n- Responsive layout from 360px width.\n- No external dependencies, works completely offline.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Click \"+ Add Line Item\" to add a new row.\n3. Fill in the description, quantity, and unit price.\n4. Adjust the tax rate if needed.\n5. Totals update automatically.\n\n## Development\n\n- Pure HTML, CSS, and JavaScript.\n- No build step required.\n- Files: `index.html`, `style.css`, `script.js`.\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}
