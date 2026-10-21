@@ -184,7 +184,7 @@ export const studioApi = {
     const recorded = await request<{ projects: StudioSummary[] }>('/api/studio/projects', { signal });
     return REPLAY ? { projects: [...await liveSummaries(), ...recorded.projects] } : recorded;
   },
-  create: (description: string, idempotencyKey?: string) => request<{ projectId: string; jobId: string }>('/api/studio/projects', { method: 'POST', headers: idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined, body: JSON.stringify({ description }) }),
+  create: (description: string, idempotencyKey?: string, strategy?: StudioProject['strategy']) => request<{ projectId: string; jobId: string }>('/api/studio/projects', { method: 'POST', headers: idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : undefined, body: JSON.stringify({ description, strategy }) }),
   project: (projectId: string, signal?: AbortSignal) => request<{ project: StudioProject }>(`/api/studio/projects/${encodeURIComponent(projectId)}`, { signal }),
   preview: (projectId: string, signal?: AbortSignal) => request<{ html: string }>(`/api/studio/projects/${encodeURIComponent(projectId)}/preview`, { signal }),
   cancel: (projectId: string) => request<{ project: StudioProject }>(`/api/studio/projects/${encodeURIComponent(projectId)}/cancel`, { method: 'POST' }),

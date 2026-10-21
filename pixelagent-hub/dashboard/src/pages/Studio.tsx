@@ -39,6 +39,7 @@ export default function Studio() {
   const navigate = useNavigate();
   // ?idea=… (e.g. a link someone posted) prefills the prompt box.
   const [searchParams] = useSearchParams();
+  const strategy = searchParams.get('strategy') === 'coder-only' ? 'coder-only' : 'manager-coder';
   const ideaParam = searchParams.get('idea')?.trim().slice(0, 4000) || '';
   const { search } = useLocation();
   const [description, setDescription] = useState(ideaParam || EXAMPLES[0].text);
@@ -223,7 +224,7 @@ export default function Studio() {
     if (REPLAY && !liveCredentials()) { setKeyDialog(true); return; }
     const text = promptText.trim();
     if (creationRequest.current?.description !== text) creationRequest.current = { description: text, key: crypto.randomUUID() };
-    const accepted = await studioApi.create(text, creationRequest.current.key);
+    const accepted = await studioApi.create(text, creationRequest.current.key, strategy);
     creationRequest.current = null;
     setDescription(text); setEdited(false);
     navigate(`/studio/${accepted.projectId}`); setTab('preview'); setRefreshKey((key) => key + 1);

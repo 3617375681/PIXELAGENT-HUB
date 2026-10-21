@@ -77,6 +77,38 @@ it('runs plan → code → failed build → repaired build → in-page checks, w
   await expect(live.liveRequest('GET', '/api/studio/projects/not-live/events?after=0')).resolves.toBeUndefined();
 });
 
+it('runs coder-only without a Manager plan and preserves its shared replay', async () => {
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const body = JSON.parse(String(init.body));
+    expect(body.messages[0].content).not.toContain('project manager');
+    if (body.messages[1].content.startsWith('Task:')) expect(body.messages[1].content).not.toContain('"plan":');
+    return sse(body.messages[0].content.includes('test planner') ? testPlan : code);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValue({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter', strategy: 'coder-only' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(events[0]).toMatchObject({ type: 'queued', data: { strategy: 'coder-only' } });
+  expect(events.some((event) => event.type === 'plan_ready' || event.data?.phase === 'planning')).toBe(false);
+  expect(events.at(-1)?.type).toBe('ready_for_review');
+  expect(fetchMock).toHaveBeenCalledTimes(2);
+  expect(build).toHaveBeenCalledTimes(1);
+  expect(checks).toHaveBeenCalledTimes(1);
+  const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: StudioProject };
+  expect(project.strategy).toBe('coder-only');
+  expect(project.plan).toBeUndefined();
+  expect(project.generationMetrics).toMatchObject({ agentTasks: 1, reportedTokens: 30, buildAttempts: 1 });
+  const { reducePipeline } = await import('../studioPipeline');
+  expect(reducePipeline(events).stages.find((stage) => stage.id === 'manager')?.state).toBe('skipped');
+  const encoded = (await live.shareLink(projectId, 'https://example.test/')).split('#/s/')[1];
+  const sharedId = live.importSharedRun(encoded);
+  const shared = await live.liveRequest('GET', `/api/studio/projects/${sharedId}`) as { project: StudioProject };
+  expect(shared.project.strategy).toBe('coder-only');
+  expect(shared.project.plan).toBeUndefined();
+  expect(await runToEnd(sharedId)).toEqual(events);
+  expect(await live.liveRequest('GET', `/api/studio/projects/${sharedId}/preview`)).toEqual({ html: '<html></html>' });
+});
+
 it.each([true, false])('reports running plan and Coder usage before completion (provider reports usage: %s)', async (reported) => {
   let releasePlan!: (response: Response) => void;
   fetchMock.mockReturnValueOnce(new Promise<Response>((resolve) => { releasePlan = resolve; }));
