@@ -4,7 +4,7 @@
  * The page holds a test key; requests to api.deepseek.com are forwarded with DEEPSEEK_API_KEY, so the
  * real key never enters the page. Each run uses a fresh browser profile; its recorded events are saved.
  *
- *   npx tsx scripts/benchmark-live.ts <dist> <out-dir> [--runs 3] [--model deepseek-chat] [--tester-model deepseek-reasoner] [--only counter,todo] [--cases file.json]
+ *   npx tsx scripts/benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs 3] [--model deepseek-chat] [--tester-model deepseek-reasoner] [--only counter,todo] [--cases file.json]
  *
  * Calls the paid model.
  */
@@ -15,8 +15,10 @@ import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 
 const [distArg, outArg] = process.argv.slice(2);
-if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--runs N] [--model M] [--tester-model M] [--only ids]');
+if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs N] [--model M] [--tester-model M] [--only ids]');
 const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
+const strategy = argument('--strategy') ?? 'manager-coder';
+if (!['manager-coder', 'coder-only'].includes(strategy)) throw new Error('--strategy must be manager-coder or coder-only');
 const runs = Number(argument('--runs') || 3);
 const model = argument('--model') || 'deepseek-chat';
 const testerModel = argument('--tester-model') || '';
@@ -49,7 +51,7 @@ try {
       await route.fulfill({ status: upstream.status, headers: { 'content-type': upstream.headers.get('content-type') || 'text/event-stream', 'access-control-allow-origin': '*' }, body });
     });
     const started = Date.now();
-    await page.goto(`${origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}`);
+    await page.goto(`${origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}&strategy=${strategy}`);
     await page.waitForSelector('.studio-stage');
     await page.getByRole('button', { name: /BUILD LIVE/ }).click();
     await page.locator('#live-provider').selectOption('deepseek');
@@ -63,14 +65,14 @@ try {
       const db = await new Promise<IDBDatabase>((done) => { const request = indexedDB.open('pixelagent-live', 1); request.onsuccess = () => done(request.result); });
       const all = await new Promise<any[]>((done) => { const request = db.transaction('projects').objectStore('projects').getAll(); request.onsuccess = () => done(request.result); });
       const entry = all[0];
-      return { project: { status: entry.project.status, error: entry.project.error, rounds: entry.project.rounds.map((round: any) => ({ round: round.round, build: round.build?.status, errors: round.build?.errors })) }, events: entry.events, plan: entry.plan?.result?.output, files: entry.files };
+      return { managerTokens: entry.project.plan?.output?.llmUsage?.total_tokens || 0, project: { status: entry.project.status, error: entry.project.error, rounds: entry.project.rounds.map((round: any) => ({ round: round.round, build: round.build?.status, errors: round.build?.errors })) }, events: entry.events, plan: entry.plan?.result?.output, files: entry.files };
     });
     const events = record.events as Event[];
     const browserRuns = events.filter((event) => event.type === 'browser_run_finished').map((event) => ({ status: String(event.data?.status), passed: Number(event.data?.passed), failed: Number(event.data?.failed) }));
     const compileFailures = events.filter((event) => event.type === 'build_failed').length;
     const reviews = events.filter((event) => event.type === 'test_plan_ready' && event.data?.review);
     const entry = {
-      caseId: testCase.id, run, model, testerModel: testerModel || model, status: record.project.status, error: record.project.error,
+      caseId: testCase.id, run, strategy, managerTokens: record.managerTokens, model, testerModel: testerModel || model, status: record.project.status, error: record.project.error,
       coderRounds: record.project.rounds.length, compileFailures,
       firstChecks: browserRuns[0] ? `${browserRuns[0].passed}/${browserRuns[0].passed + browserRuns[0].failed}` : null,
       finalChecks: browserRuns.at(-1) ? `${browserRuns.at(-1)!.passed}/${browserRuns.at(-1)!.passed + browserRuns.at(-1)!.failed}` : null,
