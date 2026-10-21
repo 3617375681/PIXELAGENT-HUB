@@ -68,3 +68,40 @@ The round-8 changes (commit `262b610`):
 | Ambiguous requirement | snake 2, pet 2 | "Paused" wording; a mood threshold that is not specified |
 
 The first four are general gaps in the language or the pipeline, and they are next.
+
+## Round 9 on `7483f82`
+
+The round-9 changes (commit `7483f82`):
+- `attribute: "style.width"` reads one inline style value.
+- Text checks also accept the rendered text with `text-transform` switched off.
+- New assertion `stable`: the text must not change for 1.5 s after the actions.
+- The Tester keeps every string under 100 characters.
+
+Set C (8 new ideas, commit `1365e3f`) is the clean set this round.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Reviews (revised) | Coder repairs | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set C**](r9-holdout-c/) (clean) | 16 | 12/16 | **12/16** | 0 | 6 (3) | 4 | 25 s | 224,199 |
+| [Set B](r9-holdout-b/) (used for round 9) | 16 | 14/16 | 13/16 | 2 | 7 (6) | 4 | 33 s | 260,600 |
+| [Showcase](r9-showcase/) | 18 | 16/18 | **16/18** | 0 | 3 (4) | 1 | 23 s | 199,251 |
+| [Fixed cases](r9-fixed/) | 15 | **15/15** | 15/15 | 0 | 0 | 0 | 19 s | 122,447 |
+
+**What moved:**
+- **Clean held-out sets, strict:** round 8's clean set (B) passed 10/16, and this round's clean set (C) passes 12/16. These are different ideas, so this is a rough comparison, not a controlled one.
+- **Set B:** 10/16 → 13/16 strict.
+- **Showcase:** 12/18 → 16/18 strict. All three pet runs pass now that progress bars are read with `style.width`, and the round dropped no checks.
+- **Fixed cases:** 15/15 for the fourth round running.
+
+**Set C's 4 failures:**
+
+| Run | Cause |
+| --- | --- |
+| mortgage 2 | **A real app bug, caught.** Reset sets `results.hidden = true`, but `.results { display: flex }` overrides the `hidden` attribute, so the results stay on screen. |
+| expense 2 | **The browser's own validation.** The amount input has `min="0.01" required`, so the browser blocks the submit of 0 with its own popup, and the app's error message is never reached. The requirement does not say which one should appear. |
+| task timer 1 | **`changed` on an element the actions create.** The timer row does not exist before "Add task", so there is no baseline to compare with. |
+| simon 1 | **The review's reply was invalid JSON**, so it changed nothing. Its check presses pads without knowing the random sequence. |
+
+**Elsewhere:**
+- Word counter: a plan was cut off at 16,853 characters again. DeepSeek's default output cap is 4,096 tokens, and the 100-character rule did not stop the Tester from writing long sample texts.
+- Memory 1: a plan failed validation twice.
+- Memory 3: a check needed a pattern on an attribute, `aria-label` `"Card 1, revealed"`, but `matches` only reads text.

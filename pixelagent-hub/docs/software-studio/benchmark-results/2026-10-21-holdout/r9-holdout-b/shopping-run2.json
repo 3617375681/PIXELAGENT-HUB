@@ -1,0 +1,537 @@
+{
+  "caseId": "shopping",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 31,
+  "reportedTokens": 11027,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:08:51.244Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:08:51.244Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:08:55.055Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Shopping List"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:08:55.055Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:09:05.847Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:09:05.847Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:09:06.479Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:09:06.480Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "d79f7153-d2ff-4f87-82a6-537b9bdf3833"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:09:10.210Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "d79f7153-d2ff-4f87-82a6-537b9bdf3833",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:09:10.210Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "testPlanId": "d79f7153-d2ff-4f87-82a6-537b9bdf3833",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Add item shows name, qty, count",
+        "passed": true,
+        "actual": "Milk x2"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Remaining count after add",
+        "passed": true,
+        "actual": "1 item remaining"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Clear bought disabled initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Tick item strikes and moves down",
+        "passed": true,
+        "actual": "Bread x1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Bought item count drops",
+        "passed": true,
+        "actual": "1 item remaining"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Clear bought enabled after tick",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Clear bought removes bought item",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Clear bought resets count",
+        "passed": true,
+        "actual": "0 items remaining"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Clear bought disabled after clearing",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "name": "Quantity badge shows entered qty",
+        "passed": true,
+        "actual": "x12"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:09:13.481Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "977c4143-7cff-4b0b-9960-fe48a1fb2c97",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:09:13.486Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add item shows name, qty, count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Milk"
+          },
+          {
+            "type": "input",
+            "selector": "#item-qty",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          }
+        ],
+        "selector": "#shopping-list .list-item",
+        "expected": "Milk x2",
+        "assertion": "text"
+      },
+      {
+        "name": "Remaining count after add",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Eggs"
+          },
+          {
+            "type": "input",
+            "selector": "#item-qty",
+            "value": "6"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          }
+        ],
+        "selector": "#remaining-count",
+        "expected": "1 item remaining"
+      },
+      {
+        "name": "Clear bought disabled initially",
+        "actions": [],
+        "selector": "#clear-bought",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Tick item strikes and moves down",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Bread"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Jam"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#shopping-list .list-item input[type=checkbox]",
+            "nth": 0
+          }
+        ],
+        "selector": "#shopping-list .list-item",
+        "nth": 1,
+        "expected": "Bread x1",
+        "assertion": "text"
+      },
+      {
+        "name": "Bought item count drops",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Tea"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Sugar"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#shopping-list .list-item input[type=checkbox]",
+            "nth": 0
+          }
+        ],
+        "selector": "#remaining-count",
+        "expected": "1 item remaining"
+      },
+      {
+        "name": "Clear bought enabled after tick",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Salt"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#shopping-list .list-item input[type=checkbox]",
+            "nth": 0
+          }
+        ],
+        "selector": "#clear-bought",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Clear bought removes bought item",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Rice"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Beans"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#shopping-list .list-item input[type=checkbox]",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#clear-bought"
+          }
+        ],
+        "selector": "#shopping-list .list-item",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "Clear bought resets count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Oil"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#shopping-list .list-item input[type=checkbox]",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#clear-bought"
+          }
+        ],
+        "selector": "#remaining-count",
+        "expected": "0 items remaining"
+      },
+      {
+        "name": "Clear bought disabled after clearing",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Flour"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#shopping-list .list-item input[type=checkbox]",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#clear-bought"
+          }
+        ],
+        "selector": "#clear-bought",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Quantity badge shows entered qty",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Apples"
+          },
+          {
+            "type": "input",
+            "selector": "#item-qty",
+            "value": "12"
+          },
+          {
+            "type": "click",
+            "selector": "#add-form button[type=submit]"
+          }
+        ],
+        "selector": "#shopping-list .item-qty",
+        "expected": "x12"
+      }
+    ],
+    "limitations": [
+      "Strikethrough is a CSS text-decoration; not asserted since only text/attributes are observable.",
+      "Bought items moving to bottom is inferred from order checks, not pixel styling.",
+      "No persistence across reloads is tested; requirements do not mention it."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4598,
+      "completion_tokens": 979,
+      "total_tokens": 5577,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 3574
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Shopping List</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header>\n      <h1>Pixel Shopping List</h1>\n      <p class=\"subtitle\">Add items, tick them off, and clear bought ones.</p>\n    </header>\n\n    <form id=\"add-form\" class=\"add-form\">\n      <div class=\"field\">\n        <label for=\"item-name\">Item</label>\n        <input type=\"text\" id=\"item-name\" placeholder=\"e.g. Milk\" autocomplete=\"off\" required>\n      </div>\n      <div class=\"field quantity-field\">\n        <label for=\"item-qty\">Qty</label>\n        <input type=\"number\" id=\"item-qty\" min=\"1\" value=\"1\" required>\n      </div>\n      <button type=\"submit\" class=\"btn primary\">Add</button>\n    </form>\n\n    <ul id=\"shopping-list\" class=\"shopping-list\" aria-live=\"polite\"></ul>\n\n    <div class=\"footer-bar\">\n      <p id=\"remaining-count\" class=\"remaining\" aria-live=\"polite\">0 items remaining</p>\n      <button id=\"clear-bought\" class=\"btn secondary\" disabled>Clear bought</button>\n    </div>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card-bg: #16213e;\n  --primary: #e94560;\n  --primary-hover: #ff6b81;\n  --accent: #0f3460;\n  --text: #f1f1f1;\n  --text-muted: #a0a0b0;\n  --border: #2a2a4a;\n  --bought: #6b6b8b;\n  --font: 'Courier New', Courier, monospace;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  background-image: linear-gradient(45deg, var(--accent) 25%, transparent 25%),\n                    linear-gradient(-45deg, var(--accent) 25%, transparent 25%);\n  background-size: 20px 20px;\n  background-position: 0 0, 10px 10px;\n  color: var(--text);\n  font-family: var(--font);\n  font-size: 16px;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border: 4px solid var(--border);\n  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);\n  padding: 24px;\n  width: 100%;\n  max-width: 520px;\n}\n\nheader {\n  margin-bottom: 24px;\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.75rem;\n  color: var(--primary);\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  text-shadow: 3px 3px 0 var(--accent);\n  margin-bottom: 8px;\n}\n\n.subtitle {\n  color: var(--text-muted);\n  font-size: 0.9rem;\n}\n\n.add-form {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n  margin-bottom: 24px;\n  align-items: flex-end;\n}\n\n.field {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  flex: 1 1 120px;\n}\n\n.field label {\n  font-size: 0.85rem;\n  color: var(--text-muted);\n  text-transform: uppercase;\n}\n\n.field input {\n  background: var(--bg);\n  border: 3px solid var(--border);\n  color: var(--text);\n  font-family: var(--font);\n  font-size: 1rem;\n  padding: 10px;\n  outline: none;\n  width: 100%;\n}\n\n.field input:focus-visible {\n  border-color: var(--primary);\n  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.4);\n}\n\n.quantity-field {\n  flex: 0 0 80px;\n}\n\n.btn {\n  background: var(--primary);\n  color: var(--text);\n  border: 3px solid var(--border);\n  font-family: var(--font);\n  font-size: 1rem;\n  font-weight: bold;\n  padding: 10px 20px;\n  cursor: pointer;\n  text-transform: uppercase;\n  box-shadow: 4px 4px 0 var(--accent);\n  transition: transform 0.05s, box-shadow 0.05s, background 0.15s;\n}\n\n.btn:hover {\n  background: var(--primary-hover);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--text);\n  outline-offset: 2px;\n}\n\n.btn:active:not(:disabled) {\n  transform: translate(4px, 4px);\n  box-shadow: 0 0 0 var(--accent);\n}\n\n.btn:disabled {\n  background: var(--bought);\n  cursor: not-allowed;\n  box-shadow: 4px 4px 0 var(--border);\n  opacity: 0.6;\n}\n\n.btn.secondary {\n  background: var(--accent);\n  box-shadow: 4px 4px 0 var(--border);\n}\n\n.btn.secondary:hover:not(:disabled) {\n  background: #1a4a7a;\n}\n\n.shopping-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  margin-bottom: 24px;\n  min-height: 40px;\n}\n\n.shopping-list:empty::after {\n  content: 'No items yet. Add something!';\n  color: var(--text-muted);\n  text-align: center;\n  padding: 16px;\n  font-style: italic;\n}\n\n.list-item {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  background: var(--bg);\n  border: 3px solid var(--border);\n  padding: 10px 12px;\n}\n\n.list-item.bought {\n  opacity: 0.7;\n  border-color: var(--bought);\n}\n\n.list-item.bought .item-text {\n  text-decoration: line-through;\n  color: var(--bought);\n}\n\n.list-item input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  accent-color: var(--primary);\n  cursor: pointer;\n  flex-shrink: 0;\n}\n\n.list-item input[type=\"checkbox\"]:focus-visible {\n  outline: 3px solid var(--primary);\n  outline-offset: 2px;\n}\n\n.item-text {\n  flex: 1;\n  word-break: break-word;\n}\n\n.item-qty {\n  background: var(--accent);\n  color: var(--text);\n  font-weight: bold;\n  padding: 2px 8px;\n  border: 2px solid var(--border);\n  font-size: 0.9rem;\n  flex-shrink: 0;\n}\n\n.footer-bar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-wrap: wrap;\n  gap: 12px;\n  border-top: 3px solid var(--border);\n  padding-top: 16px;\n}\n\n.remaining {\n  font-size: 0.95rem;\n  color: var(--text-muted);\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 16px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n  .add-form {\n    flex-direction: column;\n    align-items: stretch;\n  }\n  .quantity-field {\n    flex: 1 1 auto;\n  }\n  .btn {\n    width: 100%;\n  }\n  .footer-bar {\n    flex-direction: column;\n    align-items: stretch;\n    text-align: center;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var form = document.getElementById('add-form');\n  var nameInput = document.getElementById('item-name');\n  var qtyInput = document.getElementById('item-qty');\n  var list = document.getElementById('shopping-list');\n  var remainingEl = document.getElementById('remaining-count');\n  var clearBtn = document.getElementById('clear-bought');\n\n  var items = [];\n  var nextId = 1;\n\n  function updateUI() {\n    // Reorder: unbought first, bought last (stable)\n    var sorted = items.slice().sort(function (a, b) {\n      return (a.bought === b.bought) ? 0 : (a.bought ? 1 : -1);\n    });\n\n    list.innerHTML = '';\n    sorted.forEach(function (item) {\n      var li = document.createElement('li');\n      li.className = 'list-item' + (item.bought ? ' bought' : '');\n      li.dataset.id = item.id;\n\n      var checkbox = document.createElement('input');\n      checkbox.type = 'checkbox';\n      checkbox.checked = item.bought;\n      checkbox.id = 'chk-' + item.id;\n      checkbox.setAttribute('aria-label', 'Mark ' + item.name + ' as bought');\n      checkbox.addEventListener('change', function () {\n        toggleBought(item.id);\n      });\n\n      var label = document.createElement('label');\n      label.htmlFor = checkbox.id;\n      label.className = 'item-text';\n      label.textContent = item.name;\n\n      var qty = document.createElement('span');\n      qty.className = 'item-qty';\n      qty.textContent = 'x' + item.qty;\n\n      li.appendChild(checkbox);\n      li.appendChild(label);\n      li.appendChild(qty);\n      list.appendChild(li);\n    });\n\n    var remaining = items.filter(function (i) { return !i.bought; }).length;\n    remainingEl.textContent = remaining + (remaining === 1 ? ' item remaining' : ' items remaining');\n\n    var hasBought = items.some(function (i) { return i.bought; });\n    clearBtn.disabled = !hasBought;\n  }\n\n  function addItem(name, qty) {\n    items.push({ id: nextId++, name: name, qty: qty, bought: false });\n    updateUI();\n  }\n\n  function toggleBought(id) {\n    items.forEach(function (item) {\n      if (item.id === id) {\n        item.bought = !item.bought;\n      }\n    });\n    updateUI();\n  }\n\n  function clearBought() {\n    items = items.filter(function (item) { return !item.bought; });\n    updateUI();\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    var name = nameInput.value.trim();\n    var qty = parseInt(qtyInput.value, 10);\n    if (!name) {\n      nameInput.focus();\n      return;\n    }\n    if (isNaN(qty) || qty < 1) {\n      qty = 1;\n      qtyInput.value = '1';\n    }\n    addItem(name, qty);\n    nameInput.value = '';\n    qtyInput.value = '1';\n    nameInput.focus();\n  });\n\n  clearBtn.addEventListener('click', clearBought);\n\n  updateUI();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Shopping List\n\nA retro pixel-styled shopping list app built with plain HTML, CSS, and JavaScript. Works fully offline in any modern browser.\n\n## Features\n\n- Add items with a name and quantity.\n- Tick items as bought — they move to the bottom and get struck through.\n- Live count of remaining (unbought) items.\n- Clear bought button removes all bought items and disables when none exist.\n- Keyboard accessible with labeled controls and visible focus states.\n- Responsive layout down to 360px wide.\n\n## Files\n\n- `index.html` — structure and content\n- `style.css` — pixel theme and responsive styling\n- `app.js` — add, toggle, count, and clear logic\n\n## Run\n\nOpen `index.html` in a browser. No server, packages, or network requests required.\n\n## Palette\n\n- Background: `#1a1a2e`\n- Card: `#16213e`\n- Primary accent: `#e94560`\n- Secondary accent: `#0f3460`\n- Text: `#f1f1f1`\n\n## Accessibility\n\nAll controls have visible labels or accessible names. Focus-visible outlines are shown on inputs and buttons. The list updates are announced via `aria-live` regions.",
+      "description": ""
+    }
+  ]
+}

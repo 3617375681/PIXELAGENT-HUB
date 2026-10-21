@@ -1,0 +1,572 @@
+{
+  "caseId": "quiz-maker",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 42,
+  "reportedTokens": 18667,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:06:17.302Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:06:17.302Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:06:20.937Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Quiz Maker"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:06:20.937Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:06:34.446Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:06:34.446Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:06:48.110Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:06:48.110Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:06:48.790Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:06:48.791Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "a39a7686-0e9d-40bd-91cb-e1bdb4bd9fcf"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:06:52.535Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "a39a7686-0e9d-40bd-91cb-e1bdb4bd9fcf",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:06:52.536Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "testPlanId": "a39a7686-0e9d-40bd-91cb-e1bdb4bd9fcf",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Add card shows in list",
+        "passed": true,
+        "actual": "Is the sky blue? Answer: yes ×"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Empty list disables Play",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Play enabled after adding card",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Play shows first question",
+        "passed": true,
+        "actual": "Is water wet?"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Play progress text",
+        "passed": true,
+        "actual": "Question 1 of 1"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Correct answer feedback",
+        "passed": true,
+        "actual": "Correct!"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Incorrect answer feedback",
+        "passed": true,
+        "actual": "Incorrect. The answer was yes."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Final score shown",
+        "passed": true,
+        "actual": "You scored 1 out of 1!"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Delete removes card",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "name": "Back to Maker hides play",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:06:56.621Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "31e03d60-c360-40a4-94dd-a8db46fa55a4",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:06:56.625Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add card shows in list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          }
+        ],
+        "selector": "#card-list li",
+        "expected": "Is the sky blue? Answer: yes ×",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty list disables Play",
+        "actions": [],
+        "selector": "#play-btn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Play enabled after adding card",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          }
+        ],
+        "selector": "#play-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Play shows first question",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Is water wet?"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#play-question",
+        "expected": "Is water wet?",
+        "assertion": "text"
+      },
+      {
+        "name": "Play progress text",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          }
+        ],
+        "selector": "#play-progress",
+        "expected": "Question 1 of 1",
+        "assertion": "text"
+      },
+      {
+        "name": "Correct answer feedback",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          }
+        ],
+        "selector": "#play-feedback",
+        "expected": "Correct!",
+        "assertion": "text"
+      },
+      {
+        "name": "Incorrect answer feedback",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-no"
+          }
+        ],
+        "selector": "#play-feedback",
+        "expected": "Incorrect. The answer was yes.",
+        "assertion": "text"
+      },
+      {
+        "name": "Final score shown",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          }
+        ],
+        "selector": "#play-score",
+        "expected": "You scored 1 out of 1!",
+        "assertion": "text"
+      },
+      {
+        "name": "Delete removes card",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": ".delete-btn"
+          }
+        ],
+        "selector": "#card-list li",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Back to Maker hides play",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question-input",
+            "value": "Q1"
+          },
+          {
+            "type": "input",
+            "selector": "#answer-input",
+            "value": "yes"
+          },
+          {
+            "type": "click",
+            "selector": "#add-card-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#play-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#exit-play-btn"
+          }
+        ],
+        "selector": "#play-section",
+        "expected": "false",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "Play mode advances after an 800ms timer; checks assert feedback before advancing.",
+      "Final score check relies on the timer completing; may need polling beyond 2s.",
+      "localStorage persistence across reloads is not verified since each check starts fresh."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 5715,
+      "completion_tokens": 877,
+      "total_tokens": 6592,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 4819
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Quiz Maker</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <div class=\"app-container\">\n    <header>\n      <h1>Pixel Quiz Maker</h1>\n      <p class=\"subtitle\">Create yes/no quiz cards and test your knowledge.</p>\n    </header>\n\n    <main>\n      <section id=\"maker-section\" class=\"card\">\n        <h2>Create a Card</h2>\n        <form id=\"card-form\">\n          <div class=\"form-group\">\n            <label for=\"question-input\">Question</label>\n            <input type=\"text\" id=\"question-input\" placeholder=\"e.g., Is the sky blue?\" required>\n          </div>\n          <div class=\"form-group\">\n            <label for=\"answer-input\">Correct Answer</label>\n            <select id=\"answer-input\" required>\n              <option value=\"yes\">Yes</option>\n              <option value=\"no\">No</option>\n            </select>\n          </div>\n          <button type=\"submit\" id=\"add-card-btn\" class=\"btn primary\">Add Card</button>\n        </form>\n        <div id=\"form-error\" class=\"error-message\" role=\"alert\" aria-live=\"polite\"></div>\n      </section>\n\n      <section id=\"cards-section\" class=\"card\">\n        <h2>Your Cards</h2>\n        <ul id=\"card-list\" class=\"card-list\" aria-label=\"List of quiz cards\"></ul>\n        <p id=\"empty-message\" class=\"empty-message\">No cards yet. Add your first card above!</p>\n        <button id=\"play-btn\" class=\"btn secondary\" disabled>Play Quiz</button>\n      </section>\n\n      <section id=\"play-section\" class=\"card hidden\" aria-live=\"polite\">\n        <h2>Play Mode</h2>\n        <div id=\"play-progress\" class=\"progress-text\"></div>\n        <div id=\"play-question\" class=\"play-question\"></div>\n        <div class=\"play-buttons\">\n          <button id=\"answer-yes\" class=\"btn answer-btn\" data-answer=\"yes\">Yes</button>\n          <button id=\"answer-no\" class=\"btn answer-btn\" data-answer=\"no\">No</button>\n        </div>\n        <div id=\"play-feedback\" class=\"feedback\" aria-live=\"assertive\"></div>\n        <div id=\"play-score\" class=\"score-display hidden\"></div>\n        <button id=\"restart-btn\" class=\"btn secondary hidden\">Play Again</button>\n        <button id=\"exit-play-btn\" class=\"btn secondary\">Back to Maker</button>\n      </section>\n    </main>\n  </div>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file with structure for card creation, card list, and play mode."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --surface: #16213e;\n  --primary: #e94560;\n  --secondary: #0f3460;\n  --text: #eaeaea;\n  --text-muted: #a0a0b0;\n  --success: #4ecca3;\n  --error: #e94560;\n  --radius: 12px;\n  --spacing: 1.5rem;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: flex-start;\n  padding: 1rem;\n}\n\n.app-container {\n  width: 100%;\n  max-width: 600px;\n  margin: 0 auto;\n}\n\nheader {\n  text-align: center;\n  margin-bottom: var(--spacing);\n}\n\nh1 {\n  font-size: 2rem;\n  color: var(--primary);\n  margin-bottom: 0.25rem;\n}\n\n.subtitle {\n  color: var(--text-muted);\n  font-size: 1rem;\n}\n\n.card {\n  background: var(--surface);\n  border-radius: var(--radius);\n  padding: var(--spacing);\n  margin-bottom: var(--spacing);\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin-bottom: 1rem;\n  color: var(--text);\n}\n\n.form-group {\n  margin-bottom: 1rem;\n}\n\nlabel {\n  display: block;\n  margin-bottom: 0.5rem;\n  font-weight: 600;\n  color: var(--text);\n}\n\ninput[type=\"text\"],\nselect {\n  width: 100%;\n  padding: 0.75rem;\n  font-size: 1rem;\n  border: 2px solid var(--secondary);\n  border-radius: 8px;\n  background: var(--bg);\n  color: var(--text);\n  transition: border-color 0.2s;\n}\n\ninput[type=\"text\"]:focus,\nselect:focus {\n  outline: none;\n  border-color: var(--primary);\n}\n\n.btn {\n  display: inline-block;\n  padding: 0.75rem 1.5rem;\n  font-size: 1rem;\n  font-weight: 600;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s, opacity 0.2s;\n  text-align: center;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--primary);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.btn:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n.btn.primary {\n  background: var(--primary);\n  color: #fff;\n}\n\n.btn.primary:hover:not(:disabled) {\n  background: #d63850;\n}\n\n.btn.secondary {\n  background: var(--secondary);\n  color: var(--text);\n}\n\n.btn.secondary:hover:not(:disabled) {\n  background: #1a4a7a;\n}\n\n.card-list {\n  list-style: none;\n  margin-bottom: 1rem;\n}\n\n.card-list li {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.75rem;\n  background: var(--bg);\n  border-radius: 8px;\n  margin-bottom: 0.5rem;\n  gap: 0.5rem;\n}\n\n.card-list .card-text {\n  flex: 1;\n  word-break: break-word;\n}\n\n.card-list .card-answer {\n  font-size: 0.875rem;\n  color: var(--text-muted);\n  white-space: nowrap;\n}\n\n.card-list .delete-btn {\n  background: transparent;\n  border: none;\n  color: var(--error);\n  font-size: 1.25rem;\n  cursor: pointer;\n  padding: 0.25rem 0.5rem;\n  border-radius: 4px;\n  transition: background 0.2s;\n}\n\n.card-list .delete-btn:hover {\n  background: rgba(233, 69, 96, 0.2);\n}\n\n.card-list .delete-btn:focus-visible {\n  outline: 2px solid var(--primary);\n}\n\n.empty-message {\n  color: var(--text-muted);\n  text-align: center;\n  padding: 1rem 0;\n}\n\n.error-message {\n  color: var(--error);\n  font-size: 0.875rem;\n  min-height: 1.25rem;\n  margin-top: 0.5rem;\n}\n\n.hidden {\n  display: none !important;\n}\n\n.progress-text {\n  color: var(--text-muted);\n  margin-bottom: 0.5rem;\n}\n\n.play-question {\n  font-size: 1.25rem;\n  font-weight: 600;\n  margin-bottom: 1rem;\n  min-height: 2rem;\n}\n\n.play-buttons {\n  display: flex;\n  gap: 1rem;\n  margin-bottom: 1rem;\n}\n\n.answer-btn {\n  flex: 1;\n  background: var(--secondary);\n  color: var(--text);\n}\n\n.answer-btn:hover:not(:disabled) {\n  background: #1a4a7a;\n}\n\n.feedback {\n  font-weight: 600;\n  min-height: 1.5rem;\n  margin-bottom: 1rem;\n}\n\n.feedback.correct {\n  color: var(--success);\n}\n\n.feedback.incorrect {\n  color: var(--error);\n}\n\n.score-display {\n  font-size: 1.5rem;\n  font-weight: 700;\n  text-align: center;\n  padding: 1rem;\n  background: var(--bg);\n  border-radius: 8px;\n  margin-bottom: 1rem;\n}\n\n@media (max-width: 400px) {\n  body {\n    padding: 0.5rem;\n  }\n  .card {\n    padding: 1rem;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .play-buttons {\n    flex-direction: column;\n  }\n}",
+      "description": "CSS with dark theme palette, responsive layout, and interactive states."
+    },
+    {
+      "path": "app.js",
+      "content": "(function() {\n  'use strict';\n\n  // State\n  let cards = [];\n  let currentIndex = 0;\n  let correctCount = 0;\n  let isPlaying = false;\n\n  // DOM elements\n  const cardForm = document.getElementById('card-form');\n  const questionInput = document.getElementById('question-input');\n  const answerInput = document.getElementById('answer-input');\n  const formError = document.getElementById('form-error');\n  const cardList = document.getElementById('card-list');\n  const emptyMessage = document.getElementById('empty-message');\n  const playBtn = document.getElementById('play-btn');\n  const makerSection = document.getElementById('maker-section');\n  const cardsSection = document.getElementById('cards-section');\n  const playSection = document.getElementById('play-section');\n  const playProgress = document.getElementById('play-progress');\n  const playQuestion = document.getElementById('play-question');\n  const answerYes = document.getElementById('answer-yes');\n  const answerNo = document.getElementById('answer-no');\n  const playFeedback = document.getElementById('play-feedback');\n  const playScore = document.getElementById('play-score');\n  const restartBtn = document.getElementById('restart-btn');\n  const exitPlayBtn = document.getElementById('exit-play-btn');\n\n  // Load from localStorage if available\n  function loadCards() {\n    try {\n      const stored = localStorage.getItem('pixelQuizCards');\n      if (stored) {\n        cards = JSON.parse(stored);\n      }\n    } catch (e) {\n      // localStorage unavailable\n    }\n    renderCardList();\n  }\n\n  function saveCards() {\n    try {\n      localStorage.setItem('pixelQuizCards', JSON.stringify(cards));\n    } catch (e) {\n      // ignore\n    }\n  }\n\n  // Render card list\n  function renderCardList() {\n    cardList.innerHTML = '';\n    if (cards.length === 0) {\n      emptyMessage.classList.remove('hidden');\n      playBtn.disabled = true;\n    } else {\n      emptyMessage.classList.add('hidden');\n      playBtn.disabled = false;\n      cards.forEach((card, index) => {\n        const li = document.createElement('li');\n        const textSpan = document.createElement('span');\n        textSpan.className = 'card-text';\n        textSpan.textContent = card.question;\n        const answerSpan = document.createElement('span');\n        answerSpan.className = 'card-answer';\n        answerSpan.textContent = 'Answer: ' + card.answer;\n        const deleteBtn = document.createElement('button');\n        deleteBtn.className = 'delete-btn';\n        deleteBtn.setAttribute('aria-label', 'Delete card: ' + card.question);\n        deleteBtn.textContent = '\\u00d7';\n        deleteBtn.addEventListener('click', () => deleteCard(index));\n        li.appendChild(textSpan);\n        li.appendChild(answerSpan);\n        li.appendChild(deleteBtn);\n        cardList.appendChild(li);\n      });\n    }\n  }\n\n  function deleteCard(index) {\n    cards.splice(index, 1);\n    saveCards();\n    renderCardList();\n  }\n\n  // Add card\n  cardForm.addEventListener('submit', function(e) {\n    e.preventDefault();\n    const question = questionInput.value.trim();\n    const answer = answerInput.value;\n    if (!question) {\n      formError.textContent = 'Please enter a question.';\n      return;\n    }\n    if (answer !== 'yes' && answer !== 'no') {\n      formError.textContent = 'Answer must be yes or no.';\n      return;\n    }\n    formError.textContent = '';\n    cards.push({ question: question, answer: answer });\n    saveCards();\n    renderCardList();\n    questionInput.value = '';\n    answerInput.value = 'yes';\n    questionInput.focus();\n  });\n\n  // Play mode\n  function startPlay() {\n    if (cards.length === 0) return;\n    isPlaying = true;\n    currentIndex = 0;\n    correctCount = 0;\n    makerSection.classList.add('hidden');\n    cardsSection.classList.add('hidden');\n    playSection.classList.remove('hidden');\n    playScore.classList.add('hidden');\n    restartBtn.classList.add('hidden');\n    showQuestion();\n  }\n\n  function showQuestion() {\n    if (currentIndex >= cards.length) {\n      endPlay();\n      return;\n    }\n    const card = cards[currentIndex];\n    playProgress.textContent = 'Question ' + (currentIndex + 1) + ' of ' + cards.length;\n    playQuestion.textContent = card.question;\n    playFeedback.textContent = '';\n    playFeedback.className = 'feedback';\n    answerYes.disabled = false;\n    answerNo.disabled = false;\n  }\n\n  function handleAnswer(selected) {\n    if (!isPlaying) return;\n    const card = cards[currentIndex];\n    const isCorrect = selected === card.answer;\n    if (isCorrect) {\n      correctCount++;\n      playFeedback.textContent = 'Correct!';\n      playFeedback.className = 'feedback correct';\n    } else {\n      playFeedback.textContent = 'Incorrect. The answer was ' + card.answer + '.';\n      playFeedback.className = 'feedback incorrect';\n    }\n    answerYes.disabled = true;\n    answerNo.disabled = true;\n    currentIndex++;\n    setTimeout(() => {\n      if (isPlaying) showQuestion();\n    }, 800);\n  }\n\n  answerYes.addEventListener('click', () => handleAnswer('yes'));\n  answerNo.addEventListener('click', () => handleAnswer('no'));\n\n  function endPlay() {\n    isPlaying = false;\n    playQuestion.textContent = '';\n    playFeedback.textContent = '';\n    playFeedback.className = 'feedback';\n    playProgress.textContent = '';\n    playScore.textContent = 'You scored ' + correctCount + ' out of ' + cards.length + '!';\n    playScore.classList.remove('hidden');\n    restartBtn.classList.remove('hidden');\n    answerYes.disabled = true;\n    answerNo.disabled = true;\n  }\n\n  restartBtn.addEventListener('click', function() {\n    startPlay();\n  });\n\n  exitPlayBtn.addEventListener('click', function() {\n    isPlaying = false;\n    playSection.classList.add('hidden');\n    makerSection.classList.remove('hidden');\n    cardsSection.classList.remove('hidden');\n    playScore.classList.add('hidden');\n    restartBtn.classList.add('hidden');\n  });\n\n  playBtn.addEventListener('click', startPlay);\n\n  // Initialize\n  loadCards();\n})();",
+      "description": "JavaScript logic for card management, play mode, scoring, and localStorage persistence."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Quiz Maker\n\nA simple offline browser app to create yes/no quiz cards and play through them with scoring.\n\n## Features\n\n- Add quiz cards with a question and a yes/no answer.\n- View and delete cards from the list.\n- Play mode presents each card in order.\n- Tracks correct answers and shows final score.\n- Cards persist in localStorage (if available).\n- Keyboard accessible with labeled controls.\n- Responsive design from 360px wide.\n\n## How to Use\n\n1. Open `index.html` in any modern browser.\n2. Type a question and select the correct answer (Yes/No), then click **Add Card**.\n3. Repeat to add more cards.\n4. Click **Play Quiz** to start.\n5. Answer each question by clicking **Yes** or **No**.\n6. After all questions, your score is displayed.\n7. Click **Play Again** to retry or **Back to Maker** to edit cards.\n\n## Tech Stack\n\n- HTML5\n- CSS3 (dark theme with custom properties)\n- Vanilla JavaScript (no dependencies)\n\n## File Structure\n\n- `index.html` – main page structure\n- `styles.css` – styling and responsive layout\n- `app.js` – application logic\n- `README.md` – this file\n\n## Notes\n\n- No external assets, network requests, or server code.\n- Uses `addEventListener` for all interactions.\n- Works offline.",
+      "description": "README with project description, usage instructions, and technical details."
+    }
+  ]
+}
