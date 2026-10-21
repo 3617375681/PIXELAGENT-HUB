@@ -1260,6 +1260,21 @@ components:
         - type: object
           required:
             - type
+            - ms
+          properties:
+            type:
+              type: string
+              enum:
+                - wait
+            ms:
+              type: integer
+              minimum: 50
+              maximum: 6000
+              description: Wait duration in milliseconds; waits total at most 8000 ms per check.
+          additionalProperties: false
+        - type: object
+          required:
+            - type
             - selector
           properties:
             type:

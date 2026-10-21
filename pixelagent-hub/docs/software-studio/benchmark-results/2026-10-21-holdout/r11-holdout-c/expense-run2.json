@@ -1,0 +1,495 @@
+{
+  "caseId": "expense",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 30,
+  "reportedTokens": 14540,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:36:55.304Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:36:55.305Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:37:00.404Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Expense Splitter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:37:00.404Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:37:16.827Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:37:16.827Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:37:17.340Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:37:17.341Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "62d75013-276f-4c38-95d3-89ab737d5ce5"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:37:20.423Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "62d75013-276f-4c38-95d3-89ab737d5ce5",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:37:20.425Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "testPlanId": "62d75013-276f-4c38-95d3-89ab737d5ce5",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "No expenses yet. Add one above."
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Initial summary shows three friends",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Add expense shows in list",
+        "passed": true,
+        "actual": "Alice paid $30.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Alice paid total after adding",
+        "passed": true,
+        "actual": "$30.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Alice is owed after paying all",
+        "passed": true,
+        "actual": "is owed $20.00"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Bob owes after Alice pays all",
+        "passed": true,
+        "actual": "owes $10.00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Settle up lists two transactions",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Settle up Bob pays Alice",
+        "passed": true,
+        "actual": "Bob → Alice: $10.00"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Invalid amount shows error",
+        "passed": true,
+        "actual": "Please enter a valid positive amount."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "name": "Remove expense clears list",
+        "passed": true,
+        "actual": "No expenses yet. Add one above."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:37:23.725Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "dd187827-026b-49ac-8276-3daede8fe62c",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:37:23.729Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial empty state",
+        "actions": [],
+        "selector": "#empty-message",
+        "expected": "No expenses yet. Add one above.",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial summary shows three friends",
+        "actions": [],
+        "selector": ".summary-card",
+        "expected": "3",
+        "assertion": "count"
+      },
+      {
+        "name": "Add expense shows in list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".expense-item .info",
+        "expected": "Alice paid $30.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Alice paid total after adding",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".summary-card .paid",
+        "nth": 0,
+        "expected": "$30.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Alice is owed after paying all",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".summary-card .balance",
+        "nth": 0,
+        "expected": "is owed $20.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Bob owes after Alice pays all",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".summary-card .balance",
+        "nth": 1,
+        "expected": "owes $10.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Settle up lists two transactions",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".settle-item",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Settle up Bob pays Alice",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".settle-item",
+        "nth": 0,
+        "expected": "Bob → Alice: $10.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid amount shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Bob"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#form-error",
+        "expected": "Please enter a valid positive amount.",
+        "assertion": "text"
+      },
+      {
+        "name": "Remove expense clears list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Charlie"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "9"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "click",
+            "selector": ".expense-item .btn.danger"
+          }
+        ],
+        "selector": "#empty-message",
+        "expected": "No expenses yet. Add one above.",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Cannot verify pixel-art rendering or visual styling; only DOM text and counts are checked.",
+      "Cannot verify responsive layout at 360px width.",
+      "Settle-up ordering depends on sort order; only first transaction and count are checked.",
+      "No check for removing a specific expense among several; only single-expense removal is covered."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 6408,
+      "completion_tokens": 757,
+      "total_tokens": 7165,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 5128
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Expense Splitter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header>\n      <h1>Pixel Expense Splitter</h1>\n      <p class=\"subtitle\">Split expenses among 3 friends so everyone pays the same.</p>\n    </header>\n\n    <section aria-labelledby=\"form-heading\">\n      <h2 id=\"form-heading\">Add an expense</h2>\n      <form id=\"expense-form\" novalidate>\n        <div class=\"form-row\">\n          <label for=\"payer\">Who paid?</label>\n          <select id=\"payer\" required>\n            <option value=\"Alice\">Alice</option>\n            <option value=\"Bob\">Bob</option>\n            <option value=\"Charlie\">Charlie</option>\n          </select>\n        </div>\n        <div class=\"form-row\">\n          <label for=\"amount\">Amount (&#36;)</label>\n          <input type=\"number\" id=\"amount\" min=\"0.01\" step=\"0.01\" placeholder=\"0.00\" required inputmode=\"decimal\">\n        </div>\n        <button type=\"submit\" id=\"add-btn\" class=\"btn primary\">Add expense</button>\n        <p id=\"form-error\" class=\"error\" role=\"alert\" aria-live=\"assertive\"></p>\n      </form>\n    </section>\n\n    <section aria-labelledby=\"list-heading\">\n      <h2 id=\"list-heading\">Expenses</h2>\n      <ul id=\"expense-list\" class=\"expense-list\" aria-live=\"polite\">\n        <!-- expenses will be inserted here -->\n      </ul>\n      <p id=\"empty-message\" class=\"empty-message\">No expenses yet. Add one above.</p>\n    </section>\n\n    <section aria-labelledby=\"summary-heading\">\n      <h2 id=\"summary-heading\">Totals &amp; Balances</h2>\n      <div id=\"summary\" class=\"summary-grid\" aria-live=\"polite\">\n        <!-- summary will be inserted here -->\n      </div>\n    </section>\n\n    <section aria-labelledby=\"settle-heading\">\n      <h2 id=\"settle-heading\">Settle up</h2>\n      <ul id=\"settle-list\" class=\"settle-list\" aria-live=\"polite\">\n        <!-- settle-up transactions will be inserted here -->\n      </ul>\n      <p id=\"settle-empty\" class=\"empty-message\">All settled up!</p>\n    </section>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": "/* Pixel-themed palette: dark slate, off-white, teal, coral, amber */\n:root {\n  --bg: #1e1e2f;\n  --card: #2d2d44;\n  --text: #f0f0f0;\n  --accent: #4ecdc4;\n  --accent-dark: #3aa89f;\n  --danger: #ff6b6b;\n  --warning: #ffd93d;\n  --border: #555;\n  --shadow: #111;\n  --radius: 0px;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  line-height: 1.5;\n  color: var(--text);\n  display: flex;\n  justify-content: center;\n  align-items: flex-start;\n  min-height: 100vh;\n  padding: 1rem;\n  background-image: linear-gradient(45deg, #1a1a2e 25%, transparent 25%),\n                    linear-gradient(-45deg, #1a1a2e 25%, transparent 25%),\n                    linear-gradient(45deg, transparent 75%, #1a1a2e 75%),\n                    linear-gradient(-45deg, transparent 75%, #1a1a2e 75%);\n  background-size: 20px 20px;\n  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;\n}\n\n.card {\n  background: var(--card);\n  border: 4px solid var(--border);\n  box-shadow: 8px 8px 0 var(--shadow);\n  padding: 1.5rem;\n  width: 100%;\n  max-width: 640px;\n  margin: 2rem 0;\n}\n\nh1, h2 {\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  margin-bottom: 0.5rem;\n}\n\nh1 {\n  font-size: 1.75rem;\n  color: var(--accent);\n  text-align: center;\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin-top: 1.5rem;\n  padding-bottom: 0.25rem;\n  border-bottom: 4px solid var(--border);\n}\n\n.subtitle {\n  text-align: center;\n  color: #aaa;\n  margin-bottom: 1.5rem;\n}\n\n.form-row {\n  margin-bottom: 1rem;\n}\n\nlabel {\n  display: block;\n  margin-bottom: 0.25rem;\n  font-weight: 600;\n  color: var(--accent);\n}\n\nselect, input {\n  width: 100%;\n  padding: 0.75rem;\n  background: #1e1e2f;\n  border: 3px solid var(--border);\n  color: var(--text);\n  font-family: inherit;\n  font-size: 1rem;\n  outline: none;\n}\n\nselect:focus, input:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px var(--accent-dark);\n}\n\n.btn {\n  display: inline-block;\n  padding: 0.75rem 1.5rem;\n  border: 3px solid var(--border);\n  background: var(--accent);\n  color: #1e1e2f;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  cursor: pointer;\n  transition: transform 0.1s, box-shadow 0.1s;\n  box-shadow: 4px 4px 0 var(--shadow);\n}\n\n.btn:hover {\n  background: var(--accent-dark);\n  transform: translate(-1px, -1px);\n  box-shadow: 5px 5px 0 var(--shadow);\n}\n\n.btn:active {\n  transform: translate(2px, 2px);\n  box-shadow: 2px 2px 0 var(--shadow);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--warning);\n  outline-offset: 2px;\n}\n\n.btn.danger {\n  background: var(--danger);\n  color: #fff;\n  padding: 0.25rem 0.75rem;\n  font-size: 0.875rem;\n}\n\n.error {\n  color: var(--danger);\n  margin-top: 0.5rem;\n  font-weight: 600;\n  min-height: 1.5em;\n}\n\n.expense-list, .settle-list {\n  list-style: none;\n  margin-top: 0.5rem;\n}\n\n.expense-item {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.75rem;\n  background: #1e1e2f;\n  border: 3px solid var(--border);\n  margin-bottom: 0.5rem;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n\n.expense-item .info {\n  flex: 1 1 auto;\n  font-size: 1rem;\n}\n\n.expense-item .amount {\n  font-weight: 700;\n  color: var(--accent);\n}\n\n.empty-message {\n  color: #aaa;\n  font-style: italic;\n  margin-top: 0.5rem;\n}\n\n.summary-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n  gap: 0.75rem;\n  margin-top: 0.5rem;\n}\n\n.summary-card {\n  background: #1e1e2f;\n  border: 3px solid var(--border);\n  padding: 0.75rem;\n  text-align: center;\n}\n\n.summary-card .name {\n  font-weight: 700;\n  color: var(--accent);\n  text-transform: uppercase;\n  font-size: 0.875rem;\n}\n\n.summary-card .paid {\n  font-size: 1.25rem;\n  font-weight: 700;\n  margin: 0.25rem 0;\n}\n\n.summary-card .balance {\n  font-size: 0.875rem;\n  font-weight: 600;\n}\n\n.balance.positive {\n  color: var(--accent);\n}\n\n.balance.negative {\n  color: var(--danger);\n}\n\n.settle-item {\n  padding: 0.75rem;\n  background: #1e1e2f;\n  border: 3px solid var(--border);\n  margin-bottom: 0.5rem;\n  font-weight: 600;\n}\n\n.settle-item .arrow {\n  color: var(--warning);\n  margin: 0 0.5rem;\n}\n\n@media (max-width: 480px) {\n  .card {\n    padding: 1rem;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .expense-item {\n    flex-direction: column;\n    align-items: flex-start;\n  }\n  .summary-grid {\n    grid-template-columns: 1fr;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "// Pixel Expense Splitter\n(function() {\n  'use strict';\n\n  const FRIENDS = ['Alice', 'Bob', 'Charlie'];\n  let expenses = []; // { id, payer, amount (in cents) }\n  let nextId = 1;\n\n  // DOM elements\n  const form = document.getElementById('expense-form');\n  const payerSelect = document.getElementById('payer');\n  const amountInput = document.getElementById('amount');\n  const formError = document.getElementById('form-error');\n  const expenseList = document.getElementById('expense-list');\n  const emptyMessage = document.getElementById('empty-message');\n  const summaryDiv = document.getElementById('summary');\n  const settleList = document.getElementById('settle-list');\n  const settleEmpty = document.getElementById('settle-empty');\n\n  // Helpers\n  function formatCents(cents) {\n    return '$' + (cents / 100).toFixed(2);\n  }\n\n  function parseAmountToCents(value) {\n    const num = parseFloat(value);\n    if (isNaN(num) || num <= 0) return null;\n    return Math.round(num * 100);\n  }\n\n  // Render functions\n  function renderExpenses() {\n    expenseList.innerHTML = '';\n    if (expenses.length === 0) {\n      emptyMessage.style.display = 'block';\n      return;\n    }\n    emptyMessage.style.display = 'none';\n    expenses.forEach(exp => {\n      const li = document.createElement('li');\n      li.className = 'expense-item';\n      li.dataset.id = exp.id;\n\n      const info = document.createElement('span');\n      info.className = 'info';\n      info.textContent = exp.payer + ' paid ';\n\n      const amountSpan = document.createElement('span');\n      amountSpan.className = 'amount';\n      amountSpan.textContent = formatCents(exp.amount);\n      info.appendChild(amountSpan);\n\n      const removeBtn = document.createElement('button');\n      removeBtn.type = 'button';\n      removeBtn.className = 'btn danger';\n      removeBtn.textContent = 'Remove';\n      removeBtn.setAttribute('aria-label', 'Remove expense: ' + exp.payer + ' paid ' + formatCents(exp.amount));\n      removeBtn.addEventListener('click', () => removeExpense(exp.id));\n\n      li.appendChild(info);\n      li.appendChild(removeBtn);\n      expenseList.appendChild(li);\n    });\n  }\n\n  function renderSummary() {\n    const totalCents = expenses.reduce((sum, e) => sum + e.amount, 0);\n    const shareCents = Math.floor(totalCents / FRIENDS.length);\n    // Distribute remainder cents to first friends? Actually we need each person's fair share as total/3.\n    // For balances, we use exact division: each person's fair share = total / 3 (in cents, may have fraction).\n    // We'll compute balances as (paid - total/3) using floating point for display, but for settle-up we'll use integer cents with remainder handling.\n\n    const paid = {};\n    FRIENDS.forEach(f => paid[f] = 0);\n    expenses.forEach(e => { paid[e.payer] += e.amount; });\n\n    // Compute balances in cents (paid - share), share = total/3. We'll keep as float for display but settle using integer cents.\n    const total = totalCents;\n    const share = total / FRIENDS.length;\n    const balances = {};\n    FRIENDS.forEach(f => {\n      balances[f] = paid[f] - share;\n    });\n\n    summaryDiv.innerHTML = '';\n    FRIENDS.forEach(f => {\n      const card = document.createElement('div');\n      card.className = 'summary-card';\n\n      const nameEl = document.createElement('div');\n      nameEl.className = 'name';\n      nameEl.textContent = f;\n\n      const paidEl = document.createElement('div');\n      paidEl.className = 'paid';\n      paidEl.textContent = formatCents(paid[f]);\n\n      const balEl = document.createElement('div');\n      balEl.className = 'balance ' + (balances[f] >= 0 ? 'positive' : 'negative');\n      const balAbs = Math.abs(balances[f]);\n      const balStr = formatCents(Math.round(balAbs * 100) / 100); // round to cents for display\n      if (Math.abs(balances[f]) < 0.01) {\n        balEl.textContent = 'Settled';\n      } else if (balances[f] > 0) {\n        balEl.textContent = 'is owed ' + balStr;\n      } else {\n        balEl.textContent = 'owes ' + balStr;\n      }\n\n      card.appendChild(nameEl);\n      card.appendChild(paidEl);\n      card.appendChild(balEl);\n      summaryDiv.appendChild(card);\n    });\n  }\n\n  function renderSettleUp() {\n    // Compute minimal transactions using integer cents with remainder distribution.\n    const totalCents = expenses.reduce((sum, e) => sum + e.amount, 0);\n    const n = FRIENDS.length;\n    const baseShare = Math.floor(totalCents / n);\n    const remainder = totalCents % n;\n\n    // Each friend's fair share: first 'remainder' friends get baseShare+1, others baseShare.\n    // But to be fair, we should distribute remainder to those who paid more? Actually we need balances such that sum of balances = 0.\n    // We'll compute each person's balance: paid - fairShare (where fairShare is integer cents).\n    const paid = {};\n    FRIENDS.forEach(f => paid[f] = 0);\n    expenses.forEach(e => { paid[e.payer] += e.amount; });\n\n    // Assign fair shares: we want sum of fairShares = totalCents. We can assign baseShare to all, then distribute remainder cents to friends in order.\n    const fairShares = {};\n    FRIENDS.forEach((f, i) => {\n      fairShares[f] = baseShare + (i < remainder ? 1 : 0);\n    });\n\n    const balances = {};\n    FRIENDS.forEach(f => {\n      balances[f] = paid[f] - fairShares[f];\n    });\n\n    // Now settle: separate debtors (negative balance) and creditors (positive balance).\n    const debtors = [];\n    const creditors = [];\n    FRIENDS.forEach(f => {\n      if (balances[f] < 0) debtors.push({ name: f, amount: -balances[f] });\n      else if (balances[f] > 0) creditors.push({ name: f, amount: balances[f] });\n    });\n\n    // Sort by amount descending for efficiency (optional)\n    debtors.sort((a, b) => b.amount - a.amount);\n    creditors.sort((a, b) => b.amount - a.amount);\n\n    const transactions = [];\n    let i = 0, j = 0;\n    while (i < debtors.length && j < creditors.length) {\n      const debtor = debtors[i];\n      const creditor = creditors[j];\n      const amount = Math.min(debtor.amount, creditor.amount);\n      if (amount > 0) {\n        transactions.push({ from: debtor.name, to: creditor.name, amount: amount });\n      }\n      debtor.amount -= amount;\n      creditor.amount -= amount;\n      if (debtor.amount === 0) i++;\n      if (creditor.amount === 0) j++;\n    }\n\n    settleList.innerHTML = '';\n    if (transactions.length === 0) {\n      settleEmpty.style.display = 'block';\n      return;\n    }\n    settleEmpty.style.display = 'none';\n    transactions.forEach(t => {\n      const li = document.createElement('li');\n      li.className = 'settle-item';\n      li.innerHTML = t.from + ' <span class=\"arrow\">→</span> ' + t.to + ': ' + formatCents(t.amount);\n      settleList.appendChild(li);\n    });\n  }\n\n  function updateAll() {\n    renderExpenses();\n    renderSummary();\n    renderSettleUp();\n  }\n\n  // Event handlers\n  function addExpense(e) {\n    e.preventDefault();\n    formError.textContent = '';\n    const payer = payerSelect.value;\n    const amountCents = parseAmountToCents(amountInput.value);\n\n    if (!payer || !FRIENDS.includes(payer)) {\n      formError.textContent = 'Please select a payer.';\n      return;\n    }\n    if (amountCents === null || amountCents <= 0) {\n      formError.textContent = 'Please enter a valid positive amount.';\n      amountInput.focus();\n      return;\n    }\n\n    expenses.push({ id: nextId++, payer, amount: amountCents });\n    amountInput.value = '';\n    amountInput.focus();\n    updateAll();\n  }\n\n  function removeExpense(id) {\n    expenses = expenses.filter(exp => exp.id !== id);\n    updateAll();\n  }\n\n  // Initialize\n  form.addEventListener('submit', addExpense);\n\n  // Set initial state\n  updateAll();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Expense Splitter\n\nA simple offline browser app to split expenses among 3 friends so everyone pays the same.\n\n## Features\n- Add expenses with who paid and the amount.\n- View each person's total paid and whether they owe or are owed.\n- Get a minimal settle-up list of transactions.\n- Remove expenses.\n- Pixel-art themed UI, responsive down to 360px.\n\n## How to run\n1. Open `index.html` in any modern browser.\n2. No server or build step required.\n\n## Tech\n- Plain HTML, CSS, JavaScript.\n- No external dependencies, network requests, or imports.\n\n## Notes\n- Amounts are stored in cents to avoid floating-point issues.\n- Settle-up uses integer cents and distributes any remainder fairly.\n",
+      "description": ""
+    }
+  ]
+}

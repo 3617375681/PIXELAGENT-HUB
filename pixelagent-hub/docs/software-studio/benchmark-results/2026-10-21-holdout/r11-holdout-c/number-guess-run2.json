@@ -1,0 +1,460 @@
+{
+  "caseId": "number-guess",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 24,
+  "reportedTokens": 9770,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:40:02.964Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:40:02.965Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:40:06.488Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Number Guessing Game"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:40:06.489Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:40:16.532Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:40:16.532Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:40:16.989Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:40:16.989Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "6164da2f-cb62-44f1-b8fa-8f9615250991"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:40:20.199Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "6164da2f-cb62-44f1-b8fa-8f9615250991",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:40:20.200Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "testPlanId": "6164da2f-cb62-44f1-b8fa-8f9615250991",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Initial state shows prompt and zero guesses",
+        "passed": true,
+        "actual": "Enter a number and press Guess."
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Initial guess count is zero",
+        "passed": true,
+        "actual": "Guesses: 0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Guess 1 gives high or low feedback and count 1",
+        "passed": true,
+        "actual": "Guesses: 1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Guess 100 gives high or low feedback and count 1",
+        "passed": true,
+        "actual": "Too high! Try a lower number."
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Out of range guess is rejected without counting",
+        "passed": true,
+        "actual": "Guesses: 0"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Out of range guess shows validation message",
+        "passed": true,
+        "actual": "Please enter a number between 1 and 100."
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "Enter key submits a guess",
+        "passed": true,
+        "actual": "Guesses: 1"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "New Game resets count after a guess",
+        "passed": true,
+        "actual": "Guesses: 0"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "New Game resets feedback after a guess",
+        "passed": true,
+        "actual": "Enter a number and press Guess."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "name": "New Game clears the input field",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:40:23.453Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "705a4e06-380b-4d12-b56a-dfcdbd54d086",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:40:23.456Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows prompt and zero guesses",
+        "actions": [],
+        "selector": "#feedback",
+        "expected": "Enter a number and press Guess.",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial guess count is zero",
+        "actions": [],
+        "selector": "#guessCount",
+        "expected": "Guesses: 0",
+        "assertion": "text"
+      },
+      {
+        "name": "Guess 1 gives high or low feedback and count 1",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          }
+        ],
+        "selector": "#guessCount",
+        "expected": "Guesses: 1",
+        "assertion": "text"
+      },
+      {
+        "name": "Guess 100 gives high or low feedback and count 1",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          }
+        ],
+        "selector": "#feedback",
+        "expected": "^(Too high! Try a lower number\\.|Too low! Try a higher number\\.|Correct!.*)$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Out of range guess is rejected without counting",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          }
+        ],
+        "selector": "#guessCount",
+        "expected": "Guesses: 0",
+        "assertion": "text"
+      },
+      {
+        "name": "Out of range guess shows validation message",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "101"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          }
+        ],
+        "selector": "#feedback",
+        "expected": "Please enter a number between 1 and 100.",
+        "assertion": "text"
+      },
+      {
+        "name": "Enter key submits a guess",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "50"
+          },
+          {
+            "type": "key",
+            "selector": "#guessInput",
+            "key": "Enter"
+          }
+        ],
+        "selector": "#guessCount",
+        "expected": "Guesses: 1",
+        "assertion": "text"
+      },
+      {
+        "name": "New Game resets count after a guess",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#newGameBtn"
+          }
+        ],
+        "selector": "#guessCount",
+        "expected": "Guesses: 0",
+        "assertion": "text"
+      },
+      {
+        "name": "New Game resets feedback after a guess",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#newGameBtn"
+          }
+        ],
+        "selector": "#feedback",
+        "expected": "Enter a number and press Guess.",
+        "assertion": "text"
+      },
+      {
+        "name": "New Game clears the input field",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#guessInput",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": "#guessBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#newGameBtn"
+          }
+        ],
+        "selector": "#guessInput",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      }
+    ],
+    "limitations": [
+      "Secret number is random, so exact Too high/Too low/Correct outcomes cannot be predicted.",
+      "Correct! path, input/button disabling on win, and guess pluralization are not directly asserted.",
+      "Cannot verify the secret stays within 1-100 or that New Game picks a different number."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4196,
+      "completion_tokens": 687,
+      "total_tokens": 4883,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3044
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Number Guessing Game</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-container\">\n    <div class=\"game-card\">\n      <h1>Guess the Number</h1>\n      <p class=\"subtitle\">I'm thinking of a number between 1 and 100.</p>\n      <div class=\"game-area\">\n        <label for=\"guessInput\">Your guess:</label>\n        <div class=\"input-group\">\n          <input type=\"number\" id=\"guessInput\" min=\"1\" max=\"100\" placeholder=\"Enter 1-100\" autocomplete=\"off\" aria-describedby=\"feedback\">\n          <button id=\"guessBtn\" class=\"btn primary\">Guess</button>\n        </div>\n        <p id=\"feedback\" class=\"feedback\" role=\"status\" aria-live=\"polite\">Enter a number and press Guess.</p>\n        <p id=\"guessCount\" class=\"guess-count\">Guesses: 0</p>\n        <button id=\"newGameBtn\" class=\"btn secondary\">New Game</button>\n      </div>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card-bg: #16213e;\n  --primary: #e94560;\n  --primary-hover: #ff6b81;\n  --secondary: #0f3460;\n  --secondary-hover: #1a4a7a;\n  --text: #eaeaea;\n  --text-muted: #a0a0b0;\n  --border: #2a2a4a;\n  --success: #4ecca3;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background-color: var(--bg);\n  background-image: \n    linear-gradient(45deg, var(--border) 25%, transparent 25%),\n    linear-gradient(-45deg, var(--border) 25%, transparent 25%),\n    linear-gradient(45deg, transparent 75%, var(--border) 75%),\n    linear-gradient(-45deg, transparent 75%, var(--border) 75%);\n  background-size: 20px 20px;\n  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.game-container {\n  width: 100%;\n  max-width: 480px;\n}\n\n.game-card {\n  background: var(--card-bg);\n  border: 4px solid var(--border);\n  border-radius: 0;\n  padding: 32px 24px;\n  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 8px;\n  color: var(--primary);\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  text-shadow: 2px 2px 0 #000;\n}\n\n.subtitle {\n  color: var(--text-muted);\n  margin-bottom: 24px;\n  font-size: 1rem;\n}\n\n.game-area {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n\nlabel {\n  font-weight: 600;\n  text-align: left;\n  display: block;\n  margin-bottom: 4px;\n}\n\n.input-group {\n  display: flex;\n  gap: 8px;\n}\n\ninput[type=\"number\"] {\n  flex: 1;\n  padding: 12px;\n  font-size: 1rem;\n  font-family: var(--font);\n  background: var(--bg);\n  border: 3px solid var(--border);\n  color: var(--text);\n  border-radius: 0;\n  outline: none;\n  min-width: 0;\n}\n\ninput[type=\"number\"]:focus {\n  border-color: var(--primary);\n  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.3);\n}\n\ninput[type=\"number\"]::placeholder {\n  color: var(--text-muted);\n}\n\n.btn {\n  font-family: var(--font);\n  font-size: 1rem;\n  font-weight: 700;\n  padding: 12px 20px;\n  border: 3px solid transparent;\n  border-radius: 0;\n  cursor: pointer;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  transition: background 0.1s, transform 0.1s, box-shadow 0.1s;\n}\n\n.btn.primary {\n  background: var(--primary);\n  color: #fff;\n  border-color: var(--primary);\n}\n\n.btn.primary:hover {\n  background: var(--primary-hover);\n  border-color: var(--primary-hover);\n}\n\n.btn.primary:active {\n  transform: translate(2px, 2px);\n  box-shadow: none;\n}\n\n.btn.secondary {\n  background: var(--secondary);\n  color: var(--text);\n  border-color: var(--border);\n}\n\n.btn.secondary:hover {\n  background: var(--secondary-hover);\n}\n\n.btn.secondary:active {\n  transform: translate(2px, 2px);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--success);\n  outline-offset: 2px;\n}\n\n.feedback {\n  min-height: 1.5em;\n  font-size: 1.125rem;\n  font-weight: 600;\n  padding: 8px;\n  border: 3px dashed var(--border);\n  background: var(--bg);\n}\n\n.feedback.too-high {\n  color: var(--primary);\n  border-color: var(--primary);\n}\n\n.feedback.too-low {\n  color: #f0c040;\n  border-color: #f0c040;\n}\n\n.feedback.correct {\n  color: var(--success);\n  border-color: var(--success);\n}\n\n.guess-count {\n  font-size: 1rem;\n  color: var(--text-muted);\n  font-weight: 600;\n}\n\n@media (max-width: 400px) {\n  .game-card {\n    padding: 24px 16px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n  .input-group {\n    flex-direction: column;\n  }\n  .btn {\n    width: 100%;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const guessInput = document.getElementById('guessInput');\n  const guessBtn = document.getElementById('guessBtn');\n  const newGameBtn = document.getElementById('newGameBtn');\n  const feedback = document.getElementById('feedback');\n  const guessCountEl = document.getElementById('guessCount');\n\n  let secretNumber = 0;\n  let guessCount = 0;\n  let gameOver = false;\n\n  function startGame() {\n    secretNumber = Math.floor(Math.random() * 100) + 1;\n    guessCount = 0;\n    gameOver = false;\n    feedback.textContent = 'Enter a number and press Guess.';\n    feedback.className = 'feedback';\n    guessCountEl.textContent = 'Guesses: 0';\n    guessInput.value = '';\n    guessInput.disabled = false;\n    guessBtn.disabled = false;\n    guessInput.focus();\n  }\n\n  function handleGuess() {\n    if (gameOver) return;\n\n    const value = parseInt(guessInput.value, 10);\n    if (isNaN(value) || value < 1 || value > 100) {\n      feedback.textContent = 'Please enter a number between 1 and 100.';\n      feedback.className = 'feedback';\n      guessInput.focus();\n      return;\n    }\n\n    guessCount++;\n    guessCountEl.textContent = 'Guesses: ' + guessCount;\n\n    if (value === secretNumber) {\n      feedback.textContent = 'Correct! You guessed it in ' + guessCount + ' guess' + (guessCount === 1 ? '' : 'es') + '!';\n      feedback.className = 'feedback correct';\n      gameOver = true;\n      guessInput.disabled = true;\n      guessBtn.disabled = true;\n    } else if (value > secretNumber) {\n      feedback.textContent = 'Too high! Try a lower number.';\n      feedback.className = 'feedback too-high';\n      guessInput.value = '';\n      guessInput.focus();\n    } else {\n      feedback.textContent = 'Too low! Try a higher number.';\n      feedback.className = 'feedback too-low';\n      guessInput.value = '';\n      guessInput.focus();\n    }\n  }\n\n  guessBtn.addEventListener('click', handleGuess);\n\n  guessInput.addEventListener('keydown', function (e) {\n    if (e.key === 'Enter') {\n      e.preventDefault();\n      handleGuess();\n    }\n  });\n\n  newGameBtn.addEventListener('click', startGame);\n\n  startGame();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Number Guessing Game\n\nA retro pixel-art themed number guessing game built with plain HTML, CSS, and JavaScript. No dependencies, no network requests — just open `index.html` in any modern browser.\n\n## How to Play\n\n1. The computer secretly picks a number between **1 and 100**.\n2. Type your guess in the input field and press **Guess** (or hit Enter).\n3. You'll be told if your guess is **Too high**, **Too low**, or **Correct!**.\n4. The number of guesses you've made is displayed below the feedback.\n5. Press **New Game** at any time to reset and get a fresh secret number.\n\n## Features\n\n- Fully offline — no external assets, fonts, or packages.\n- Responsive layout that works down to 360px wide.\n- Keyboard accessible: labeled input, focus indicators, Enter-to-submit, live region for feedback.\n- Pixel-art aesthetic using CSS gradients and solid borders.\n- Cohesive 5-color palette with system font stack.\n\n## Files\n\n| File | Purpose |\n|------|---------|\n| `index.html` | Page structure and controls |\n| `styles.css` | Pixel theme, layout, interaction states |\n| `script.js` | Game logic and event listeners |\n\n## Running\n\nOpen `index.html` directly in a browser, or serve the folder with any static file server (e.g. `python3 -m http.server`).\n\n## License\n\nMIT — free to use and modify.",
+      "description": ""
+    }
+  ]
+}

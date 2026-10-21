@@ -40,13 +40,14 @@ export async function listBrowserRuns(root: string, projectId: string): Promise<
 export async function executeBrowserRun(options: { root: string; run: BrowserRun; html: string; plan: unknown; signal: AbortSignal; executablePath?: string; timeoutMs?: number }): Promise<BrowserRun> {
   const { root, run, signal } = options;
   const plan = testPlanSchema.parse(options.plan);
+  const waitMs = plan.checks.reduce((total, check) => total + check.actions.reduce((sum, action) => sum + (action.type === 'wait' ? action.ms : 0), 0), 0);
   let browser: Browser | undefined;
   let closing: Promise<void> | undefined;
   const controller = new AbortController();
   const close = () => { if (browser) closing ??= browser.close().catch(() => {}); };
   const abort = () => { controller.abort(signal.reason); close(); };
   signal.addEventListener('abort', abort, { once: true });
-  const timer = setTimeout(() => { controller.abort(new Error('Browser check exceeded its time limit')); close(); }, options.timeoutMs ?? 45_000);
+  const timer = setTimeout(() => { controller.abort(new Error('Browser check exceeded its time limit')); close(); }, options.timeoutMs ?? (45_000 + waitMs));
   const boundedPush = (array: string[], value: string) => { if (array.length < 20) array.push(value.slice(0, 2000)); };
   run.status = 'running';
   try {
@@ -108,6 +109,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         let expected = relative && !deferredBaseline ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();
+          if (action.type === 'wait') { await page.waitForTimeout(action.ms); continue; }
           const target = await element(action.selector, action.nth);
           if (action.type === 'click') await target.click();
           else if (action.type === 'input') {

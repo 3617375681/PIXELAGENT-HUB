@@ -10,10 +10,13 @@ type InPageRun = { results: BrowserCheckResult[]; errors: string[] };
 
 /** Fresh isolation (the Tester's default) loads the app anew for every check, as the server does. */
 export async function runInPageChecks(html: string, checks: BrowserCheck[], signal?: AbortSignal, isolation: 'shared' | 'fresh' = 'shared'): Promise<InPageRun> {
-  if (isolation === 'shared') return runInFrame(html, checks, signal);
+  if (isolation === 'shared') {
+    const waitMs = checks.reduce((total, check) => total + check.actions.reduce((sum, action) => sum + (action.type === 'wait' ? action.ms : 0), 0), 0);
+    return runInFrame(html, checks, signal, 30_000 + waitMs);
+  }
   const run: InPageRun = { results: [], errors: [] };
   for (const check of checks) {
-    const { results, errors } = await runInFrame(html, [check], signal, 10_000);
+    const { results, errors } = await runInFrame(html, [check], signal, 20_000);
     run.results.push(...results);
     for (const error of errors) if (run.errors.length < 20 && !run.errors.includes(error)) run.errors.push(error);
   }

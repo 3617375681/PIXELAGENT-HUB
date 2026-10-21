@@ -1,0 +1,408 @@
+{
+  "caseId": "memory",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/8",
+  "finalChecks": "8/8",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/8"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 27,
+  "reportedTokens": 10609,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:52:33.867Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:52:33.867Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:52:38.555Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Memory Match"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:52:38.555Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:52:49.592Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:52:49.592Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:52:50.071Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:52:50.072Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "00191dd1-dfb5-4a51-8b34-5b4d58b125d1"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:52:52.347Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "00191dd1-dfb5-4a51-8b34-5b4d58b125d1",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:52:52.348Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "testPlanId": "00191dd1-dfb5-4a51-8b34-5b4d58b125d1",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "Board has 16 cards and zero moves",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "Move counter starts at 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "Win message hidden initially",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "First flip does not count a move",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "Two flips count one move",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "New Game resets move counter",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "New Game keeps 16 cards",
+        "passed": true,
+        "actual": "16"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "name": "New Game hides win message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:52:55.935Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f246285c-b790-4764-88d0-6db30bda4abb",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:52:55.940Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Board has 16 cards and zero moves",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".card",
+        "expected": "16",
+        "assertion": "count"
+      },
+      {
+        "name": "Move counter starts at 0",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "0"
+      },
+      {
+        "name": "Win message hidden initially",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "First flip does not count a move",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 0
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "0"
+      },
+      {
+        "name": "Two flips count one move",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 1
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "1"
+      },
+      {
+        "name": "New Game resets move counter",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".card",
+            "nth": 1
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          },
+          {
+            "type": "click",
+            "selector": "#new-game-btn"
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "0"
+      },
+      {
+        "name": "New Game keeps 16 cards",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#new-game-btn"
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".card",
+        "expected": "16",
+        "assertion": "count"
+      },
+      {
+        "name": "New Game hides win message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#new-game-btn"
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "Card colors and positions are shuffled randomly, so matching pairs cannot be located deterministically.",
+      "Full win state (all 8 pairs matched, win message text) cannot be reached without knowing the shuffled layout.",
+      "Mismatched cards revert after 800ms; the revert behavior is not asserted here.",
+      "Matched cards staying open cannot be verified without deterministic pair positions."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4500,
+      "completion_tokens": 478,
+      "total_tokens": 4978,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3348
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Memory Match</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-container\">\n    <header class=\"game-header\">\n      <h1>Pixel Memory Match</h1>\n      <p class=\"subtitle\">Flip two cards to find matching pairs</p>\n    </header>\n\n    <div class=\"stats-bar\">\n      <div class=\"stat\">\n        <span class=\"stat-label\">Moves</span>\n        <span id=\"move-counter\" class=\"stat-value\">0</span>\n      </div>\n      <button id=\"new-game-btn\" type=\"button\" class=\"btn\">New Game</button>\n    </div>\n\n    <div id=\"game-board\" class=\"game-board\" role=\"grid\" aria-label=\"Memory game board\"></div>\n\n    <div id=\"win-message\" class=\"win-message\" role=\"status\" aria-live=\"polite\" hidden>\n      <p>You won! 🎉</p>\n      <p id=\"win-stats\"></p>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --color-bg: #1e1e2f;\n  --color-surface: #2a2a40;\n  --color-primary: #6c5ce7;\n  --color-primary-hover: #7d6ff0;\n  --color-accent: #00cec9;\n  --color-text: #f0f0f5;\n  --color-text-muted: #a0a0b8;\n  --card-size: 80px;\n  --gap: 12px;\n  --radius: 12px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: var(--color-bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--color-text);\n  padding: 16px;\n}\n\n.game-container {\n  width: 100%;\n  max-width: 520px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 24px;\n}\n\n.game-header {\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 4px;\n}\n\n.subtitle {\n  color: var(--color-text-muted);\n  font-size: 1rem;\n}\n\n.stats-bar {\n  width: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n}\n\n.stat {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n}\n\n.stat-label {\n  font-size: 1rem;\n  color: var(--color-text-muted);\n}\n\n.stat-value {\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: var(--color-accent);\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  color: var(--color-text);\n  background-color: var(--color-primary);\n  border: none;\n  border-radius: var(--radius);\n  padding: 12px 24px;\n  cursor: pointer;\n  transition: background-color 0.15s, transform 0.1s;\n}\n\n.btn:hover {\n  background-color: var(--color-primary-hover);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--color-accent);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.game-board {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: var(--gap);\n  width: 100%;\n  perspective: 1000px;\n}\n\n.card {\n  position: relative;\n  aspect-ratio: 1 / 1;\n  cursor: pointer;\n  border: none;\n  background: none;\n  padding: 0;\n  border-radius: var(--radius);\n  transform-style: preserve-3d;\n  transition: transform 0.4s ease;\n}\n\n.card:focus-visible {\n  outline: 3px solid var(--color-accent);\n  outline-offset: 2px;\n}\n\n.card.flipped {\n  transform: rotateY(180deg);\n}\n\n.card-face {\n  position: absolute;\n  inset: 0;\n  border-radius: var(--radius);\n  backface-visibility: hidden;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.5rem;\n  font-weight: 700;\n}\n\n.card-front {\n  background-color: var(--color-surface);\n  border: 2px solid var(--color-primary);\n  color: var(--color-primary);\n}\n\n.card-back {\n  background-color: var(--card-color, var(--color-surface));\n  transform: rotateY(180deg);\n  border: 2px solid rgba(255, 255, 255, 0.2);\n}\n\n.card.matched {\n  cursor: default;\n}\n\n.card.matched .card-back {\n  box-shadow: 0 0 0 3px var(--color-accent);\n}\n\n.win-message {\n  text-align: center;\n  padding: 20px;\n  background-color: var(--color-surface);\n  border-radius: var(--radius);\n  border: 2px solid var(--color-accent);\n  width: 100%;\n}\n\n.win-message p:first-child {\n  font-size: 1.5rem;\n  font-weight: 700;\n  margin-bottom: 8px;\n}\n\n.win-message p:last-child {\n  color: var(--color-text-muted);\n}\n\n@media (max-width: 420px) {\n  :root {\n    --gap: 8px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n  .stat-value {\n    font-size: 1.25rem;\n  }\n  .btn {\n    padding: 10px 18px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const COLORS = [\n    '#e74c3c', '#3498db', '#2ecc71', '#f1c40f',\n    '#9b59b6', '#e67e22', '#1abc9c', '#e84393'\n  ];\n\n  const boardEl = document.getElementById('game-board');\n  const moveCounterEl = document.getElementById('move-counter');\n  const newGameBtn = document.getElementById('new-game-btn');\n  const winMessageEl = document.getElementById('win-message');\n  const winStatsEl = document.getElementById('win-stats');\n\n  let deck = [];\n  let flippedCards = [];\n  let moves = 0;\n  let matchedPairs = 0;\n  let lockBoard = false;\n\n  function shuffle(array) {\n    for (let i = array.length - 1; i > 0; i--) {\n      const j = Math.floor(Math.random() * (i + 1));\n      [array[i], array[j]] = [array[j], array[i]];\n    }\n    return array;\n  }\n\n  function createDeck() {\n    const cards = [];\n    COLORS.forEach((color, index) => {\n      cards.push({ id: index, color });\n      cards.push({ id: index, color });\n    });\n    return shuffle(cards);\n  }\n\n  function renderBoard() {\n    boardEl.innerHTML = '';\n    deck.forEach((cardData, index) => {\n      const card = document.createElement('button');\n      card.type = 'button';\n      card.className = 'card';\n      card.dataset.id = cardData.id;\n      card.dataset.index = index;\n      card.setAttribute('aria-label', 'Hidden card ' + (index + 1));\n      card.innerHTML =\n        '<span class=\"card-face card-front\" aria-hidden=\"true\">?</span>' +\n        '<span class=\"card-face card-back\" aria-hidden=\"true\"></span>';\n      card.querySelector('.card-back').style.backgroundColor = cardData.color;\n      card.addEventListener('click', () => handleCardClick(card));\n      boardEl.appendChild(card);\n    });\n  }\n\n  function handleCardClick(card) {\n    if (lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) {\n      return;\n    }\n\n    card.classList.add('flipped');\n    card.setAttribute('aria-label', 'Revealed card ' + (Number(card.dataset.index) + 1));\n    flippedCards.push(card);\n\n    if (flippedCards.length === 2) {\n      moves++;\n      moveCounterEl.textContent = moves;\n      checkMatch();\n    }\n  }\n\n  function checkMatch() {\n    const [cardA, cardB] = flippedCards;\n    const isMatch = cardA.dataset.id === cardB.dataset.id;\n\n    if (isMatch) {\n      cardA.classList.add('matched');\n      cardB.classList.add('matched');\n      cardA.disabled = true;\n      cardB.disabled = true;\n      cardA.setAttribute('aria-label', 'Matched card');\n      cardB.setAttribute('aria-label', 'Matched card');\n      matchedPairs++;\n      flippedCards = [];\n      if (matchedPairs === COLORS.length) {\n        showWin();\n      }\n    } else {\n      lockBoard = true;\n      setTimeout(() => {\n        cardA.classList.remove('flipped');\n        cardB.classList.remove('flipped');\n        cardA.setAttribute('aria-label', 'Hidden card ' + (Number(cardA.dataset.index) + 1));\n        cardB.setAttribute('aria-label', 'Hidden card ' + (Number(cardB.dataset.index) + 1));\n        flippedCards = [];\n        lockBoard = false;\n      }, 800);\n    }\n  }\n\n  function showWin() {\n    winStatsEl.textContent = 'Completed in ' + moves + ' moves!';\n    winMessageEl.hidden = false;\n    winMessageEl.focus();\n  }\n\n  function resetGame() {\n    deck = createDeck();\n    flippedCards = [];\n    moves = 0;\n    matchedPairs = 0;\n    lockBoard = false;\n    moveCounterEl.textContent = '0';\n    winMessageEl.hidden = true;\n    renderBoard();\n  }\n\n  newGameBtn.addEventListener('click', resetGame);\n\n  resetGame();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Memory Match\n\nA browser-based memory-match game with 8 pairs of colored cards. Flip two cards at a time to find matching pairs. Matched pairs stay open. Count your moves and try to finish with the fewest moves possible.\n\n## How to Run\n\n1. Open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari).\n2. No server, build step, or network connection required.\n\n## Controls\n\n- **Click / tap** a card to flip it.\n- **Keyboard**: Tab to focus a card, press Enter or Space to flip it.\n- **New Game** button resets the board, move counter, and win message.\n\n## Features\n\n- 8 pairs of colored cards (16 total), shuffled each game.\n- Move counter increments each time two cards are flipped.\n- Win message with total moves when all pairs are matched.\n- Responsive layout from 360px wide up.\n- Accessible labels and focus styles for keyboard users.\n- Cohesive dark palette with accent colors.\n\n## Files\n\n- `index.html` — structure and content.\n- `styles.css` — responsive layout, theming, and card visuals.\n- `script.js` — game logic (shuffle, flip, match, win, reset).\n\n## Notes\n\n- No external assets, libraries, or network requests.\n- All event listeners are attached via `addEventListener` (no inline handlers).\n- Graphics are drawn with CSS (card faces and colors).",
+      "description": ""
+    }
+  ]
+}

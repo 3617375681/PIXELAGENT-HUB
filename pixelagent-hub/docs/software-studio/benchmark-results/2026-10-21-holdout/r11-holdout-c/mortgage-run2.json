@@ -1,0 +1,676 @@
+{
+  "caseId": "mortgage",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "6/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 4,
+  "coderRepair": false,
+  "checkRuns": [
+    "6/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 47,
+  "reportedTokens": 18875,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:42:13.344Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:42:13.344Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:42:17.515Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Loan Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:42:17.516Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:42:27.566Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nM = P * \"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:42:27.566Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:42:38.086Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:42:38.086Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:42:38.581Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:42:38.582Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "ba487d06-8b9e-471f-9af9-581f8f88a130"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:42:41.290Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "ba487d06-8b9e-471f-9af9-581f8f88a130",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:42:41.290Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "testPlanId": "ba487d06-8b9e-471f-9af9-581f8f88a130",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Default values compute on load",
+        "passed": true,
+        "actual": "$106.07"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Default total paid",
+        "passed": false,
+        "actual": "$12727.86"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Default total interest",
+        "passed": false,
+        "actual": "$2727.86"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Zero rate divides evenly",
+        "passed": true,
+        "actual": "$100.00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Zero rate total interest is zero",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Custom loan monthly payment",
+        "passed": true,
+        "actual": "$96.66"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Custom loan total paid",
+        "passed": false,
+        "actual": "$5799.84"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Custom loan total interest",
+        "passed": false,
+        "actual": "$799.84"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Submit button recalculates",
+        "passed": true,
+        "actual": "$94.15"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "name": "Negative amount shows error",
+        "passed": true,
+        "actual": "Enter a positive loan amount."
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T08:42:52.611Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "bba31f57-9e0f-433d-a569-f94b99cc8ddb",
+        "status": "failed",
+        "passed": 6,
+        "failed": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T08:42:52.619Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "ba487d06-8b9e-471f-9af9-581f8f88a130",
+        "review": true
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T08:42:55.229Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "ba487d06-8b9e-471f-9af9-581f8f88a130",
+        "checks": 10,
+        "review": true,
+        "revised": 4,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Default total paid",
+            "verdict": "check-wrong",
+            "reason": "The check expects total paid $12728.17 for amount 10000, rate 5%, 10 years. Correct math: monthly rate 0.05/12=0.00416667, months=120, monthly payment = 10000*0.00416667/(1-(1.00416667)^-120) = 106.06"
+          },
+          {
+            "name": "Default total interest",
+            "verdict": "check-wrong",
+            "reason": "Total interest = total paid - amount = 12727.86 - 10000 = 2727.86. The app shows $2727.86, matching the requirements. The check's expected $2728.17 is arithmetically wrong."
+          },
+          {
+            "name": "Custom loan total paid",
+            "verdict": "check-wrong",
+            "reason": "For amount 5000, rate 6%, 5 years: monthly rate 0.005, months 60, monthly payment = 5000*0.005/(1-(1.005)^-60) = 96.6640..., total paid = 96.6640*60 = 5799.84. The app shows $5799.84, matching the req"
+          },
+          {
+            "name": "Custom loan total interest",
+            "verdict": "check-wrong",
+            "reason": "Total interest = 5799.84 - 5000 = 799.84. The app shows $799.84, matching the requirements. The check's expected $799.60 is arithmetically wrong."
+          }
+        ]
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T08:42:55.229Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "testPlanId": "ba487d06-8b9e-471f-9af9-581f8f88a130",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Default values compute on load",
+        "passed": true,
+        "actual": "$106.07"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Default total paid",
+        "passed": true,
+        "actual": "$12727.86"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Default total interest",
+        "passed": true,
+        "actual": "$2727.86"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Zero rate divides evenly",
+        "passed": true,
+        "actual": "$100.00"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Zero rate total interest is zero",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Custom loan monthly payment",
+        "passed": true,
+        "actual": "$96.66"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Custom loan total paid",
+        "passed": true,
+        "actual": "$5799.84"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Custom loan total interest",
+        "passed": true,
+        "actual": "$799.84"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Submit button recalculates",
+        "passed": true,
+        "actual": "$94.15"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "name": "Negative amount shows error",
+        "passed": true,
+        "actual": "Enter a positive loan amount."
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T08:42:58.436Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f73fd2b9-e252-4bcf-9801-7216d20b8f0f",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T08:42:58.440Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Default values compute on load",
+        "actions": [],
+        "selector": "#monthly-payment",
+        "expected": "$106.07",
+        "assertion": "text"
+      },
+      {
+        "name": "Default total paid",
+        "actions": [],
+        "selector": "#total-paid",
+        "expected": "$12727.86",
+        "assertion": "text"
+      },
+      {
+        "name": "Default total interest",
+        "actions": [],
+        "selector": "#total-interest",
+        "expected": "$2727.86",
+        "assertion": "text"
+      },
+      {
+        "name": "Zero rate divides evenly",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1200"
+          },
+          {
+            "type": "input",
+            "selector": "#rate",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#years",
+            "value": "1"
+          }
+        ],
+        "selector": "#monthly-payment",
+        "expected": "$100.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Zero rate total interest is zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1200"
+          },
+          {
+            "type": "input",
+            "selector": "#rate",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#years",
+            "value": "1"
+          }
+        ],
+        "selector": "#total-interest",
+        "expected": "$0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Custom loan monthly payment",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "5000"
+          },
+          {
+            "type": "input",
+            "selector": "#rate",
+            "value": "6"
+          },
+          {
+            "type": "input",
+            "selector": "#years",
+            "value": "5"
+          }
+        ],
+        "selector": "#monthly-payment",
+        "expected": "$96.66",
+        "assertion": "text"
+      },
+      {
+        "name": "Custom loan total paid",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "5000"
+          },
+          {
+            "type": "input",
+            "selector": "#rate",
+            "value": "6"
+          },
+          {
+            "type": "input",
+            "selector": "#years",
+            "value": "5"
+          }
+        ],
+        "selector": "#total-paid",
+        "expected": "$5799.84",
+        "assertion": "text"
+      },
+      {
+        "name": "Custom loan total interest",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "5000"
+          },
+          {
+            "type": "input",
+            "selector": "#rate",
+            "value": "6"
+          },
+          {
+            "type": "input",
+            "selector": "#years",
+            "value": "5"
+          }
+        ],
+        "selector": "#total-interest",
+        "expected": "$799.84",
+        "assertion": "text"
+      },
+      {
+        "name": "Submit button recalculates",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "2000"
+          },
+          {
+            "type": "input",
+            "selector": "#rate",
+            "value": "12"
+          },
+          {
+            "type": "input",
+            "selector": "#years",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": ".pixel-btn"
+          }
+        ],
+        "selector": "#monthly-payment",
+        "expected": "$94.15",
+        "assertion": "text"
+      },
+      {
+        "name": "Negative amount shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "-100"
+          }
+        ],
+        "selector": "#amount-error",
+        "expected": "Enter a positive loan amount.",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Currency formatting is asserted as plain $X.XX; thousands separators are not expected by the source.",
+      "Only text results are checked; pixel-art styling and layout are not verified.",
+      "Rounding of intermediate values is not inspected, only displayed two-decimal output."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4267,
+      "completion_tokens": 660,
+      "total_tokens": 4927,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3115
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nM = P * \"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Loan Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1 class=\"pixel-title\">Pixel Loan Calculator</h1>\n    <form id=\"loan-form\" novalidate>\n      <div class=\"field\">\n        <label for=\"amount\">Loan amount ($)</label>\n        <input type=\"number\" id=\"amount\" name=\"amount\" min=\"0.01\" step=\"0.01\" value=\"10000\" required>\n        <span class=\"error\" id=\"amount-error\" aria-live=\"polite\"></span>\n      </div>\n      <div class=\"field\">\n        <label for=\"rate\">Annual interest rate (%)</label>\n        <input type=\"number\" id=\"rate\" name=\"rate\" min=\"0\" step=\"0.01\" value=\"5\" required>\n        <span class=\"error\" id=\"rate-error\" aria-live=\"polite\"></span>\n      </div>\n      <div class=\"field\">\n        <label for=\"years\">Loan term (years)</label>\n        <input type=\"number\" id=\"years\" name=\"years\" min=\"0.1\" step=\"0.1\" value=\"10\" required>\n        <span class=\"error\" id=\"years-error\" aria-live=\"polite\"></span>\n      </div>\n      <button type=\"submit\" class=\"pixel-btn\">Calculate</button>\n    </form>\n    <section id=\"results\" class=\"results\" aria-live=\"polite\">\n      <div class=\"result-row\">\n        <span class=\"result-label\">Monthly Payment:</span>\n        <span class=\"result-value\" id=\"monthly-payment\">$0.00</span>\n      </div>\n      <div class=\"result-row\">\n        <span class=\"result-label\">Total Paid:</span>\n        <span class=\"result-value\" id=\"total-paid\">$0.00</span>\n      </div>\n      <div class=\"result-row\">\n        <span class=\"result-label\">Total Interest:</span>\n        <span class=\"result-value\" id=\"total-interest\">$0.00</span>\n      </div>\n    </section>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file with form, inputs, and results section."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card-bg: #2a2d4a;\n  --primary: #f4d03f;\n  --accent: #e74c3c;\n  --text: #f0f0f0;\n  --error: #ff6b6b;\n  --border: #5d5f8a;\n  --shadow: #0f0f1a;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  line-height: 1.5;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  padding: 1rem;\n}\n\n.card {\n  background: var(--card-bg);\n  padding: 2rem;\n  border-radius: 0;\n  box-shadow: 8px 8px 0 var(--shadow);\n  width: 100%;\n  max-width: 480px;\n  border: 4px solid var(--border);\n}\n\n.pixel-title {\n  font-size: 1.8rem;\n  text-align: center;\n  margin-bottom: 1.5rem;\n  color: var(--primary);\n  text-shadow: 3px 3px 0 var(--shadow);\n  letter-spacing: 2px;\n  text-transform: uppercase;\n}\n\n.field {\n  margin-bottom: 1.25rem;\n}\n\nlabel {\n  display: block;\n  font-weight: bold;\n  margin-bottom: 0.4rem;\n  color: var(--primary);\n}\n\ninput {\n  width: 100%;\n  padding: 0.75rem;\n  font-size: 1rem;\n  background: var(--bg);\n  border: 3px solid var(--border);\n  color: var(--text);\n  border-radius: 0;\n  outline: none;\n  transition: border-color 0.1s, box-shadow 0.1s;\n}\n\ninput:hover {\n  border-color: var(--primary);\n}\n\ninput:focus {\n  border-color: var(--primary);\n  box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.4);\n}\n\ninput:active {\n  background: var(--shadow);\n}\n\n.error {\n  color: var(--error);\n  font-size: 0.85rem;\n  display: block;\n  margin-top: 0.25rem;\n  min-height: 1.2em;\n}\n\n.pixel-btn {\n  display: block;\n  width: 100%;\n  padding: 0.9rem;\n  font-size: 1.2rem;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  background: var(--primary);\n  color: var(--bg);\n  border: none;\n  border-bottom: 5px solid #b8941f;\n  border-right: 5px solid #b8941f;\n  cursor: pointer;\n  transition: transform 0.05s, border-width 0.05s;\n  margin-top: 0.5rem;\n}\n\n.pixel-btn:hover {\n  background: #f7dc6f;\n}\n\n.pixel-btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.pixel-btn:active {\n  transform: translate(3px, 3px);\n  border-bottom-width: 2px;\n  border-right-width: 2px;\n}\n\n.results {\n  margin-top: 2rem;\n  border-top: 3px dashed var(--border);\n  padding-top: 1.5rem;\n}\n\n.result-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  padding: 0.5rem 0;\n  font-size: 1.1rem;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n\n.result-label {\n  font-weight: bold;\n  color: var(--primary);\n}\n\n.result-value {\n  font-family: 'Courier New', monospace;\n  font-weight: bold;\n  font-size: 1.3rem;\n  color: var(--text);\n  background: var(--shadow);\n  padding: 0.2rem 0.6rem;\n  border: 2px solid var(--border);\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 1.25rem;\n  }\n  .pixel-title {\n    font-size: 1.4rem;\n  }\n  .result-row {\n    font-size: 1rem;\n  }\n  .result-value {\n    font-size: 1.1rem;\n  }\n}",
+      "description": "Pixel-themed styles with cohesive palette, responsive layout, and interactive states."
+    },
+    {
+      "path": "app.js",
+      "content": "(function() {\n  'use strict';\n\n  const form = document.getElementById('loan-form');\n  const amountInput = document.getElementById('amount');\n  const rateInput = document.getElementById('rate');\n  const yearsInput = document.getElementById('years');\n  const amountError = document.getElementById('amount-error');\n  const rateError = document.getElementById('rate-error');\n  const yearsError = document.getElementById('years-error');\n  const monthlyPaymentEl = document.getElementById('monthly-payment');\n  const totalPaidEl = document.getElementById('total-paid');\n  const totalInterestEl = document.getElementById('total-interest');\n\n  function formatCurrency(value) {\n    return '$' + value.toFixed(2);\n  }\n\n  function clearErrors() {\n    amountError.textContent = '';\n    rateError.textContent = '';\n    yearsError.textContent = '';\n  }\n\n  function validate(amount, rate, years) {\n    let valid = true;\n    if (isNaN(amount) || amount <= 0) {\n      amountError.textContent = 'Enter a positive loan amount.';\n      valid = false;\n    }\n    if (isNaN(rate) || rate < 0) {\n      rateError.textContent = 'Interest rate cannot be negative.';\n      valid = false;\n    }\n    if (isNaN(years) || years <= 0) {\n      yearsError.textContent = 'Loan term must be positive.';\n      valid = false;\n    }\n    return valid;\n  }\n\n  function calculate(amount, annualRate, years) {\n    const monthlyRate = annualRate / 100 / 12;\n    const months = Math.round(years * 12);\n    let monthlyPayment;\n\n    if (monthlyRate === 0) {\n      monthlyPayment = amount / months;\n    } else {\n      const factor = Math.pow(1 + monthlyRate, -months);\n      monthlyPayment = amount * monthlyRate / (1 - factor);\n    }\n\n    const totalPaid = monthlyPayment * months;\n    const totalInterest = totalPaid - amount;\n\n    return {\n      monthlyPayment: monthlyPayment,\n      totalPaid: totalPaid,\n      totalInterest: totalInterest\n    };\n  }\n\n  function updateResults() {\n    clearErrors();\n    const amount = parseFloat(amountInput.value);\n    const rate = parseFloat(rateInput.value);\n    const years = parseFloat(yearsInput.value);\n\n    if (!validate(amount, rate, years)) {\n      monthlyPaymentEl.textContent = '$0.00';\n      totalPaidEl.textContent = '$0.00';\n      totalInterestEl.textContent = '$0.00';\n      return;\n    }\n\n    const result = calculate(amount, rate, years);\n    monthlyPaymentEl.textContent = formatCurrency(result.monthlyPayment);\n    totalPaidEl.textContent = formatCurrency(result.totalPaid);\n    totalInterestEl.textContent = formatCurrency(result.totalInterest);\n  }\n\n  form.addEventListener('submit', function(e) {\n    e.preventDefault();\n    updateResults();\n  });\n\n  [amountInput, rateInput, yearsInput].forEach(function(input) {\n    input.addEventListener('input', updateResults);\n  });\n\n  updateResults();\n})();",
+      "description": "Loan calculation logic, validation, and event listeners."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Loan Calculator\n\nA simple, offline loan calculator with a pixel-art theme. Enter loan amount, annual interest rate, and term in years to see monthly payment, total paid, and total interest.\n\n## Usage\n\nOpen `index.html` in any modern browser. Adjust the inputs; results update automatically. Click \"Calculate\" or press Enter to submit.\n\n## Formula\n\nMonthly payment = P * r / (1 - (1 + r)^(-n))\nwhere r = annual rate / 100 / 12, n = years * 12. If rate is 0, payment = P / n.\n\n## Files\n\n- `index.html` – structure\n- `styles.css` – pixel styling\n- `app.js` – calculation logic\n\nNo dependencies, no network requests.",
+      "description": "README with usage, formula, and file overview."
+    }
+  ]
+}

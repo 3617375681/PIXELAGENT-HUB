@@ -20,12 +20,14 @@ export const codeSchema = z.object({
 const selector = z.string().min(1).max(160);
 const nth = z.number().int().min(0).max(49).optional();
 const action = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('wait'), ms: z.number().int().min(50).max(6000) }).strict(),
   z.object({ type: z.literal('click'), selector, nth }).strict(),
   z.object({ type: z.literal('input'), selector, nth, value: z.string().max(300) }).strict(),
   z.object({ type: z.literal('key'), selector, nth, key: z.string().min(1).max(32) }).strict(),
 ]);
 // changed/unchanged: text relative to before actions; text: rendered text; disabled: native :disabled state; visible: shown; count: matches; attribute: exact attribute or live value.
 export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, nth, expected: z.string().max(300), assertion: z.enum(['text', 'matches', 'disabled', 'visible', 'count', 'attribute', 'changed', 'unchanged', 'stable']).optional(), attribute: z.string().regex(/^(?:[a-z][a-z0-9-]{0,49}|style\.[a-z][a-z-]{0,39})$/).optional() }).strict()
+  .refine((check) => check.actions.reduce((total, action) => total + (action.type === 'wait' ? action.ms : 0), 0) <= 8000, 'Waits must total at most 8000 ms per check')
   .refine((check) => check.assertion !== 'count' || check.nth === undefined, 'Count forbids nth')
   .refine((check) => {
     if (check.assertion !== 'matches') return true;
