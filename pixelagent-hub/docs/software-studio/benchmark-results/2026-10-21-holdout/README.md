@@ -145,3 +145,44 @@ Each round is measured on ideas its fixes never saw. The showcase holds at 16/18
 | pet 3 (showcase) | **The review's correction asserted a change the requirement does not cause.** |
 
 Two of the six are real app bugs that a person would notice. That is the job of the checks. The rest are model judgement errors (arithmetic, not reading the source) plus one language gap: there is no action that waits.
+
+## Round 11 on `cedcf63`
+
+The round-11 changes (commit `cedcf63`):
+- A `wait` action, from 50 to 6,000 ms, with at most 8 s of waiting per check.
+- The Tester is told to read fixed data from the source, such as taken seats, starting values and prices.
+
+Set E (8 new ideas, commit `41780e8`) is this round's clean set.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Checks with a wait | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set E**](r11-holdout-e/) (clean) | 16 | 15/16 | **13/16** | 2 | 27 | 33 s | 200,750 |
+| [Set D](r11-holdout-d/) (used for round 11) | 16 | 15/16 | 14/16 | 3 | 33 | 27 s | 172,406 |
+| [Set C](r11-holdout-c/) | 16 | 13/16 | 13/16 | 0 | 35 | 39 s | 249,848 |
+| [Showcase](r11-showcase/) | 18 | 16/18 | **16/18** | 0 | 69 | 29 s | 237,369 |
+| [Fixed cases](r11-fixed/) | 15 | **15/15** | 15/15 | 0 | 3 | 21 s | 124,766 |
+
+**The `wait` action was adopted widely.** 167 checks use it. The reaction test (set C) passes 2/2, after 1/2 last round. The breathing guide and traffic light (sets D and E) are checked through their timed changes. Medians rose by a few seconds as a result.
+
+**Clean set, strict:**
+
+| Round | Clean set | Strict pass |
+| --- | --- | --- |
+| 8 | B | 10/16 |
+| 9 | C | 12/16 |
+| 10 | D | 14/16 |
+| 11 | E | 13/16 |
+
+Set E had 15/16 full passes. The dip from 14 to 13 strict comes from two passes that relied on dropped checks, and is within run-to-run noise. Showcase strict holds at 16/18, and the fixed cases passed 15/15 for the sixth round running.
+
+**What remains, by class:**
+
+| Class | Runs | Example |
+| --- | --- | --- |
+| A whole `class` attribute compared with one class | traffic light 2, beat sequencer 1 (drop), metronome 1 | expected `"on"`, actual `"lamp red on"` |
+| A visual change checked as a text change | sort visualizer 1 (drop), breathing guide 1 (drop) | bars change `style.height`, but `changed` only compares text |
+| Tester arithmetic | streak clicker 1 | clicks the coin 8 times for a 10-point purchase. This is the same idea and the same mistake as round 10 |
+| Requirements that leave details open | pet 2, pet 3, expense 1 | an invented mood threshold; an error message the requirement never asks for |
+| Random sequences | simon 2 | clicks every pad, "hoping one is wrong" |
+
+The first two are language gaps and are next. The rest are model judgement errors.

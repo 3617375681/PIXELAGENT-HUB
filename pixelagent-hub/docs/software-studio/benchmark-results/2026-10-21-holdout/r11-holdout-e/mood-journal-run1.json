@@ -1,0 +1,614 @@
+{
+  "caseId": "mood-journal",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 2,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 48,
+  "reportedTokens": 21558,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:23:14.605Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:23:14.605Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:23:19.057Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Mood Journal"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:23:19.057Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:23:35.455Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:23:35.455Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:23:35.989Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:23:35.989Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "c9fb419b-5b6e-403b-9d81-09d503d15c11"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:23:38.818Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "c9fb419b-5b6e-403b-9d81-09d503d15c11",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:23:38.818Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "testPlanId": "c9fb419b-5b6e-403b-9d81-09d503d15c11",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "No entries yet. Pick a mood and add one!"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Initial mood counts all zero",
+        "passed": true,
+        "actual": "Happy: 0 Sad: 0 Angry: 0 Tired: 0 Excited: 0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Add entry with note",
+        "passed": false,
+        "actual": "2026年10月21日 Great day"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Entry shows today's date",
+        "passed": true,
+        "actual": "2026年10月21日"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Optional note can be empty",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Counts update after adding",
+        "passed": false,
+        "actual": "Happy: 0 Sad: 0 Angry: 1 Tired: 0 Excited: 0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Newest entry listed first",
+        "passed": true,
+        "actual": "Second"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Mood selection marks checked",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Add without mood shows prompt",
+        "passed": true,
+        "actual": "Pick a mood first!"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "name": "Five mood options present",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:23:46.198Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d5e01239-8a36-4ab7-823f-1c47ae75c433",
+        "status": "failed",
+        "passed": 8,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:23:46.200Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "c9fb419b-5b6e-403b-9d81-09d503d15c11",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T08:23:48.075Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "c9fb419b-5b6e-403b-9d81-09d503d15c11",
+        "checks": 10,
+        "review": true,
+        "revised": 2,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Add entry with note",
+            "verdict": "check-wrong",
+            "reason": "The check asserts the entire #entries-list text equals exactly \"Great day\", but the requirements say entries show today's date plus the optional note, so a fully compliant app renders the date alongsi"
+          },
+          {
+            "name": "Counts update after adding",
+            "verdict": "check-wrong",
+            "reason": "The check asserts the entire #mood-counts text equals \"Angry: 1\", but the requirements say the summary shows how many entries each mood has, so a compliant app lists all five moods with their counts ("
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T08:23:48.076Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "testPlanId": "c9fb419b-5b6e-403b-9d81-09d503d15c11",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "No entries yet. Pick a mood and add one!"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Initial mood counts all zero",
+        "passed": true,
+        "actual": "Happy: 0 Sad: 0 Angry: 0 Tired: 0 Excited: 0"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Add entry with note",
+        "passed": true,
+        "actual": "2026年10月21日 Great day"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Entry shows today's date",
+        "passed": true,
+        "actual": "2026年10月21日"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Optional note can be empty",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Counts update after adding",
+        "passed": true,
+        "actual": "Happy: 0 Sad: 0 Angry: 1 Tired: 0 Excited: 0"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Newest entry listed first",
+        "passed": true,
+        "actual": "Second"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Mood selection marks checked",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Add without mood shows prompt",
+        "passed": true,
+        "actual": "Pick a mood first!"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "name": "Five mood options present",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T08:23:51.316Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "13f9afdd-60ec-49d5-a414-95e96b5381cc",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T08:23:51.319Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial empty state",
+        "actions": [],
+        "selector": "#entries-list",
+        "expected": "No entries yet. Pick a mood and add one!",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial mood counts all zero",
+        "actions": [],
+        "selector": "#mood-counts",
+        "expected": "Happy: 0 Sad: 0 Angry: 0 Tired: 0 Excited: 0",
+        "assertion": "text"
+      },
+      {
+        "name": "Add entry with note",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"happy\"]"
+          },
+          {
+            "type": "input",
+            "selector": "#note-input",
+            "value": "Great day"
+          },
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          }
+        ],
+        "selector": "#entries-list",
+        "expected": "Great day",
+        "assertion": "matches"
+      },
+      {
+        "name": "Entry shows today's date",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"sad\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          }
+        ],
+        "selector": ".entry-date",
+        "expected": "\\d{4}",
+        "assertion": "matches"
+      },
+      {
+        "name": "Optional note can be empty",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"tired\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          }
+        ],
+        "selector": ".entry",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "Counts update after adding",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"angry\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          }
+        ],
+        "selector": "#mood-counts",
+        "expected": "Angry: 1",
+        "assertion": "matches"
+      },
+      {
+        "name": "Newest entry listed first",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"happy\"]"
+          },
+          {
+            "type": "input",
+            "selector": "#note-input",
+            "value": "First"
+          },
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          },
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"excited\"]"
+          },
+          {
+            "type": "input",
+            "selector": "#note-input",
+            "value": "Second"
+          },
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          }
+        ],
+        "selector": ".entry-note",
+        "nth": 0,
+        "expected": "Second",
+        "assertion": "text"
+      },
+      {
+        "name": "Mood selection marks checked",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".mood-btn[data-mood=\"excited\"]"
+          }
+        ],
+        "selector": ".mood-btn[data-mood=\"excited\"]",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-checked"
+      },
+      {
+        "name": "Add without mood shows prompt",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#add-entry"
+          }
+        ],
+        "selector": "#add-entry",
+        "expected": "Pick a mood first!",
+        "assertion": "text"
+      },
+      {
+        "name": "Five mood options present",
+        "actions": [],
+        "selector": ".mood-btn",
+        "expected": "5",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "localStorage persistence across reloads is not verified since each check starts fresh.",
+      "Exact localized date format cannot be predicted; only a year pattern is checked.",
+      "Pixel-art face rendering is CSS-only and not asserted.",
+      "Keyboard Enter submission is not tested because DOM key events are synthetic."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 6584,
+      "completion_tokens": 680,
+      "total_tokens": 7264,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 5432
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Mood Journal</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Mood Journal</h1>\n    <p class=\"subtitle\">Pick a mood, add a note, and log your day.</p>\n\n    <section aria-labelledby=\"mood-heading\">\n      <h2 id=\"mood-heading\" class=\"visually-hidden\">Select your mood</h2>\n      <div class=\"mood-picker\" role=\"radiogroup\" aria-labelledby=\"mood-heading\">\n        <button type=\"button\" class=\"mood-btn\" data-mood=\"happy\" role=\"radio\" aria-checked=\"false\" aria-label=\"Happy\">\n          <span class=\"pixel-face happy\" aria-hidden=\"true\"></span>\n          <span class=\"mood-label\">Happy</span>\n        </button>\n        <button type=\"button\" class=\"mood-btn\" data-mood=\"sad\" role=\"radio\" aria-checked=\"false\" aria-label=\"Sad\">\n          <span class=\"pixel-face sad\" aria-hidden=\"true\"></span>\n          <span class=\"mood-label\">Sad</span>\n        </button>\n        <button type=\"button\" class=\"mood-btn\" data-mood=\"angry\" role=\"radio\" aria-checked=\"false\" aria-label=\"Angry\">\n          <span class=\"pixel-face angry\" aria-hidden=\"true\"></span>\n          <span class=\"mood-label\">Angry</span>\n        </button>\n        <button type=\"button\" class=\"mood-btn\" data-mood=\"tired\" role=\"radio\" aria-checked=\"false\" aria-label=\"Tired\">\n          <span class=\"pixel-face tired\" aria-hidden=\"true\"></span>\n          <span class=\"mood-label\">Tired</span>\n        </button>\n        <button type=\"button\" class=\"mood-btn\" data-mood=\"excited\" role=\"radio\" aria-checked=\"false\" aria-label=\"Excited\">\n          <span class=\"pixel-face excited\" aria-hidden=\"true\"></span>\n          <span class=\"mood-label\">Excited</span>\n        </button>\n      </div>\n    </section>\n\n    <div class=\"note-area\">\n      <label for=\"note-input\">Note (optional)</label>\n      <textarea id=\"note-input\" rows=\"2\" placeholder=\"How was your day?\"></textarea>\n    </div>\n\n    <button type=\"button\" id=\"add-entry\" class=\"primary-btn\">Add Entry</button>\n\n    <section aria-labelledby=\"summary-heading\" class=\"summary\">\n      <h2 id=\"summary-heading\">Mood Summary</h2>\n      <ul id=\"mood-counts\" class=\"counts-list\"></ul>\n    </section>\n\n    <section aria-labelledby=\"entries-heading\">\n      <h2 id=\"entries-heading\">Entries</h2>\n      <ul id=\"entries-list\" class=\"entries-list\"></ul>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --text: #e0e0f0;\n  --accent: #7c5cbf;\n  --accent-hover: #9b7fd4;\n  --border: #3e3e5e;\n  --happy: #f9d71c;\n  --sad: #5c9edb;\n  --angry: #e05a5a;\n  --tired: #a0a0b0;\n  --excited: #f08c3a;\n  --radius: 10px;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: flex-start;\n  padding: 2rem 1rem;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  line-height: 1.5;\n}\n\n.card {\n  width: 100%;\n  max-width: 600px;\n  background: var(--card-bg);\n  border-radius: var(--radius);\n  padding: 2rem;\n  box-shadow: 0 8px 24px rgba(0,0,0,0.4);\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin: 0 0 0.25rem;\n  text-align: center;\n}\n\n.subtitle {\n  text-align: center;\n  margin: 0 0 1.5rem;\n  opacity: 0.8;\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  white-space: nowrap;\n}\n\n/* Mood picker */\n.mood-picker {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  justify-content: center;\n  margin-bottom: 1.5rem;\n}\n\n.mood-btn {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 0.4rem;\n  padding: 0.75rem 0.5rem;\n  min-width: 80px;\n  background: transparent;\n  border: 2px solid var(--border);\n  border-radius: var(--radius);\n  color: var(--text);\n  font-size: 1rem;\n  cursor: pointer;\n  transition: border-color 0.2s, background 0.2s, transform 0.1s;\n}\n\n.mood-btn:hover {\n  border-color: var(--accent-hover);\n  background: rgba(124, 92, 191, 0.15);\n}\n\n.mood-btn:focus-visible {\n  outline: 3px solid var(--accent-hover);\n  outline-offset: 2px;\n}\n\n.mood-btn:active {\n  transform: scale(0.95);\n}\n\n.mood-btn[aria-checked=\"true\"] {\n  border-color: var(--accent);\n  background: rgba(124, 92, 191, 0.25);\n  box-shadow: 0 0 0 2px var(--accent);\n}\n\n.mood-label {\n  font-size: 0.9rem;\n}\n\n/* Pixel faces via CSS box-shadow art */\n.pixel-face {\n  width: 32px;\n  height: 32px;\n  position: relative;\n  image-rendering: pixelated;\n}\n\n.pixel-face::before {\n  content: '';\n  position: absolute;\n  width: 4px;\n  height: 4px;\n  background: currentColor;\n  box-shadow:\n    8px 4px 0 currentColor, 20px 4px 0 currentColor,\n    4px 8px 0 currentColor, 12px 8px 0 currentColor, 16px 8px 0 currentColor, 24px 8px 0 currentColor,\n    4px 12px 0 currentColor, 24px 12px 0 currentColor,\n    4px 16px 0 currentColor, 24px 16px 0 currentColor,\n    8px 20px 0 currentColor, 20px 20px 0 currentColor,\n    12px 24px 0 currentColor, 16px 24px 0 currentColor;\n}\n\n/* Mouth variations */\n.pixel-face.happy::after {\n  content: '';\n  position: absolute;\n  width: 4px;\n  height: 4px;\n  background: currentColor;\n  box-shadow: 12px 20px 0 currentColor, 16px 20px 0 currentColor, 8px 16px 0 currentColor, 20px 16px 0 currentColor;\n}\n\n.pixel-face.sad::after {\n  content: '';\n  position: absolute;\n  width: 4px;\n  height: 4px;\n  background: currentColor;\n  box-shadow: 12px 16px 0 currentColor, 16px 16px 0 currentColor, 8px 20px 0 currentColor, 20px 20px 0 currentColor;\n}\n\n.pixel-face.angry::after {\n  content: '';\n  position: absolute;\n  width: 4px;\n  height: 4px;\n  background: currentColor;\n  box-shadow: 12px 20px 0 currentColor, 16px 20px 0 currentColor, 8px 16px 0 currentColor, 20px 16px 0 currentColor, 8px 12px 0 currentColor, 20px 12px 0 currentColor;\n}\n\n.pixel-face.tired::after {\n  content: '';\n  position: absolute;\n  width: 4px;\n  height: 4px;\n  background: currentColor;\n  box-shadow: 12px 16px 0 currentColor, 16px 16px 0 currentColor;\n}\n\n.pixel-face.excited::after {\n  content: '';\n  position: absolute;\n  width: 4px;\n  height: 4px;\n  background: currentColor;\n  box-shadow: 12px 16px 0 currentColor, 16px 16px 0 currentColor, 8px 20px 0 currentColor, 20px 20px 0 currentColor, 12px 24px 0 currentColor, 16px 24px 0 currentColor;\n}\n\n.pixel-face.happy { color: var(--happy); }\n.pixel-face.sad { color: var(--sad); }\n.pixel-face.angry { color: var(--angry); }\n.pixel-face.tired { color: var(--tired); }\n.pixel-face.excited { color: var(--excited); }\n\n/* Note area */\n.note-area {\n  margin-bottom: 1rem;\n}\n\n.note-area label {\n  display: block;\n  margin-bottom: 0.4rem;\n  font-weight: 600;\n}\n\n#note-input {\n  width: 100%;\n  padding: 0.75rem;\n  background: var(--bg);\n  border: 2px solid var(--border);\n  border-radius: var(--radius);\n  color: var(--text);\n  font-size: 1rem;\n  font-family: inherit;\n  resize: vertical;\n}\n\n#note-input:focus-visible {\n  outline: 3px solid var(--accent-hover);\n  outline-offset: 2px;\n}\n\n/* Primary button */\n.primary-btn {\n  display: block;\n  width: 100%;\n  padding: 0.9rem;\n  background: var(--accent);\n  color: #fff;\n  border: none;\n  border-radius: var(--radius);\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  margin-bottom: 2rem;\n}\n\n.primary-btn:hover { background: var(--accent-hover); }\n.primary-btn:focus-visible { outline: 3px solid var(--accent-hover); outline-offset: 2px; }\n.primary-btn:active { transform: scale(0.98); }\n\n/* Summary */\n.summary {\n  margin-bottom: 2rem;\n}\n\n.summary h2, .entries-list + h2, h2 {\n  font-size: 1.2rem;\n  margin: 0 0 0.75rem;\n  border-bottom: 2px solid var(--border);\n  padding-bottom: 0.4rem;\n}\n\n.counts-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n}\n\n.counts-list li {\n  background: var(--bg);\n  padding: 0.4rem 0.8rem;\n  border-radius: 20px;\n  font-size: 0.95rem;\n  border: 1px solid var(--border);\n}\n\n/* Entries list */\n.entries-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 0.75rem;\n  max-height: 400px;\n  overflow-y: auto;\n}\n\n.entry {\n  background: var(--bg);\n  border: 1px solid var(--border);\n  border-radius: var(--radius);\n  padding: 0.75rem 1rem;\n  display: flex;\n  gap: 0.75rem;\n  align-items: flex-start;\n  animation: fadeIn 0.3s ease;\n}\n\n@keyframes fadeIn {\n  from { opacity: 0; transform: translateY(-4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n\n.entry .pixel-face {\n  flex-shrink: 0;\n  margin-top: 2px;\n}\n\n.entry-content {\n  flex: 1;\n  min-width: 0;\n}\n\n.entry-date {\n  font-size: 0.85rem;\n  opacity: 0.7;\n  display: block;\n}\n\n.entry-note {\n  margin: 0.2rem 0 0;\n  word-wrap: break-word;\n}\n\n.empty-msg {\n  opacity: 0.6;\n  font-style: italic;\n  text-align: center;\n  padding: 1rem 0;\n}\n\n/* Responsive */\n@media (max-width: 420px) {\n  .card { padding: 1.25rem; }\n  .mood-btn { min-width: 60px; padding: 0.5rem 0.3rem; }\n  .mood-label { font-size: 0.8rem; }\n  h1 { font-size: 1.4rem; }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const MOODS = ['happy', 'sad', 'angry', 'tired', 'excited'];\n  const STORAGE_KEY = 'pixel-mood-journal-entries';\n\n  const moodButtons = Array.from(document.querySelectorAll('.mood-btn'));\n  const noteInput = document.getElementById('note-input');\n  const addBtn = document.getElementById('add-entry');\n  const entriesList = document.getElementById('entries-list');\n  const countsList = document.getElementById('mood-counts');\n\n  let selectedMood = null;\n  let entries = loadEntries();\n\n  function loadEntries() {\n    try {\n      const raw = localStorage.getItem(STORAGE_KEY);\n      return raw ? JSON.parse(raw) : [];\n    } catch (e) {\n      return [];\n    }\n  }\n\n  function saveEntries() {\n    try {\n      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));\n    } catch (e) {\n      /* storage unavailable */\n    }\n  }\n\n  function selectMood(mood) {\n    selectedMood = mood;\n    moodButtons.forEach(function (btn) {\n      const isSelected = btn.dataset.mood === mood;\n      btn.setAttribute('aria-checked', isSelected ? 'true' : 'false');\n    });\n  }\n\n  function createFace(mood) {\n    const face = document.createElement('span');\n    face.className = 'pixel-face ' + mood;\n    face.setAttribute('aria-hidden', 'true');\n    return face;\n  }\n\n  function formatDate(iso) {\n    const d = new Date(iso);\n    return d.toLocaleDateString(undefined, {\n      year: 'numeric', month: 'short', day: 'numeric'\n    });\n  }\n\n  function renderEntries() {\n    entriesList.innerHTML = '';\n    if (entries.length === 0) {\n      const li = document.createElement('li');\n      li.className = 'empty-msg';\n      li.textContent = 'No entries yet. Pick a mood and add one!';\n      entriesList.appendChild(li);\n      return;\n    }\n\n    const sorted = entries.slice().sort(function (a, b) {\n      return new Date(b.date) - new Date(a.date) || b.id - a.id;\n    });\n\n    sorted.forEach(function (entry) {\n      const li = document.createElement('li');\n      li.className = 'entry';\n\n      li.appendChild(createFace(entry.mood));\n\n      const content = document.createElement('div');\n      content.className = 'entry-content';\n\n      const dateSpan = document.createElement('span');\n      dateSpan.className = 'entry-date';\n      dateSpan.textContent = formatDate(entry.date);\n      content.appendChild(dateSpan);\n\n      if (entry.note) {\n        const noteP = document.createElement('p');\n        noteP.className = 'entry-note';\n        noteP.textContent = entry.note;\n        content.appendChild(noteP);\n      }\n\n      li.appendChild(content);\n      entriesList.appendChild(li);\n    });\n  }\n\n  function renderCounts() {\n    countsList.innerHTML = '';\n    const counts = {};\n    MOODS.forEach(function (m) { counts[m] = 0; });\n    entries.forEach(function (e) {\n      if (counts[e.mood] !== undefined) counts[e.mood]++;\n    });\n\n    MOODS.forEach(function (mood) {\n      const li = document.createElement('li');\n      li.textContent = mood.charAt(0).toUpperCase() + mood.slice(1) + ': ' + counts[mood];\n      countsList.appendChild(li);\n    });\n  }\n\n  function addEntry() {\n    if (!selectedMood) {\n      addBtn.textContent = 'Pick a mood first!';\n      addBtn.classList.add('error');\n      setTimeout(function () {\n        addBtn.textContent = 'Add Entry';\n        addBtn.classList.remove('error');\n      }, 1500);\n      return;\n    }\n\n    const note = noteInput.value.trim();\n    const now = new Date();\n    entries.push({\n      id: Date.now(),\n      mood: selectedMood,\n      note: note,\n      date: now.toISOString()\n    });\n\n    saveEntries();\n    noteInput.value = '';\n    renderEntries();\n    renderCounts();\n\n    addBtn.textContent = 'Added!';\n    setTimeout(function () {\n      addBtn.textContent = 'Add Entry';\n    }, 1000);\n  }\n\n  // Event listeners\n  moodButtons.forEach(function (btn) {\n    btn.addEventListener('click', function () {\n      selectMood(btn.dataset.mood);\n    });\n  });\n\n  addBtn.addEventListener('click', addEntry);\n\n  noteInput.addEventListener('keydown', function (e) {\n    if (e.key === 'Enter' && !e.shiftKey) {\n      e.preventDefault();\n      addEntry();\n    }\n  });\n\n  // Initial render\n  renderEntries();\n  renderCounts();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Mood Journal\n\nA tiny offline mood tracker. Pick one of five pixel-art mood faces, optionally add a note, and log an entry with today's date. Entries are listed newest first, and a summary shows how many entries each mood has.\n\n## Features\n\n- Five moods: Happy, Sad, Angry, Tired, Excited\n- Optional note per entry\n- Entries sorted newest first\n- Live mood count summary\n- Data persists in `localStorage` (falls back gracefully if unavailable)\n- Keyboard accessible: Tab to navigate, Enter to submit the note, Space/Enter to select a mood\n- Responsive layout down to 360px wide\n- No network requests, no external assets, no server code\n\n## Usage\n\n1. Open `index.html` in any modern browser (Chrome, Firefox, Edge).\n2. Click a mood face to select it.\n3. Type an optional note.\n4. Click **Add Entry** (or press Enter in the note field).\n5. View your entries and mood counts below.\n\n## Files\n\n- `index.html` — page structure\n- `styles.css` — theme, layout, pixel faces\n- `script.js` — state, rendering, localStorage\n\n## Accessibility\n\n- Mood buttons use `role=\"radio\"` and `aria-checked`\n- All controls are labeled and focusable\n- Visible focus outlines and hover/pressed states\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

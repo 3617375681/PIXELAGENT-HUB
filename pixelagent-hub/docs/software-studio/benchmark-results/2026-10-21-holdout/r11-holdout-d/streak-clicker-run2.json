@@ -1,0 +1,246 @@
+{
+  "caseId": "streak-clicker",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "3/3",
+  "finalChecks": "3/3",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "3/3"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 20,
+  "reportedTokens": 8798,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:33:02.502Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:33:02.503Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:33:06.385Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Clicker Game"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:33:06.385Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:33:14.625Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:33:14.625Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:33:15.181Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:33:15.182Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "ce4112e8-fc02-41ea-8fa2-921171e0d1c9"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:33:18.671Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "ce4112e8-fc02-41ea-8fa2-921171e0d1c9",
+        "checks": 3
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:33:18.672Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "61714b0f-ba20-4dbd-a883-6f17b9ca71d9",
+        "testPlanId": "ce4112e8-fc02-41ea-8fa2-921171e0d1c9",
+        "checks": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:33:19.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "61714b0f-ba20-4dbd-a883-6f17b9ca71d9",
+        "name": "Initial state",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:33:19.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "61714b0f-ba20-4dbd-a883-6f17b9ca71d9",
+        "name": "Coin click earns one point",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:33:19.662Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "61714b0f-ba20-4dbd-a883-6f17b9ca71d9",
+        "name": "Buy disabled below price",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:33:19.662Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "61714b0f-ba20-4dbd-a883-6f17b9ca71d9",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:33:19.665Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state",
+        "actions": [],
+        "selector": "#points",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Coin click earns one point",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#coin"
+          }
+        ],
+        "selector": "#points",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Buy disabled below price",
+        "actions": [],
+        "selector": "#buy-upgrade",
+        "expected": "true",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "5 planned check(s) were dropped because they did not match the check format.",
+      "Cannot verify Space/Enter keyboard earning; DOM key events are synthetic and not trusted browser input.",
+      "Auto-clicker rate is checked only loosely over a 2.2s window; exact per-second timing is not asserted.",
+      "Cannot verify visual pixel styling, animations or responsive layout."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3597,
+      "completion_tokens": 851,
+      "total_tokens": 4448,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2445
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Clicker</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-card\">\n    <h1>Pixel Clicker</h1>\n    <div class=\"points-display\">\n      <span id=\"points\">0</span> points\n    </div>\n    <button id=\"coin\" class=\"coin\" aria-label=\"Click the coin to earn points\">\n      <span class=\"coin-face\">🪙</span>\n    </button>\n    <div class=\"upgrade-section\">\n      <div class=\"upgrade-info\">\n        <span>Auto-clickers: <span id=\"upgrade-count\">0</span></span>\n        <span>Next price: <span id=\"next-price\">10</span> points</span>\n      </div>\n      <button id=\"buy-upgrade\" class=\"buy-button\" disabled aria-label=\"Buy auto-clicker upgrade\">\n        Buy Auto-clicker\n      </button>\n    </div>\n    <p class=\"hint\">Click the coin or press Space/Enter to earn points. Auto-clickers generate 1 point per second each.</p>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --primary: #f9c74f;\n  --secondary: #90be6d;\n  --text: #f0f0f5;\n  --shadow: rgba(0, 0, 0, 0.4);\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  line-height: 1.5;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.game-card {\n  background: var(--card-bg);\n  border-radius: 24px;\n  padding: 32px 24px;\n  max-width: 480px;\n  width: 100%;\n  text-align: center;\n  box-shadow: 0 12px 32px var(--shadow);\n  display: flex;\n  flex-direction: column;\n  gap: 24px;\n}\n\nh1 {\n  font-size: 2rem;\n  font-weight: 700;\n  color: var(--primary);\n  letter-spacing: 0.5px;\n}\n\n.points-display {\n  font-size: 1.5rem;\n  font-weight: 600;\n  background: rgba(255, 255, 255, 0.06);\n  padding: 12px 20px;\n  border-radius: 16px;\n}\n\n#points {\n  color: var(--primary);\n  font-size: 2rem;\n  font-weight: 800;\n}\n\n.coin {\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 6rem;\n  line-height: 1;\n  padding: 16px;\n  border-radius: 50%;\n  transition: transform 0.1s ease, filter 0.2s ease;\n  align-self: center;\n  width: 140px;\n  height: 140px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  filter: drop-shadow(0 8px 12px var(--shadow));\n}\n\n.coin:hover {\n  filter: drop-shadow(0 8px 20px var(--primary));\n  transform: scale(1.05);\n}\n\n.coin:focus-visible {\n  outline: 3px solid var(--primary);\n  outline-offset: 4px;\n}\n\n.coin:active {\n  transform: scale(0.92);\n}\n\n.coin.pressed {\n  animation: press 0.15s ease;\n}\n\n@keyframes press {\n  0% { transform: scale(1); }\n  50% { transform: scale(0.85); }\n  100% { transform: scale(1); }\n}\n\n.upgrade-section {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n\n.upgrade-info {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  font-size: 1.1rem;\n}\n\n#upgrade-count, #next-price {\n  color: var(--secondary);\n  font-weight: 700;\n}\n\n.buy-button {\n  background: var(--primary);\n  color: #1e1e2f;\n  border: none;\n  border-radius: 12px;\n  padding: 14px 24px;\n  font-size: 1.1rem;\n  font-weight: 700;\n  cursor: pointer;\n  transition: background 0.2s ease, transform 0.1s ease, opacity 0.2s ease;\n  font-family: inherit;\n}\n\n.buy-button:hover:not(:disabled) {\n  background: #f8b72e;\n  transform: translateY(-2px);\n}\n\n.buy-button:focus-visible {\n  outline: 3px solid var(--secondary);\n  outline-offset: 2px;\n}\n\n.buy-button:active:not(:disabled) {\n  transform: scale(0.97);\n}\n\n.buy-button:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n\n.hint {\n  font-size: 0.95rem;\n  color: #aaa;\n  line-height: 1.4;\n}\n\n@media (max-width: 400px) {\n  .game-card {\n    padding: 24px 16px;\n  }\n  h1 {\n    font-size: 1.6rem;\n  }\n  .coin {\n    font-size: 4.5rem;\n    width: 110px;\n    height: 110px;\n  }\n  .points-display {\n    font-size: 1.2rem;\n  }\n  #points {\n    font-size: 1.6rem;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "let points = 0;\nlet upgradeCount = 0;\nlet nextPrice = 10;\n\nconst pointsEl = document.getElementById('points');\nconst upgradeCountEl = document.getElementById('upgrade-count');\nconst nextPriceEl = document.getElementById('next-price');\nconst coinBtn = document.getElementById('coin');\nconst buyBtn = document.getElementById('buy-upgrade');\n\nfunction updateUI() {\n  pointsEl.textContent = Math.floor(points);\n  upgradeCountEl.textContent = upgradeCount;\n  nextPriceEl.textContent = nextPrice;\n  buyBtn.disabled = points < nextPrice;\n}\n\nfunction addPoints(amount) {\n  points += amount;\n  updateUI();\n}\n\ncoinBtn.addEventListener('click', () => {\n  addPoints(1);\n  coinBtn.classList.remove('pressed');\n  void coinBtn.offsetWidth; // trigger reflow to restart animation\n  coinBtn.classList.add('pressed');\n});\n\nbuyBtn.addEventListener('click', () => {\n  if (points >= nextPrice) {\n    points -= nextPrice;\n    upgradeCount += 1;\n    nextPrice *= 2;\n    updateUI();\n  }\n});\n\nsetInterval(() => {\n  if (upgradeCount > 0) {\n    points += upgradeCount;\n    updateUI();\n  }\n}, 1000);\n\nupdateUI();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Clicker Game\n\nA simple offline browser-based clicker game. Click the coin to earn points, buy auto-clicker upgrades to generate passive income.\n\n## Features\n\n- Click the coin (or press Space/Enter) to earn 1 point per click.\n- Buy auto-clicker upgrades for 10 points initially; price doubles with each purchase.\n- Each auto-clicker generates 1 point per second.\n- Real-time display of points, upgrade count, and next upgrade price.\n- Responsive design works down to 360px width.\n- Keyboard accessible controls with visible focus states.\n\n## How to Run\n\n1. Open `index.html` in any modern browser.\n2. No server or internet connection required.\n\n## Controls\n\n- **Coin button**: Click or press Space/Enter to earn points.\n- **Buy Auto-clicker button**: Click to purchase an upgrade when you have enough points.\n\n## Files\n\n- `index.html` – Game structure\n- `styles.css` – Styling and layout\n- `script.js` – Game logic",
+      "description": ""
+    }
+  ]
+}

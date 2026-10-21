@@ -1,0 +1,464 @@
+{
+  "caseId": "tip-poll",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 26,
+  "reportedTokens": 8989,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:34:04.800Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:34:04.800Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:34:07.754Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Poll"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:34:07.754Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:34:16.333Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:34:16.333Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:34:16.845Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:34:16.845Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "ca1c5e03-2d34-4452-9bea-9ee3d3ae5ae4"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:34:19.388Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "ca1c5e03-2d34-4452-9bea-9ee3d3ae5ae4",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:34:19.389Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "testPlanId": "ca1c5e03-2d34-4452-9bea-9ee3d3ae5ae4",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Initial state shows 4 options with zero votes",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Initial first option count is zero",
+        "passed": true,
+        "actual": "0 votes"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Initial status prompts to vote",
+        "passed": true,
+        "actual": "Click an option to vote."
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Voting first option increments its count",
+        "passed": true,
+        "actual": "1 vote"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Voting first option shows 100 percent",
+        "passed": true,
+        "actual": "100%"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Voted option is marked pressed",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Status reflects chosen option",
+        "passed": true,
+        "actual": "You voted for 32-bit. Click another option to change."
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Changing vote moves the vote",
+        "passed": true,
+        "actual": "0 votes"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Changed vote counted on new option",
+        "passed": true,
+        "actual": "1 vote"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "name": "Reset clears votes and status",
+        "passed": true,
+        "actual": "Votes reset. Click an option to vote."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:34:23.684Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d058bab3-7a06-479a-aa86-f429086a1847",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:34:23.689Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows 4 options with zero votes",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option",
+        "expected": "4",
+        "assertion": "count"
+      },
+      {
+        "name": "Initial first option count is zero",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 0,
+        "expected": "0 votes"
+      },
+      {
+        "name": "Initial status prompts to vote",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#status",
+        "expected": "Click an option to vote."
+      },
+      {
+        "name": "Voting first option increments its count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 0,
+        "expected": "1 vote"
+      },
+      {
+        "name": "Voting first option shows 100 percent",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option .percentage",
+        "nth": 0,
+        "expected": "100%"
+      },
+      {
+        "name": "Voted option is marked pressed",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 1
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option",
+        "nth": 1,
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Status reflects chosen option",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 2
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#status",
+        "expected": "You voted for 32-bit. Click another option to change."
+      },
+      {
+        "name": "Changing vote moves the vote",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 3
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 0,
+        "expected": "0 votes"
+      },
+      {
+        "name": "Changed vote counted on new option",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 3
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": ".option .vote-count",
+        "nth": 3,
+        "expected": "1 vote"
+      },
+      {
+        "name": "Reset clears votes and status",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".option",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#status",
+        "expected": "Votes reset. Click an option to vote."
+      }
+    ],
+    "limitations": [
+      "Bar fill width is animated via CSS transition; only percentage text is asserted, not pixel width.",
+      "No persistence across reloads is required or tested.",
+      "Keyboard focus styling and responsive layout are not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3925,
+      "completion_tokens": 590,
+      "total_tokens": 4515,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2773
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Poll</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\" role=\"main\">\n    <h1 id=\"question\">What is the best pixel art style?</h1>\n    <div id=\"options\" class=\"options\" role=\"group\" aria-labelledby=\"question\"></div>\n    <div class=\"actions\">\n      <button id=\"reset\" class=\"reset-btn\" type=\"button\">Reset votes</button>\n    </div>\n    <p id=\"status\" class=\"status\" role=\"status\" aria-live=\"polite\"></p>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card-bg: #16213e;\n  --primary: #e94560;\n  --secondary: #0f3460;\n  --text: #eaeaea;\n  --text-muted: #a0a0b0;\n  --bar-bg: #0f3460;\n  --bar-fill: #e94560;\n  --hover: #ff6b81;\n  --focus: #ffd369;\n  --pressed: #c2314a;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 500px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 24px;\n  text-align: center;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n}\n\n.options {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\n.option {\n  background: var(--secondary);\n  border: 2px solid transparent;\n  border-radius: 12px;\n  padding: 12px 16px;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  text-align: left;\n  color: var(--text);\n  font-size: 1rem;\n  font-family: inherit;\n  position: relative;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  width: 100%;\n}\n\n.option:hover {\n  background: #1a4a7a;\n  border-color: var(--hover);\n}\n\n.option:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.option:active {\n  background: var(--pressed);\n}\n\n.option.voted {\n  border-color: var(--primary);\n  background: #1e3a5f;\n}\n\n.option-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  font-weight: 600;\n}\n\n.option-label {\n  flex: 1;\n}\n\n.vote-count {\n  font-size: 0.9rem;\n  color: var(--text-muted);\n  margin-left: 8px;\n  white-space: nowrap;\n}\n\n.bar-container {\n  width: 100%;\n  height: 8px;\n  background: var(--bar-bg);\n  border-radius: 4px;\n  overflow: hidden;\n}\n\n.bar-fill {\n  height: 100%;\n  width: 0%;\n  background: var(--bar-fill);\n  border-radius: 4px;\n  transition: width 0.3s ease;\n}\n\n.percentage {\n  font-size: 0.85rem;\n  color: var(--text-muted);\n  text-align: right;\n  min-width: 40px;\n}\n\n.actions {\n  display: flex;\n  justify-content: center;\n  margin-bottom: 16px;\n}\n\n.reset-btn {\n  background: transparent;\n  border: 2px solid var(--primary);\n  color: var(--primary);\n  border-radius: 8px;\n  padding: 10px 24px;\n  font-size: 1rem;\n  font-family: inherit;\n  font-weight: 600;\n  cursor: pointer;\n  transition: all 0.2s ease;\n}\n\n.reset-btn:hover {\n  background: var(--primary);\n  color: #fff;\n}\n\n.reset-btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.reset-btn:active {\n  background: var(--pressed);\n  border-color: var(--pressed);\n  color: #fff;\n}\n\n.status {\n  text-align: center;\n  font-size: 0.9rem;\n  color: var(--text-muted);\n  min-height: 1.5em;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 16px;\n  }\n  h1 {\n    font-size: 1.25rem;\n  }\n  .option {\n    padding: 10px 12px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const question = \"What is the best pixel art style?\";\nconst initialOptions = [\n  { label: \"8-bit\", votes: 0 },\n  { label: \"16-bit\", votes: 0 },\n  { label: \"32-bit\", votes: 0 },\n  { label: \"HD-2D\", votes: 0 }\n];\n\nlet options = initialOptions.map(o => ({ ...o }));\nlet userVote = null;\n\nconst optionsContainer = document.getElementById('options');\nconst resetBtn = document.getElementById('reset');\nconst statusEl = document.getElementById('status');\n\nfunction render() {\n  const totalVotes = options.reduce((sum, o) => sum + o.votes, 0);\n  optionsContainer.innerHTML = '';\n\n  options.forEach((opt, index) => {\n    const btn = document.createElement('button');\n    btn.type = 'button';\n    btn.className = 'option' + (userVote === index ? ' voted' : '');\n    btn.setAttribute('aria-pressed', userVote === index ? 'true' : 'false');\n    btn.setAttribute('aria-label', `${opt.label}, ${opt.votes} votes, ${totalVotes ? Math.round((opt.votes / totalVotes) * 100) : 0} percent`);\n\n    const header = document.createElement('div');\n    header.className = 'option-header';\n\n    const labelSpan = document.createElement('span');\n    labelSpan.className = 'option-label';\n    labelSpan.textContent = opt.label;\n\n    const countSpan = document.createElement('span');\n    countSpan.className = 'vote-count';\n    countSpan.textContent = `${opt.votes} vote${opt.votes !== 1 ? 's' : ''}`;\n\n    header.appendChild(labelSpan);\n    header.appendChild(countSpan);\n\n    const barContainer = document.createElement('div');\n    barContainer.className = 'bar-container';\n    const barFill = document.createElement('div');\n    barFill.className = 'bar-fill';\n    const pct = totalVotes ? (opt.votes / totalVotes) * 100 : 0;\n    barFill.style.width = `${pct}%`;\n    barContainer.appendChild(barFill);\n\n    const pctSpan = document.createElement('span');\n    pctSpan.className = 'percentage';\n    pctSpan.textContent = `${Math.round(pct)}%`;\n\n    btn.appendChild(header);\n    btn.appendChild(barContainer);\n    btn.appendChild(pctSpan);\n\n    btn.addEventListener('click', () => handleVote(index));\n    optionsContainer.appendChild(btn);\n  });\n\n  statusEl.textContent = userVote !== null ? `You voted for ${options[userVote].label}. Click another option to change.` : 'Click an option to vote.';\n}\n\nfunction handleVote(index) {\n  if (userVote === index) return;\n\n  if (userVote !== null) {\n    options[userVote].votes = Math.max(0, options[userVote].votes - 1);\n  }\n\n  options[index].votes += 1;\n  userVote = index;\n  render();\n}\n\nfunction resetVotes() {\n  options = initialOptions.map(o => ({ ...o }));\n  userVote = null;\n  render();\n  statusEl.textContent = 'Votes reset. Click an option to vote.';\n}\n\nresetBtn.addEventListener('click', resetVotes);\n\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Poll\n\nA simple offline browser app where you vote on a question with 4 options. Vote by clicking an option, see vote counts and percentage bars, change your vote by clicking another option, and reset all votes with the Reset button.\n\n## Features\n\n- 4 options with live vote counts and percentage bars\n- Click to vote; click another option to change your vote\n- Reset votes button\n- Keyboard accessible with visible focus states\n- Responsive layout down to 360px wide\n- Cohesive dark palette with pixel-art inspired colors\n\n## Usage\n\nOpen `index.html` in any modern browser. No server or network needed.\n\n## Files\n\n- `index.html` – structure\n- `style.css` – styling\n- `script.js` – logic\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,470 @@
+{
+  "caseId": "morse",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 25,
+  "reportedTokens": 10943,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:31:43.115Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:31:43.116Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:31:46.741Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Morse Code Translator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:31:46.742Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:31:58.276Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:31:58.276Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:31:58.772Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:31:58.773Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "99f1b610-11ba-484c-8b9f-c102736192d4"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:32:02.250Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "99f1b610-11ba-484c-8b9f-c102736192d4",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:32:02.251Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "testPlanId": "99f1b610-11ba-484c-8b9f-c102736192d4",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Text to Morse button HELLO WORLD",
+        "passed": true,
+        "actual": ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Text to Morse SOS button",
+        "passed": true,
+        "actual": "... --- ..."
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Morse to Text button",
+        "passed": true,
+        "actual": "HELLO WORLD"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Morse to Text digits and punctuation",
+        "passed": true,
+        "actual": "123 .,?"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Real-time text to Morse after debounce",
+        "passed": true,
+        "actual": ".- -..."
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Real-time Morse to text after debounce",
+        "passed": true,
+        "actual": "AB"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Clear text button empties text box",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Clear morse button empties morse box",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Empty text shows error status",
+        "passed": true,
+        "actual": "Please enter some text to translate."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "name": "Unknown Morse shows question mark",
+        "passed": true,
+        "actual": "?"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:32:06.683Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "061ae3ee-e354-4577-91ff-ce14e41abaf2",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:32:06.689Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Text to Morse button HELLO WORLD",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "HELLO WORLD"
+          },
+          {
+            "type": "click",
+            "selector": "#to-morse"
+          }
+        ],
+        "selector": "#morse-input",
+        "expected": ".... . .-.. .-.. --- / .-- --- .-. .-.. -..",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Text to Morse SOS button",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "SOS"
+          },
+          {
+            "type": "click",
+            "selector": "#to-morse"
+          }
+        ],
+        "selector": "#morse-input",
+        "expected": "... --- ...",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Morse to Text button",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#morse-input",
+            "value": ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+          },
+          {
+            "type": "click",
+            "selector": "#to-text"
+          }
+        ],
+        "selector": "#text-input",
+        "expected": "HELLO WORLD",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Morse to Text digits and punctuation",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#morse-input",
+            "value": ".---- ..--- ...-- / .-.-.- --..-- ..--.."
+          },
+          {
+            "type": "click",
+            "selector": "#to-text"
+          }
+        ],
+        "selector": "#text-input",
+        "expected": "123 .,?",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Real-time text to Morse after debounce",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "AB"
+          },
+          {
+            "type": "wait",
+            "ms": 600
+          }
+        ],
+        "selector": "#morse-input",
+        "expected": ".- -...",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Real-time Morse to text after debounce",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#morse-input",
+            "value": ".- -..."
+          },
+          {
+            "type": "wait",
+            "ms": 600
+          }
+        ],
+        "selector": "#text-input",
+        "expected": "AB",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Clear text button empties text box",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "HELLO"
+          },
+          {
+            "type": "click",
+            "selector": "#clear-text"
+          }
+        ],
+        "selector": "#text-input",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Clear morse button empties morse box",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#morse-input",
+            "value": ".- -..."
+          },
+          {
+            "type": "click",
+            "selector": "#clear-morse"
+          }
+        ],
+        "selector": "#morse-input",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Empty text shows error status",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#to-morse"
+          }
+        ],
+        "selector": "#status",
+        "expected": "Please enter some text to translate."
+      },
+      {
+        "name": "Unknown Morse shows question mark",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#morse-input",
+            "value": "........"
+          },
+          {
+            "type": "click",
+            "selector": "#to-text"
+          }
+        ],
+        "selector": "#text-input",
+        "expected": "?",
+        "assertion": "attribute",
+        "attribute": "value"
+      }
+    ],
+    "limitations": [
+      "Pixel/visual styling of the Morse output is not asserted; only textarea values and status text are checked.",
+      "Debounce timing is assumed to be 300ms; checks wait 600ms, which may fail if the implementation changes.",
+      "Unsupported-character skipping in text-to-Morse is not covered beyond the listed cases.",
+      "No checks verify focus movement after Clear buttons or ARIA live announcements."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4798,
+      "completion_tokens": 742,
+      "total_tokens": 5540,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 3646
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Morse Code Translator</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Morse Code Translator</h1>\n    <p class=\"subtitle\">Type text to see Morse code, or paste Morse code to read text.</p>\n    <div class=\"panes\">\n      <section class=\"pane\" aria-labelledby=\"text-label\">\n        <label id=\"text-label\" for=\"text-input\">Plain text</label>\n        <textarea id=\"text-input\" rows=\"5\" placeholder=\"Type your message here...\" aria-describedby=\"text-hint\"></textarea>\n        <span id=\"text-hint\" class=\"hint\">Letters separated by spaces, words by slashes.</span>\n        <div class=\"actions\">\n          <button id=\"to-morse\" type=\"button\">Translate to Morse</button>\n          <button id=\"clear-text\" type=\"button\" class=\"secondary\">Clear</button>\n        </div>\n      </section>\n      <section class=\"pane\" aria-labelledby=\"morse-label\">\n        <label id=\"morse-label\" for=\"morse-input\">Morse code</label>\n        <textarea id=\"morse-input\" rows=\"5\" placeholder=\"Type Morse code here (use spaces between letters, / between words)...\" aria-describedby=\"morse-hint\"></textarea>\n        <span id=\"morse-hint\" class=\"hint\">Use spaces between letters and / between words.</span>\n        <div class=\"actions\">\n          <button id=\"to-text\" type=\"button\">Translate to Text</button>\n          <button id=\"clear-morse\" type=\"button\" class=\"secondary\">Clear</button>\n        </div>\n      </section>\n    </div>\n    <div id=\"status\" class=\"status\" role=\"status\" aria-live=\"polite\"></div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card-bg: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --muted: #a0a0b0;\n  --border: #2a2a4a;\n  --focus: #ff6b81;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1rem;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  padding: 2rem;\n  max-width: 900px;\n  width: 100%;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n  border: 1px solid var(--border);\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 0.25rem;\n  color: var(--accent);\n}\n\n.subtitle {\n  color: var(--muted);\n  margin-bottom: 1.5rem;\n  font-size: 1rem;\n}\n\n.panes {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 1.5rem;\n}\n\n.pane {\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\nlabel {\n  font-weight: 600;\n  font-size: 1rem;\n}\n\ntextarea {\n  width: 100%;\n  padding: 0.75rem;\n  border-radius: 8px;\n  border: 1px solid var(--border);\n  background: var(--bg);\n  color: var(--text);\n  font-family: inherit;\n  font-size: 1rem;\n  resize: vertical;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ntextarea:focus {\n  outline: none;\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.25);\n}\n\n.hint {\n  font-size: 0.875rem;\n  color: var(--muted);\n}\n\n.actions {\n  display: flex;\n  gap: 0.5rem;\n  flex-wrap: wrap;\n  margin-top: 0.25rem;\n}\n\nbutton {\n  padding: 0.6rem 1.2rem;\n  border: none;\n  border-radius: 8px;\n  background: var(--accent);\n  color: #fff;\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n\nbutton:hover {\n  background: #ff5c77;\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.97);\n}\n\nbutton.secondary {\n  background: transparent;\n  border: 1px solid var(--border);\n  color: var(--text);\n}\n\nbutton.secondary:hover {\n  background: var(--border);\n}\n\n.status {\n  margin-top: 1.5rem;\n  min-height: 1.5rem;\n  font-size: 0.95rem;\n  color: var(--muted);\n  text-align: center;\n}\n\n@media (max-width: 640px) {\n  .panes {\n    grid-template-columns: 1fr;\n  }\n  .card {\n    padding: 1.25rem;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n}\n\n@media (max-width: 360px) {\n  body {\n    padding: 0.5rem;\n  }\n  .card {\n    padding: 1rem;\n  }\n  button {\n    width: 100%;\n  }\n  .actions {\n    flex-direction: column;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const MORSE_MAP = {\n  'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',\n  'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',\n  'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',\n  'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',\n  'Y': '-.--', 'Z': '--..',\n  '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',\n  '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',\n  '.': '.-.-.-', ',': '--..--', '?': '..--..', \"'\": '.----.', '!': '-.-.--',\n  '/': '-..-.', '(': '-.--.', ')': '-.--.-', '&': '.-...', ':': '---...',\n  ';': '-.-.-.', '=': '-...-', '+': '.-.-.', '-': '-....-', '_': '..--.-',\n  '\"': '.-..-.', '$': '...-..-', '@': '.--.-.'\n};\n\nconst TEXT_TO_MORSE = MORSE_MAP;\nconst MORSE_TO_TEXT = Object.fromEntries(\n  Object.entries(MORSE_MAP).map(([k, v]) => [v, k])\n);\n\nconst textInput = document.getElementById('text-input');\nconst morseInput = document.getElementById('morse-input');\nconst toMorseBtn = document.getElementById('to-morse');\nconst toTextBtn = document.getElementById('to-text');\nconst clearTextBtn = document.getElementById('clear-text');\nconst clearMorseBtn = document.getElementById('clear-morse');\nconst statusEl = document.getElementById('status');\n\nfunction setStatus(msg, isError = false) {\n  statusEl.textContent = msg;\n  statusEl.style.color = isError ? '#e94560' : '';\n}\n\nfunction textToMorse(text) {\n  const words = text.trim().toUpperCase().split(/\\s+/);\n  const morseWords = words.map(word => {\n    return word.split('').map(char => {\n      return TEXT_TO_MORSE[char] || '';\n    }).filter(Boolean).join(' ');\n  }).filter(Boolean);\n  return morseWords.join(' / ');\n}\n\nfunction morseToText(morse) {\n  const words = morse.trim().split(/\\s*\\/\\s*/);\n  const textWords = words.map(word => {\n    const letters = word.trim().split(/\\s+/);\n    return letters.map(code => {\n      if (!code) return '';\n      const char = MORSE_TO_TEXT[code];\n      if (char === undefined) {\n        setStatus(`Unknown Morse code: \"${code}\"`, true);\n        return '?';\n      }\n      return char;\n    }).join('');\n  });\n  return textWords.join(' ');\n}\n\nfunction translateToMorse() {\n  const text = textInput.value;\n  if (!text.trim()) {\n    setStatus('Please enter some text to translate.', true);\n    return;\n  }\n  const morse = textToMorse(text);\n  morseInput.value = morse;\n  setStatus('Translated to Morse code.');\n}\n\nfunction translateToText() {\n  const morse = morseInput.value;\n  if (!morse.trim()) {\n    setStatus('Please enter some Morse code to translate.', true);\n    return;\n  }\n  setStatus('');\n  const text = morseToText(morse);\n  textInput.value = text;\n  if (!statusEl.textContent) setStatus('Translated to text.');\n}\n\ntoMorseBtn.addEventListener('click', translateToMorse);\ntoTextBtn.addEventListener('click', translateToText);\n\nclearTextBtn.addEventListener('click', () => {\n  textInput.value = '';\n  setStatus('');\n  textInput.focus();\n});\n\nclearMorseBtn.addEventListener('click', () => {\n  morseInput.value = '';\n  setStatus('');\n  morseInput.focus();\n});\n\n// Real-time translation with debounce\nlet debounceTimer;\ntextInput.addEventListener('input', () => {\n  clearTimeout(debounceTimer);\n  debounceTimer = setTimeout(() => {\n    if (textInput.value.trim()) translateToMorse();\n  }, 300);\n});\n\nmorseInput.addEventListener('input', () => {\n  clearTimeout(debounceTimer);\n  debounceTimer = setTimeout(() => {\n    if (morseInput.value.trim()) translateToText();\n  }, 300);\n});",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Morse Code Translator\n\nA simple, offline browser app that translates plain text to Morse code and back. Letters are separated by spaces, words by slashes.\n\n## Features\n\n- **Text → Morse**: Type text and see it converted to Morse code (letters separated by spaces, words by `/`).\n- **Morse → Text**: Paste Morse code and read the decoded text.\n- **Real-time translation**: Results update as you type (300ms debounce).\n- **Clear buttons**: Easily reset either input field.\n- **Accessible**: Keyboard-friendly controls with labels, focus states, and ARIA live status.\n- **Responsive**: Works from 360px wide up to desktop.\n- **No dependencies**: Pure HTML, CSS, and JavaScript. No network requests, no external assets.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type your message in the **Plain text** box and click **Translate to Morse** (or just wait—it updates automatically).\n3. To decode, paste Morse code into the **Morse code** box and click **Translate to Text**.\n4. Use **Clear** to empty a field.\n\n### Morse Code Format\n\n- Letters are separated by single spaces.\n- Words are separated by a slash `/` (with optional surrounding spaces).\n- Example: `HELLO WORLD` → `.... . .-.. .-.. --- / .-- --- .-. .-.. -..`\n\n### Supported Characters\n\nLetters A–Z, digits 0–9, and common punctuation: `. , ? ' ! / ( ) & : ; = + - _ \" $ @`\n\nUnsupported characters are skipped (text → Morse) or shown as `?` with a status message (Morse → text).\n\n## Limitations\n\n- Morse code is case-insensitive; output text is uppercase.\n- Invalid Morse sequences are flagged in the status area.\n- Very long inputs may cause a slight delay during translation.\n\n## Development\n\nNo build step required. Simply open `index.html` in a browser. All code is in `index.html`, `style.css`, and `script.js`.\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

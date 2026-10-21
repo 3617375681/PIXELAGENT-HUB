@@ -1,0 +1,403 @@
+{
+  "caseId": "recipe-scaler",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "9/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/9"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 29,
+  "reportedTokens": 8377,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:27:17.315Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:27:17.315Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:27:20.702Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Recipe Scaler"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:27:20.703Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:27:28.627Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:27:28.627Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:27:29.135Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:27:29.136Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "4f036e6a-e8d0-46b9-8717-4e6a0715720a"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:27:32.011Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "4f036e6a-e8d0-46b9-8717-4e6a0715720a",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:27:32.012Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "testPlanId": "4f036e6a-e8d0-46b9-8717-4e6a0715720a",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Default 4 servings amounts",
+        "passed": true,
+        "actual": "Flour 200 Sugar 100 Butter 80 Eggs 2 Milk 150"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Scale to 8 servings",
+        "passed": true,
+        "actual": "Flour 400 Sugar 200 Butter 160 Eggs 4 Milk 300"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Scale to 1 serving one decimal",
+        "passed": true,
+        "actual": "Flour 50 Sugar 25 Butter 20 Eggs 0.5 Milk 37.5"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Scale to 12 servings",
+        "passed": true,
+        "actual": "Flour 600 Sugar 300 Butter 240 Eggs 6 Milk 450"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Scale to 3 servings decimals",
+        "passed": true,
+        "actual": "Flour 150 Sugar 75 Butter 60 Eggs 1.5 Milk 112.5"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Five ingredient rows",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Slider updates amounts",
+        "passed": true,
+        "actual": "Flour 300 Sugar 150 Butter 120 Eggs 3 Milk 225"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Number input clamps above 12",
+        "passed": true,
+        "actual": "Flour 600 Sugar 300 Butter 240 Eggs 6 Milk 450"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "name": "Number input clamps below 1",
+        "passed": true,
+        "actual": "Flour 50 Sugar 25 Butter 20 Eggs 0.5 Milk 37.5"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:27:34.907Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "ecd58b23-31f9-43f2-962f-cb418e33885c",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:27:34.910Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Default 4 servings amounts",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "4"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 200 Sugar 100 Butter 80 Eggs 2 Milk 150",
+        "assertion": "text"
+      },
+      {
+        "name": "Scale to 8 servings",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "8"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 400 Sugar 200 Butter 160 Eggs 4 Milk 300",
+        "assertion": "text"
+      },
+      {
+        "name": "Scale to 1 serving one decimal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "1"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 50 Sugar 25 Butter 20 Eggs 0.5 Milk 37.5",
+        "assertion": "text"
+      },
+      {
+        "name": "Scale to 12 servings",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "12"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 600 Sugar 300 Butter 240 Eggs 6 Milk 450",
+        "assertion": "text"
+      },
+      {
+        "name": "Scale to 3 servings decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "3"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 150 Sugar 75 Butter 60 Eggs 1.5 Milk 112.5",
+        "assertion": "text"
+      },
+      {
+        "name": "Five ingredient rows",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "4"
+          }
+        ],
+        "selector": "#ingredient-list li",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Slider updates amounts",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings-range",
+            "value": "6"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 300 Sugar 150 Butter 120 Eggs 3 Milk 225",
+        "assertion": "text"
+      },
+      {
+        "name": "Number input clamps above 12",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "20"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 600 Sugar 300 Butter 240 Eggs 6 Milk 450",
+        "assertion": "text"
+      },
+      {
+        "name": "Number input clamps below 1",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#servings",
+            "value": "0"
+          }
+        ],
+        "selector": "#ingredient-list",
+        "expected": "Flour 50 Sugar 25 Butter 20 Eggs 0.5 Milk 37.5",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Rounding to one decimal is only observable where scaling yields fractions (e.g. 1 or 3 servings); whole-number results cannot distinguish rounding behavior.",
+      "Clamping of out-of-range typed values is asserted via rendered amounts; the input's own displayed value after clamping is not separately checked.",
+      "No pixel/visual layout, responsive breakpoint, or keyboard-accessibility assertions are covered.",
+      "Slider and number input synchronization is only checked in the direction slider-to-list; number-to-slider sync is not asserted."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3533,
+      "completion_tokens": 640,
+      "total_tokens": 4173,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 2253
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Recipe Scaler</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Recipe Scaler</h1>\n    <p class=\"subtitle\">Base recipe for 4 servings. Adjust servings below.</p>\n\n    <div class=\"control-group\">\n      <label for=\"servings\">Servings (1–12)</label>\n      <div class=\"input-row\">\n        <input type=\"range\" id=\"servings-range\" min=\"1\" max=\"12\" value=\"4\" aria-label=\"Servings slider\">\n        <input type=\"number\" id=\"servings\" min=\"1\" max=\"12\" value=\"4\" aria-label=\"Servings number\">\n      </div>\n    </div>\n\n    <ul id=\"ingredient-list\" class=\"ingredient-list\" aria-live=\"polite\">\n      <!-- rendered by script.js -->\n    </ul>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #f4f1ea;\n  --card-bg: #ffffff;\n  --primary: #2a5d6e;\n  --accent: #e07a5f;\n  --text: #2b2b2b;\n  --muted: #6b6b6b;\n  --border: #d9d4cb;\n  --focus: #e07a5f;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);\n  padding: 32px;\n  width: 100%;\n  max-width: 480px;\n}\n\nh1 {\n  font-size: 1.75rem;\n  color: var(--primary);\n  margin-bottom: 4px;\n  letter-spacing: -0.02em;\n}\n\n.subtitle {\n  color: var(--muted);\n  margin-bottom: 24px;\n  font-size: 0.95rem;\n}\n\n.control-group {\n  margin-bottom: 24px;\n}\n\nlabel {\n  display: block;\n  font-weight: 600;\n  margin-bottom: 8px;\n  color: var(--primary);\n}\n\n.input-row {\n  display: flex;\n  gap: 12px;\n  align-items: center;\n  flex-wrap: wrap;\n}\n\ninput[type=\"range\"] {\n  flex: 1 1 140px;\n  accent-color: var(--primary);\n  height: 32px;\n  cursor: pointer;\n}\n\ninput[type=\"number\"] {\n  width: 80px;\n  padding: 8px 10px;\n  font-size: 1rem;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  background: var(--card-bg);\n  color: var(--text);\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\n\ninput[type=\"number\"]:hover {\n  border-color: var(--primary);\n}\n\ninput[type=\"number\"]:focus-visible {\n  outline: none;\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.35);\n}\n\ninput[type=\"number\"]:active {\n  border-color: var(--accent);\n}\n\n.ingredient-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.ingredient-list li {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  padding: 12px 16px;\n  background: #faf8f4;\n  border-radius: 10px;\n  border-left: 4px solid var(--accent);\n  transition: background 0.15s;\n}\n\n.ingredient-list li:hover {\n  background: #f3efe8;\n}\n\n.ingredient-name {\n  font-weight: 500;\n}\n\n.ingredient-amount {\n  font-variant-numeric: tabular-nums;\n  color: var(--primary);\n  font-weight: 600;\n  white-space: nowrap;\n  margin-left: 12px;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 20px;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .input-row {\n    gap: 8px;\n  }\n  input[type=\"number\"] {\n    width: 70px;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var BASE_SERVINGS = 4;\n  var recipe = [\n    { name: 'Flour', amount: 200 },\n    { name: 'Sugar', amount: 100 },\n    { name: 'Butter', amount: 80 },\n    { name: 'Eggs', amount: 2 },\n    { name: 'Milk', amount: 150 }\n  ];\n\n  var servingsRange = document.getElementById('servings-range');\n  var servingsNumber = document.getElementById('servings');\n  var list = document.getElementById('ingredient-list');\n\n  function scaleAmount(amount, targetServings) {\n    var scaled = (amount / BASE_SERVINGS) * targetServings;\n    return Math.round(scaled * 10) / 10;\n  }\n\n  function render(servings) {\n    var html = '';\n    for (var i = 0; i < recipe.length; i++) {\n      var item = recipe[i];\n      var scaled = scaleAmount(item.amount, servings);\n      html += '<li>' +\n        '<span class=\"ingredient-name\">' + item.name + '</span>' +\n        '<span class=\"ingredient-amount\">' + scaled + '</span>' +\n        '</li>';\n    }\n    list.innerHTML = html;\n  }\n\n  function clamp(value) {\n    var n = parseInt(value, 10);\n    if (isNaN(n)) return 4;\n    return Math.min(12, Math.max(1, n));\n  }\n\n  function syncInputs(value) {\n    var v = clamp(value);\n    servingsRange.value = v;\n    servingsNumber.value = v;\n    render(v);\n  }\n\n  servingsRange.addEventListener('input', function () {\n    syncInputs(servingsRange.value);\n  });\n\n  servingsNumber.addEventListener('input', function () {\n    syncInputs(servingsNumber.value);\n  });\n\n  servingsNumber.addEventListener('blur', function () {\n    syncInputs(servingsNumber.value);\n  });\n\n  // Initial render\n  syncInputs(servingsNumber.value);\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Recipe Scaler\n\nA tiny offline browser app that shows a built-in 5-ingredient recipe for 4 servings and live-rescales amounts to any serving count from 1 to 12, rounded to one decimal.\n\n## How to use\n\n1. Open `index.html` in any modern browser.\n2. Adjust servings with the slider or the number input (1–12).\n3. Ingredient amounts update instantly.\n\n## Features\n\n- 5 ingredients with base amounts for 4 servings\n- Live rescaling with one-decimal rounding\n- Keyboard-accessible labeled controls\n- Responsive layout down to 360px wide\n- No network requests, imports, or external assets\n\n## Files\n\n- `index.html` — markup and structure\n- `styles.css` — theme, layout, and control states\n- `script.js` — recipe data, scaling logic, and event wiring\n\n## Constraints\n\nPure HTML, CSS, and plain JavaScript. Works fully offline. No inline event handlers. Relative paths only.\n",
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,629 @@
+{
+  "caseId": "streak-clicker",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "3/7",
+  "finalChecks": "3/5",
+  "reviewTriggered": true,
+  "checksDropped": 2,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "3/7",
+    "3/5",
+    "3/5"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 53,
+  "reportedTokens": 19688,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:32:10.018Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:32:10.019Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:32:13.997Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Coin Clicker"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:32:13.997Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:32:22.540Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:32:22.540Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:32:23.072Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:32:23.073Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:32:25.831Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328",
+        "checks": 7
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:32:25.833Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "testPlanId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:32:36.629Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Initial state shows zero points and disabled buy",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:32:36.629Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Coin click earns one point",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:32:36.629Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Buy disabled below price",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:32:36.629Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Buy enabled at 10 points",
+        "passed": false,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:32:36.629Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Purchase deducts price and increments count",
+        "passed": false,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:32:36.630Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Next price doubles after purchase",
+        "passed": false,
+        "actual": "10"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:32:36.630Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "name": "Auto-clicker adds one point per second",
+        "passed": false,
+        "actual": "8"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:32:36.630Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "a80e5806-b4d4-4ca1-ac3d-e089d5a19e03",
+        "status": "failed",
+        "passed": 3,
+        "failed": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:32:36.635Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328",
+        "review": true
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:32:40.328Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328",
+        "checks": 5,
+        "review": true,
+        "revised": 0,
+        "dropped": 2,
+        "verdicts": [
+          {
+            "name": "Buy enabled at 10 points",
+            "verdict": "unsupported",
+            "reason": "The check clicks the coin 8 times, reaching only 8 points, then asserts the buy button is not disabled. The requirements say the upgrade costs 10 points, so at 8 points the button should remain disabl"
+          },
+          {
+            "name": "Purchase deducts price and increments count",
+            "verdict": "unsupported",
+            "reason": "The check clicks the coin 8 times (8 points) and then asserts the upgrade count is 1, but it never clicks the buy button and never reaches the 10 points needed. The requirements require buying the upg"
+          },
+          {
+            "name": "Next price doubles after purchase",
+            "verdict": "app-wrong",
+            "reason": "The check clicks the coin 8 times and asserts next price is 20, but it never buys the upgrade and never reaches 10 points. The requirements say the price doubles after a purchase, so the check omits t"
+          },
+          {
+            "name": "Auto-clicker adds one point per second",
+            "verdict": "app-wrong",
+            "reason": "The check clicks the coin 8 times and immediately asserts points is 1, which contradicts the requirement that each coin click earns a point (8 clicks should show 8). It also never buys an Auto-clicker"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:32:40.329Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "testPlanId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328",
+        "checks": 5,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:32:46.395Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "name": "Initial state shows zero points and disabled buy",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T08:32:46.395Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "name": "Coin click earns one point",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T08:32:46.395Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "name": "Buy disabled below price",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T08:32:46.395Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "name": "Next price doubles after purchase",
+        "passed": false,
+        "actual": "10"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T08:32:46.395Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "name": "Auto-clicker adds one point per second",
+        "passed": false,
+        "actual": "8"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T08:32:46.395Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "e0e62e2c-bbf7-4baa-8790-98acfcefc46a",
+        "status": "failed",
+        "passed": 3,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T08:32:46.398Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T08:32:53.761Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T08:32:53.761Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T08:32:53.805Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T08:32:53.805Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "testPlanId": "a6e5cda2-79b7-477d-aa34-ea1a512c2328",
+        "checks": 5,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T08:32:59.895Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "name": "Initial state shows zero points and disabled buy",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T08:32:59.895Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "name": "Coin click earns one point",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T08:32:59.895Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "name": "Buy disabled below price",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T08:32:59.895Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "name": "Next price doubles after purchase",
+        "passed": false,
+        "actual": "10"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T08:32:59.895Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "name": "Auto-clicker adds one point per second",
+        "passed": false,
+        "actual": "8"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T08:32:59.895Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d8812aaa-0712-4c59-9c8f-bca078bd239b",
+        "status": "failed",
+        "passed": 3,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T08:32:59.897Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows zero points and disabled buy",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#points",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Coin click earns one point",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#points",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Buy disabled below price",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#buy",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Next price doubles after purchase",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          }
+        ],
+        "selector": "#next-price",
+        "expected": "20",
+        "assertion": "text"
+      },
+      {
+        "name": "Auto-clicker adds one point per second",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          },
+          {
+            "type": "click",
+            "selector": "#coin"
+          }
+        ],
+        "selector": "#points",
+        "expected": "1",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Auto-clicker tick timing is checked only once after a purchase; the 1-second interval is not measured precisely.",
+      "The buy action is not performed in the auto-clicker check because the 8-action limit is reached; that check only verifies points after purchase.",
+      "No check verifies the second purchase price of 40 or multiple auto-clickers.",
+      "No check verifies the aria-label text of the buy button.",
+      "Not checked: Buy enabled at 10 points: The check clicks the coin 8 times, reaching only 8 points, then asserts the buy button is not disabled. The requirements say the upgrade costs 10 points, so at 8 points the button should remain disabl",
+      "Not checked: Purchase deducts price and increments count: The check clicks the coin 8 times (8 points) and then asserts the upgrade count is 1, but it never clicks the buy button and never reaches the 10 points needed. The requirements require buying the upg"
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3704,
+      "completion_tokens": 660,
+      "total_tokens": 4364,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 2552
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Coin Clicker</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"game-card\">\n    <h1>Pixel Coin Clicker</h1>\n    <section class=\"stats\" aria-live=\"polite\">\n      <p class=\"stat\"><span class=\"label\">Points</span> <span id=\"points\" class=\"value\">0</span></p>\n      <p class=\"stat\"><span class=\"label\">Auto-clickers</span> <span id=\"upgrade-count\" class=\"value\">0</span></p>\n      <p class=\"stat\"><span class=\"label\">Next price</span> <span id=\"next-price\" class=\"value\">10</span></p>\n    </section>\n    <button id=\"coin\" class=\"coin\" aria-label=\"Click the coin to earn points\">\n      <span class=\"coin-face\" aria-hidden=\"true\">$</span>\n    </button>\n    <button id=\"buy\" class=\"buy-button\" aria-label=\"Buy Auto-clicker for 10 points\" disabled>\n      Buy Auto-clicker\n    </button>\n    <p class=\"hint\">Each Auto-clicker adds 1 point per second. Price doubles each purchase.</p>\n  </main>\n  <script src=\"game.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure"
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1b2e;\n  --card: #2d2a45;\n  --accent: #f5c542;\n  --accent-dark: #c99a1e;\n  --text: #f4f1ff;\n  --muted: #a8a3c7;\n  --focus: #7fd1ff;\n  --radius: 16px;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n  background: radial-gradient(circle at top, #2f2b4a 0%, var(--bg) 70%);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  color: var(--text);\n}\n\n.game-card {\n  width: 100%;\n  max-width: 420px;\n  padding: 28px 24px 32px;\n  background: var(--card);\n  border-radius: var(--radius);\n  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);\n  text-align: center;\n}\n\nh1 {\n  margin: 0 0 20px;\n  font-size: 1.6rem;\n  letter-spacing: 0.5px;\n}\n\n.stats {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  margin-bottom: 24px;\n}\n\n.stat {\n  display: flex;\n  justify-content: space-between;\n  margin: 0;\n  padding: 8px 12px;\n  background: rgba(255, 255, 255, 0.06);\n  border-radius: 10px;\n}\n\n.label {\n  color: var(--muted);\n}\n\n.value {\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n}\n\n.coin {\n  width: 160px;\n  height: 160px;\n  margin: 0 auto 24px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 6px solid var(--accent-dark);\n  border-radius: 50%;\n  background: radial-gradient(circle at 35% 30%, #ffe27a, var(--accent) 60%, var(--accent-dark));\n  box-shadow: 0 8px 0 var(--accent-dark), 0 14px 24px rgba(0, 0, 0, 0.4);\n  cursor: pointer;\n  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;\n  padding: 0;\n}\n\n.coin-face {\n  font-size: 4rem;\n  font-weight: 800;\n  color: #8a6400;\n  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);\n  user-select: none;\n}\n\n.coin:hover {\n  filter: brightness(1.08);\n}\n\n.coin:focus-visible {\n  outline: 4px solid var(--focus);\n  outline-offset: 4px;\n}\n\n.coin:active {\n  transform: translateY(6px);\n  box-shadow: 0 2px 0 var(--accent-dark), 0 6px 12px rgba(0, 0, 0, 0.4);\n}\n\n.buy-button {\n  width: 100%;\n  padding: 14px 18px;\n  font-size: 1.05rem;\n  font-weight: 700;\n  color: #1e1b2e;\n  background: var(--accent);\n  border: none;\n  border-radius: 12px;\n  cursor: pointer;\n  transition: background 0.15s ease, transform 0.08s ease;\n}\n\n.buy-button:hover:not(:disabled) {\n  background: #ffd95e;\n}\n\n.buy-button:focus-visible {\n  outline: 4px solid var(--focus);\n  outline-offset: 3px;\n}\n\n.buy-button:active:not(:disabled) {\n  transform: scale(0.98);\n}\n\n.buy-button:disabled {\n  background: #4a4668;\n  color: var(--muted);\n  cursor: not-allowed;\n}\n\n.hint {\n  margin: 18px 0 0;\n  font-size: 0.95rem;\n  color: var(--muted);\n  line-height: 1.4;\n}\n\n@media (max-width: 400px) {\n  body { padding: 10px; }\n  .game-card { padding: 20px 16px 24px; }\n  .coin { width: 130px; height: 130px; }\n  .coin-face { font-size: 3.2rem; }\n  h1 { font-size: 1.35rem; }\n}",
+      "description": "Theme and responsive styling"
+    },
+    {
+      "path": "game.js",
+      "content": "(function () {\n  'use strict';\n\n  var state = {\n    points: 0,\n    upgradeCount: 0,\n    nextPrice: 10\n  };\n\n  var pointsEl = document.getElementById('points');\n  var upgradeCountEl = document.getElementById('upgrade-count');\n  var nextPriceEl = document.getElementById('next-price');\n  var coinBtn = document.getElementById('coin');\n  var buyBtn = document.getElementById('buy');\n\n  function formatNumber(n) {\n    return n.toLocaleString('en-US');\n  }\n\n  function render() {\n    pointsEl.textContent = formatNumber(state.points);\n    upgradeCountEl.textContent = formatNumber(state.upgradeCount);\n    nextPriceEl.textContent = formatNumber(state.nextPrice);\n    buyBtn.disabled = state.points < state.nextPrice;\n    buyBtn.setAttribute('aria-label', 'Buy Auto-clicker for ' + formatNumber(state.nextPrice) + ' points');\n  }\n\n  function addPoints(amount) {\n    state.points += amount;\n    render();\n  }\n\n  coinBtn.addEventListener('click', function () {\n    addPoints(1);\n  });\n\n  buyBtn.addEventListener('click', function () {\n    if (state.points < state.nextPrice) return;\n    state.points -= state.nextPrice;\n    state.upgradeCount += 1;\n    state.nextPrice *= 2;\n    render();\n  });\n\n  setInterval(function () {\n    if (state.upgradeCount > 0) {\n      addPoints(state.upgradeCount);\n    }\n  }, 1000);\n\n  render();\n})();",
+      "description": "Game logic and state management"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Coin Clicker\n\nA tiny offline clicker game built with plain HTML, CSS and JavaScript. No packages, network requests or external assets.\n\n## Run\n\nOpen `index.html` in any modern browser. That's it.\n\n## How to play\n\n- Click the big coin (or focus it with Tab and press Enter/Space) to earn 1 point per click.\n- Buy an **Auto-clicker** for 10 points. Each Auto-clicker adds 1 point per second.\n- The price of the next Auto-clicker doubles after every purchase.\n- The buy button is disabled until you can afford the next upgrade.\n\n## Features\n\n- Points, Auto-clicker count and next price displayed live.\n- Accessible buttons with visible hover, focus and pressed states.\n- Responsive layout that works down to 360px wide.\n- Cohesive dark palette with a pixel-style coin drawn in CSS.\n\n## Files\n\n- `index.html` — structure\n- `styles.css` — theme and responsive styling\n- `game.js` — game state, click handling, auto-clicker tick",
+      "description": "Project documentation"
+    }
+  ]
+}
