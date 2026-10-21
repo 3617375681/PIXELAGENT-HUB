@@ -151,12 +151,12 @@ test('unsupported reviews require a reason, ignore passing checks and cap drops 
 });
 
 
-test('relative text assertions require actions, empty expected and no attribute; model values normalise', async () => {
+test('relative text assertions require actions and empty expected; model values normalise', async () => {
   const { browserCheckSchema } = await import('./schemas.js');
   for (const assertion of ['changed', 'unchanged']) {
     const check = { name: assertion, actions: [{ type: 'click', selector: '#generate' }], selector: '#color', assertion, expected: '' };
     assert.equal(browserCheckSchema.safeParse(check).success, true);
-    for (const change of [{ actions: [] }, { attribute: 'value' }, { expected: '__CAPTURED_HEX__' }]) {
+    for (const change of [{ actions: [] }, { expected: '__CAPTURED_HEX__' }]) {
       assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
     }
     const invalid = browserCheckSchema.safeParse({ ...check, actions: [] });
@@ -216,7 +216,7 @@ test('inline style names are strict and stable allows zero actions with normalis
   const { browserCheckSchema } = await import('./schemas.js');
   const check = { name: 'Stable', actions: [], selector: '#timer', assertion: 'stable', expected: '' };
   assert.equal(browserCheckSchema.safeParse(check).success, true);
-  for (const change of [{ attribute: 'style.width' }, { expected: '25:00' }]) assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
+  for (const change of [{ expected: '25:00' }]) assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
   assert.equal(parseTestPlanOutput({ checks: [{ ...check, expected: '25:00' }], limitations: [] }).checks[0].expected, '');
   for (const attribute of ['style.width', 'style.background-color', 'style.left']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, true);
   for (const attribute of ['style.', 'style.Width', 'style.width1', 'style.' + 'a'.repeat(41)]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, false);
@@ -239,4 +239,12 @@ test('wait actions are bounded, selector-free and normalised to type and ms', as
   assert.equal(browserCheckSchema.safeParse({ ...check, actions: [{ type: 'wait', ms: 6000 }, { type: 'wait', ms: 2000 }] }).success, true);
   const parsed = parseTestPlanOutput({ checks: [{ ...check, actions: [{ type: 'wait', ms: 500, nth: null, selector: null, value: 'discard' }] }], limitations: [] });
   assert.deepEqual(parsed.checks[0].actions, [{ type: 'wait', ms: 500 }]);
+});
+
+
+test('attribute is optional only for attribute-aware assertions', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'State', actions: [{ type: 'click', selector: 'button' }], selector: '#state', expected: '', attribute: 'class' };
+  for (const assertion of ['changed', 'unchanged', 'stable']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion }).success, true);
+  for (const [assertion, expected] of [['text', ''], ['count', '0'], ['visible', 'true']]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion, expected }).success, false);
 });

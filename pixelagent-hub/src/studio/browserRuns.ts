@@ -105,8 +105,9 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         let target = frame.locator(`css=${check.selector}`);
         const deferredBaseline = assertion === 'changed' && await target.count() === 0;
         if (relative && !deferredBaseline) target = await element(check.selector, check.nth);
+        const readValue = () => check.attribute ? target.evaluate((element, attribute) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute) : target.innerText().then(collapseWhitespace);
         const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
-        let expected = relative && !deferredBaseline ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
+        let expected = relative && !deferredBaseline ? await readValue() : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();
           if (action.type === 'wait') { await page.waitForTimeout(action.ms); continue; }
@@ -123,11 +124,11 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           else await target.press(action.key);
         }
         if (assertion !== 'count' && assertion !== 'stable') target = await element(check.selector, check.nth);
-        if (deferredBaseline) expected = collapseWhitespace(await target.innerText());
+        if (deferredBaseline) expected = await readValue();
         if (assertion === 'stable') {
           await new Promise((resolve) => setTimeout(resolve, 100));
           target = await element(check.selector, check.nth);
-          expected = collapseWhitespace(await target.innerText());
+          expected = await readValue();
         }
         const deadline = Date.now() + (assertion === 'stable' ? 1500 : assertion === 'unchanged' ? 500 : 2000);
         // Text accepts rendered, source or untransformed rendered text; rendered text is reported.
@@ -136,7 +137,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         do {
           controller.signal.throwIfAborted();
           if (relative || assertion === 'stable') target = await element(check.selector, check.nth);
-          if (assertion === 'text' || (pattern && !check.attribute) || relative || assertion === 'stable') {
+          if (!check.attribute && (assertion === 'text' || pattern || relative || assertion === 'stable')) {
             // Inline on purpose: a named helper inside evaluate() gets a `__name` wrapper from
             // tsx/esbuild that does not exist in the page.
             const [rendered, source, plain] = await target.evaluate((element) => {
@@ -162,21 +163,22 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
             if (assertion === 'changed') matched = !matched;
           } else {
             actual = assertion === 'count' ? String(await target.count())
-              : assertion === 'attribute' || (pattern && check.attribute) ? await target.evaluate((element, attribute) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
+              : check.attribute ? await readValue()
                 : assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible() && await target.evaluate((element) => {
                   for (let current: Element | null = element; current; current = current.parentElement) {
                     if (parseFloat(getComputedStyle(current).opacity) === 0) return false;
                   }
                   return true;
                 }));
-            matched = pattern ? pattern.test(actual) : actual === expected;
+            matched = assertion === 'attribute' && check.attribute === 'class' ? await target.evaluate((element, expected) => expected.trim() ? expected.trim().split(/\s+/).every((token) => element.classList.contains(token)) : element.classList.length === 0, expected) : pattern ? pattern.test(actual) : actual === expected;
+            if (assertion === 'changed') matched = !matched;
           }
           if (steady ? !matched : matched) break;
           if (Date.now() >= deadline) break;
           await new Promise((resolve) => setTimeout(resolve, assertion === 'stable' ? 100 : 50));
         } while (steady ? matched : !matched);
-        if (!matched && assertion === 'stable') throw new Error(`Expected text to stay ${JSON.stringify(expected)} after the actions, observed ${JSON.stringify(actual.slice(0, 300))}`);
-        if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected text to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual.slice(0, 300))}` : `Expected text to change from ${JSON.stringify(expected)}`);
+        if (!matched && assertion === 'stable') throw new Error(`Expected ${check.attribute ? `attribute ${check.attribute}` : 'text'} to stay ${JSON.stringify(expected)} after the actions, observed ${JSON.stringify(actual.slice(0, 300))}`);
+        if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected ${check.attribute ? `attribute ${check.attribute}` : 'text'} to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual.slice(0, 300))}` : `Expected ${check.attribute ? `attribute ${check.attribute}` : 'text'} to change from ${JSON.stringify(expected)}`);
         if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
         run.checks.push({ name: check.name, status: 'passed', actual: actual.slice(0, 300) });
       } catch (error) {

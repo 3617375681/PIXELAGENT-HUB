@@ -32,8 +32,9 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       const relative = assertion === 'changed' || assertion === 'unchanged';
       const steady = assertion === 'unchanged' || assertion === 'stable';
       const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
+      const readAttribute = (element: HTMLElement, attribute: string) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '';
       const baseline = relative && !(assertion === 'changed' && document.querySelectorAll(check.selector).length === 0) ? element(check.selector, check.nth) : undefined;
-      let expected = baseline ? collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
+      let expected = baseline ? check.attribute ? readAttribute(baseline, check.attribute) : collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
       for (const action of check.actions) {
         if (action.type === 'wait') { await new Promise((resolve) => setTimeout(resolve, action.ms)); continue; }
         const target = element(action.selector, action.nth);
@@ -68,13 +69,13 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       };
       // Text accepts rendered, source or untransformed rendered text; rendered text is reported.
       const read = () => assertion === 'count' ? String(document.querySelectorAll(check.selector).length)
-        : assertion === 'attribute' || (assertion === 'matches' && check.attribute) ? (check.attribute!.startsWith('style.') ? target!.style.getPropertyValue(check.attribute!.slice(6)).trim() : check.attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target!.tagName) ? (target as HTMLInputElement).value : check.attribute === 'checked' && target!.tagName === 'INPUT' ? String((target as HTMLInputElement).checked) : target!.getAttribute(check.attribute!) ?? '')
+        : check.attribute ? readAttribute(target!, check.attribute)
         : assertion === 'disabled' ? String(target!.matches(':disabled'))
         : assertion === 'visible' ? String(visible())
           : collapse(target!.innerText ?? target!.textContent ?? '');
       if (assertion === 'changed' && !baseline) expected = read();
       const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
-      const matches = (observed: string) => pattern ? pattern.test(observed) || (!check.attribute && (pattern.test(collapse(target!.textContent ?? '')) || pattern.test(collapse(untransformed(target!))))) : observed === expected || ((assertion === 'text' || relative || assertion === 'stable') && (collapse(target!.textContent ?? '') === expected || collapse(untransformed(target!)) === expected));
+      const matches = (observed: string) => assertion === 'attribute' && check.attribute === 'class' ? (expected.trim() ? expected.trim().split(/\s+/).every((token) => target!.classList.contains(token)) : target!.classList.length === 0) : pattern ? pattern.test(observed) || (!check.attribute && (pattern.test(collapse(target!.textContent ?? '')) || pattern.test(collapse(untransformed(target!))))) : observed === expected || (!check.attribute && (assertion === 'text' || relative || assertion === 'stable') && (collapse(target!.textContent ?? '') === expected || collapse(untransformed(target!)) === expected));
       if (assertion === 'stable') {
         await new Promise((resolve) => setTimeout(resolve, 100));
         target = element(check.selector, check.nth);
@@ -93,8 +94,8 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         await new Promise((resolve) => setTimeout(resolve, assertion === 'stable' ? 100 : 50));
       } while (steady ? matched : !matched);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
-      if (!matched && assertion === 'stable') throw new Error(`Expected text to stay ${JSON.stringify(expected)} after the actions, observed ${JSON.stringify(actual)}`);
-      if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected text to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual)}` : `Expected text to change from ${JSON.stringify(expected)}`);
+      if (!matched && assertion === 'stable') throw new Error(`Expected ${check.attribute ? `attribute ${check.attribute}` : 'text'} to stay ${JSON.stringify(expected)} after the actions, observed ${JSON.stringify(actual)}`);
+      if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected ${check.attribute ? `attribute ${check.attribute}` : 'text'} to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual)}` : `Expected ${check.attribute ? `attribute ${check.attribute}` : 'text'} to change from ${JSON.stringify(expected)}`);
       if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
       results.push({ name: check.name, status: 'passed', actual });
     } catch (error) {

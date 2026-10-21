@@ -305,3 +305,47 @@ it('waits the full action duration before checking delayed text', async () => {
     expect(Date.now() - started).toBe(300);
   } finally { vi.useRealTimers(); }
 });
+
+
+it('checks class membership while reporting and matching the full string', async () => {
+  vi.useFakeTimers();
+  try {
+    let classes = 'lamp red on';
+    const target = { getAttribute: () => classes, classList: { contains: (token: string) => classes.split(/\s+/).includes(token), get length() { return classes.trim() ? classes.trim().split(/\s+/).length : 0; } } };
+    const document = { querySelectorAll: () => [target] } as unknown as Document;
+    const pending = runDOMChecks(document, ['on', 'on red', 'off', ''].map((expected) => ({ name: expected || 'Empty', actions: [], selector: '#lamp', assertion: 'attribute', attribute: 'class', expected })));
+    await vi.runAllTimersAsync();
+    const results = await pending;
+    expect(results.map(({ status }) => status)).toEqual(['passed', 'passed', 'failed', 'failed']);
+    expect(results.every(({ actual }) => actual === classes)).toBe(true);
+    classes = '';
+    expect((await runDOMChecks(document, [{ name: 'Empty', actions: [], selector: '#lamp', assertion: 'attribute', attribute: 'class', expected: '' }]))[0].status).toBe('passed');
+    classes = 'lamp red on';
+    expect((await runDOMChecks(document, [{ name: 'Pattern', actions: [], selector: '#lamp', assertion: 'matches', attribute: 'class', expected: '^lamp red on$' }]))[0].status).toBe('passed');
+  } finally { vi.useRealTimers(); }
+});
+
+it('compares attribute baselines and samples including created elements', async () => {
+  vi.useFakeTimers();
+  try {
+    let height = '10px', classes = 'lamp red on', created = false;
+    const target = { textContent: '', style: { getPropertyValue: () => height }, getAttribute: () => classes };
+    const button = { click: () => { height = '20px'; created = true; setTimeout(() => { classes = 'lamp red'; height = '30px'; }, 300); } };
+    const document = { querySelectorAll: (selector: string) => selector === 'button' ? [button] : selector === '#created' && !created ? [] : [target] } as unknown as Document;
+    const actions = [{ type: 'click' as const, selector: 'button' }];
+    const pending = runDOMChecks(document, [
+      { name: 'Height', actions, selector: '#bar', assertion: 'changed', attribute: 'style.height', expected: '' },
+      { name: 'Class', actions, selector: '#bar', assertion: 'stable', attribute: 'class', expected: '' },
+      { name: 'Unchanged', actions: [{ type: 'wait', ms: 50 }], selector: '#bar', assertion: 'unchanged', attribute: 'style.height', expected: '' },
+    ]);
+    await vi.runAllTimersAsync();
+    const results = await pending;
+    expect(results.map(({ status }) => status)).toEqual(['passed', 'failed', 'passed']);
+    expect(results[0].actual).toBe('20px');
+    expect(results[1].error).toBe('Expected attribute class to stay "lamp red on" after the actions, observed "lamp red"');
+    created = false;
+    const deferred = runDOMChecks(document, [{ name: 'Created', actions, selector: '#created', assertion: 'changed', attribute: 'style.height', expected: '' }]);
+    await vi.runAllTimersAsync();
+    expect((await deferred)[0]).toMatchObject({ status: 'passed', actual: '30px' });
+  } finally { vi.useRealTimers(); }
+});

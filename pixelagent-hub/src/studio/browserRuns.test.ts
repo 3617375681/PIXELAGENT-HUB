@@ -307,3 +307,27 @@ test('real browser waits before observing delayed text', { skip: process.env.RUN
     assert.ok(Date.now() - started >= 1200);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+
+test('real browser checks class membership and attribute changes', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-class-changes-'));
+  try {
+    const content = '<html><body><div id="bar" class="lamp red on" style="height:10px"></div><button>Shuffle</button><script>document.querySelector("button").onclick=()=>{const bar=document.querySelector("#bar");bar.style.height="20px";const created=document.createElement("div");created.id="created";created.style.height="10px";document.body.append(created);setTimeout(()=>{bar.classList.remove("on");created.style.height="20px"},300)}</script></body></html>';
+    const actions = [{ type: 'click', selector: 'button' }];
+    const checks = { checks: [
+      ...['on', 'on red', 'off', ''].map((expected, index) => ({ name: `Classes ${index}`, actions: [], selector: '#bar', assertion: 'attribute', attribute: 'class', expected })),
+      { name: 'Pattern', actions: [], selector: '#bar', assertion: 'matches', attribute: 'class', expected: '^lamp red on$' },
+      { name: 'Height', actions, selector: '#bar', assertion: 'changed', attribute: 'style.height', expected: '' },
+      { name: 'Class stable', actions, selector: '#bar', assertion: 'stable', attribute: 'class', expected: '' },
+      { name: 'Class unchanged', actions, selector: '#bar', assertion: 'unchanged', attribute: 'class', expected: '' },
+      { name: 'Created', actions, selector: '#created', assertion: 'changed', attribute: 'style.height', expected: '' },
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map(({ status }) => status), ['passed', 'passed', 'failed', 'failed', 'passed', 'passed', 'failed', 'failed', 'passed'], JSON.stringify(run));
+    assert.equal(run.checks[2].actual, 'lamp red on');
+    assert.equal(run.checks[5].actual, '20px');
+    assert.equal(run.checks[6].error, 'Expected attribute class to stay "lamp red on" after the actions, observed "lamp red"');
+    assert.equal(run.checks[8].actual, '20px');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
