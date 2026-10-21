@@ -218,3 +218,23 @@ test('real browser compares text before actions and detects delayed changes', { 
     assert.equal(run.checks[3].error, 'Expected text to stay "A", observed "B"');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('real browser matches formats and selects nth for actions and assertions', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-matches-nth-'));
+  try {
+    const content = '<html><body><button>First</button><button>Second</button><output>#A2751</output><output>#A2751C</output><script>document.querySelectorAll("button")[1].onclick=()=>document.querySelectorAll("output")[1].textContent="#B2751C"</script></body></html>';
+    const checks = { checks: [
+      { name: 'Hex', actions: [], selector: 'output', nth: 1, assertion: 'matches', expected: '^#[0-9A-F]{6}$' },
+      { name: 'Short', actions: [], selector: 'output', nth: 0, assertion: 'matches', expected: '^#[0-9A-F]{6}$' },
+      { name: 'Second click', actions: [{ type: 'click', selector: 'button', nth: 1 }], selector: 'output', nth: 1, assertion: 'changed', expected: '' },
+      { name: 'Second text', actions: [], selector: 'output', nth: 1, expected: '#B2751C' },
+      { name: 'Missing check', actions: [], selector: 'output', nth: 2, expected: '' },
+      { name: 'Missing action', actions: [{ type: 'click', selector: 'button', nth: 2 }], selector: 'output', nth: 1, expected: '' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map((check) => check.status), ['passed', 'failed', 'passed', 'passed', 'failed', 'failed'], JSON.stringify(run));
+    assert.equal(run.checks[4].error, 'Selector matched 2 elements, no index 2: output');
+    assert.equal(run.checks[5].error, 'Selector matched 2 elements, no index 2: button');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

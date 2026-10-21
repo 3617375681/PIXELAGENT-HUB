@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [2.4.0] — 2026-10-20
+
+### Added
+- `matches` check assertion: a pattern for formats (`^#[0-9A-F]{6}$`, `^\d{2}:\d{2}$`), compiled at validation, capped at 200 characters, nested group quantifiers rejected
+- `nth` on check actions and checks: with an index, a selector may match several elements (both cards of a shuffled pair)
+- Benchmark round 7 (`2026-10-20-live/`): fixed cases 15/15 again; showcase 16/18, palette 3/3 for the first time. Both failures are review judgement errors
+
+### Changed
+- The Tester review writes its reason before its verdict; the old shape made the model commit to a verdict first
+
 ## [2.3.0] — 2026-10-20
 
 ### Added

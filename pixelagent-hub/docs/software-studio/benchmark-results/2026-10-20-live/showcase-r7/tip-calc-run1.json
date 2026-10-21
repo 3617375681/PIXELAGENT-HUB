@@ -1,0 +1,427 @@
+{
+  "caseId": "tip-calc",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "8/8",
+  "finalChecks": "8/8",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/8"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 30,
+  "reportedTokens": 13223,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T02:25:49.592Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T02:25:49.592Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T02:25:53.538Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Tip Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T02:25:53.538Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T02:26:02.962Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T02:26:02.962Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T02:26:11.068Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T02:26:11.068Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T02:26:11.521Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T02:26:11.522Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "18ec3968-a651-43ed-96f9-8c901f1306ab"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T02:26:14.441Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "18ec3968-a651-43ed-96f9-8c901f1306ab",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T02:26:14.442Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "testPlanId": "18ec3968-a651-43ed-96f9-8c901f1306ab",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "Default 15% tip on $100 split 1 way",
+        "passed": true,
+        "actual": "$15.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "Total per person includes tip for 15% on $100",
+        "passed": true,
+        "actual": "$115.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "10% tip split across 4 people",
+        "passed": true,
+        "actual": "$55.00"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "20% tip per person split across 2 people",
+        "passed": true,
+        "actual": "$5.00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "Selecting 20% marks only that button pressed",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "Selecting 10% clears pressed state on 15% button",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "Initial state marks 15% as selected",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "name": "All three tip buttons present",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T02:26:16.984Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "1c2e021d-61a3-4af7-a1c4-9683c0daa493",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T02:26:16.988Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Default 15% tip on $100 split 1 way",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#bill",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#people",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": ".tip-btn[data-tip=\"15\"]"
+          }
+        ],
+        "selector": "#tip-per-person",
+        "expected": "$15.00"
+      },
+      {
+        "name": "Total per person includes tip for 15% on $100",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#bill",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#people",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": ".tip-btn[data-tip=\"15\"]"
+          }
+        ],
+        "selector": "#total-per-person",
+        "expected": "$115.00"
+      },
+      {
+        "name": "10% tip split across 4 people",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#bill",
+            "value": "200"
+          },
+          {
+            "type": "input",
+            "selector": "#people",
+            "value": "4"
+          },
+          {
+            "type": "click",
+            "selector": ".tip-btn[data-tip=\"10\"]"
+          }
+        ],
+        "selector": "#total-per-person",
+        "expected": "$55.00"
+      },
+      {
+        "name": "20% tip per person split across 2 people",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#bill",
+            "value": "50"
+          },
+          {
+            "type": "input",
+            "selector": "#people",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": ".tip-btn[data-tip=\"20\"]"
+          }
+        ],
+        "selector": "#tip-per-person",
+        "expected": "$5.00"
+      },
+      {
+        "name": "Selecting 20% marks only that button pressed",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".tip-btn[data-tip=\"20\"]"
+          }
+        ],
+        "selector": ".tip-btn[data-tip=\"20\"]",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Selecting 10% clears pressed state on 15% button",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".tip-btn[data-tip=\"10\"]"
+          }
+        ],
+        "selector": ".tip-btn[data-tip=\"15\"]",
+        "expected": "false",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Initial state marks 15% as selected",
+        "actions": [],
+        "selector": ".tip-btn[data-tip=\"15\"]",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "All three tip buttons present",
+        "actions": [],
+        "selector": ".tip-btn",
+        "expected": "3",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "No checks cover invalid or negative bill/people values beyond the HTML min attributes; behavior for those inputs is unspecified.",
+      "Visual pixel-art styling (colors, shadows, layout) is not asserted; only rendered text and attributes are checked.",
+      "Currency formatting is assumed to be '$' + two decimals per source; rounding edge cases (e.g. $0.005) are not tested.",
+      "Keyboard interaction and focus outlines are not verified since DOM key events are synthetic."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3629,
+      "completion_tokens": 628,
+      "total_tokens": 4257,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 2861
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Tip Calculator</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"app\">\n    <h1>Pixel Tip</h1>\n    <div class=\"card\">\n      <div class=\"field\">\n        <label for=\"bill\">Bill amount ($)</label>\n        <input type=\"number\" id=\"bill\" min=\"0\" step=\"0.01\" value=\"0\" inputmode=\"decimal\" aria-describedby=\"bill-help\">\n        <span id=\"bill-help\" class=\"sr-only\">Enter the total bill amount in dollars</span>\n      </div>\n      <fieldset class=\"field\">\n        <legend>Tip percent</legend>\n        <div class=\"tip-buttons\" role=\"group\" aria-label=\"Tip percentage\">\n          <button type=\"button\" class=\"tip-btn\" data-tip=\"10\" aria-pressed=\"false\">10%</button>\n          <button type=\"button\" class=\"tip-btn\" data-tip=\"15\" aria-pressed=\"false\">15%</button>\n          <button type=\"button\" class=\"tip-btn\" data-tip=\"20\" aria-pressed=\"false\">20%</button>\n        </div>\n      </fieldset>\n      <div class=\"field\">\n        <label for=\"people\">Number of people</label>\n        <input type=\"number\" id=\"people\" min=\"1\" step=\"1\" value=\"1\" inputmode=\"numeric\" aria-describedby=\"people-help\">\n        <span id=\"people-help\" class=\"sr-only\">Enter the number of people splitting the bill</span>\n      </div>\n      <div class=\"results\" aria-live=\"polite\">\n        <div class=\"result-row\">\n          <span class=\"result-label\">Tip per person</span>\n          <span class=\"result-value\" id=\"tip-per-person\">$0.00</span>\n        </div>\n        <div class=\"result-row\">\n          <span class=\"result-label\">Total per person</span>\n          <span class=\"result-value\" id=\"total-per-person\">$0.00</span>\n        </div>\n      </div>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with inputs, tip buttons, and result display."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --primary: #e94560;\n  --accent: #0f3460;\n  --text: #eaeaea;\n  --radius: 4px;\n  --shadow: 4px 4px 0 #0a0a15;\n  --font: 'Courier New', Courier, monospace;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  background-image: radial-gradient(circle, #2a2a4a 1px, transparent 1px);\n  background-size: 20px 20px;\n  font-family: var(--font);\n  font-size: 18px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.app {\n  width: 100%;\n  max-width: 420px;\n}\n\nh1 {\n  text-align: center;\n  font-size: 2rem;\n  letter-spacing: 2px;\n  margin: 0 0 20px;\n  color: var(--primary);\n  text-shadow: 3px 3px 0 #0a0a15;\n}\n\n.card {\n  background: var(--card);\n  border: 3px solid var(--primary);\n  border-radius: var(--radius);\n  box-shadow: var(--shadow);\n  padding: 24px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n.field {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  border: none;\n  padding: 0;\n  margin: 0;\n}\n\nlabel, legend {\n  font-size: 1rem;\n  color: var(--text);\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\ninput[type=\"number\"] {\n  font-family: var(--font);\n  font-size: 1.2rem;\n  padding: 12px;\n  background: var(--bg);\n  border: 3px solid var(--accent);\n  border-radius: var(--radius);\n  color: var(--text);\n  width: 100%;\n}\n\ninput[type=\"number\"]:focus {\n  outline: 3px solid var(--primary);\n  outline-offset: 2px;\n  border-color: var(--primary);\n}\n\ninput[type=\"number\"]:hover {\n  border-color: var(--primary);\n}\n\n.tip-buttons {\n  display: flex;\n  gap: 12px;\n}\n\n.tip-btn {\n  flex: 1;\n  font-family: var(--font);\n  font-size: 1.1rem;\n  padding: 12px 8px;\n  background: var(--accent);\n  color: var(--text);\n  border: 3px solid var(--accent);\n  border-radius: var(--radius);\n  cursor: pointer;\n  transition: background 0.1s, transform 0.1s, box-shadow 0.1s;\n}\n\n.tip-btn:hover {\n  background: var(--primary);\n  border-color: var(--primary);\n}\n\n.tip-btn:focus-visible {\n  outline: 3px solid var(--primary);\n  outline-offset: 2px;\n}\n\n.tip-btn[aria-pressed=\"true\"] {\n  background: var(--primary);\n  border-color: var(--primary);\n  box-shadow: inset 0 0 0 3px var(--card);\n}\n\n.tip-btn:active {\n  transform: translate(2px, 2px);\n  box-shadow: none;\n}\n\n.results {\n  border-top: 3px dashed var(--accent);\n  padding-top: 20px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.result-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  gap: 12px;\n}\n\n.result-label {\n  font-size: 1rem;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\n.result-value {\n  font-size: 1.5rem;\n  font-weight: bold;\n  color: var(--primary);\n  text-shadow: 2px 2px 0 #0a0a15;\n}\n\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n\n@media (max-width: 400px) {\n  body { font-size: 16px; padding: 8px; }\n  h1 { font-size: 1.6rem; }\n  .card { padding: 16px; }\n  .tip-buttons { flex-direction: column; }\n  .tip-btn { width: 100%; }\n  .result-value { font-size: 1.3rem; }\n}",
+      "description": "Pixel-art themed CSS with responsive layout and accessible focus states."
+    },
+    {
+      "path": "script.js",
+      "content": "document.addEventListener('DOMContentLoaded', () => {\n  const billInput = document.getElementById('bill');\n  const peopleInput = document.getElementById('people');\n  const tipButtons = document.querySelectorAll('.tip-btn');\n  const tipPerPersonEl = document.getElementById('tip-per-person');\n  const totalPerPersonEl = document.getElementById('total-per-person');\n\n  let selectedTip = 0;\n\n  function calculate() {\n    const bill = parseFloat(billInput.value) || 0;\n    const people = parseInt(peopleInput.value, 10) || 1;\n    const safePeople = Math.max(1, people);\n    const tipAmount = bill * (selectedTip / 100);\n    const total = bill + tipAmount;\n    const tipPerPerson = tipAmount / safePeople;\n    const totalPerPerson = total / safePeople;\n\n    tipPerPersonEl.textContent = '$' + tipPerPerson.toFixed(2);\n    totalPerPersonEl.textContent = '$' + totalPerPerson.toFixed(2);\n  }\n\n  function selectTip(percent) {\n    selectedTip = percent;\n    tipButtons.forEach(btn => {\n      const isActive = parseInt(btn.dataset.tip, 10) === percent;\n      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');\n    });\n    calculate();\n  }\n\n  tipButtons.forEach(btn => {\n    btn.addEventListener('click', () => {\n      const percent = parseInt(btn.dataset.tip, 10);\n      selectTip(percent);\n    });\n  });\n\n  billInput.addEventListener('input', calculate);\n  peopleInput.addEventListener('input', calculate);\n\n  // Initialize with 15% selected\n  selectTip(15);\n});",
+      "description": "JavaScript logic for tip calculation, button state, and real-time updates."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Tip Calculator\n\nA pixel-art themed tip calculator built with plain HTML, CSS, and JavaScript. Works offline in any modern browser.\n\n## Features\n\n- Enter bill amount and number of people\n- Select tip percentage (10%, 15%, 20%) with accessible toggle buttons\n- Real-time calculation of tip and total per person\n- Keyboard accessible with visible focus states\n- Responsive layout down to 360px wide\n- Pixel-art aesthetic using CSS only\n\n## Usage\n\nOpen `index.html` in your browser. No server or build step required.\n\n## File Structure\n\n- `index.html` – Main page structure\n- `style.css` – Pixel-art styling and responsive layout\n- `script.js` – Calculation logic and event handling\n\n## Accessibility\n\n- All controls have visible labels\n- Tip buttons use `aria-pressed` to indicate selection\n- Results are announced via `aria-live`\n- Focus outlines are clearly visible\n\n## Browser Support\n\nModern browsers (Chrome, Firefox, Safari, Edge).",
+      "description": "Project documentation with usage and accessibility notes."
+    }
+  ]
+}

@@ -1266,6 +1266,11 @@ components:
               type: string
               enum:
                 - click
+            nth:
+              type: integer
+              minimum: 0
+              maximum: 49
+              description: Zero-based index in document order; requires at least nth + 1 matches. Without nth exactly one match is required.
             selector:
               type: string
               maxLength: 160
@@ -1281,6 +1286,11 @@ components:
               type: string
               enum:
                 - input
+            nth:
+              type: integer
+              minimum: 0
+              maximum: 49
+              description: Zero-based index in document order; requires at least nth + 1 matches. Without nth exactly one match is required.
             selector:
               type: string
               maxLength: 160
@@ -1299,6 +1309,11 @@ components:
               type: string
               enum:
                 - key
+            nth:
+              type: integer
+              minimum: 0
+              maximum: 49
+              description: Zero-based index in document order; requires at least nth + 1 matches. Without nth exactly one match is required.
             selector:
               type: string
               maxLength: 160
@@ -1329,6 +1344,11 @@ components:
           type: string
           maxLength: 160
           minLength: 1
+        nth:
+          type: integer
+          minimum: 0
+          maximum: 49
+          description: Zero-based index in document order; requires at least nth + 1 matches. Forbidden with count. Changed and unchanged use the same index before and after.
         expected:
           type: string
           maxLength: 300
@@ -1336,13 +1356,14 @@ components:
           type: string
           enum:
             - text
+            - matches
             - disabled
             - visible
             - count
             - attribute
             - changed
             - unchanged
-          description: Changed and unchanged compare collapsed rendered text with its baseline before the first action, also accepting matching textContent; expected must be "", attribute is forbidden, and at least one action is required. Changed polls up to 2 s for a difference; unchanged samples every 50 ms for 500 ms and fails on the first difference. Both require exactly one match before actions and on every sample. Defaults to text; disabled and visible require expected "true" or "false". Visible requires a non-empty box, no visibility:hidden, and no computed opacity 0 on the element or any ancestor. Count compares the number of selector matches (including zero), with expected matching ^\d{1,4}$. All other assertions and action selectors require exactly one element. Attribute compares exactly without whitespace collapse; missing attributes read as "", and value reads the live property for input, textarea and select; checked reads a checkbox or radio's live state as "true" or "false".
+          description: Changed and unchanged compare collapsed rendered text with its baseline before the first action, also accepting matching textContent; expected must be "", attribute is forbidden, and at least one action is required. Changed polls up to 2 s for a difference; unchanged samples every 50 ms for 500 ms and fails on the first difference. Both require the selected index before actions and on every sample. Defaults to text; disabled and visible require expected "true" or "false". Visible requires a non-empty box, no visibility:hidden, and no computed opacity 0 on the element or any ancestor. Count compares the number of selector matches (including zero), with expected matching ^\d{1,4}$. All other assertions and action selectors require exactly one element unless nth selects an index. Count forbids nth. Matches tests a JavaScript regular expression source of 1–200 characters, without slashes or flags, compiled with u; patterns matching the nested-group-quantifier guard /\([^)]*[+*][^)]*\)[+*{]/ are rejected. It polls up to 2 s against collapsed rendered text or collapsed textContent, and forbids attribute. Use ^…$ to match the whole text. Attribute compares exactly without whitespace collapse; missing attributes read as "", and value reads the live property for input, textarea and select; checked reads a checkbox or radio's live state as "true" or "false".
         attribute:
           type: string
           pattern: ^[a-z][a-z0-9-]{0,49}$

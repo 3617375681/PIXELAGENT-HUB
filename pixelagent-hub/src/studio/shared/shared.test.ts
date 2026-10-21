@@ -166,3 +166,29 @@ test('relative text assertions require actions, empty expected and no attribute;
     assert.equal(parsed.checks[0].assertion, assertion);
   }
 });
+
+test('matches validates bounded Unicode patterns and nth preserves strict action variants', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'Hex', actions: [], selector: '.color', assertion: 'matches', expected: '^#[0-9A-F]{6}$' };
+  assert.equal(browserCheckSchema.safeParse(check).success, true);
+  for (const change of [{ expected: '[' }, { expected: '(a+)+' }, { expected: '' }, { expected: 'a'.repeat(201) }, { attribute: 'title' }, { nth: 50 }, { nth: -1 }, { nth: 0.5 }, { assertion: 'count', expected: '2', nth: 0 }]) {
+    assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false, JSON.stringify(change));
+  }
+  for (const action of [{ type: 'click' }, { type: 'input', value: 'a' }, { type: 'key', key: 'Enter' }]) {
+    const actions = [{ ...action, selector: '.color', nth: 49 }];
+    assert.equal(browserCheckSchema.safeParse({ ...check, nth: 49, actions }).success, true);
+    for (const change of [{ nth: 50 }, { nth: -1 }, { nth: 1.5 }, { extra: true }]) assert.equal(browserCheckSchema.safeParse({ ...check, actions: [{ ...actions[0], ...change }] }).success, false);
+  }
+});
+
+test('null nth is omitted on checks and actions and reason-first reviews parse', async () => {
+  const { parseTesterReview } = await import('./parse.js');
+  const check = { name: 'Hex', actions: [{ type: 'click', selector: 'button', nth: null }], selector: '.color', nth: null, assertion: 'matches', expected: '^#[0-9A-F]{6}$' };
+  const parsed = parseTestPlanOutput({ checks: [check], limitations: [] }).checks[0];
+  assert.equal('nth' in parsed, false);
+  assert.equal('nth' in parsed.actions[0], false);
+  const reply = parseModelObject(JSON.stringify({ verdicts: [{ name: 'Hex', reason: 'The check expects #, but the app displays a full hex code as required.', verdict: 'check-wrong', check }] }));
+  const [review] = parseTesterReview(reply, ['Hex'], 1);
+  assert.equal(review.verdict, 'check-wrong');
+  assert.deepEqual(review.check, parsed);
+});

@@ -58,6 +58,39 @@ Assertions used across the 18 showcase plans: 83 `text`, 32 `attribute`, 20 `cou
 - **The failures that remain are narrower each round.** This time: a missing pattern assertion, the language's single-element rule on a shuffled board, and a requirement open to two readings.
 - **The review's recurring weakness is unchanged.** It still sometimes explains that a check is at fault and then blames the app (palette 3, and one of the two snake checks). `unsupported` was used for the first time, once, for 2 checks.
 
+## Round 7: `matches`, `nth`, and the review reasons first
+
+These changes target the three failure classes above.
+- `matches`: a pattern assertion, for formats such as `^#[0-9A-F]{6}$`.
+- `nth`: an index on actions and checks, so a selector may match several elements, such as both cards of a shuffled pair.
+- The review's JSON now puts `reason` before `verdict`, so the model writes its reasoning before it commits to a verdict.
+
+Source `775e9bd` (clean). Records: [`fixed-r7/`](fixed-r7/), [`showcase-r7/`](showcase-r7/).
+
+| Set | Full pass | Reviews (checks revised) | Checks dropped | Coder repairs | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Fixed | **15/15** | 4 (3) | 0 | 1 | 20 s | 148,736 |
+| Showcase | **16/18** | 4 (4) | 0 | 2 | 24 s | 225,438 |
+
+| Idea | Round 6 | **Round 7** |
+| --- | --- | --- |
+| Snake | 2/3 | 3/3 |
+| Timer | 3/3 | 3/3 |
+| Tip calculator | 3/3 | 3/3 |
+| Pet | 3/3 | 2/3 |
+| Memory | 2/3 | 2/3 |
+| Palette | 2/3 | **3/3** |
+
+**The new vocabulary was used where it belongs.** All three palette plans check the hex format with `matches` and lock-and-keep with `unchanged`; palette reached 3/3 for the first time. The memory plans click pairs with `nth`. Across the 18 showcase plans, 6 checks use `matches` and 40 use `nth`, either on the check or on one of its actions.
+
+**The fixed cases pass 15/15 again.** That is two clean rounds in a row.
+
+**The two failures are both judgement errors by the Tester's review.** Neither is a language gap or an app bug.
+- **Memory 3 (6/7).** A check compared the whole `class` attribute with `"matched"`, but it reads `"card flipped matched"`. The review's reason says exactly this, and the verdict is still `app-wrong`. The check was correctable, for example as a `count` of `.card.matched[data-pair-id="0"]`.
+- **Pet 1 (9/10).** The review correctly found an arithmetic mistake in "Mood text updates after feeding". It then rewrote the check as `changed`, but one Feed leaves the mood at "I'm okay.", so the corrected check fails on a correct app.
+
+**Reason-first helped but did not cure the review.** Of 9 verdicts this round, 7 were `check-wrong` with a correction, and 2 were `app-wrong`. One of those `app-wrong` verdicts is the memory case above, where the reason blames the check. A single model reviewing its own checks remains the weakest link. The next step is to make the review's correction pass a re-check against the source before it replaces the original.
+
 Reproduce (calls the paid model):
 
 ```sh

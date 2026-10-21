@@ -93,13 +93,20 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
       try {
         const assertion = check.assertion || 'text';
         const relative = assertion === 'changed' || assertion === 'unchanged';
-        const target = frame.locator(`css=${check.selector}`);
-        if (relative && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
+        const element = async (selector: string, nth?: number) => {
+          const locator = frame.locator(`css=${selector}`);
+          const count = await locator.count();
+          if (nth !== undefined && count <= nth) throw new Error(`Selector matched ${count} elements, no index ${nth}: ${selector}`);
+          if (nth === undefined && count !== 1) throw new Error(`Selector must match exactly one element: ${selector}`);
+          return nth === undefined ? locator : locator.nth(nth);
+        };
+        let target = frame.locator(`css=${check.selector}`);
+        if (relative) target = await element(check.selector, check.nth);
+        const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
         const expected = relative ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();
-          const target = frame.locator(`css=${action.selector}`);
-          if (await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${action.selector}`);
+          const target = await element(action.selector, action.nth);
           if (action.type === 'click') await target.click();
           else if (action.type === 'input') {
             if (await target.evaluate((element) => element.tagName) === 'SELECT') await target.selectOption(action.value);
@@ -107,7 +114,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           }
           else await target.press(action.key);
         }
-        if (check.assertion !== 'count' && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
+        if (assertion !== 'count') target = await element(check.selector, check.nth);
         const deadline = Date.now() + (assertion === 'unchanged' ? 500 : 2000);
         // Text matches either what is rendered (innerText: paragraph breaks, CSS casing) or the source
         // text (textContent), with runs of whitespace as one space; the rendered text is reported.
@@ -115,11 +122,11 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         let matched = false;
         do {
           controller.signal.throwIfAborted();
-          if (relative && await target.count() !== 1) throw new Error(`Selector must match exactly one element: ${check.selector}`);
-          if (assertion === 'text' || relative) {
+          if (relative) target = await element(check.selector, check.nth);
+          if (assertion === 'text' || pattern || relative) {
             const [rendered, source] = await target.evaluate((element) => [(element as HTMLElement).innerText ?? '', element.textContent ?? '']);
             actual = collapseWhitespace(rendered);
-            matched = actual === expected || collapseWhitespace(source) === expected;
+            matched = pattern ? pattern.test(actual) || pattern.test(collapseWhitespace(source)) : actual === expected || collapseWhitespace(source) === expected;
             if (assertion === 'changed') matched = !matched;
           } else {
             actual = assertion === 'count' ? String(await target.count())
