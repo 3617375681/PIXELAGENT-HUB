@@ -16,6 +16,7 @@ import ApiConnection from '../components/ApiConnection';
 import ReplayBanner from '../components/ReplayBanner';
 import ReplayGallery from '../components/ReplayGallery';
 import ReplayShowcase from '../components/ReplayShowcase';
+import ReplayUnseen from '../components/ReplayUnseen';
 import { REPLAY, loadReplayManifest } from '../lib/replay';
 import { isLiveRun, isSharedProject, shareLink } from '../lib/live/studio';
 import { liveCredentials } from '../lib/live/key';
@@ -381,6 +382,7 @@ export default function Studio() {
         </section>
 
         {REPLAY && <ReplayShowcase projectId={projectId} />}
+        {REPLAY && <ReplayUnseen projectId={projectId} />}
         {REPLAY && <ReplayGallery projectId={projectId} />}
 
         <details className="studio-more" onToggle={(event) => { if (event.currentTarget.open) soundEngine.openPanel(); else soundEngine.closePanel(); }}>
