@@ -1,0 +1,378 @@
+{
+  "caseId": "traffic-light",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/8",
+  "finalChecks": "8/8",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/8"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 23,
+  "reportedTokens": 8657,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:19:05.219Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:19:05.219Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:19:08.724Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Traffic Light"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:19:08.725Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:19:16.456Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:19:16.456Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:19:16.934Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:19:16.935Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "3b46ab98-9604-41f8-83f3-deae155f70c6"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:19:19.288Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "3b46ab98-9604-41f8-83f3-deae155f70c6",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:19:19.289Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "testPlanId": "3b46ab98-9604-41f8-83f3-deae155f70c6",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Initial idle state",
+        "passed": true,
+        "actual": "Current: Idle"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Stop disabled initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Start shows red and locks Start",
+        "passed": true,
+        "actual": "Current: Red"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Start enables Stop",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Red lamp active after Start",
+        "passed": true,
+        "actual": "lamp red active"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Green after 3 s",
+        "passed": true,
+        "actual": "Current: Green"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Stop resets to idle",
+        "passed": true,
+        "actual": "Current: Idle"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "name": "Stop re-enables Start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:19:25.632Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d4c9f079-aaa6-4a65-a201-0fe25dec85c4",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:19:25.634Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial idle state",
+        "actions": [],
+        "selector": "#statusLabel",
+        "expected": "Current: Idle",
+        "assertion": "text"
+      },
+      {
+        "name": "Stop disabled initially",
+        "actions": [],
+        "selector": "#stopBtn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Start shows red and locks Start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn"
+          }
+        ],
+        "selector": "#statusLabel",
+        "expected": "Current: Red",
+        "assertion": "text"
+      },
+      {
+        "name": "Start enables Stop",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn"
+          }
+        ],
+        "selector": "#stopBtn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Red lamp active after Start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn"
+          }
+        ],
+        "selector": "#redLamp",
+        "expected": "active",
+        "assertion": "attribute",
+        "attribute": "class"
+      },
+      {
+        "name": "Green after 3 s",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn"
+          },
+          {
+            "type": "wait",
+            "ms": 3200
+          }
+        ],
+        "selector": "#statusLabel",
+        "expected": "Current: Green",
+        "assertion": "text"
+      },
+      {
+        "name": "Stop resets to idle",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn"
+          },
+          {
+            "type": "wait",
+            "ms": 500
+          },
+          {
+            "type": "click",
+            "selector": "#stopBtn"
+          }
+        ],
+        "selector": "#statusLabel",
+        "expected": "Current: Idle",
+        "assertion": "text"
+      },
+      {
+        "name": "Stop re-enables Start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#stopBtn"
+          }
+        ],
+        "selector": "#startBtn",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "2 planned check(s) were dropped because they did not match the check format.",
+      "Timing checks use waits near phase boundaries; exact boundary behavior is not asserted.",
+      "Lamp glow/colors are visual CSS effects and are not pixel-asserted.",
+      "Only the status label and lamp class are checked, not aria-live announcements."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3798,
+      "completion_tokens": 504,
+      "total_tokens": 4302,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 2390
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Traffic Light</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Traffic Light</h1>\n    <div class=\"light-housing\" aria-hidden=\"true\">\n      <div class=\"lamp red\" id=\"redLamp\"></div>\n      <div class=\"lamp amber\" id=\"amberLamp\"></div>\n      <div class=\"lamp green\" id=\"greenLamp\"></div>\n    </div>\n    <p class=\"status\" id=\"statusLabel\" aria-live=\"polite\">Current: Idle</p>\n    <div class=\"controls\">\n      <button type=\"button\" id=\"startBtn\" class=\"btn start\">Start</button>\n      <button type=\"button\" id=\"stopBtn\" class=\"btn stop\" disabled>Stop</button>\n    </div>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": "* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: #1a1a2e;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  color: #e0e0e0;\n  padding: 1rem;\n}\n\n.card {\n  background: #16213e;\n  border-radius: 16px;\n  padding: 2rem 1.5rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n  text-align: center;\n  width: 100%;\n  max-width: 360px;\n  border: 2px solid #0f3460;\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 1.5rem;\n  color: #e94560;\n  letter-spacing: 1px;\n}\n\n.light-housing {\n  background: #0f0f1a;\n  border-radius: 12px;\n  padding: 1rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 0.75rem;\n  margin-bottom: 1.5rem;\n  border: 2px solid #0f3460;\n}\n\n.lamp {\n  width: 80px;\n  height: 80px;\n  border-radius: 50%;\n  background: #2a2a3a;\n  transition: background 0.15s ease, box-shadow 0.15s ease;\n  border: 3px solid #1a1a2e;\n}\n\n.lamp.red.active {\n  background: #e94560;\n  box-shadow: 0 0 20px #e94560, 0 0 40px #e94560;\n}\n\n.lamp.amber.active {\n  background: #f5a623;\n  box-shadow: 0 0 20px #f5a623, 0 0 40px #f5a623;\n}\n\n.lamp.green.active {\n  background: #2ecc71;\n  box-shadow: 0 0 20px #2ecc71, 0 0 40px #2ecc71;\n}\n\n.status {\n  font-size: 1.125rem;\n  margin-bottom: 1.5rem;\n  color: #a0a0b0;\n  min-height: 1.5em;\n}\n\n.controls {\n  display: flex;\n  gap: 1rem;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 0.75rem 1.75rem;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;\n  min-width: 120px;\n}\n\n.btn.start {\n  background: #2ecc71;\n  color: #0f0f1a;\n}\n\n.btn.start:hover:not(:disabled) {\n  background: #27ae60;\n}\n\n.btn.stop {\n  background: #e94560;\n  color: #fff;\n}\n\n.btn.stop:hover:not(:disabled) {\n  background: #c0392b;\n}\n\n.btn:focus-visible {\n  outline: 3px solid #f5a623;\n  outline-offset: 3px;\n}\n\n.btn:active:not(:disabled) {\n  transform: scale(0.96);\n}\n\n.btn:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 1.5rem 1rem;\n  }\n  .lamp {\n    width: 64px;\n    height: 64px;\n  }\n  .btn {\n    min-width: 100px;\n    padding: 0.65rem 1.25rem;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var lamps = {\n    red: document.getElementById('redLamp'),\n    amber: document.getElementById('amberLamp'),\n    green: document.getElementById('greenLamp')\n  };\n  var statusLabel = document.getElementById('statusLabel');\n  var startBtn = document.getElementById('startBtn');\n  var stopBtn = document.getElementById('stopBtn');\n\n  var state = {\n    running: false,\n    current: null,\n    timer: null\n  };\n\n  var CYCLE = [\n    { color: 'red', duration: 3000, label: 'Red' },\n    { color: 'green', duration: 3000, label: 'Green' },\n    { color: 'amber', duration: 1000, label: 'Amber' }\n  ];\n\n  function render() {\n    for (var key in lamps) {\n      if (lamps.hasOwnProperty(key)) {\n        lamps[key].classList.toggle('active', state.current === key);\n      }\n    }\n    if (!state.running) {\n      statusLabel.textContent = 'Current: Idle';\n    } else {\n      var active = CYCLE.filter(function (c) { return c.color === state.current; })[0];\n      statusLabel.textContent = 'Current: ' + (active ? active.label : 'Idle');\n    }\n  }\n\n  function clearTimer() {\n    if (state.timer !== null) {\n      clearTimeout(state.timer);\n      state.timer = null;\n    }\n  }\n\n  function step(index) {\n    if (!state.running) return;\n    var phase = CYCLE[index % CYCLE.length];\n    state.current = phase.color;\n    render();\n    state.timer = setTimeout(function () {\n      step(index + 1);\n    }, phase.duration);\n  }\n\n  function start() {\n    if (state.running) return;\n    state.running = true;\n    startBtn.disabled = true;\n    stopBtn.disabled = false;\n    step(0);\n  }\n\n  function stop() {\n    if (!state.running) return;\n    state.running = false;\n    state.current = null;\n    clearTimer();\n    startBtn.disabled = false;\n    stopBtn.disabled = true;\n    render();\n  }\n\n  startBtn.addEventListener('click', start);\n  stopBtn.addEventListener('click', stop);\n\n  render();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Traffic Light\n\nA dependency-free, offline browser app featuring a pixel-art traffic light that cycles automatically after pressing **Start**.\n\n## Features\n\n- Three lamps: red, amber, green\n- Automatic cycle: red (3 s) → green (3 s) → amber (1 s), looping\n- **Start** begins the cycle; **Stop** halts it and returns to idle\n- Live label naming the current light\n- Keyboard-accessible controls with visible focus states\n- Responsive layout down to 360 px wide\n- No external assets, fonts, network requests, or inline event handlers\n\n## Run\n\nOpen `index.html` in any modern browser. No server or build step required.\n\n## Files\n\n- `index.html` — semantic layout and controls\n- `styles.css` — themed palette, responsive card, button states\n- `app.js` — cycling logic, timer management, rendering\n\n## Controls\n\n- **Start** (button): starts the traffic light cycle\n- **Stop** (button): stops the cycle and resets to idle\n\n## Accessibility\n\n- Buttons are native `<button>` elements with visible `:focus-visible` outlines\n- Status label uses `aria-live=\"polite\"` for screen reader announcements\n- Lamp housing is decorative (`aria-hidden=\"true\"`)\n- Layout adapts from 360 px upward",
+      "description": ""
+    }
+  ]
+}

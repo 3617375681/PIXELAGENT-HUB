@@ -1,0 +1,763 @@
+{
+  "caseId": "accordion-faq",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "9/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "9/10",
+    "9/10",
+    "9/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 46,
+  "reportedTokens": 21727,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:13:00.404Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:13:00.404Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:13:03.814Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel FAQ Page"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:13:03.814Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:13:13.772Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:13:13.772Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:13:14.242Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:13:14.243Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "af9ff173-502b-436c-9d6b-28712b7d837d"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:13:16.750Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "af9ff173-502b-436c-9d6b-28712b7d837d",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:13:16.750Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "testPlanId": "af9ff173-502b-436c-9d6b-28712b7d837d",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Five questions rendered",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Click question 1 expands answer 1",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Click question 1 sets aria-expanded true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Opening question 2 collapses question 1",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Question 2 stays open after opening it",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Clicking open question collapses it",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Expand All opens all five answers",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Expand All makes answer 5 visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Collapse All hides answer 1 after expanding",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "name": "Arrow rotates when question 4 open",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:13:21.997Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "3996fb2a-bb82-431a-a759-cb4154351579",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:13:21.999Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "af9ff173-502b-436c-9d6b-28712b7d837d",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:13:23.847Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "af9ff173-502b-436c-9d6b-28712b7d837d",
+        "checks": 10,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Arrow rotates when question 4 open",
+            "verdict": "check-wrong",
+            "reason": "The check clicks question 4 and reads the inline style.transform of its arrow, expecting a rotate(180deg) value. The requirement says an arrow shows the open state; the app implements this via a CSS r"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:13:23.848Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "testPlanId": "af9ff173-502b-436c-9d6b-28712b7d837d",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Five questions rendered",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Click question 1 expands answer 1",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Click question 1 sets aria-expanded true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Opening question 2 collapses question 1",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Question 2 stays open after opening it",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Clicking open question collapses it",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Expand All opens all five answers",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Expand All makes answer 5 visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Collapse All hides answer 1 after expanding",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "name": "Arrow rotates when question 4 open",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T09:13:29.123Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "09985609-1e63-4063-8390-604e35fda9bc",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T09:13:29.127Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T09:13:38.437Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T09:13:38.438Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T09:13:38.468Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T09:13:38.469Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "testPlanId": "af9ff173-502b-436c-9d6b-28712b7d837d",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Five questions rendered",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Click question 1 expands answer 1",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Click question 1 sets aria-expanded true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Opening question 2 collapses question 1",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Question 2 stays open after opening it",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Clicking open question collapses it",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 47,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Expand All opens all five answers",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 48,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Expand All makes answer 5 visible",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 49,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Collapse All hides answer 1 after expanding",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 50,
+      "at": "2026-10-21T09:13:43.847Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "name": "Arrow rotates when question 4 open",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 51,
+      "at": "2026-10-21T09:13:43.848Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d57df17d-05af-446c-97d6-f67a548587ea",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 52,
+      "at": "2026-10-21T09:13:43.857Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Five questions rendered",
+        "actions": [],
+        "selector": ".faq-question",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Click question 1 expands answer 1",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#question-1"
+          }
+        ],
+        "selector": "#answer-1",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Click question 1 sets aria-expanded true",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#question-1"
+          }
+        ],
+        "selector": "#question-1",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-expanded"
+      },
+      {
+        "name": "Opening question 2 collapses question 1",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#question-1"
+          },
+          {
+            "type": "click",
+            "selector": "#question-2"
+          }
+        ],
+        "selector": "#answer-1",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Question 2 stays open after opening it",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#question-1"
+          },
+          {
+            "type": "click",
+            "selector": "#question-2"
+          }
+        ],
+        "selector": "#answer-2",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Clicking open question collapses it",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#question-3"
+          },
+          {
+            "type": "click",
+            "selector": "#question-3"
+          }
+        ],
+        "selector": "#answer-3",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Expand All opens all five answers",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#expand-all"
+          }
+        ],
+        "selector": ".faq-answer",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Expand All makes answer 5 visible",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#expand-all"
+          }
+        ],
+        "selector": "#answer-5",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Collapse All hides answer 1 after expanding",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#expand-all"
+          },
+          {
+            "type": "click",
+            "selector": "#collapse-all"
+          }
+        ],
+        "selector": "#answer-1",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Arrow rotates when question 4 open",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#question-4"
+          }
+        ],
+        "selector": "#question-4 .faq-arrow",
+        "expected": "matrix\\(-1, 0, 0, -1, 0, 0\\)",
+        "assertion": "matches",
+        "attribute": "style.transform"
+      }
+    ],
+    "limitations": [
+      "Arrow rotation is checked via inline style.transform; CSS-only rotation from stylesheet may not appear in the style attribute.",
+      "No pixel-level or canvas rendering assertions are possible.",
+      "Keyboard activation via Enter/Space is not tested because DOM key events are synthetic."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4536,
+      "completion_tokens": 543,
+      "total_tokens": 5079,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 3128
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel FAQ</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"faq-container\">\n    <header class=\"faq-header\">\n      <h1 class=\"faq-title\">Pixel FAQ</h1>\n      <p class=\"faq-subtitle\">Click a question to reveal the answer.</p>\n    </header>\n\n    <div class=\"faq-controls\">\n      <button id=\"expand-all\" class=\"btn\" type=\"button\">Expand All</button>\n      <button id=\"collapse-all\" class=\"btn\" type=\"button\">Collapse All</button>\n    </div>\n\n    <ul class=\"faq-list\" id=\"faq-list\">\n      <li class=\"faq-item\">\n        <button class=\"faq-question\" aria-expanded=\"false\" aria-controls=\"answer-1\" id=\"question-1\">\n          <span class=\"faq-question-text\">What is a pixel?</span>\n          <span class=\"faq-arrow\" aria-hidden=\"true\">▼</span>\n        </button>\n        <div class=\"faq-answer\" id=\"answer-1\" role=\"region\" aria-labelledby=\"question-1\" hidden>\n          <p>A pixel is the smallest unit of a digital image or display, representing a single point of color.</p>\n        </div>\n      </li>\n      <li class=\"faq-item\">\n        <button class=\"faq-question\" aria-expanded=\"false\" aria-controls=\"answer-2\" id=\"question-2\">\n          <span class=\"faq-question-text\">Why pixel art?</span>\n          <span class=\"faq-arrow\" aria-hidden=\"true\">▼</span>\n        </button>\n        <div class=\"faq-answer\" id=\"answer-2\" role=\"region\" aria-labelledby=\"question-2\" hidden>\n          <p>Pixel art is a form of digital art where images are created using individual pixels, often with a retro aesthetic.</p>\n        </div>\n      </li>\n      <li class=\"faq-item\">\n        <button class=\"faq-question\" aria-expanded=\"false\" aria-controls=\"answer-3\" id=\"question-3\">\n          <span class=\"faq-question-text\">How do I create pixel art?</span>\n          <span class=\"faq-arrow\" aria-hidden=\"true\">▼</span>\n        </button>\n        <div class=\"faq-answer\" id=\"answer-3\" role=\"region\" aria-labelledby=\"question-3\" hidden>\n          <p>You can use dedicated software like Aseprite, or even simple tools like MS Paint, focusing on individual pixels.</p>\n        </div>\n      </li>\n      <li class=\"faq-item\">\n        <button class=\"faq-question\" aria-expanded=\"false\" aria-controls=\"answer-4\" id=\"question-4\">\n          <span class=\"faq-question-text\">What are common pixel art sizes?</span>\n          <span class=\"faq-arrow\" aria-hidden=\"true\">▼</span>\n        </button>\n        <div class=\"faq-answer\" id=\"answer-4\" role=\"region\" aria-labelledby=\"question-4\" hidden>\n          <p>Common sizes include 16x16, 32x32, and 64x64 pixels, often scaled up for display.</p>\n        </div>\n      </li>\n      <li class=\"faq-item\">\n        <button class=\"faq-question\" aria-expanded=\"false\" aria-controls=\"answer-5\" id=\"question-5\">\n          <span class=\"faq-question-text\">Can I use pixel art for websites?</span>\n          <span class=\"faq-arrow\" aria-hidden=\"true\">▼</span>\n        </button>\n        <div class=\"faq-answer\" id=\"answer-5\" role=\"region\" aria-labelledby=\"question-5\" hidden>\n          <p>Yes, pixel art can be used as decorative elements or icons on websites, often with CSS image-rendering: pixelated.</p>\n        </div>\n      </li>\n    </ul>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": "/* Reset and base */\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  background: #1a1a2e;\n  color: #e0e0e0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  padding: 16px;\n}\n\n/* Container */\n.faq-container {\n  background: #16213e;\n  border: 4px solid #0f3460;\n  border-radius: 8px;\n  padding: 24px;\n  max-width: 640px;\n  width: 100%;\n  box-shadow: 8px 8px 0 #0f3460;\n}\n\n/* Header */\n.faq-header {\n  text-align: center;\n  margin-bottom: 24px;\n}\n\n.faq-title {\n  font-size: 2rem;\n  color: #e94560;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  text-shadow: 2px 2px 0 #0f3460;\n}\n\n.faq-subtitle {\n  font-size: 1rem;\n  color: #a0a0b0;\n  margin-top: 8px;\n}\n\n/* Controls */\n.faq-controls {\n  display: flex;\n  gap: 12px;\n  margin-bottom: 24px;\n  flex-wrap: wrap;\n  justify-content: center;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  padding: 10px 20px;\n  background: #0f3460;\n  color: #e0e0e0;\n  border: 3px solid #e94560;\n  border-radius: 4px;\n  cursor: pointer;\n  transition: background 0.1s, transform 0.1s;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  font-weight: bold;\n}\n\n.btn:hover {\n  background: #1a4a7a;\n}\n\n.btn:focus-visible {\n  outline: 3px solid #e94560;\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: translate(2px, 2px);\n  background: #0a2540;\n}\n\n/* FAQ list */\n.faq-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.faq-item {\n  border: 3px solid #0f3460;\n  border-radius: 4px;\n  overflow: hidden;\n}\n\n/* Question button */\n.faq-question {\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 16px;\n  background: #1a1a2e;\n  color: #e0e0e0;\n  border: none;\n  font-family: inherit;\n  font-size: 1.125rem;\n  font-weight: bold;\n  text-align: left;\n  cursor: pointer;\n  transition: background 0.1s;\n}\n\n.faq-question:hover {\n  background: #22223e;\n}\n\n.faq-question:focus-visible {\n  outline: 3px solid #e94560;\n  outline-offset: -3px;\n}\n\n.faq-question:active {\n  background: #0f0f1f;\n}\n\n/* Arrow */\n.faq-arrow {\n  display: inline-block;\n  transition: transform 0.2s ease;\n  font-size: 1rem;\n  color: #e94560;\n}\n\n.faq-question[aria-expanded=\"true\"] .faq-arrow {\n  transform: rotate(180deg);\n}\n\n/* Answer */\n.faq-answer {\n  padding: 0 16px 16px 16px;\n  background: #16213e;\n  border-top: 3px solid #0f3460;\n  color: #c0c0d0;\n  font-size: 1rem;\n  line-height: 1.6;\n}\n\n.faq-answer p {\n  margin-top: 12px;\n}\n\n/* Responsive */\n@media (max-width: 480px) {\n  .faq-container {\n    padding: 16px;\n  }\n  .faq-title {\n    font-size: 1.5rem;\n  }\n  .faq-question {\n    font-size: 1rem;\n    padding: 12px;\n  }\n  .faq-controls {\n    flex-direction: column;\n  }\n  .btn {\n    width: 100%;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "document.addEventListener('DOMContentLoaded', () => {\n  const faqList = document.getElementById('faq-list');\n  const questions = Array.from(faqList.querySelectorAll('.faq-question'));\n  const expandAllBtn = document.getElementById('expand-all');\n  const collapseAllBtn = document.getElementById('collapse-all');\n\n  // Toggle answer for a single question\n  function toggleAnswer(question) {\n    const isExpanded = question.getAttribute('aria-expanded') === 'true';\n    const answerId = question.getAttribute('aria-controls');\n    const answer = document.getElementById(answerId);\n\n    if (isExpanded) {\n      question.setAttribute('aria-expanded', 'false');\n      answer.hidden = true;\n    } else {\n      // Collapse all other open answers\n      questions.forEach(q => {\n        if (q !== question && q.getAttribute('aria-expanded') === 'true') {\n          q.setAttribute('aria-expanded', 'false');\n          const otherAnswerId = q.getAttribute('aria-controls');\n          document.getElementById(otherAnswerId).hidden = true;\n        }\n      });\n      question.setAttribute('aria-expanded', 'true');\n      answer.hidden = false;\n    }\n  }\n\n  // Event listener for each question\n  questions.forEach(question => {\n    question.addEventListener('click', () => toggleAnswer(question));\n  });\n\n  // Expand all\n  expandAllBtn.addEventListener('click', () => {\n    questions.forEach(q => {\n      q.setAttribute('aria-expanded', 'true');\n      const answerId = q.getAttribute('aria-controls');\n      document.getElementById(answerId).hidden = false;\n    });\n  });\n\n  // Collapse all\n  collapseAllBtn.addEventListener('click', () => {\n    questions.forEach(q => {\n      q.setAttribute('aria-expanded', 'false');\n      const answerId = q.getAttribute('aria-controls');\n      document.getElementById(answerId).hidden = true;\n    });\n  });\n});",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel FAQ Page\n\nA simple, accessible FAQ page with a pixel-art theme. Built with plain HTML, CSS, and JavaScript. No external dependencies or network requests.\n\n## Features\n\n- 5 FAQ items with questions and answers.\n- Clicking a question expands its answer and collapses any other open one.\n- An arrow indicates the open state (rotates when open).\n- \"Expand All\" and \"Collapse All\" buttons.\n- Keyboard accessible: questions and buttons are focusable and can be activated with Enter/Space.\n- ARIA attributes for expandable sections.\n- Responsive layout down to 360px wide.\n- Cohesive color palette with hover, focus, and pressed states.\n\n## Usage\n\nOpen `index.html` in any modern browser. No server required.\n\n## Files\n\n- `index.html` – structure and content.\n- `styles.css` – pixel-themed styles.\n- `script.js` – interactivity.\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

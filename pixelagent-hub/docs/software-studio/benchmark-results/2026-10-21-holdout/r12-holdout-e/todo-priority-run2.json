@@ -1,0 +1,662 @@
+{
+  "caseId": "todo-priority",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "6/8",
+  "finalChecks": "8/8",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 2,
+  "coderRepair": false,
+  "checkRuns": [
+    "6/8",
+    "8/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 35,
+  "reportedTokens": 19165,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:20:41.433Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:20:41.433Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:20:45.494Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Priority To-Do List"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:20:45.494Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:20:57.735Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:20:57.735Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:20:58.225Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:20:58.227Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2ae27a86-95fb-473e-960d-84acd81995ee"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:21:02.209Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2ae27a86-95fb-473e-960d-84acd81995ee",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:21:02.210Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "testPlanId": "2ae27a86-95fb-473e-960d-84acd81995ee",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Add high task appears in list",
+        "passed": true,
+        "actual": "Buy milk HIGH Delete"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Medium sorted before low",
+        "passed": true,
+        "actual": "Med task MEDIUM Delete"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Completed filter shows completed only",
+        "passed": false,
+        "actual": "Open task LOW Delete"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Active filter hides completed",
+        "passed": false,
+        "actual": "Done task MEDIUM Delete"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Delete removes task",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Empty message shown when no tasks",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Filter button pressed state",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:21:08.912Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "name": "Completed task sorted after active",
+        "passed": true,
+        "actual": "Low open LOW Delete"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:21:08.913Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "71bd794a-f043-4200-9889-f7d25e5eacdf",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:21:08.916Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2ae27a86-95fb-473e-960d-84acd81995ee",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:21:11.983Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2ae27a86-95fb-473e-960d-84acd81995ee",
+        "checks": 8,
+        "review": true,
+        "revised": 2,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Completed filter shows completed only",
+            "verdict": "check-wrong",
+            "reason": "The check adds a medium task then a low task, clicks the checkbox at nth 1 (the second task, 'Open task'), then applies the Completed filter. The app sorts active tasks before completed ones, so after"
+          },
+          {
+            "name": "Active filter hides completed",
+            "verdict": "check-wrong",
+            "reason": "The check adds a medium task then a low task, clicks the checkbox at nth 1 (the second task, 'Open task'), then applies the Active filter. The app sorts active tasks before completed ones, so after co"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:21:11.984Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "testPlanId": "2ae27a86-95fb-473e-960d-84acd81995ee",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Add high task appears in list",
+        "passed": true,
+        "actual": "Buy milk HIGH Delete"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Medium sorted before low",
+        "passed": true,
+        "actual": "Med task MEDIUM Delete"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Completed filter shows completed only",
+        "passed": true,
+        "actual": "Open task LOW Delete"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Active filter hides completed",
+        "passed": true,
+        "actual": "Done task MEDIUM Delete"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Delete removes task",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Empty message shown when no tasks",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Filter button pressed state",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "name": "Completed task sorted after active",
+        "passed": true,
+        "actual": "Low open LOW Delete"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T09:21:14.643Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "ee33d488-8352-48a2-aa15-03d7fa636e49",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T09:21:14.646Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add high task appears in list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Buy milk"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "high"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": ".task-item",
+        "expected": "Buy milk high Delete",
+        "assertion": "text"
+      },
+      {
+        "name": "Medium sorted before low",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Low task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "low"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Med task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "medium"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": ".task-item",
+        "nth": 0,
+        "expected": "Med task medium Delete",
+        "assertion": "text"
+      },
+      {
+        "name": "Completed filter shows completed only",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Done task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "medium"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Open task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "low"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "click",
+            "selector": ".task-checkbox",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".filter-btn[data-filter=\"completed\"]"
+          }
+        ],
+        "selector": ".task-item",
+        "expected": "Open task low Delete",
+        "assertion": "text"
+      },
+      {
+        "name": "Active filter hides completed",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Done task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "medium"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Open task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "low"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "click",
+            "selector": ".task-checkbox",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".filter-btn[data-filter=\"active\"]"
+          }
+        ],
+        "selector": ".task-item",
+        "expected": "Done task medium Delete",
+        "assertion": "text"
+      },
+      {
+        "name": "Delete removes task",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Temp task"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "high"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-delete"
+          }
+        ],
+        "selector": ".task-item",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Empty message shown when no tasks",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".filter-btn[data-filter=\"completed\"]"
+          }
+        ],
+        "selector": "#empty-message",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Filter button pressed state",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".filter-btn[data-filter=\"active\"]"
+          }
+        ],
+        "selector": ".filter-btn[data-filter=\"active\"]",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Completed task sorted after active",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "High done"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "high"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "input",
+            "selector": "#task-input",
+            "value": "Low open"
+          },
+          {
+            "type": "input",
+            "selector": "#priority-select",
+            "value": "low"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "click",
+            "selector": ".task-checkbox",
+            "nth": 0
+          }
+        ],
+        "selector": ".task-item",
+        "nth": 0,
+        "expected": "Low open low Delete",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "2 planned check(s) were dropped because they did not match the check format.",
+      "localStorage persistence across page reloads is not tested; each check starts fresh.",
+      "Pixel-art visual styling and responsive layout are not verified.",
+      "Keyboard Enter submission is not tested; only button clicks are used."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 5594,
+      "completion_tokens": 1102,
+      "total_tokens": 6696,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 4314
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Priority To-Do List</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"app\" aria-labelledby=\"app-title\">\n    <h1 id=\"app-title\">Pixel Priority</h1>\n\n    <form id=\"task-form\" class=\"task-form\" autocomplete=\"off\">\n      <div class=\"input-group\">\n        <label for=\"task-input\">New task</label>\n        <input type=\"text\" id=\"task-input\" placeholder=\"What needs doing?\" required aria-required=\"true\">\n      </div>\n      <div class=\"input-group\">\n        <label for=\"priority-select\">Priority</label>\n        <select id=\"priority-select\" aria-label=\"Task priority\">\n          <option value=\"high\">High</option>\n          <option value=\"medium\" selected>Medium</option>\n          <option value=\"low\">Low</option>\n        </select>\n      </div>\n      <button type=\"submit\" class=\"btn btn-add\" aria-label=\"Add task\">Add</button>\n    </form>\n\n    <div class=\"filters\" role=\"group\" aria-label=\"Filter tasks\">\n      <button type=\"button\" class=\"filter-btn active\" data-filter=\"all\" aria-pressed=\"true\">All</button>\n      <button type=\"button\" class=\"filter-btn\" data-filter=\"active\" aria-pressed=\"false\">Active</button>\n      <button type=\"button\" class=\"filter-btn\" data-filter=\"completed\" aria-pressed=\"false\">Completed</button>\n    </div>\n\n    <ul id=\"task-list\" class=\"task-list\" aria-live=\"polite\"></ul>\n    <p id=\"empty-message\" class=\"empty-message\" hidden>No tasks here.</p>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --text: #e0e0e0;\n  --accent: #e94560;\n  --accent-hover: #ff6b81;\n  --border: #0f3460;\n  --high: #e94560;\n  --medium: #f5a623;\n  --low: #4e9f3d;\n  --font: 'Courier New', Courier, monospace;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--text);\n  display: flex;\n  justify-content: center;\n  align-items: flex-start;\n  min-height: 100vh;\n  padding: 24px 16px;\n}\n\n.app {\n  background: var(--card);\n  border: 4px solid var(--border);\n  border-radius: 0;\n  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.5);\n  padding: 24px;\n  width: 100%;\n  max-width: 600px;\n}\n\nh1 {\n  font-size: 1.8rem;\n  text-align: center;\n  margin-bottom: 24px;\n  color: var(--accent);\n  text-shadow: 2px 2px 0 #000;\n  letter-spacing: 2px;\n}\n\n.task-form {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\n.input-group {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  flex: 1 1 140px;\n}\n\n.input-group label {\n  font-size: 0.9rem;\n  color: var(--accent);\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\ninput, select {\n  font-family: var(--font);\n  font-size: 1rem;\n  padding: 10px 12px;\n  background: var(--bg);\n  border: 3px solid var(--border);\n  color: var(--text);\n  border-radius: 0;\n  outline: none;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ninput:focus, select:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.3);\n}\n\n.btn {\n  font-family: var(--font);\n  font-size: 1rem;\n  padding: 10px 20px;\n  background: var(--accent);\n  color: #fff;\n  border: 3px solid var(--accent);\n  cursor: pointer;\n  border-radius: 0;\n  transition: background 0.2s, transform 0.1s;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  align-self: flex-end;\n}\n\n.btn:hover {\n  background: var(--accent-hover);\n  border-color: var(--accent-hover);\n}\n\n.btn:focus-visible {\n  outline: 3px solid #fff;\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: translate(2px, 2px);\n}\n\n.btn-add {\n  flex: 0 0 auto;\n}\n\n.filters {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 24px;\n  flex-wrap: wrap;\n}\n\n.filter-btn {\n  font-family: var(--font);\n  font-size: 0.9rem;\n  padding: 8px 16px;\n  background: var(--bg);\n  color: var(--text);\n  border: 3px solid var(--border);\n  cursor: pointer;\n  border-radius: 0;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  transition: background 0.2s, color 0.2s, border-color 0.2s;\n}\n\n.filter-btn:hover {\n  background: var(--border);\n}\n\n.filter-btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.filter-btn.active {\n  background: var(--accent);\n  border-color: var(--accent);\n  color: #fff;\n}\n\n.filter-btn:active {\n  transform: translate(2px, 2px);\n}\n\n.task-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.task-item {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px;\n  background: var(--bg);\n  border: 3px solid var(--border);\n  border-left-width: 8px;\n  border-radius: 0;\n  transition: background 0.2s, border-color 0.2s;\n}\n\n.task-item.priority-high {\n  border-left-color: var(--high);\n}\n\n.task-item.priority-medium {\n  border-left-color: var(--medium);\n}\n\n.task-item.priority-low {\n  border-left-color: var(--low);\n}\n\n.task-item.completed {\n  opacity: 0.6;\n}\n\n.task-item.completed .task-text {\n  text-decoration: line-through;\n}\n\n.task-checkbox {\n  width: 20px;\n  height: 20px;\n  cursor: pointer;\n  accent-color: var(--accent);\n  flex-shrink: 0;\n}\n\n.task-text {\n  flex: 1;\n  word-break: break-word;\n  font-size: 1rem;\n}\n\n.task-priority-badge {\n  font-size: 0.7rem;\n  padding: 2px 6px;\n  border: 2px solid;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  flex-shrink: 0;\n}\n\n.priority-high .task-priority-badge {\n  color: var(--high);\n  border-color: var(--high);\n}\n\n.priority-medium .task-priority-badge {\n  color: var(--medium);\n  border-color: var(--medium);\n}\n\n.priority-low .task-priority-badge {\n  color: var(--low);\n  border-color: var(--low);\n}\n\n.btn-delete {\n  background: none;\n  border: 3px solid var(--accent);\n  color: var(--accent);\n  font-family: var(--font);\n  font-size: 0.9rem;\n  padding: 4px 10px;\n  cursor: pointer;\n  border-radius: 0;\n  transition: background 0.2s, color 0.2s;\n  flex-shrink: 0;\n}\n\n.btn-delete:hover {\n  background: var(--accent);\n  color: #fff;\n}\n\n.btn-delete:focus-visible {\n  outline: 3px solid #fff;\n  outline-offset: 2px;\n}\n\n.btn-delete:active {\n  transform: translate(2px, 2px);\n}\n\n.empty-message {\n  text-align: center;\n  color: var(--text);\n  opacity: 0.6;\n  padding: 24px;\n  font-style: italic;\n}\n\n@media (max-width: 480px) {\n  .task-form {\n    flex-direction: column;\n  }\n  .btn-add {\n    align-self: stretch;\n  }\n  .task-item {\n    flex-wrap: wrap;\n  }\n  .task-priority-badge {\n    order: -1;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function() {\n  'use strict';\n\n  const STORAGE_KEY = 'pixel-priority-tasks';\n\n  const taskForm = document.getElementById('task-form');\n  const taskInput = document.getElementById('task-input');\n  const prioritySelect = document.getElementById('priority-select');\n  const taskList = document.getElementById('task-list');\n  const emptyMessage = document.getElementById('empty-message');\n  const filterButtons = document.querySelectorAll('.filter-btn');\n\n  let tasks = [];\n  let currentFilter = 'all';\n\n  const priorityOrder = { high: 0, medium: 1, low: 2 };\n\n  function loadTasks() {\n    try {\n      const stored = localStorage.getItem(STORAGE_KEY);\n      if (stored) {\n        tasks = JSON.parse(stored);\n      }\n    } catch (e) {\n      tasks = [];\n    }\n  }\n\n  function saveTasks() {\n    try {\n      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));\n    } catch (e) {\n      // ignore storage errors\n    }\n  }\n\n  function generateId() {\n    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);\n  }\n\n  function render() {\n    let filtered = tasks;\n    if (currentFilter === 'active') {\n      filtered = tasks.filter(t => !t.completed);\n    } else if (currentFilter === 'completed') {\n      filtered = tasks.filter(t => t.completed);\n    }\n\n    filtered.sort((a, b) => {\n      if (a.completed !== b.completed) return a.completed ? 1 : -1;\n      return priorityOrder[a.priority] - priorityOrder[b.priority];\n    });\n\n    taskList.innerHTML = '';\n\n    if (filtered.length === 0) {\n      emptyMessage.hidden = false;\n    } else {\n      emptyMessage.hidden = true;\n      filtered.forEach(task => {\n        const li = document.createElement('li');\n        li.className = `task-item priority-${task.priority}${task.completed ? ' completed' : ''}`;\n        li.dataset.id = task.id;\n\n        const checkbox = document.createElement('input');\n        checkbox.type = 'checkbox';\n        checkbox.className = 'task-checkbox';\n        checkbox.checked = task.completed;\n        checkbox.setAttribute('aria-label', `Mark \"${task.text}\" as ${task.completed ? 'incomplete' : 'complete'}`);\n        checkbox.addEventListener('change', () => toggleTask(task.id));\n\n        const textSpan = document.createElement('span');\n        textSpan.className = 'task-text';\n        textSpan.textContent = task.text;\n\n        const badge = document.createElement('span');\n        badge.className = 'task-priority-badge';\n        badge.textContent = task.priority;\n\n        const deleteBtn = document.createElement('button');\n        deleteBtn.type = 'button';\n        deleteBtn.className = 'btn-delete';\n        deleteBtn.textContent = 'Delete';\n        deleteBtn.setAttribute('aria-label', `Delete task \"${task.text}\"`);\n        deleteBtn.addEventListener('click', () => deleteTask(task.id));\n\n        li.appendChild(checkbox);\n        li.appendChild(textSpan);\n        li.appendChild(badge);\n        li.appendChild(deleteBtn);\n        taskList.appendChild(li);\n      });\n    }\n  }\n\n  function addTask(text, priority) {\n    const trimmed = text.trim();\n    if (!trimmed) return;\n    tasks.push({\n      id: generateId(),\n      text: trimmed,\n      priority: priority,\n      completed: false\n    });\n    saveTasks();\n    render();\n  }\n\n  function toggleTask(id) {\n    const task = tasks.find(t => t.id === id);\n    if (task) {\n      task.completed = !task.completed;\n      saveTasks();\n      render();\n    }\n  }\n\n  function deleteTask(id) {\n    tasks = tasks.filter(t => t.id !== id);\n    saveTasks();\n    render();\n  }\n\n  function setFilter(filter) {\n    currentFilter = filter;\n    filterButtons.forEach(btn => {\n      const isActive = btn.dataset.filter === filter;\n      btn.classList.toggle('active', isActive);\n      btn.setAttribute('aria-pressed', isActive.toString());\n    });\n    render();\n  }\n\n  taskForm.addEventListener('submit', function(e) {\n    e.preventDefault();\n    addTask(taskInput.value, prioritySelect.value);\n    taskInput.value = '';\n    taskInput.focus();\n  });\n\n  filterButtons.forEach(btn => {\n    btn.addEventListener('click', () => setFilter(btn.dataset.filter));\n  });\n\n  loadTasks();\n  render();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Priority To-Do List\n\nA pixel-themed to-do list app built with HTML, CSS, and plain JavaScript. Tasks have priorities (high, medium, low), are sorted with high first, can be completed and deleted, and can be filtered by all, active, or completed.\n\n## Features\n\n- Add tasks with a priority level\n- Tasks are sorted by priority (high → medium → low) and completion status\n- Mark tasks as complete/incomplete\n- Delete tasks\n- Filter tasks: All, Active, Completed\n- Data persists in localStorage\n- Fully keyboard accessible with labeled controls\n- Responsive layout from 360px wide\n- Pixel-art aesthetic using CSS borders and shadows\n- No external dependencies, network requests, or inline event handlers\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type a task in the input field, choose a priority, and click \"Add\" (or press Enter).\n3. Use the checkboxes to mark tasks complete.\n4. Click \"Delete\" to remove a task.\n5. Use the filter buttons to view all, active, or completed tasks.\n\n## Technical Details\n\n- Built with vanilla HTML5, CSS3, and JavaScript (ES6)\n- Uses `localStorage` for persistence (falls back gracefully if unavailable)\n- All event handling via `addEventListener`\n- ARIA attributes and semantic HTML for accessibility\n- Responsive design with flexbox and media queries\n\n## Browser Support\n\nWorks in all modern browsers (Chrome, Firefox, Safari, Edge).\n\n## File Structure\n\n- `index.html` — main HTML structure\n- `styles.css` — all styling\n- `app.js` — application logic\n- `README.md` — this file",
+      "description": ""
+    }
+  ]
+}

@@ -186,3 +186,37 @@ Set E had 15/16 full passes. The dip from 14 to 13 strict comes from two passes 
 | Random sequences | simon 2 | clicks every pad, "hoping one is wrong" |
 
 The first two are language gaps and are next. The rest are model judgement errors.
+
+## Round 12 on `e769484`
+
+The round-12 changes (commit `e769484`):
+- `attribute: "class"` now passes when the element has the listed classes.
+- `changed`, `unchanged` and `stable` can compare an attribute, such as `style.height`.
+
+Set F (8 new ideas, commit `7f0d675`) is this round's clean set.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Coder repairs | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set F**](r12-holdout-f/) (clean) | 16 | 13/16 | **12/16** | 1 | 3 | 24 s | 218,658 |
+| [Set E](r12-holdout-e/) (used for round 12) | 16 | 15/16 | 14/16 | 2 | 1 | 27 s | 200,365 |
+| [Showcase](r12-showcase/) | 18 | **17/18** | **17/18** | 0 | 2 | 24 s | 208,658 |
+| [Fixed cases](r12-fixed/) | 15 | **15/15** | 15/15 | 0 | 0 | 19 s | 132,456 |
+
+**Results:**
+- The showcase reaches its best strict score: 17/18.
+- The fixed cases pass 15/15 for the seventh round running.
+- On the clean sets, strict passes over rounds 8–12 were 10, 12, 14, 13, 12. **They have plateaued at 12–14 of 16.**
+
+**Most remaining failures are no longer gaps in the language.**
+
+| Run | Cause |
+| --- | --- |
+| typing trainer 2 (E) | **Real app bug, caught.** `.result { display: flex }` overrides the `hidden` attribute, so the result panel shows before the user has typed anything. This is the fourth app with this bug. The others were the memory win message, the loan results and the mortgage results. |
+| accordion 1 (F) | **App behaviour, as judged by the review.** Opening a second question leaves the first one open, which is the opposite of what the requirement asks. |
+| accordion 2 (F), memory 1 | **No way to read a computed style.** The arrow rotates through a CSS class, so the inline `style.transform` stays empty. |
+| dice race 2 (F) | **Ambiguous key handling.** Space pressed on the page body is ignored when focus is on the roll button. |
+| sort visualizer 2 (E, pass only with drops) | **Tester arithmetic.** The check expects one bubble-sort step to change a bar, and 8 steps to sort 10 bars. |
+
+So the next round changes the app side as well as the checks:
+- the Coder is told to make `hidden` always hide;
+- checks can read computed styles.

@@ -1,0 +1,536 @@
+{
+  "caseId": "fuel",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 23,
+  "reportedTokens": 9758,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:11:14.221Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:11:14.221Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:11:17.656Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Trip Fuel Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:11:17.657Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:11:26.617Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:11:26.617Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:11:27.112Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:11:27.112Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "694e68c2-5263-497d-8fa2-8f520fb5c147"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:11:29.899Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "694e68c2-5263-497d-8fa2-8f520fb5c147",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:11:29.900Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "testPlanId": "694e68c2-5263-497d-8fa2-8f520fb5c147",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Default values show litres and cost",
+        "passed": true,
+        "actual": "8.00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Default cost is two decimals",
+        "passed": true,
+        "actual": "€14.00"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Custom trip litres",
+        "passed": true,
+        "actual": "16.25"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Custom trip cost",
+        "passed": true,
+        "actual": "€32.50"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Rounding to two decimals",
+        "passed": true,
+        "actual": "€4.79"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Zero distance gives zero",
+        "passed": true,
+        "actual": "€0.00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Reset restores default litres",
+        "passed": true,
+        "actual": "8.00"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Reset restores default cost",
+        "passed": true,
+        "actual": "€14.00"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Reset restores distance input",
+        "passed": true,
+        "actual": "100"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "name": "Reset restores price input",
+        "passed": true,
+        "actual": "1.75"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:11:33.169Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "9592232b-1a46-4587-94a3-96a7fec6e162",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:11:33.174Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Default values show litres and cost",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "8"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          }
+        ],
+        "selector": "#litres",
+        "expected": "8.00"
+      },
+      {
+        "name": "Default cost is two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "8"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          }
+        ],
+        "selector": "#cost",
+        "expected": "€14.00"
+      },
+      {
+        "name": "Custom trip litres",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "250"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "2"
+          }
+        ],
+        "selector": "#litres",
+        "expected": "16.25"
+      },
+      {
+        "name": "Custom trip cost",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "250"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "6.5"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "2"
+          }
+        ],
+        "selector": "#cost",
+        "expected": "€32.50"
+      },
+      {
+        "name": "Rounding to two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "33"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "7.3"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.99"
+          }
+        ],
+        "selector": "#cost",
+        "expected": "€4.79"
+      },
+      {
+        "name": "Zero distance gives zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "8"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.75"
+          }
+        ],
+        "selector": "#cost",
+        "expected": "€0.00"
+      },
+      {
+        "name": "Reset restores default litres",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#litres",
+        "expected": "8.00"
+      },
+      {
+        "name": "Reset restores default cost",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#cost",
+        "expected": "€14.00"
+      },
+      {
+        "name": "Reset restores distance input",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#distance",
+        "expected": "100",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Reset restores price input",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#distance",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#consumption",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#price",
+        "expected": "1.75",
+        "assertion": "attribute",
+        "attribute": "value"
+      }
+    ],
+    "limitations": [
+      "No check for empty or invalid input handling beyond zero distance; NaN suppression not fully covered.",
+      "No visual/pixel styling assertions; only text and input values are checked.",
+      "Keyboard focus after Reset is not asserted."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4262,
+      "completion_tokens": 790,
+      "total_tokens": 5052,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 2982
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Trip Fuel Calculator</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Trip Fuel Calculator</h1>\n    <p class=\"subtitle\">Distance, consumption, price — get litres and cost.</p>\n\n    <form id=\"fuel-form\" novalidate>\n      <div class=\"field\">\n        <label for=\"distance\">Distance (km)</label>\n        <input type=\"number\" id=\"distance\" name=\"distance\" min=\"0\" step=\"any\" value=\"100\" inputmode=\"decimal\">\n      </div>\n\n      <div class=\"field\">\n        <label for=\"consumption\">Consumption (L/100 km)</label>\n        <input type=\"number\" id=\"consumption\" name=\"consumption\" min=\"0\" step=\"any\" value=\"8\" inputmode=\"decimal\">\n      </div>\n\n      <div class=\"field\">\n        <label for=\"price\">Price per litre (&euro;)</label>\n        <input type=\"number\" id=\"price\" name=\"price\" min=\"0\" step=\"any\" value=\"1.75\" inputmode=\"decimal\">\n      </div>\n\n      <div class=\"results\" aria-live=\"polite\">\n        <div class=\"result-row\">\n          <span class=\"result-label\">Litres needed</span>\n          <output id=\"litres\" class=\"result-value\">0.00</output>\n        </div>\n        <div class=\"result-row\">\n          <span class=\"result-label\">Total cost</span>\n          <output id=\"cost\" class=\"result-value\">&euro;0.00</output>\n        </div>\n      </div>\n\n      <div class=\"actions\">\n        <button type=\"button\" id=\"reset\" class=\"btn btn-reset\">Reset</button>\n      </div>\n    </form>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card: #2b2b44;\n  --accent: #f5c542;\n  --accent-dark: #d4a72c;\n  --text: #f0f0f5;\n  --muted: #a0a0b8;\n  --border: #3e3e5c;\n  --focus: #7fd1ff;\n  --radius: 10px;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  background: var(--bg);\n  background-image:\n    linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),\n    linear-gradient(-45deg, rgba(255,255,255,0.03) 25%, transparent 25%),\n    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.03) 75%),\n    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.03) 75%);\n  background-size: 24px 24px;\n  background-position: 0 0, 0 12px, 12px -12px, -12px 0;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n}\n\n.card {\n  width: 100%;\n  max-width: 420px;\n  background: var(--card);\n  border: 3px solid var(--border);\n  border-radius: var(--radius);\n  padding: 28px 24px;\n  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);\n}\n\nh1 {\n  margin: 0 0 8px;\n  font-size: 1.5rem;\n  line-height: 1.2;\n  letter-spacing: 0.5px;\n}\n\n.subtitle {\n  margin: 0 0 24px;\n  color: var(--muted);\n  font-size: 1rem;\n}\n\n.field {\n  margin-bottom: 18px;\n}\n\nlabel {\n  display: block;\n  margin-bottom: 6px;\n  font-weight: 600;\n  font-size: 1rem;\n}\n\ninput[type=\"number\"] {\n  width: 100%;\n  padding: 12px 14px;\n  font-size: 1.125rem;\n  font-family: inherit;\n  color: var(--text);\n  background: var(--bg);\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\n\ninput[type=\"number\"]:hover {\n  border-color: var(--accent-dark);\n}\n\ninput[type=\"number\"]:focus {\n  outline: none;\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(127, 209, 255, 0.35);\n}\n\n.results {\n  margin: 24px 0;\n  padding: 16px;\n  background: var(--bg);\n  border: 2px dashed var(--border);\n  border-radius: 8px;\n}\n\n.result-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  gap: 12px;\n  padding: 6px 0;\n}\n\n.result-row + .result-row {\n  border-top: 1px solid var(--border);\n  margin-top: 6px;\n  padding-top: 12px;\n}\n\n.result-label {\n  color: var(--muted);\n  font-size: 1rem;\n}\n\n.result-value {\n  font-size: 1.35rem;\n  font-weight: 700;\n  color: var(--accent);\n  font-variant-numeric: tabular-nums;\n  text-align: right;\n}\n\n.actions {\n  display: flex;\n  justify-content: flex-end;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 700;\n  padding: 12px 24px;\n  border-radius: 8px;\n  border: 2px solid transparent;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.05s, box-shadow 0.15s;\n}\n\n.btn-reset {\n  background: var(--accent);\n  color: #1e1e2f;\n  border-color: var(--accent-dark);\n  box-shadow: 0 3px 0 var(--accent-dark);\n}\n\n.btn-reset:hover {\n  background: #ffd95e;\n}\n\n.btn-reset:active {\n  transform: translateY(2px);\n  box-shadow: 0 1px 0 var(--accent-dark);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 20px 16px;\n  }\n  h1 {\n    font-size: 1.25rem;\n  }\n  .result-value {\n    font-size: 1.2rem;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var form = document.getElementById('fuel-form');\n  var distanceInput = document.getElementById('distance');\n  var consumptionInput = document.getElementById('consumption');\n  var priceInput = document.getElementById('price');\n  var litresOutput = document.getElementById('litres');\n  var costOutput = document.getElementById('cost');\n  var resetButton = document.getElementById('reset');\n\n  var DEFAULTS = {\n    distance: '100',\n    consumption: '8',\n    price: '1.75'\n  };\n\n  function parseValue(input) {\n    var value = parseFloat(input.value);\n    return isFinite(value) && value >= 0 ? value : 0;\n  }\n\n  function calculate() {\n    var distance = parseValue(distanceInput);\n    var consumption = parseValue(consumptionInput);\n    var price = parseValue(priceInput);\n\n    var litres = (distance * consumption) / 100;\n    var cost = litres * price;\n\n    litresOutput.textContent = litres.toFixed(2);\n    costOutput.textContent = '\\u20AC' + cost.toFixed(2);\n  }\n\n  function reset() {\n    distanceInput.value = DEFAULTS.distance;\n    consumptionInput.value = DEFAULTS.consumption;\n    priceInput.value = DEFAULTS.price;\n    calculate();\n    distanceInput.focus();\n  }\n\n  form.addEventListener('input', calculate);\n  form.addEventListener('submit', function (event) {\n    event.preventDefault();\n    calculate();\n  });\n  resetButton.addEventListener('click', reset);\n\n  calculate();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Trip Fuel Calculator\n\nAn offline, single-page browser app that calculates the litres of fuel needed and the total cost for a trip, based on distance, fuel consumption and price per litre.\n\n## Features\n\n- Inputs for distance (km), consumption (L/100 km) and price per litre.\n- Live results for litres needed and total cost, both shown to two decimals.\n- Accessible Reset button that restores defaults and clears the form state.\n- Keyboard-friendly with visible focus states and labeled controls.\n- Responsive layout that works from 360px wide.\n- Pixel-inspired theme using only CSS, no external assets.\n\n## Usage\n\n1. Open `index.html` in any modern browser (no server required).\n2. Enter the trip distance in kilometres.\n3. Enter the vehicle consumption in litres per 100 km.\n4. Enter the fuel price per litre.\n5. Read the litres needed and total cost in the results panel.\n6. Press **Reset** to restore default values.\n\n## File Structure\n\n- `index.html` — page markup and controls.\n- `style.css` — pixel-themed styling and responsive layout.\n- `script.js` — calculation logic and reset behavior.\n- `README.md` — this file.\n\n## Calculation\n\n- Litres needed = distance × consumption ÷ 100\n- Total cost = litres needed × price per litre\n\nBoth values are formatted to exactly two decimal places. Invalid or empty inputs are treated as zero so the app never shows `NaN`.\n\n## Constraints\n\n- Plain HTML, CSS and JavaScript only.\n- No imports, packages, network requests, external assets, iframes or server code.\n- Event handling via `addEventListener`; no inline HTML event handlers.\n",
+      "description": ""
+    }
+  ]
+}

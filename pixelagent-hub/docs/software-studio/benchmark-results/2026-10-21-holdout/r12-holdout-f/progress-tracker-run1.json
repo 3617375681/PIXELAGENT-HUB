@@ -1,0 +1,609 @@
+{
+  "caseId": "progress-tracker",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 43,
+  "reportedTokens": 19673,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:15:19.900Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:15:19.900Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:15:24.628Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Reading Tracker"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:15:24.628Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:15:37.338Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:15:37.338Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:15:51.247Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:15:51.247Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:15:51.768Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:15:51.768Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "0de440b9-9fd7-49d1-9303-f7693e32c21f"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:15:56.113Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "0de440b9-9fd7-49d1-9303-f7693e32c21f",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:15:56.114Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "testPlanId": "0de440b9-9fd7-49d1-9303-f7693e32c21f",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Add book shows progress 0%",
+        "passed": true,
+        "actual": "0 / 200 pages 0%"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Log pages updates progress",
+        "passed": true,
+        "actual": "50 / 200 pages 25%"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Progress bar aria-valuenow updates",
+        "passed": true,
+        "actual": "25"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Progress fill width updates",
+        "passed": true,
+        "actual": "25%"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Reaching 100% marks finished",
+        "passed": true,
+        "actual": "Finished"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Finished book hides log form",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Overflow pages capped at 100%",
+        "passed": true,
+        "actual": "100 / 100 pages 100%"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Empty title shows error",
+        "passed": true,
+        "actual": "Please enter a book title."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Invalid page count shows error",
+        "passed": true,
+        "actual": "Page count must be a positive whole number."
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "name": "Two books render two cards",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:15:59.355Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "15fcabc7-2478-4205-a271-b139f8a6c90f",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:15:59.357Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add book shows progress 0%",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-text",
+        "expected": "0 / 200 pages 0%",
+        "assertion": "text"
+      },
+      {
+        "name": "Log pages updates progress",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-pages-1",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-text",
+        "expected": "50 / 200 pages 25%",
+        "assertion": "text"
+      },
+      {
+        "name": "Progress bar aria-valuenow updates",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-pages-1",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-bar",
+        "expected": "25",
+        "assertion": "attribute",
+        "attribute": "aria-valuenow"
+      },
+      {
+        "name": "Progress fill width updates",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-pages-1",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-fill",
+        "expected": "25%",
+        "assertion": "attribute",
+        "attribute": "style.width"
+      },
+      {
+        "name": "Reaching 100% marks finished",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-pages-1",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".badge",
+        "expected": "Finished",
+        "assertion": "text"
+      },
+      {
+        "name": "Finished book hides log form",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-pages-1",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".log-form",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Overflow pages capped at 100%",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-pages-1",
+            "value": "150"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-text",
+        "expected": "100 / 100 pages 100%",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty title shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": "#add-error",
+        "expected": "Please enter a book title.",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid page count shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": "#add-error",
+        "expected": "Page count must be a positive whole number.",
+        "assertion": "text"
+      },
+      {
+        "name": "Two books render two cards",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Emma"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "300"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": ".book-card",
+        "expected": "2",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "No persistence check: state resets on reload by design, so only in-memory behavior is tested.",
+      "No pixel/visual rendering of the progress bar is asserted; only inline width and ARIA values are checked.",
+      "Screen-reader announcements in the sr-only live region are not verified.",
+      "Keyboard-only navigation and focus behavior are not tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 6086,
+      "completion_tokens": 1146,
+      "total_tokens": 7232,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 4806
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nindex.ht\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Reading Tracker</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header>\n      <h1>Pixel Reading Tracker</h1>\n      <p class=\"subtitle\">Track your reading progress, one page at a time.</p>\n    </header>\n\n    <section aria-labelledby=\"add-book-heading\">\n      <h2 id=\"add-book-heading\">Add a book</h2>\n      <form id=\"add-book-form\" novalidate>\n        <div class=\"field\">\n          <label for=\"book-title\">Title</label>\n          <input type=\"text\" id=\"book-title\" name=\"title\" placeholder=\"e.g., The Great Gatsby\" autocomplete=\"off\" required>\n        </div>\n        <div class=\"field\">\n          <label for=\"book-pages\">Page count</label>\n          <input type=\"number\" id=\"book-pages\" name=\"pages\" min=\"1\" step=\"1\" placeholder=\"e.g., 180\" required>\n        </div>\n        <button type=\"submit\" class=\"btn primary\">Add book</button>\n        <p id=\"add-error\" class=\"error\" role=\"alert\" aria-live=\"assertive\"></p>\n      </form>\n    </section>\n\n    <section aria-labelledby=\"books-heading\">\n      <h2 id=\"books-heading\">Your books</h2>\n      <p id=\"empty-state\" class=\"empty-state\">No books yet. Add one above to start tracking.</p>\n      <ul id=\"book-list\" class=\"book-list\" aria-live=\"polite\"></ul>\n    </section>\n\n    <div id=\"status-region\" class=\"sr-only\" aria-live=\"polite\" aria-atomic=\"true\"></div>\n  </main>\n\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML page with form, book list, and live regions."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #f4f1de;\n  --surface: #ffffff;\n  --text: #2d2a32;\n  --primary: #3d5a80;\n  --primary-hover: #2c4366;\n  --accent: #ee6c4d;\n  --success: #4caf50;\n  --border: #d0ccc0;\n  --radius: 12px;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: var(--font);\n  font-size: 16px;\n  line-height: 1.5;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 1rem;\n}\n\n.card {\n  background: var(--surface);\n  border-radius: var(--radius);\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);\n  padding: 2rem;\n  width: 100%;\n  max-width: 600px;\n  margin: 1rem auto;\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 0.25rem;\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin-top: 1.5rem;\n  margin-bottom: 0.75rem;\n}\n\n.subtitle {\n  color: #6b6a6e;\n  margin-bottom: 1.5rem;\n}\n\n.field {\n  margin-bottom: 1rem;\n}\n\nlabel {\n  display: block;\n  font-weight: 600;\n  margin-bottom: 0.25rem;\n}\n\ninput[type=\"text\"],\ninput[type=\"number\"] {\n  width: 100%;\n  padding: 0.6rem 0.75rem;\n  font-size: 1rem;\n  font-family: inherit;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ninput:focus {\n  outline: none;\n  border-color: var(--primary);\n  box-shadow: 0 0 0 3px rgba(61, 90, 128, 0.25);\n}\n\n.btn {\n  display: inline-block;\n  padding: 0.6rem 1.25rem;\n  font-size: 1rem;\n  font-family: inherit;\n  font-weight: 600;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n\n.btn.primary {\n  background: var(--primary);\n  color: white;\n}\n\n.btn.primary:hover {\n  background: var(--primary-hover);\n}\n\n.btn.primary:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.btn.primary:active {\n  transform: scale(0.98);\n}\n\n.btn.small {\n  padding: 0.4rem 0.8rem;\n  font-size: 0.9rem;\n}\n\n.error {\n  color: var(--accent);\n  font-size: 0.9rem;\n  margin-top: 0.5rem;\n  min-height: 1.4em;\n}\n\n.empty-state {\n  color: #6b6a6e;\n  font-style: italic;\n  padding: 1rem 0;\n}\n\n.book-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 1.25rem;\n}\n\n.book-card {\n  border: 1px solid var(--border);\n  border-radius: var(--radius);\n  padding: 1rem;\n  background: #faf9f6;\n}\n\n.book-card.finished {\n  border-color: var(--success);\n  background: #f0faf0;\n}\n\n.book-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  flex-wrap: wrap;\n  gap: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.book-title {\n  font-size: 1.1rem;\n  font-weight: 700;\n  word-break: break-word;\n}\n\n.badge {\n  font-size: 0.8rem;\n  font-weight: 700;\n  padding: 0.15rem 0.5rem;\n  border-radius: 999px;\n  background: var(--success);\n  color: white;\n  white-space: nowrap;\n}\n\n.progress-container {\n  margin: 0.5rem 0;\n}\n\n.progress-bar {\n  height: 12px;\n  background: #e0e0e0;\n  border-radius: 999px;\n  overflow: hidden;\n}\n\n.progress-fill {\n  height: 100%;\n  width: 0%;\n  background: var(--primary);\n  border-radius: 999px;\n  transition: width 0.3s ease;\n}\n\n.progress-fill.finished {\n  background: var(--success);\n}\n\n.progress-text {\n  display: flex;\n  justify-content: space-between;\n  font-size: 0.9rem;\n  margin-top: 0.25rem;\n  color: #4a4a4a;\n}\n\n.log-form {\n  display: flex;\n  gap: 0.5rem;\n  margin-top: 0.75rem;\n  flex-wrap: wrap;\n  align-items: flex-end;\n}\n\n.log-form .field {\n  flex: 1 1 120px;\n  margin-bottom: 0;\n}\n\n.log-form label {\n  font-size: 0.85rem;\n  font-weight: 500;\n}\n\n.log-form input {\n  padding: 0.4rem 0.6rem;\n  font-size: 0.95rem;\n}\n\n.log-form .btn {\n  flex: 0 0 auto;\n}\n\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 1.25rem;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .log-form .field {\n    flex: 1 1 100%;\n  }\n}",
+      "description": "Stylesheet with palette, responsive layout, and interactive states."
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  // State\n  let books = [];\n  let nextId = 1;\n\n  // DOM references\n  const addForm = document.getElementById('add-book-form');\n  const titleInput = document.getElementById('book-title');\n  const pagesInput = document.getElementById('book-pages');\n  const addError = document.getElementById('add-error');\n  const bookList = document.getElementById('book-list');\n  const emptyState = document.getElementById('empty-state');\n  const statusRegion = document.getElementById('status-region');\n\n  // Helpers\n  function announce(message) {\n    statusRegion.textContent = '';\n    // Force reflow to ensure screen readers pick up repeated messages\n    void statusRegion.offsetWidth;\n    statusRegion.textContent = message;\n  }\n\n  function validatePageCount(value) {\n    const num = Number(value);\n    return Number.isInteger(num) && num > 0 ? num : null;\n  }\n\n  // Core logic\n  function addBook(title, pageCount) {\n    const trimmed = title.trim();\n    if (!trimmed) {\n      return { ok: false, error: 'Please enter a book title.' };\n    }\n    const pages = validatePageCount(pageCount);\n    if (pages === null) {\n      return { ok: false, error: 'Page count must be a positive whole number.' };\n    }\n    const book = {\n      id: nextId++,\n      title: trimmed,\n      pageCount: pages,\n      pagesRead: 0,\n      finished: false\n    };\n    books.push(book);\n    return { ok: true, book };\n  }\n\n  function logPages(bookId, amount) {\n    const book = books.find(b => b.id === bookId);\n    if (!book) return { ok: false, error: 'Book not found.' };\n    if (book.finished) return { ok: false, error: 'This book is already finished.' };\n    const num = Number(amount);\n    if (!Number.isInteger(num) || num <= 0) {\n      return { ok: false, error: 'Pages read must be a positive whole number.' };\n    }\n    const remaining = book.pageCount - book.pagesRead;\n    const toAdd = Math.min(num, remaining);\n    book.pagesRead += toAdd;\n    if (book.pagesRead >= book.pageCount) {\n      book.finished = true;\n    }\n    return { ok: true, book, added: toAdd };\n  }\n\n  // Rendering\n  function createBookCard(book) {\n    const li = document.createElement('li');\n    li.className = 'book-card' + (book.finished ? ' finished' : '');\n    li.dataset.id = book.id;\n\n    const header = document.createElement('div');\n    header.className = 'book-header';\n\n    const titleEl = document.createElement('span');\n    titleEl.className = 'book-title';\n    titleEl.textContent = book.title;\n\n    header.appendChild(titleEl);\n\n    if (book.finished) {\n      const badge = document.createElement('span');\n      badge.className = 'badge';\n      badge.textContent = 'Finished';\n      header.appendChild(badge);\n    }\n\n    li.appendChild(header);\n\n    const percent = Math.min(100, Math.round((book.pagesRead / book.pageCount) * 100));\n\n    const progressContainer = document.createElement('div');\n    progressContainer.className = 'progress-container';\n\n    const progressBar = document.createElement('div');\n    progressBar.className = 'progress-bar';\n    progressBar.setAttribute('role', 'progressbar');\n    progressBar.setAttribute('aria-valuemin', '0');\n    progressBar.setAttribute('aria-valuemax', '100');\n    progressBar.setAttribute('aria-valuenow', String(percent));\n    progressBar.setAttribute('aria-label', 'Reading progress for ' + book.title);\n\n    const fill = document.createElement('div');\n    fill.className = 'progress-fill' + (book.finished ? ' finished' : '');\n    fill.style.width = percent + '%';\n    progressBar.appendChild(fill);\n    progressContainer.appendChild(progressBar);\n\n    const progressText = document.createElement('div');\n    progressText.className = 'progress-text';\n    const pagesInfo = document.createElement('span');\n    pagesInfo.textContent = book.pagesRead + ' / ' + book.pageCount + ' pages';\n    const percentInfo = document.createElement('span');\n    percentInfo.textContent = percent + '%';\n    progressText.appendChild(pagesInfo);\n    progressText.appendChild(percentInfo);\n    progressContainer.appendChild(progressText);\n\n    li.appendChild(progressContainer);\n\n    if (!book.finished) {\n      const logForm = document.createElement('form');\n      logForm.className = 'log-form';\n      logForm.setAttribute('novalidate', '');\n\n      const field = document.createElement('div');\n      field.className = 'field';\n\n      const label = document.createElement('label');\n      label.htmlFor = 'log-pages-' + book.id;\n      label.textContent = 'Pages read';\n\n      const input = document.createElement('input');\n      input.type = 'number';\n      input.id = 'log-pages-' + book.id;\n      input.min = '1';\n      input.step = '1';\n      input.placeholder = 'e.g., 10';\n      input.required = true;\n\n      field.appendChild(label);\n      field.appendChild(input);\n\n      const btn = document.createElement('button');\n      btn.type = 'submit';\n      btn.className = 'btn primary small';\n      btn.textContent = 'Log pages';\n\n      logForm.appendChild(field);\n      logForm.appendChild(btn);\n\n      logForm.addEventListener('submit', function (e) {\n        e.preventDefault();\n        const val = input.value;\n        const result = logPages(book.id, val);\n        if (!result.ok) {\n          announce(result.error);\n          input.focus();\n          return;\n        }\n        input.value = '';\n        render();\n        if (result.book.finished) {\n          announce('Congratulations! You finished \"' + result.book.title + '\".');\n        } else {\n          announce('Logged ' + result.added + ' page' + (result.added === 1 ? '' : 's') + ' for \"' + result.book.title + '\".');\n        }\n      });\n\n      li.appendChild(logForm);\n    }\n\n    return li;\n  }\n\n  function render() {\n    bookList.innerHTML = '';\n    if (books.length === 0) {\n      emptyState.style.display = '';\n    } else {\n      emptyState.style.display = 'none';\n      books.forEach(function (book) {\n        bookList.appendChild(createBookCard(book));\n      });\n    }\n  }\n\n  // Event listeners\n  addForm.addEventListener('submit', function (e) {\n    e.preventDefault();\n    addError.textContent = '';\n    const title = titleInput.value;\n    const pages = pagesInput.value;\n    const result = addBook(title, pages);\n    if (!result.ok) {\n      addError.textContent = result.error;\n      (title.trim() ? pagesInput : titleInput).focus();\n      return;\n    }\n    titleInput.value = '';\n    pagesInput.value = '';\n    titleInput.focus();\n    render();\n    announce('Added \"' + result.book.title + '\" with ' + result.book.pageCount + ' pages.');\n  });\n\n  // Initial render\n  render();\n})();",
+      "description": "Application logic for adding books, logging pages, progress rendering, and accessibility announcements."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Reading Tracker\n\nA simple offline browser app to track your reading progress. Add books with a title and page count, log pages as you read, and watch the progress bar fill up. Books are automatically marked as finished when you reach 100%.\n\n## Features\n\n- Add books with a title and total page count.\n- Log pages read for each book.\n- Visual progress bar and percentage for every book.\n- Automatic \"Finished\" badge when pages read equals page count.\n- Fully keyboard accessible with visible focus states.\n- Responsive layout that works from 360px wide.\n- No external dependencies, network requests, or server code.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter a book title and page count in the \"Add a book\" form, then click \"Add book\".\n3. For each book, enter the number of pages you've read and click \"Log pages\".\n4. Watch the progress bar and percentage update. When you reach the total page count, the book is marked as finished.\n\n## File Structure\n\n- `index.html` – main HTML structure.\n- `styles.css` – styling and responsive layout.\n- `app.js` – application logic and event handling.\n- `README.md` – this file.\n\n## Technical Notes\n\n- Uses plain JavaScript (no frameworks or libraries).\n- All event handlers are attached via `addEventListener`.\n- State is kept in memory; refreshing the page resets the book list.\n- Progress bars are drawn with CSS and updated dynamically.\n- Accessible labels, ARIA live regions, and keyboard support are included.\n\n## Browser Support\n\nWorks in all modern browsers (Chrome, Firefox, Safari, Edge).\n",
+      "description": "Project documentation with features, usage, and file structure."
+    }
+  ]
+}

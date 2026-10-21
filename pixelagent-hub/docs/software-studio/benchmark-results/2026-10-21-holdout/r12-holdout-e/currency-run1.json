@@ -1,0 +1,475 @@
+{
+  "caseId": "currency",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 19,
+  "reportedTokens": 9178,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:19:27.624Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:19:27.625Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:19:31.566Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Currency Converter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:19:31.566Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:19:39.118Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:19:39.118Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:19:39.654Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:19:39.655Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "22acdc66-6687-4f5f-9db6-f2149df4e913"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:19:42.486Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "22acdc66-6687-4f5f-9db6-f2149df4e913",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:19:42.486Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "testPlanId": "22acdc66-6687-4f5f-9db6-f2149df4e913",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Default conversion USD to EUR",
+        "passed": true,
+        "actual": "0.92"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Result code shows target currency",
+        "passed": true,
+        "actual": "EUR"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Convert 100 USD to JPY",
+        "passed": true,
+        "actual": "14950.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Convert 10 EUR to CNY",
+        "passed": true,
+        "actual": "78.70"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Swap flips currencies and recalculates",
+        "passed": true,
+        "actual": "USD"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Swap result value recalculated",
+        "passed": true,
+        "actual": "1.09"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Zero amount yields zero",
+        "passed": true,
+        "actual": "0.00"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Result always two decimals",
+        "passed": true,
+        "actual": "21.72"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Four currency options in from select",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "name": "Four currency options in to select",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:19:45.732Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "71abff49-9c32-443b-9ee1-c86e163326e8",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:19:45.736Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Default conversion USD to EUR",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1"
+          }
+        ],
+        "selector": "#result",
+        "expected": "0.92"
+      },
+      {
+        "name": "Result code shows target currency",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1"
+          }
+        ],
+        "selector": "#result-code",
+        "expected": "EUR"
+      },
+      {
+        "name": "Convert 100 USD to JPY",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "100"
+          },
+          {
+            "type": "input",
+            "selector": "#from",
+            "value": "USD"
+          },
+          {
+            "type": "input",
+            "selector": "#to",
+            "value": "JPY"
+          }
+        ],
+        "selector": "#result",
+        "expected": "14950.00"
+      },
+      {
+        "name": "Convert 10 EUR to CNY",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#from",
+            "value": "EUR"
+          },
+          {
+            "type": "input",
+            "selector": "#to",
+            "value": "CNY"
+          }
+        ],
+        "selector": "#result",
+        "expected": "78.70"
+      },
+      {
+        "name": "Swap flips currencies and recalculates",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#from",
+            "value": "USD"
+          },
+          {
+            "type": "input",
+            "selector": "#to",
+            "value": "EUR"
+          },
+          {
+            "type": "click",
+            "selector": "#swap"
+          }
+        ],
+        "selector": "#result-code",
+        "expected": "USD"
+      },
+      {
+        "name": "Swap result value recalculated",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#from",
+            "value": "USD"
+          },
+          {
+            "type": "input",
+            "selector": "#to",
+            "value": "EUR"
+          },
+          {
+            "type": "click",
+            "selector": "#swap"
+          }
+        ],
+        "selector": "#result",
+        "expected": "1.09"
+      },
+      {
+        "name": "Zero amount yields zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#from",
+            "value": "USD"
+          },
+          {
+            "type": "input",
+            "selector": "#to",
+            "value": "JPY"
+          }
+        ],
+        "selector": "#result",
+        "expected": "0.00"
+      },
+      {
+        "name": "Result always two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#from",
+            "value": "USD"
+          },
+          {
+            "type": "input",
+            "selector": "#to",
+            "value": "CNY"
+          }
+        ],
+        "selector": "#result",
+        "expected": "^\\d+\\.\\d{2}$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Four currency options in from select",
+        "actions": [],
+        "selector": "#from option",
+        "expected": "4",
+        "assertion": "count"
+      },
+      {
+        "name": "Four currency options in to select",
+        "actions": [],
+        "selector": "#to option",
+        "expected": "4",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "Cannot verify pixel-art styling, fonts or responsive layout visually.",
+      "Cannot test real keyboard typing; input actions set values directly.",
+      "Rounding of exact half-cent values is not specified, so only clearly rounded cases are asserted."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3945,
+      "completion_tokens": 619,
+      "total_tokens": 4564,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 2665
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Pixel Currency Converter</title>\n<link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n<main class=\"card\" aria-labelledby=\"app-title\">\n  <h1 id=\"app-title\" class=\"title\">Pixel Currency</h1>\n  <p class=\"subtitle\">Fixed rates · offline</p>\n\n  <div class=\"field\">\n    <label for=\"amount\">Amount</label>\n    <input id=\"amount\" type=\"number\" inputmode=\"decimal\" min=\"0\" step=\"any\" value=\"1\" autocomplete=\"off\">\n  </div>\n\n  <div class=\"row\">\n    <div class=\"field\">\n      <label for=\"from\">From</label>\n      <select id=\"from\"></select>\n    </div>\n    <button id=\"swap\" class=\"swap\" type=\"button\" aria-label=\"Swap currencies\">⇄</button>\n    <div class=\"field\">\n      <label for=\"to\">To</label>\n      <select id=\"to\"></select>\n    </div>\n  </div>\n\n  <div class=\"result\" aria-live=\"polite\">\n    <span id=\"result\" class=\"result-value\">0.00</span>\n    <span id=\"result-code\" class=\"result-code\"></span>\n  </div>\n\n  <p class=\"note\">Rates are built in and fixed.</p>\n</main>\n<script src=\"script.js\"></script>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1b1f3b;\n  --panel: #2a2f55;\n  --ink: #f4f4ff;\n  --accent: #ffd23f;\n  --accent2: #4ad6c4;\n  --border: #0d0f22;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  background:\n    repeating-linear-gradient(0deg, transparent 0 15px, rgba(255,255,255,0.03) 15px 16px),\n    repeating-linear-gradient(90deg, transparent 0 15px, rgba(255,255,255,0.03) 15px 16px),\n    var(--bg);\n  color: var(--ink);\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 16px;\n}\n\n.card {\n  width: 100%;\n  max-width: 440px;\n  background: var(--panel);\n  border: 4px solid var(--border);\n  box-shadow: 8px 8px 0 var(--border);\n  padding: 28px 22px;\n  text-align: center;\n}\n\n.title {\n  margin: 0 0 4px;\n  font-size: 1.75rem;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n\n.subtitle {\n  margin: 0 0 24px;\n  font-size: 0.95rem;\n  color: var(--accent2);\n  letter-spacing: 1px;\n}\n\n.field {\n  display: flex;\n  flex-direction: column;\n  text-align: left;\n  margin-bottom: 18px;\n  flex: 1;\n}\n\nlabel {\n  margin-bottom: 6px;\n  font-size: 0.9rem;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: var(--accent2);\n}\n\ninput, select {\n  width: 100%;\n  font: inherit;\n  font-size: 1.1rem;\n  padding: 12px;\n  color: var(--ink);\n  background: var(--bg);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  outline: none;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\n\ninput:hover, select:hover { border-color: var(--accent2); }\n\ninput:focus-visible, select:focus-visible, button:focus-visible {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(255, 210, 63, 0.5);\n}\n\n.row {\n  display: flex;\n  align-items: flex-end;\n  gap: 10px;\n  margin-bottom: 18px;\n}\n\n.row .field { margin-bottom: 0; }\n\n.swap {\n  font: inherit;\n  font-size: 1.4rem;\n  line-height: 1;\n  padding: 12px 14px;\n  cursor: pointer;\n  color: var(--border);\n  background: var(--accent);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  box-shadow: 4px 4px 0 var(--border);\n  transition: transform 0.08s, box-shadow 0.08s, background 0.15s;\n}\n\n.swap:hover { background: var(--accent2); }\n.swap:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--border); }\n\n.result {\n  display: flex;\n  align-items: baseline;\n  justify-content: center;\n  gap: 10px;\n  padding: 18px;\n  margin-bottom: 18px;\n  background: var(--bg);\n  border: 3px solid var(--border);\n}\n\n.result-value {\n  font-size: 2rem;\n  font-weight: 700;\n  color: var(--accent);\n  word-break: break-all;\n}\n\n.result-code {\n  font-size: 1rem;\n  color: var(--accent2);\n  letter-spacing: 1px;\n}\n\n.note {\n  margin: 0;\n  font-size: 0.8rem;\n  color: rgba(244, 244, 255, 0.6);\n}\n\n@media (max-width: 420px) {\n  .row { flex-direction: column; align-items: stretch; }\n  .swap { align-self: center; }\n  .result-value { font-size: 1.6rem; }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  \"use strict\";\n\n  // Fixed built-in rates relative to 1 USD.\n  var RATES = { USD: 1, EUR: 0.92, JPY: 149.5, CNY: 7.24 };\n  var CURRENCIES = [\"USD\", \"EUR\", \"JPY\", \"CNY\"];\n\n  var amountEl = document.getElementById(\"amount\");\n  var fromEl = document.getElementById(\"from\");\n  var toEl = document.getElementById(\"to\");\n  var swapEl = document.getElementById(\"swap\");\n  var resultEl = document.getElementById(\"result\");\n  var resultCodeEl = document.getElementById(\"result-code\");\n\n  function populate(select, selected) {\n    CURRENCIES.forEach(function (code) {\n      var opt = document.createElement(\"option\");\n      opt.value = code;\n      opt.textContent = code;\n      select.appendChild(opt);\n    });\n    select.value = selected;\n  }\n\n  populate(fromEl, \"USD\");\n  populate(toEl, \"EUR\");\n\n  function convert() {\n    var raw = parseFloat(amountEl.value);\n    var amount = isFinite(raw) && raw >= 0 ? raw : 0;\n    var from = fromEl.value;\n    var to = toEl.value;\n    var usd = amount / RATES[from];\n    var out = usd * RATES[to];\n    resultEl.textContent = out.toFixed(2);\n    resultCodeEl.textContent = to;\n  }\n\n  amountEl.addEventListener(\"input\", convert);\n  fromEl.addEventListener(\"change\", convert);\n  toEl.addEventListener(\"change\", convert);\n\n  swapEl.addEventListener(\"click\", function () {\n    var tmp = fromEl.value;\n    fromEl.value = toEl.value;\n    toEl.value = tmp;\n    convert();\n  });\n\n  convert();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Currency Converter\n\nAn offline, pixel-themed currency converter with fixed built-in rates for **USD, EUR, JPY and CNY**.\n\n## Features\n\n- Convert any amount between the four currencies using fixed rates.\n- Swap button flips the from/to selections and recalculates.\n- Result shown to two decimals.\n- Fully offline: plain HTML, CSS and JavaScript. No imports, packages, network requests or external assets.\n- Keyboard accessible: labeled controls, visible focus states.\n- Responsive layout down to 360px wide.\n\n## Fixed rates (relative to 1 USD)\n\n| Currency | Rate |\n| -------- | ---- |\n| USD      | 1    |\n| EUR      | 0.92 |\n| JPY      | 149.5|\n| CNY      | 7.24 |\n\nCross-rates are computed via USD for accuracy.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter an amount.\n3. Choose the source and target currencies.\n4. Read the converted value, or press the swap button (⇄) to reverse.\n\n## Files\n\n- `index.html` — markup and controls\n- `styles.css` — pixel-style theme and responsive layout\n- `script.js` — conversion logic and event listeners\n",
+      "description": ""
+    }
+  ]
+}
