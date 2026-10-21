@@ -18,6 +18,7 @@ import { createOrchestrator } from '../src/factory.js';
 import { MockProvider } from '../src/core/llm/mock.js';
 import { RunRuntime } from '../src/web/runRuntime.js';
 import { createStudioApi } from '../src/web/studioApi.js';
+import { stageLiveReplay } from './lib/replay-live.js';
 // @ts-expect-error -- plain ESM helper shared with portfolio-demo.mjs
 import { seriesDirectory, showcaseDirectory, stageBenchmarkProject, stageRepairEvidence } from './lib/evidence.mjs';
 
@@ -114,6 +115,28 @@ const stageShowcase = async () => {
   return cases;
 };
 
+const stageUnseen = async () => {
+  const ideas = (await Promise.all(['live-holdout-h-cases', 'live-holdout-c-cases', 'live-holdout-e-cases', 'live-showcase-cases'].map(async (name) => JSON.parse(await readFile(resolve(`config/${name}.json`), 'utf8')) as { id: string; title: string; description: string }[]))).flat();
+  const records = [
+    ...['parking', 'elevator', 'match-three-lite', 'invoice', 'pomodoro-cycles', 'library', 'temperature-chart', 'door-lock'].map((id) => ({ path: `2026-10-21-tester-model/chat/${id}-run1.json`, bug: false, note: 'Real DeepSeek run on an idea never used for tuning, 2026-10-21.' })),
+    { path: '2026-10-21-holdout/r10-holdout-c/mortgage-run2.json', bug: true, note: 'The checks caught a loan total that is four cents off.' },
+    { path: '2026-10-21-holdout/r10-showcase/tip-calc-run1.json', bug: true, note: 'The checks caught $27.775 being rounded down.' },
+    { path: '2026-10-21-holdout/r12-holdout-e/typing-run2.json', bug: true, note: 'The checks caught display:flex overriding the hidden attribute.' },
+    { path: '2026-10-21-tester-model/v4-pro/invoice-run2.json', bug: true, note: 'The checks caught a runtime error in the invoice app.' },
+  ];
+  const cases = [];
+  for (const { path, bug, note } of records) {
+    const caseId = path.split('/').at(-1)!.replace(/-run\d+\.json$/, '');
+    const idea = ideas.find((item) => item.id === caseId)!;
+    const { projectId, saved } = await stageLiveReplay(studioRoot, path, idea.description);
+    cases.push({ projectId, kind: 'real-model', group: 'unseen', caseId, run: saved.run, bug, note,
+      title: `${idea.title} · unseen idea`, checks: saved.finalChecks,
+      outcome: saved.status !== 'ready_for_review' ? 'not-built' : saved.fullPass ? 'passed' : 'checks-failed',
+    });
+  }
+  return cases;
+};
+
 try {
   const mock = await post('/api/studio/projects', { description: MOCK_DESCRIPTION });
   await waitFor(mock.jobId);
@@ -129,6 +152,7 @@ try {
   const evidence: { stage: string; projectId: string }[] = await stageRepairEvidence(studioRoot);
   const series = await stageSeries();
   const showcase = await stageShowcase();
+  const unseen = await stageUnseen();
 
   await rm(out, { recursive: true, force: true });
   const list = await (await call('/api/studio/projects')).json();
@@ -154,6 +178,7 @@ try {
       { projectId: mock.projectId, kind: 'mock', group: 'featured', title: 'Offline mock model: real compile, repair and browser test', note: 'Agents use the offline mock model. Round 1 contains a deliberate syntax error; the real esbuild error goes back to the Coder and round 2 fixes it. Event timing is as recorded.' },
       ...evidence.map(({ stage, projectId }) => ({ projectId, kind: 'real-model', group: 'featured', title: { baseline: 'Real model: counter', fault: 'Real model: injected +2 bug caught by the browser test', repaired: 'Real model: repaired from the browser evidence' }[stage], note: 'Saved 2026-10-09 run with DeepSeek. The timeline is rebuilt from the saved record; only start and finish times are real.' })),
       ...showcase,
+      ...unseen,
       ...series,
     ],
   };
