@@ -18,13 +18,20 @@ export const codeSchema = z.object({
 });
 
 const selector = z.string().min(1).max(160);
+const nth = z.number().int().min(0).max(49).optional();
 const action = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('click'), selector }).strict(),
-  z.object({ type: z.literal('input'), selector, value: z.string().max(300) }).strict(),
-  z.object({ type: z.literal('key'), selector, key: z.string().min(1).max(32) }).strict(),
+  z.object({ type: z.literal('click'), selector, nth }).strict(),
+  z.object({ type: z.literal('input'), selector, nth, value: z.string().max(300) }).strict(),
+  z.object({ type: z.literal('key'), selector, nth, key: z.string().min(1).max(32) }).strict(),
 ]);
 // changed/unchanged: text relative to before actions; text: rendered text; disabled: native :disabled state; visible: shown; count: matches; attribute: exact attribute or live value.
-export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, expected: z.string().max(300), assertion: z.enum(['text', 'disabled', 'visible', 'count', 'attribute', 'changed', 'unchanged']).optional(), attribute: z.string().regex(/^[a-z][a-z0-9-]{0,49}$/).optional() }).strict()
+export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, nth, expected: z.string().max(300), assertion: z.enum(['text', 'matches', 'disabled', 'visible', 'count', 'attribute', 'changed', 'unchanged']).optional(), attribute: z.string().regex(/^[a-z][a-z0-9-]{0,49}$/).optional() }).strict()
+  .refine((check) => check.assertion !== 'count' || check.nth === undefined, 'Count forbids nth')
+  .refine((check) => {
+    if (check.assertion !== 'matches') return true;
+    if (check.expected.length < 1 || check.expected.length > 200 || /\([^)]*[+*][^)]*\)[+*{]/.test(check.expected)) return false;
+    try { new RegExp(check.expected, 'u'); return true; } catch { return false; }
+  }, 'Matches requires a valid 1–200 character Unicode pattern without nested group quantifiers')
   .refine((check) => !['disabled', 'visible'].includes(check.assertion || 'text') || ['true', 'false'].includes(check.expected), 'Disabled and visible assertions require expected "true" or "false"')
   .refine((check) => !['changed', 'unchanged'].includes(check.assertion || '') || check.expected === '', 'Changed and unchanged require expected empty')
   .refine((check) => !['changed', 'unchanged'].includes(check.assertion || '') || check.actions.length > 0, 'changed and unchanged need at least one action')

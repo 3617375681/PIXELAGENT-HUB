@@ -27,11 +27,16 @@ export const parseCodeOutput = (object: unknown) => {
   return { language, files, explanation, dependencies };
 };
 
-/** Model-written checks: null optional assertion/attribute fields mean omitted. */
+/** Model-written checks: null optional assertion/attribute/nth fields mean omitted. */
 const normaliseCheck = (check: unknown) => {
   if (!check || typeof check !== 'object' || Array.isArray(check)) return check;
-  const { assertion, attribute, ...rest } = check as Record<string, unknown>;
-  return { ...rest, ...(['changed', 'unchanged'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
+  const { assertion, attribute, nth, actions, ...rest } = check as Record<string, unknown>;
+  const normalisedActions = Array.isArray(actions) ? actions.map((action) => {
+    if (!action || typeof action !== 'object' || Array.isArray(action)) return action;
+    const { nth, ...rest } = action;
+    return { ...rest, ...(nth == null ? {} : { nth }) };
+  }) : actions;
+  return { ...rest, actions: normalisedActions, ...(nth == null ? {} : { nth }), ...(['changed', 'unchanged'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
 };
 
 /**

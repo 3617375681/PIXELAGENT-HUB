@@ -190,3 +190,24 @@ it('relative assertions accept source text and reject missing or ambiguous later
   const [source] = await runDOMChecks(document, [{ name: 'Source fallback', actions: [{ type: 'click', selector: '#button' }], selector: '#value', assertion: 'unchanged', expected: '' }]);
   expect(source).toMatchObject({ status: 'passed', actual: 'A B!' });
 });
+
+it('matches hex formats against rendered or source text and rejects short values', async () => {
+  const document = { querySelectorAll: (selector: string) => [{ innerText: selector === '#source' ? '#a2751c' : selector === '#short' ? '#A2751' : '  #A2751C  ', textContent: selector === '#short' ? '#A2751' : '#A2751C' }] } as unknown as Document;
+  const results = await runDOMChecks(document, ['#valid', '#source', '#short'].map((selector) => ({ name: selector, actions: [], selector, assertion: 'matches', expected: '^#[0-9A-F]{6}$' })));
+  expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'failed']);
+});
+
+it('selects nth for actions and checks, including relative checks and out-of-range errors', async () => {
+  const buttons = [{ textContent: 'First', click: () => { throw new Error('Wrong button'); } }, { textContent: 'Second', click: () => { buttons[1].textContent = 'Clicked'; } }];
+  const document = { querySelectorAll: () => buttons } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Second text', actions: [], selector: 'button', nth: 1, expected: 'Second' },
+    { name: 'Second click', actions: [{ type: 'click', selector: 'button', nth: 1 }], selector: 'button', nth: 1, assertion: 'changed', expected: '' },
+    { name: 'Clicked text', actions: [], selector: 'button', nth: 1, expected: 'Clicked' },
+    { name: 'Kept', actions: [{ type: 'click', selector: 'button', nth: 1 }], selector: 'button', nth: 1, assertion: 'unchanged', expected: '' },
+    { name: 'Missing check', actions: [], selector: 'button', nth: 2, expected: '' },
+    { name: 'Missing action', actions: [{ type: 'click', selector: 'button', nth: 2 }], selector: 'button', nth: 0, expected: '' },
+  ]);
+  expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'passed', 'passed', 'failed', 'failed']);
+  expect(results.slice(4).map((result) => result.error)).toEqual(Array(2).fill('Selector matched 2 elements, no index 2: button'));
+});
