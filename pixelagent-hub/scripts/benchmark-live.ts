@@ -17,7 +17,8 @@ import { chromium } from 'playwright';
 import { parseArms, rotateArms } from '../src/studio/benchmarkArms.js';
 
 const [distArg, outArg] = process.argv.slice(2);
-if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs N] [--model M] [--tester-model M] [--only ids] [--arms "strategy=manager-coder;strategy=coder-only"]');
+const baseUrl = process.argv.includes('--base-url') ? process.argv[process.argv.indexOf('--base-url') + 1] : undefined;
+if (!distArg || !outArg || (!baseUrl && !process.env.DEEPSEEK_API_KEY)) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs N] [--model M] [--tester-model M] [--only ids] [--base-url http://localhost:8787/v1] [--arms "strategy=manager-coder;strategy=coder-only"]');
 const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
 const strategy = argument('--strategy') ?? 'manager-coder';
 if (!['manager-coder', 'coder-only'].includes(strategy)) throw new Error('--strategy must be manager-coder or coder-only');
@@ -56,8 +57,10 @@ try {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await context.newPage();
     let tokens = 0;
-    await page.route('https://api.deepseek.com/**', async (route) => {
-      const upstream = await fetch('https://api.deepseek.com/chat/completions', { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` }, body: route.request().postData() || '{}' });
+    // With --base-url the page talks to a local OpenAI-compatible server (no key); otherwise to DeepSeek with the real key.
+    await page.route(baseUrl ? `${baseUrl.replace(/\/$/, '')}/**` : 'https://api.deepseek.com/**', async (route) => {
+      if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type, authorization', 'access-control-allow-methods': 'POST, OPTIONS' } });
+      const upstream = await fetch(baseUrl ? `${baseUrl.replace(/\/$/, '')}/chat/completions` : 'https://api.deepseek.com/chat/completions', { method: 'POST', headers: { 'content-type': 'application/json', ...(baseUrl ? {} : { authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}` }) }, body: route.request().postData() || '{}' });
       const body = Buffer.from(await upstream.arrayBuffer());
       for (const match of body.toString('utf8').matchAll(/"total_tokens":(\d+)/g)) tokens += Number(match[1]);
       await route.fulfill({ status: upstream.status, headers: { 'content-type': upstream.headers.get('content-type') || 'text/event-stream', 'access-control-allow-origin': '*' }, body });
@@ -66,8 +69,13 @@ try {
     await page.goto(`${servers.get(arm.dist)!.origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}&strategy=${arm.strategy}`);
     await page.waitForSelector('.studio-stage');
     await page.getByRole('button', { name: /BUILD LIVE/ }).click();
-    await page.locator('#live-provider').selectOption('deepseek');
-    await page.locator('#live-key').fill('sk-benchmark-0000000000000000000000000000');
+    if (baseUrl) {
+      await page.locator('#live-provider').selectOption('custom');
+      await page.locator('#live-base-url').fill(baseUrl);
+    } else {
+      await page.locator('#live-provider').selectOption('deepseek');
+      await page.locator('#live-key').fill('sk-benchmark-0000000000000000000000000000');
+    }
     await page.locator('#live-model').fill(arm.model);
     await page.locator('#live-tester-model').fill(arm.testerModel);
     await page.getByRole('button', { name: /SAVE & BUILD/ }).click();
