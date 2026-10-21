@@ -109,7 +109,11 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           const target = await element(action.selector, action.nth);
           if (action.type === 'click') await target.click();
           else if (action.type === 'input') {
-            if (await target.evaluate((element) => element.tagName) === 'SELECT') await target.selectOption(action.value);
+            const kind = await target.evaluate((element) => element.tagName === 'INPUT' ? (element as HTMLInputElement).type : element.tagName);
+            if (kind === 'checkbox' || kind === 'radio') {
+              if (action.value === 'false') await target.uncheck();
+              else await target.check();
+            } else if (kind === 'SELECT') await target.selectOption(action.value);
             else await target.fill(action.value);
           }
           else await target.press(action.key);

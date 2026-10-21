@@ -211,3 +211,18 @@ it('selects nth for actions and checks, including relative checks and out-of-ran
   expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'passed', 'passed', 'failed', 'failed']);
   expect(results.slice(4).map((result) => result.error)).toEqual(Array(2).fill('Selector matched 2 elements, no index 2: button'));
 });
+
+
+it.each(['radio', 'checkbox'])('input clicks a %s into the wanted checked state and leaves its value alone', async (type) => {
+  const clicks: boolean[] = [];
+  // A native click toggles the state (and fires click, input and change itself).
+  const input = { tagName: 'INPUT', type, checked: false, value: '2', click() { this.checked = !this.checked; clicks.push(this.checked); } };
+  const document = { querySelectorAll: () => [input] } as unknown as Document;
+  for (const value of ['2', 'true', 'false', 'false', '']) {
+    const [result] = await runDOMChecks(document, [{ name: 'State', actions: [{ type: 'input', selector: '#input', value }], selector: '#input', assertion: 'attribute', attribute: 'checked', expected: String(value !== 'false') }]);
+    expect(result.status).toBe('passed');
+    expect(input.value).toBe('2');
+  }
+  // Clicked only when the state had to change: on, (already on), off, (already off), on.
+  expect(clicks).toEqual([true, false, true]);
+});

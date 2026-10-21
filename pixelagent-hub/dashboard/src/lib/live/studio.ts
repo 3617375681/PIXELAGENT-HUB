@@ -94,7 +94,7 @@ function finishFailed(entry: Entry, error: string, status: 'failed' | 'cancelled
 
 // ---- agents ----
 type AgentReply<T> = { output: T & { llmUsage?: LlmUsage; llmModel: string; llmProvider: string } };
-async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) => T, signal: AbortSignal, timeoutMs: number): Promise<AgentReply<T>> {
+async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) => T, signal: AbortSignal, timeoutMs: number, temperature = 0.7): Promise<AgentReply<T>> {
   const credentials = liveCredentials();
   if (!credentials) throw new Error('Add a model key to build live.');
   const controller = new AbortController();
@@ -104,7 +104,7 @@ async function ask<T>(agent: string, prompt: Prompt, parse: (object: unknown) =>
   const limit = liveProvider(credentials.provider).custom ? Math.max(timeoutMs, LOCAL_AGENT_TIMEOUT_MS) : timeoutMs;
   const timer = setTimeout(() => controller.abort(new Error(`${agent} exceeded its ${limit / 1000} s limit`)), limit);
   try {
-    const reply = await liveChat(credentials, prompt, controller.signal);
+    const reply = await liveChat(credentials, prompt, controller.signal, { json: true, temperature });
     return { output: { ...parse(parseModelObject(reply.content)), llmUsage: reply.usage, llmModel: reply.model, llmProvider: credentials.provider } };
   } catch (error) {
     if (signal.aborted) throw signal.reason;
@@ -244,7 +244,7 @@ async function planChecks(entry: Entry, signal: AbortSignal) {
     // Like a compile error for the Coder: a plan the schema rejects goes back to the Tester once.
     for (let attempt = 1; ; attempt++) {
       try {
-        result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [], ...(plan.error ? { invalidPlanFeedback: invalidPlanFeedback(plan.error) } : {}) }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS);
+        result = await ask('Tester', testerPrompt(project.description, { files: entry.files, changeRequests: [], ...(plan.error ? { invalidPlanFeedback: invalidPlanFeedback(plan.error) } : {}) }), parseTestPlanOutput, signal, AGENT_TIMEOUT_MS, 0.2);
         if (attempt > 1) plan.error = undefined;
         break;
       } catch (error) {
@@ -279,7 +279,7 @@ async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: Brows
   emit(entry, 'test_plan_started', { planId, review: true });
   try {
     const failures = failing.map((result) => ({ check: checks.find((check) => check.name === result.name), actual: result.actual, error: result.error }));
-    const reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name), checks.length) }), signal, AGENT_TIMEOUT_MS);
+    const reply = await ask('Tester', testerReviewPrompt(project.description, { files: entry.files, failures }), (object) => ({ verdicts: parseTesterReview(object, failing.map((result) => result.name), checks.length) }), signal, AGENT_TIMEOUT_MS, 0.2);
     const { verdicts } = reply.output;
     const unsupported = verdicts.filter((verdict) => verdict.verdict === 'unsupported');
     const removed = checks.some((check) => !unsupported.some((verdict) => verdict.name === check.name)) ? unsupported : [];

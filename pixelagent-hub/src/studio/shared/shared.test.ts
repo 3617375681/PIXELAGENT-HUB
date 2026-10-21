@@ -192,3 +192,21 @@ test('null nth is omitted on checks and actions and reason-first reviews parse',
   assert.equal(review.verdict, 'check-wrong');
   assert.deepEqual(review.check, parsed);
 });
+
+
+test('review facts derive verdicts, override legacy verdicts and keep unsupported bounded', async () => {
+  const { parseTesterReview } = await import('./parse.js');
+  const check = { name: 'Fixed', actions: [], selector: '#count', expected: '1' };
+  const verdicts = [
+    { name: 'Fixed', reason: 'Wrong expectation', correctAppPasses: false, verdict: 'app-wrong', check },
+    { name: 'Unsupported', reason: 'No valid correction', correctAppPasses: false },
+    { name: 'Capped', reason: 'No valid correction', correctAppPasses: false },
+    { name: 'App', reason: 'App fails requirement', correctAppPasses: true, verdict: 'unsupported', check: { ...check, name: 'App' } },
+  ];
+  assert.deepEqual(parseTesterReview({ verdicts }, verdicts.map((item) => item.name), 4).map((item) => item.verdict), ['check-wrong', 'unsupported', 'app-wrong', 'app-wrong']);
+  for (const correction of [undefined, { ...check, name: 'Other' }, { ...check, actions: [{ type: 'wait' }] }]) {
+    const item = { name: 'Fixed', reason: 'No valid correction', correctAppPasses: false, check: correction };
+    assert.equal(parseTesterReview({ verdicts: [item] }, ['Fixed'], 1)[0].verdict, 'unsupported');
+    assert.equal(parseTesterReview({ verdicts: [{ ...item, reason: ' ' }] }, ['Fixed'], 1)[0].verdict, 'app-wrong');
+  }
+});

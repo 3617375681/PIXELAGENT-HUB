@@ -238,3 +238,22 @@ test('real browser matches formats and selects nth for actions and assertions', 
     assert.equal(run.checks[5].error, 'Selector matched 2 elements, no index 2: button');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+
+test('real browser input actions select radios and set checkboxes', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-checked-'));
+  try {
+    const content = '<html><body><input type="radio" name="dice" id="one" value="1" checked><input type="radio" name="dice" id="two" value="2"><input type="checkbox" id="box"></body></html>';
+    const actions = [{ type: 'input', selector: '#two', value: '2' }];
+    const checks = { checks: [
+      { name: 'Radio selected', actions, selector: '#two', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+      { name: 'Other radio cleared', actions: [], selector: '#one', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+      { name: 'Checkbox selected', actions: [{ type: 'input', selector: '#box', value: 'true' }], selector: '#box', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+      { name: 'Checkbox cleared', actions: [{ type: 'input', selector: '#box', value: 'false' }], selector: '#box', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+      { name: 'Radio value preserved', actions: [], selector: '#two', assertion: 'attribute', attribute: 'value', expected: '2' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.equal(run.checks.length, 5);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

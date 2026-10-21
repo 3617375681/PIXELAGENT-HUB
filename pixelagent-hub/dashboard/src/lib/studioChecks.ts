@@ -24,9 +24,15 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         if (action.type === 'click') target.click();
         else if (action.type === 'input') {
           if (!['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) throw new Error('Input action requires an input, textarea or select');
-          (target as HTMLInputElement).value = action.value;
-          target.dispatchEvent(new Event('input', { bubbles: true }));
-          target.dispatchEvent(new Event('change', { bubbles: true }));
+          // Checkboxes and radios are clicked into the wanted state (click, input and change fire
+          // natively), like Playwright's check()/uncheck() on the server.
+          if (target.tagName === 'INPUT' && ['checkbox', 'radio'].includes((target as HTMLInputElement).type)) {
+            if ((target as HTMLInputElement).checked !== (action.value !== 'false')) target.click();
+          } else {
+            (target as HTMLInputElement).value = action.value;
+            target.dispatchEvent(new Event('input', { bubbles: true }));
+            target.dispatchEvent(new Event('change', { bubbles: true }));
+          }
         } else if (action.type === 'key') {
           target.focus(); target.dispatchEvent(new KeyboardEvent('keydown', { key: action.key, bubbles: true }));
         } else throw new Error('Unsupported check action');

@@ -214,7 +214,7 @@ it('a custom provider runs without a key against the server the visitor entered'
   expect(new Set(fetchMock.mock.calls.map(([url]) => url))).toEqual(new Set(['http://localhost:11434/v1/chat/completions']));
 });
 
-const review = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => ({ verdicts: [{ name: 'Adds one', verdict, reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : verdict === 'unsupported' ? 'Cannot read canvas pixels.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
+const review = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => ({ verdicts: [{ name: 'Adds one', correctAppPasses: verdict === 'app-wrong', reason: verdict === 'check-wrong' ? 'The check never clicked the button.' : verdict === 'unsupported' ? 'Cannot read canvas pixels.' : 'The app adds two.', ...(verdict === 'check-wrong' ? { check: { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' } } : {}) }] });
 const routed = (verdict: 'check-wrong' | 'app-wrong' | 'unsupported') => async (_url: string, init: RequestInit) => {
   const system: string = JSON.parse(String(init.body)).messages[0].content;
   return sse(system.includes('project manager') ? plan : system.includes('You review failing browser checks') ? review(verdict) : system.includes('test planner') ? testPlan : code);
@@ -230,13 +230,19 @@ it('a check the Tester judges wrong is corrected and rerun, without sending the 
   const types = events.map((event) => event.type);
   expect(types.slice(types.indexOf('browser_run_finished'))).toEqual(['browser_run_finished', 'test_plan_started', 'test_plan_ready', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
   expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 1, verdicts: [{ name: 'Adds one', verdict: 'check-wrong' }] });
+  for (const [, init] of fetchMock.mock.calls) {
+    const body = JSON.parse(String(init.body));
+    expect(body.temperature).toBe(/test planner|review failing/.test(body.messages[0].content) ? 0.2 : 0.7);
+    expect(body.response_format).toEqual({ type: 'json_object' });
+  }
   expect(build).toHaveBeenCalledTimes(1);
   // The rerun used the corrected check.
   expect((checks.mock.calls[1][1] as { actions: unknown[] }[])[0].actions).toEqual([{ type: 'click', selector: '#add' }]);
 });
 
-it('a failure the Tester stands by still goes to the Coder', async () => {
-  fetchMock.mockImplementation(routed('app-wrong'));
+it.each([false, true])('a failure the Tester stands by still goes to the Coder (legacy: %s)', async (legacy) => {
+  fetchMock.mockImplementation(async (url: string, init: RequestInit) => legacy && JSON.parse(String(init.body)).messages[0].content.includes('You review failing browser checks')
+    ? sse({ verdicts: [{ name: 'Adds one', reason: 'The app adds two.', verdict: 'app-wrong' }] }) : routed('app-wrong')(url, init));
   build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
   checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '2', error: 'Expected "1", observed "2"' }], errors: [] })
     .mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
@@ -326,4 +332,30 @@ it('retains an unsupported check when dropping it would empty the plan', async (
   expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ revised: 0, dropped: 0 });
   expect(events.filter((event) => event.type === 'browser_run_finished').every((event) => event.data?.status === 'failed')).toBe(true);
   expect(checks.mock.calls.every((call) => (call[1] as unknown[]).length === 1)).toBe(true);
+});
+
+
+it.each(['deepseek', 'custom'])('JSON mode follows provider support: %s', async (provider) => {
+  const { liveChat } = await import('./llm');
+  fetchMock.mockResolvedValueOnce(sse(plan));
+  await liveChat({ provider, key: '', model: 'test' }, { system: 'JSON', user: 'u' }, undefined, { json: true, temperature: 0.2 });
+  const body = JSON.parse(String(fetchMock.mock.calls[0][1].body));
+  expect(body.temperature).toBe(0.2);
+  expect(body.response_format).toEqual(provider === 'deepseek' ? { type: 'json_object' } : undefined);
+});
+
+it.each([1, 2, 3])('400 fallbacks remove JSON mode and usage once each (%s errors)', async (errors) => {
+  const { liveChat } = await import('./llm');
+  for (let i = 0; i < errors; i++) fetchMock.mockResolvedValueOnce(new Response('', { status: 400 }));
+  fetchMock.mockResolvedValueOnce(sse(plan));
+  const reply = liveChat({ provider: 'deepseek', key: '', model: 'test' }, { system: 'JSON', user: 'u' }, undefined, { json: true, temperature: 0.2 });
+  if (errors === 3) await expect(reply).rejects.toThrow('400');
+  else await reply;
+  const bodies = fetchMock.mock.calls.map(([, init]) => JSON.parse(String(init.body)));
+  expect(bodies).toHaveLength(Math.min(errors + 1, 3));
+  expect(bodies[0].response_format).toEqual({ type: 'json_object' });
+  expect(bodies[1].response_format).toBeUndefined();
+  expect(bodies[1].stream_options).toEqual({ include_usage: true });
+  if (errors > 1) expect(bodies[2].stream_options).toBeUndefined();
+  expect(bodies.every((body) => body.temperature === 0.2)).toBe(true);
 });
