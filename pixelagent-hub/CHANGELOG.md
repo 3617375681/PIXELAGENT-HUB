@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.7.0] — 2026-10-21
+
 ### Added
 - Replay gallery: UNSEEN IDEAS, 12 real runs on held-out ideas, including 4 real bugs that the checks caught
 - PLAY LIVE `coder-only` strategy for benchmarks (`&strategy=coder-only`). The [rerun of the planner comparison](docs/software-studio/benchmark-results/2026-10-21-strategy/README.md) found Manager → Coder 28/31 against Coder only 29/31: still no measurable gain. Across 688 runs, the review rescued 44% of first failures and the Coder repair 17% of its attempts (closes #20)
