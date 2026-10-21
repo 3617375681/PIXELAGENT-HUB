@@ -260,7 +260,7 @@ it('a test plan the schema rejects goes back to the Tester once, with the reason
     const system: string = body.messages[0].content;
     if (system.includes('test planner')) {
       plans++;
-      if (plans === 1) return sse({ checks: [{ name: 'Adds one', actions: [{ type: 'wait', ms: 100 }], selector: '#count', expected: '1' }], limitations: [] });
+      if (plans === 1) return sse({ checks: [{ name: 'Adds one', actions: [{ type: 'wait', ms: 10 }], selector: '#count', expected: '1' }], limitations: [] });
       expect(body.messages[1].content).toContain('Your previous plan was rejected');
       return sse(testPlan);
     }

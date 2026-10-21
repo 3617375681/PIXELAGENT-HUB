@@ -294,3 +294,16 @@ test('real browser captures created timers and matches attributes', { skip: proc
     assert.deepEqual(run.checks.map(({ status }) => status), ['failed', 'passed', 'passed', 'passed', 'passed', 'passed', 'passed', 'passed', 'failed'], JSON.stringify(run));
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('real browser waits before observing delayed text', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-wait-'));
+  try {
+    const content = '<html><body><output id="status">Loading</output><script>setTimeout(()=>document.querySelector("#status").textContent="Ready",1000)</script></body></html>';
+    const checks = { checks: [{ name: 'Delayed', actions: [{ type: 'wait', ms: 1200 }], selector: '#status', expected: 'Ready' }], limitations: [] };
+    const started = Date.now();
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.deepEqual(run.checks, [{ name: 'Delayed', status: 'passed', actual: 'Ready' }]);
+    assert.ok(Date.now() - started >= 1200);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

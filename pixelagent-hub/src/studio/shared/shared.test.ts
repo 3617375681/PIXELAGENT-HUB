@@ -228,3 +228,15 @@ test('matches accepts optional attributes with the same name rules', async () =>
   for (const attribute of [undefined, 'aria-label', 'value', 'checked', 'style.width']) assert.equal(browserCheckSchema.safeParse({ ...check, attribute }).success, true);
   for (const attribute of ['', 'Title', 'style.Width']) assert.equal(browserCheckSchema.safeParse({ ...check, attribute }).success, false);
 });
+
+test('wait actions are bounded, selector-free and normalised to type and ms', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'Wait', actions: [{ type: 'wait', ms: 500 }], selector: '#status', expected: 'Ready' };
+  assert.equal(browserCheckSchema.safeParse(check).success, true);
+  for (const actions of [[{ type: 'wait', ms: 10 }], [{ type: 'wait', ms: 7000 }], [{ type: 'wait', ms: 50.5 }], [{ type: 'wait', ms: 500, selector: '#status' }], [{ type: 'wait', ms: 4500 }, { type: 'wait', ms: 4500 }]]) {
+    assert.equal(browserCheckSchema.safeParse({ ...check, actions }).success, false);
+  }
+  assert.equal(browserCheckSchema.safeParse({ ...check, actions: [{ type: 'wait', ms: 6000 }, { type: 'wait', ms: 2000 }] }).success, true);
+  const parsed = parseTestPlanOutput({ checks: [{ ...check, actions: [{ type: 'wait', ms: 500, nth: null, selector: null, value: 'discard' }] }], limitations: [] });
+  assert.deepEqual(parsed.checks[0].actions, [{ type: 'wait', ms: 500 }]);
+});

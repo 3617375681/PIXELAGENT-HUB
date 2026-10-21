@@ -1,4 +1,4 @@
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { readCheckResults, runDOMChecks } from './studioChecks';
 
 it('reads disabled state independently of button text and detects an incorrect state', async () => {
@@ -287,4 +287,21 @@ it('matches reads exact attributes and live properties without falling back to t
   }
   const [result] = await runDOMChecks(document, [{ name: 'No text fallback', actions: [], selector: 'input', assertion: 'matches', attribute: 'missing', expected: '^text$' }]);
   expect(result).toMatchObject({ status: 'failed', actual: '' });
+});
+
+it('waits the full action duration before checking delayed text', async () => {
+  vi.useFakeTimers();
+  try {
+    const output = { textContent: 'Loading' };
+    const document = { querySelectorAll: () => [output] } as unknown as Document;
+    setTimeout(() => { output.textContent = 'Ready'; }, 200);
+    const started = Date.now();
+    let finished = false;
+    const pending = runDOMChecks(document, [{ name: 'Delayed', actions: [{ type: 'wait', ms: 300 }], selector: '#status', expected: 'Ready' }]).then((results) => { finished = true; return results; });
+    await vi.advanceTimersByTimeAsync(299);
+    expect(finished).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(await pending).toEqual([{ name: 'Delayed', status: 'passed', actual: 'Ready' }]);
+    expect(Date.now() - started).toBe(300);
+  } finally { vi.useRealTimers(); }
 });
