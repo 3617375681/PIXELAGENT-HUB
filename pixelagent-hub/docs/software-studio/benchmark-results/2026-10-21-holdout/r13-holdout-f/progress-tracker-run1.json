@@ -1,0 +1,760 @@
+{
+  "caseId": "progress-tracker",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "7/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 3,
+  "coderRepair": false,
+  "checkRuns": [
+    "7/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 39,
+  "reportedTokens": 18121,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T10:00:43.002Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T10:00:43.002Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T10:00:47.521Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Reading Tracker"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T10:00:47.522Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:00:58.711Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:00:58.711Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:00:59.405Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:00:59.408Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2b9e3c75-bc0c-43b0-8adc-07649e34466b"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:01:03.805Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2b9e3c75-bc0c-43b0-8adc-07649e34466b",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:01:03.806Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "testPlanId": "2b9e3c75-bc0c-43b0-8adc-07649e34466b",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Add book shows item and hides empty message",
+        "passed": false,
+        "actual": "The Hobbit 0 / 310 pages 0% read Pages read now Log pages"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Empty message hidden after adding book",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Initial progress bar is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Log pages updates percent and count",
+        "passed": false,
+        "actual": "Dune 50 / 200 pages 25% read Pages read now Log pages"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Progress bar width reflects logged pages",
+        "passed": true,
+        "actual": "25%"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Reaching 100% marks book finished",
+        "passed": false,
+        "actual": "DuneFinished 200 / 200 pages 100% read"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Finished book hides log form",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Finished book gets finished class",
+        "passed": true,
+        "actual": "book-item finished"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Two books render as separate items",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:01:13.142Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "name": "Logging more than remaining is rejected",
+        "passed": true,
+        "actual": "0% read"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:01:13.143Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "ad1e70b1-ae62-49bc-aa76-1b45ca8075cd",
+        "status": "failed",
+        "passed": 7,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:01:13.146Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2b9e3c75-bc0c-43b0-8adc-07649e34466b",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T10:01:16.909Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2b9e3c75-bc0c-43b0-8adc-07649e34466b",
+        "checks": 10,
+        "review": true,
+        "revised": 3,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Add book shows item and hides empty message",
+            "verdict": "check-wrong",
+            "reason": "The check compares the entire .book-item text, but the requirements only ask that the book be shown with its title, page count, progress bar and percent; the log form's label and button text are legit"
+          },
+          {
+            "name": "Log pages updates percent and count",
+            "verdict": "check-wrong",
+            "reason": "Same issue: the check asserts the full concatenated text of .book-item, which includes the log form's label and button text that the requirements do not forbid. A correct app would show 'Dune 50 / 200"
+          },
+          {
+            "name": "Reaching 100% marks book finished",
+            "verdict": "check-wrong",
+            "reason": "The check expects exact text 'Dune Finished 200 / 200 pages 100% read' on .book-item, but the app renders the Finished badge inside the title span (so textContent is 'DuneFinished ...') and also inclu"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T10:01:16.910Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "testPlanId": "2b9e3c75-bc0c-43b0-8adc-07649e34466b",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Add book shows item and hides empty message",
+        "passed": true,
+        "actual": "0% read"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Empty message hidden after adding book",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Initial progress bar is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Log pages updates percent and count",
+        "passed": true,
+        "actual": "25% read"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Progress bar width reflects logged pages",
+        "passed": true,
+        "actual": "25%"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Reaching 100% marks book finished",
+        "passed": true,
+        "actual": "Finished"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Finished book hides log form",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Finished book gets finished class",
+        "passed": true,
+        "actual": "book-item finished"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Two books render as separate items",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "name": "Logging more than remaining is rejected",
+        "passed": true,
+        "actual": "0% read"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T10:01:20.120Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "cfd33a07-5349-4578-9e13-cd51a6124ffe",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T10:01:20.124Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add book shows item and hides empty message",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "The Hobbit"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "310"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": ".book-item .progress-text",
+        "expected": "0% read",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty message hidden after adding book",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": "#empty-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Initial progress bar is zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-track",
+        "expected": "0",
+        "assertion": "attribute",
+        "attribute": "aria-valuenow"
+      },
+      {
+        "name": "Log pages updates percent and count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-1",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".book-item .progress-text",
+        "expected": "25% read",
+        "assertion": "text"
+      },
+      {
+        "name": "Progress bar width reflects logged pages",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-1",
+            "value": "50"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-fill",
+        "expected": "25%",
+        "assertion": "attribute",
+        "attribute": "style.width"
+      },
+      {
+        "name": "Reaching 100% marks book finished",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-1",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".book-item .finished-badge",
+        "expected": "Finished",
+        "assertion": "text"
+      },
+      {
+        "name": "Finished book hides log form",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-1",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".log-form",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Finished book gets finished class",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-1",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".book-item",
+        "expected": "finished",
+        "assertion": "attribute",
+        "attribute": "class"
+      },
+      {
+        "name": "Two books render as separate items",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Emma"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "100"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          }
+        ],
+        "selector": ".book-item",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Logging more than remaining is rejected",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#book-title",
+            "value": "Dune"
+          },
+          {
+            "type": "input",
+            "selector": "#book-pages",
+            "value": "200"
+          },
+          {
+            "type": "click",
+            "selector": "#add-book-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#log-1",
+            "value": "500"
+          },
+          {
+            "type": "click",
+            "selector": ".log-form button[type=submit]"
+          }
+        ],
+        "selector": ".progress-text",
+        "expected": "0% read",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Cannot verify pixel rendering of the progress bar; only inline width and aria-valuenow are checked.",
+      "Cannot test native form validation UI for empty or invalid inputs.",
+      "Cannot verify keyboard accessibility or focus behavior beyond DOM events.",
+      "No persistence across reloads is specified or tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 5203,
+      "completion_tokens": 1151,
+      "total_tokens": 6354,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 3923
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Reading Tracker</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Reading Tracker</h1>\n\n    <section aria-labelledby=\"add-book-heading\">\n      <h2 id=\"add-book-heading\">Add a book</h2>\n      <form id=\"add-book-form\" class=\"form-row\">\n        <label for=\"book-title\">Title</label>\n        <input type=\"text\" id=\"book-title\" name=\"title\" required placeholder=\"e.g. The Hobbit\" autocomplete=\"off\">\n        <label for=\"book-pages\">Total pages</label>\n        <input type=\"number\" id=\"book-pages\" name=\"pages\" min=\"1\" step=\"1\" required placeholder=\"e.g. 310\">\n        <button type=\"submit\">Add book</button>\n      </form>\n    </section>\n\n    <section aria-labelledby=\"books-heading\">\n      <h2 id=\"books-heading\">Your books</h2>\n      <p id=\"empty-message\">No books yet. Add one above to start tracking!</p>\n      <ul id=\"book-list\" class=\"book-list\"></ul>\n    </section>\n  </main>\n\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #f4f1ea;\n  --card-bg: #ffffff;\n  --text: #1e2a3a;\n  --accent: #2a6f97;\n  --accent-dark: #1f5372;\n  --accent-light: #d6e6f2;\n  --success: #2e7d32;\n  --border: #cbd5e1;\n  --radius: 12px;\n  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);\n}\n\n* {\n  box-sizing: border-box;\n}\n\n[hidden] {\n  display: none !important;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: var(--radius);\n  box-shadow: var(--shadow);\n  padding: 24px;\n  width: 100%;\n  max-width: 640px;\n}\n\nh1 {\n  margin: 0 0 16px;\n  font-size: 1.75rem;\n  color: var(--accent-dark);\n}\n\nh2 {\n  margin: 24px 0 12px;\n  font-size: 1.25rem;\n  color: var(--accent-dark);\n}\n\n.form-row {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n  align-items: end;\n}\n\n.form-row label {\n  flex: 1 1 100%;\n  font-weight: 600;\n  font-size: 0.9rem;\n}\n\n.form-row input {\n  flex: 1 1 140px;\n  padding: 10px 12px;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  font-size: 1rem;\n  font-family: inherit;\n  transition: border-color 0.15s;\n}\n\n.form-row input:focus {\n  outline: 3px solid var(--accent);\n  outline-offset: 1px;\n  border-color: var(--accent);\n}\n\nbutton {\n  background: var(--accent);\n  color: #fff;\n  border: none;\n  border-radius: 8px;\n  padding: 10px 18px;\n  font-size: 1rem;\n  font-family: inherit;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.05s;\n}\n\nbutton:hover {\n  background: var(--accent-dark);\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.97);\n}\n\n.book-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n\n.book-item {\n  border: 2px solid var(--border);\n  border-radius: var(--radius);\n  padding: 16px;\n  background: #fafafa;\n}\n\n.book-item.finished {\n  border-color: var(--success);\n  background: #f0f9f0;\n}\n\n.book-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  flex-wrap: wrap;\n  gap: 4px;\n  margin-bottom: 8px;\n}\n\n.book-title {\n  font-weight: 700;\n  font-size: 1.1rem;\n  word-break: break-word;\n}\n\n.book-pages {\n  font-size: 0.9rem;\n  color: #555;\n}\n\n.progress-track {\n  height: 16px;\n  background: var(--accent-light);\n  border-radius: 8px;\n  overflow: hidden;\n  margin: 8px 0;\n}\n\n.progress-fill {\n  height: 100%;\n  width: 0%;\n  background: var(--accent);\n  border-radius: 8px;\n  transition: width 0.3s ease;\n}\n\n.book-item.finished .progress-fill {\n  background: var(--success);\n}\n\n.progress-text {\n  font-size: 0.9rem;\n  font-weight: 600;\n  margin-bottom: 8px;\n}\n\n.log-form {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n  align-items: end;\n}\n\n.log-form label {\n  flex: 1 1 100%;\n  font-size: 0.85rem;\n  font-weight: 600;\n}\n\n.log-form input {\n  flex: 1 1 100px;\n  padding: 8px 10px;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  font-size: 0.95rem;\n  font-family: inherit;\n}\n\n.log-form input:focus {\n  outline: 3px solid var(--accent);\n  outline-offset: 1px;\n  border-color: var(--accent);\n}\n\n.log-form button {\n  padding: 8px 14px;\n  font-size: 0.95rem;\n}\n\n.finished-badge {\n  display: inline-block;\n  background: var(--success);\n  color: #fff;\n  font-size: 0.75rem;\n  font-weight: 700;\n  padding: 2px 8px;\n  border-radius: 999px;\n  margin-left: 8px;\n  vertical-align: middle;\n}\n\n#empty-message {\n  color: #666;\n  font-style: italic;\n}\n\n@media (max-width: 480px) {\n  .card {\n    padding: 16px;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .form-row input {\n    flex: 1 1 100%;\n  }\n  .log-form input {\n    flex: 1 1 100%;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  const books = [];\n  let nextId = 1;\n\n  const addForm = document.getElementById('add-book-form');\n  const titleInput = document.getElementById('book-title');\n  const pagesInput = document.getElementById('book-pages');\n  const bookList = document.getElementById('book-list');\n  const emptyMessage = document.getElementById('empty-message');\n\n  function updateEmptyMessage() {\n    emptyMessage.hidden = books.length > 0;\n  }\n\n  function createProgressBar(percent) {\n    const track = document.createElement('div');\n    track.className = 'progress-track';\n    track.setAttribute('role', 'progressbar');\n    track.setAttribute('aria-valuemin', '0');\n    track.setAttribute('aria-valuemax', '100');\n    track.setAttribute('aria-valuenow', String(percent));\n    track.setAttribute('aria-label', 'Reading progress');\n\n    const fill = document.createElement('div');\n    fill.className = 'progress-fill';\n    fill.style.width = percent + '%';\n    track.appendChild(fill);\n    return track;\n  }\n\n  function renderBook(book) {\n    const li = document.createElement('li');\n    li.className = 'book-item' + (book.finished ? ' finished' : '');\n    li.dataset.id = String(book.id);\n\n    const percent = Math.min(100, Math.round((book.pagesRead / book.totalPages) * 100));\n\n    const header = document.createElement('div');\n    header.className = 'book-header';\n\n    const titleSpan = document.createElement('span');\n    titleSpan.className = 'book-title';\n    titleSpan.textContent = book.title;\n\n    if (book.finished) {\n      const badge = document.createElement('span');\n      badge.className = 'finished-badge';\n      badge.textContent = 'Finished';\n      titleSpan.appendChild(badge);\n    }\n\n    const pagesSpan = document.createElement('span');\n    pagesSpan.className = 'book-pages';\n    pagesSpan.textContent = book.pagesRead + ' / ' + book.totalPages + ' pages';\n\n    header.appendChild(titleSpan);\n    header.appendChild(pagesSpan);\n    li.appendChild(header);\n\n    li.appendChild(createProgressBar(percent));\n\n    const progressText = document.createElement('div');\n    progressText.className = 'progress-text';\n    progressText.textContent = percent + '% read';\n    li.appendChild(progressText);\n\n    if (!book.finished) {\n      const form = document.createElement('form');\n      form.className = 'log-form';\n      form.setAttribute('aria-label', 'Log pages for ' + book.title);\n\n      const label = document.createElement('label');\n      label.textContent = 'Pages read now';\n      const inputId = 'log-' + book.id;\n      label.setAttribute('for', inputId);\n\n      const input = document.createElement('input');\n      input.type = 'number';\n      input.id = inputId;\n      input.min = '1';\n      input.max = String(book.totalPages - book.pagesRead);\n      input.step = '1';\n      input.required = true;\n      input.placeholder = 'e.g. 20';\n\n      const btn = document.createElement('button');\n      btn.type = 'submit';\n      btn.textContent = 'Log pages';\n\n      form.appendChild(label);\n      form.appendChild(input);\n      form.appendChild(btn);\n\n      form.addEventListener('submit', function (e) {\n        e.preventDefault();\n        const amount = parseInt(input.value, 10);\n        if (!amount || amount < 1) {\n          input.focus();\n          return;\n        }\n        const remaining = book.totalPages - book.pagesRead;\n        if (amount > remaining) {\n          input.value = String(remaining);\n          input.focus();\n          return;\n        }\n        book.pagesRead += amount;\n        if (book.pagesRead >= book.totalPages) {\n          book.pagesRead = book.totalPages;\n          book.finished = true;\n        }\n        renderAll();\n      });\n\n      li.appendChild(form);\n    }\n\n    return li;\n  }\n\n  function renderAll() {\n    bookList.innerHTML = '';\n    books.forEach(function (book) {\n      bookList.appendChild(renderBook(book));\n    });\n    updateEmptyMessage();\n  }\n\n  addForm.addEventListener('submit', function (e) {\n    e.preventDefault();\n    const title = titleInput.value.trim();\n    const totalPages = parseInt(pagesInput.value, 10);\n    if (!title || !totalPages || totalPages < 1) {\n      return;\n    }\n    books.push({\n      id: nextId++,\n      title: title,\n      totalPages: totalPages,\n      pagesRead: 0,\n      finished: false\n    });\n    titleInput.value = '';\n    pagesInput.value = '';\n    titleInput.focus();\n    renderAll();\n  });\n\n  updateEmptyMessage();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Reading Tracker\n\nA simple offline browser app to track your reading progress. Add books with a title and page count, log pages read, and watch the progress bar fill up. Books are automatically marked as finished when you reach 100%.\n\n## Features\n\n- Add a book with title and total page count\n- Log pages read for each book\n- Visual progress bar and percentage for every book\n- Automatic \"Finished\" badge when 100% reached\n- Keyboard accessible with labeled controls\n- Responsive layout from 360px wide\n- No network requests, external assets, or inline event handlers\n\n## How to Use\n\n1. Open `index.html` in any modern browser.\n2. Enter a book title and total pages, then click **Add book**.\n3. For each book, enter the number of pages you've read and click **Log pages**.\n4. Progress updates instantly. When you reach the total page count, the book is marked as finished.\n\n## Constraints Compliance\n\n- Only HTML, CSS, and plain JavaScript\n- No imports, packages, or server code\n- All graphics via CSS\n- Relative paths only\n- `[hidden] { display: none !important; }` included\n- System fonts at 16px or larger\n- Cohesive 3–5 color palette\n- Visible hover, focus, and pressed states\n\n## Files\n\n- `index.html` – main markup\n- `styles.css` – styling\n- `app.js` – application logic\n- `README.md` – this file\n",
+      "description": ""
+    }
+  ]
+}

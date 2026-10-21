@@ -1,0 +1,504 @@
+{
+  "caseId": "hangman",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "7/8",
+  "finalChecks": "7/7",
+  "reviewTriggered": true,
+  "checksDropped": 1,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "7/8",
+    "7/7"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 27,
+  "reportedTokens": 14354,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:59:50.723Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:59:50.723Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:59:54.789Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Hangman"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:59:54.789Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:00:04.092Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:00:04.092Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:00:04.860Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:00:04.861Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "25460f4b-1a30-49b0-812c-4d07a262845b"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:00:07.473Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "25460f4b-1a30-49b0-812c-4d07a262845b",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:00:07.475Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "testPlanId": "25460f4b-1a30-49b0-812c-4d07a262845b",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:00:12.401Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "Initial state shows 26 letter buttons and masked word",
+        "passed": true,
+        "actual": "26"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:00:12.401Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "Word display shows only underscores and spaces at start",
+        "passed": true,
+        "actual": "_ _ _ _ _ _ _"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:00:12.401Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "Status starts with Guess a letter",
+        "passed": true,
+        "actual": "Guess a letter"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:00:12.401Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "Clicking a letter disables that button",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:00:12.402Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "New Game re-enables all letter buttons",
+        "passed": true,
+        "actual": "26"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:00:12.402Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "New Game resets status message",
+        "passed": true,
+        "actual": "Guess a letter"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:00:12.402Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "New Game resets word display to all blanks",
+        "passed": true,
+        "actual": "_ _ _ _"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:00:12.402Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "name": "Canvas drawing changes after a wrong guess",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:00:12.402Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "679b26df-f767-4591-80db-578a9cced35c",
+        "status": "failed",
+        "passed": 7,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:00:12.404Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "25460f4b-1a30-49b0-812c-4d07a262845b",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:00:14.096Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "25460f4b-1a30-49b0-812c-4d07a262845b",
+        "checks": 7,
+        "review": true,
+        "revised": 0,
+        "dropped": 1,
+        "verdicts": [
+          {
+            "name": "Canvas drawing changes after a wrong guess",
+            "verdict": "unsupported",
+            "reason": "The check clicks letter button index 25 (Z) and expects the canvas's inline style.width attribute to change. The app draws the hangman on the canvas via 2D context drawing, which never modifies the ca"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:00:14.097Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "testPlanId": "25460f4b-1a30-49b0-812c-4d07a262845b",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "Initial state shows 26 letter buttons and masked word",
+        "passed": true,
+        "actual": "26"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "Word display shows only underscores and spaces at start",
+        "passed": true,
+        "actual": "_ _ _ _ _"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "Status starts with Guess a letter",
+        "passed": true,
+        "actual": "Guess a letter"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "Clicking a letter disables that button",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "New Game re-enables all letter buttons",
+        "passed": true,
+        "actual": "26"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "New Game resets status message",
+        "passed": true,
+        "actual": "Guess a letter"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "name": "New Game resets word display to all blanks",
+        "passed": true,
+        "actual": "_ _ _ _ _ _ _"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T10:00:16.652Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "a008f27f-570d-46eb-ac18-d8468d228d78",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T10:00:16.654Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows 26 letter buttons and masked word",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#letter-buttons button",
+        "expected": "26",
+        "assertion": "count"
+      },
+      {
+        "name": "Word display shows only underscores and spaces at start",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#word-display",
+        "expected": "^(_ )*_$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Status starts with Guess a letter",
+        "actions": [
+          {
+            "type": "wait",
+            "ms": 100
+          }
+        ],
+        "selector": "#status-message",
+        "expected": "Guess a letter"
+      },
+      {
+        "name": "Clicking a letter disables that button",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#letter-buttons button",
+            "nth": 0
+          }
+        ],
+        "selector": "#letter-buttons button",
+        "nth": 0,
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "New Game re-enables all letter buttons",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#letter-buttons button",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#new-game-btn"
+          }
+        ],
+        "selector": "#letter-buttons button:not(:disabled)",
+        "expected": "26",
+        "assertion": "count"
+      },
+      {
+        "name": "New Game resets status message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#letter-buttons button",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#new-game-btn"
+          }
+        ],
+        "selector": "#status-message",
+        "expected": "Guess a letter"
+      },
+      {
+        "name": "New Game resets word display to all blanks",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#letter-buttons button",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#new-game-btn"
+          }
+        ],
+        "selector": "#word-display",
+        "expected": "^(_ )*_$",
+        "assertion": "matches"
+      }
+    ],
+    "limitations": [
+      "Word is chosen randomly, so specific win/lose paths cannot be scripted deterministically.",
+      "Canvas pixel content cannot be asserted; only DOM-observable state is checked.",
+      "Wrong-guess counting and the 6-guess loss message are not directly observable without knowing the word.",
+      "Win message and full-word reveal cannot be reliably triggered without knowing the random word.",
+      "Not checked: Canvas drawing changes after a wrong guess: The check clicks letter button index 25 (Z) and expects the canvas's inline style.width attribute to change. The app draws the hangman on the canvas via 2D context drawing, which never modifies the ca"
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4441,
+      "completion_tokens": 515,
+      "total_tokens": 4956,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 3161
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Hangman</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"game-card\">\n    <h1>Pixel Hangman</h1>\n    <canvas id=\"hangman-canvas\" width=\"200\" height=\"200\" aria-label=\"Hangman drawing\"></canvas>\n    <div id=\"word-display\" class=\"word-display\" aria-live=\"polite\"></div>\n    <div class=\"status\" id=\"status-message\" aria-live=\"polite\">Guess a letter</div>\n    <div class=\"letter-buttons\" id=\"letter-buttons\"></div>\n    <button id=\"new-game-btn\" class=\"new-game-btn\">New Game</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --color-bg: #2b2d42;\n  --color-card: #edf2f4;\n  --color-primary: #ef233c;\n  --color-secondary: #8d99ae;\n  --color-text: #2b2d42;\n  --color-accent: #d90429;\n  --font-size-base: 18px;\n  --spacing: 1.5rem;\n  --border-radius: 12px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\n[hidden] {\n  display: none !important;\n}\n\nbody {\n  background-color: var(--color-bg);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: var(--font-size-base);\n  color: var(--color-text);\n  padding: 1rem;\n}\n\n.game-card {\n  background-color: var(--color-card);\n  border-radius: var(--border-radius);\n  padding: var(--spacing);\n  max-width: 600px;\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 1.2rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);\n}\n\nh1 {\n  font-size: 1.8rem;\n  color: var(--color-text);\n  text-align: center;\n}\n\ncanvas {\n  background-color: #fff;\n  border-radius: 8px;\n  width: 200px;\n  height: 200px;\n  image-rendering: pixelated;\n}\n\n.word-display {\n  font-size: 2rem;\n  letter-spacing: 0.5rem;\n  text-align: center;\n  font-weight: bold;\n  color: var(--color-text);\n  min-height: 2.5rem;\n}\n\n.status {\n  font-size: 1.2rem;\n  text-align: center;\n  min-height: 1.5rem;\n  color: var(--color-accent);\n}\n\n.letter-buttons {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  gap: 0.5rem;\n  max-width: 100%;\n}\n\n.letter-buttons button {\n  width: 2.5rem;\n  height: 2.5rem;\n  font-size: 1.2rem;\n  font-weight: bold;\n  border: 2px solid var(--color-secondary);\n  border-radius: 6px;\n  background-color: #fff;\n  color: var(--color-text);\n  cursor: pointer;\n  transition: background-color 0.2s, transform 0.1s;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.letter-buttons button:hover:not(:disabled) {\n  background-color: var(--color-secondary);\n  color: #fff;\n}\n\n.letter-buttons button:focus-visible {\n  outline: 3px solid var(--color-primary);\n  outline-offset: 2px;\n}\n\n.letter-buttons button:active:not(:disabled) {\n  transform: scale(0.95);\n}\n\n.letter-buttons button:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n  background-color: #eee;\n}\n\n.new-game-btn {\n  padding: 0.8rem 2rem;\n  font-size: 1.2rem;\n  font-weight: bold;\n  background-color: var(--color-primary);\n  color: #fff;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background-color 0.2s, transform 0.1s;\n}\n\n.new-game-btn:hover {\n  background-color: var(--color-accent);\n}\n\n.new-game-btn:focus-visible {\n  outline: 3px solid var(--color-text);\n  outline-offset: 2px;\n}\n\n.new-game-btn:active {\n  transform: scale(0.95);\n}\n\n@media (max-width: 400px) {\n  :root {\n    --spacing: 1rem;\n  }\n  .game-card {\n    padding: 1rem;\n  }\n  .word-display {\n    font-size: 1.5rem;\n    letter-spacing: 0.3rem;\n  }\n  .letter-buttons button {\n    width: 2rem;\n    height: 2rem;\n    font-size: 1rem;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const words = [\n  'JAVASCRIPT', 'PYTHON', 'HTML', 'CSS', 'REACT', 'ANGULAR', 'VUE', 'NODE', 'EXPRESS', 'MONGODB',\n  'SQL', 'GIT', 'DOCKER', 'KUBERNETES', 'LINUX', 'WINDOWS', 'MACOS', 'ANDROID', 'IOS', 'RUST',\n  'GO', 'SWIFT', 'KOTLIN', 'TYPESCRIPT', 'RUBY', 'PHP', 'JAVA', 'C', 'CPP', 'CSHARP'\n];\n\nconst canvas = document.getElementById('hangman-canvas');\nconst ctx = canvas.getContext('2d');\nconst wordDisplay = document.getElementById('word-display');\nconst statusMessage = document.getElementById('status-message');\nconst letterButtonsContainer = document.getElementById('letter-buttons');\nconst newGameBtn = document.getElementById('new-game-btn');\n\nlet currentWord = '';\nlet guessedLetters = new Set();\nlet wrongGuesses = 0;\nconst maxWrong = 6;\nlet gameActive = true;\n\nfunction initGame() {\n  currentWord = words[Math.floor(Math.random() * words.length)];\n  guessedLetters.clear();\n  wrongGuesses = 0;\n  gameActive = true;\n  statusMessage.textContent = 'Guess a letter';\n  renderWord();\n  drawHangman();\n  createLetterButtons();\n}\n\nfunction renderWord() {\n  wordDisplay.textContent = currentWord\n    .split('')\n    .map(letter => (guessedLetters.has(letter) ? letter : '_'))\n    .join(' ');\n}\n\nfunction createLetterButtons() {\n  letterButtonsContainer.innerHTML = '';\n  for (let i = 65; i <= 90; i++) {\n    const letter = String.fromCharCode(i);\n    const btn = document.createElement('button');\n    btn.textContent = letter;\n    btn.setAttribute('aria-label', `Letter ${letter}`);\n    btn.addEventListener('click', () => handleGuess(letter));\n    if (guessedLetters.has(letter)) {\n      btn.disabled = true;\n    }\n    letterButtonsContainer.appendChild(btn);\n  }\n}\n\nfunction handleGuess(letter) {\n  if (!gameActive || guessedLetters.has(letter)) return;\n  guessedLetters.add(letter);\n  const btn = Array.from(letterButtonsContainer.children).find(b => b.textContent === letter);\n  if (btn) btn.disabled = true;\n\n  if (currentWord.includes(letter)) {\n    renderWord();\n    if (currentWord.split('').every(l => guessedLetters.has(l))) {\n      gameActive = false;\n      statusMessage.textContent = 'You win! 🎉';\n      disableAllButtons();\n    }\n  } else {\n    wrongGuesses++;\n    drawHangman();\n    if (wrongGuesses >= maxWrong) {\n      gameActive = false;\n      statusMessage.textContent = `You lose! The word was ${currentWord}`;\n      disableAllButtons();\n      wordDisplay.textContent = currentWord.split('').join(' ');\n    }\n  }\n}\n\nfunction disableAllButtons() {\n  Array.from(letterButtonsContainer.children).forEach(btn => btn.disabled = true);\n}\n\nfunction drawHangman() {\n  ctx.clearRect(0, 0, canvas.width, canvas.height);\n  const pixel = 10;\n  ctx.fillStyle = '#2b2d42';\n\n  // Gallows base\n  ctx.fillRect(40, 180, 120, 10);\n  ctx.fillRect(80, 40, 10, 140);\n  ctx.fillRect(80, 40, 80, 10);\n  ctx.fillRect(150, 40, 10, 20);\n\n  // Head\n  if (wrongGuesses >= 1) {\n    ctx.beginPath();\n    ctx.arc(155, 70, 15, 0, Math.PI * 2);\n    ctx.fill();\n  }\n  // Body\n  if (wrongGuesses >= 2) {\n    ctx.fillRect(150, 85, 10, 50);\n  }\n  // Left arm\n  if (wrongGuesses >= 3) {\n    ctx.fillRect(130, 90, 20, 10);\n  }\n  // Right arm\n  if (wrongGuesses >= 4) {\n    ctx.fillRect(160, 90, 20, 10);\n  }\n  // Left leg\n  if (wrongGuesses >= 5) {\n    ctx.fillRect(135, 135, 15, 10);\n  }\n  // Right leg\n  if (wrongGuesses >= 6) {\n    ctx.fillRect(160, 135, 15, 10);\n  }\n}\n\nnewGameBtn.addEventListener('click', initGame);\n\ninitGame();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Hangman\n\nA fully offline, responsive pixel-art hangman game built with HTML, CSS, and vanilla JavaScript.\n\n## Features\n- Built-in word list (30+ words)\n- Letter buttons A–Z with keyboard accessibility\n- Canvas-drawn hangman that grows with wrong guesses (up to 6)\n- Win/lose messages and New Game button\n- Cohesive palette and responsive layout (works from 360px wide)\n\n## How to Run\n1. Open `index.html` in any modern browser.\n2. No server or network required.\n\n## Controls\n- Click letter buttons or use keyboard (Tab to focus, Enter/Space to press)\n- Click \"New Game\" to reset\n\n## Files\n- `index.html` – structure\n- `style.css` – styling\n- `script.js` – game logic\n- `README.md` – this file",
+      "description": ""
+    }
+  ]
+}

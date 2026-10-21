@@ -1,0 +1,701 @@
+{
+  "caseId": "rating",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "9/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 43,
+  "reportedTokens": 23188,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T09:53:54.856Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T09:53:54.856Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T09:53:58.595Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Product Review Widget"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T09:53:58.596Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T09:54:13.284Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Expected ',' or '}' after property value in JSON at position 216 (line 1 column 217) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings"
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T09:54:13.284Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T09:54:23.976Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T09:54:23.977Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T09:54:24.520Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T09:54:24.520Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "7619669e-fde9-4efe-8496-928e3f774166"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T09:54:27.663Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "7619669e-fde9-4efe-8496-928e3f774166",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T09:54:27.664Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "testPlanId": "7619669e-fde9-4efe-8496-928e3f774166",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Click 4th star sets rating status",
+        "passed": true,
+        "actual": "You rated 4 stars"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Selected star aria-checked true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Submit adds review comment",
+        "passed": true,
+        "actual": "Great widget"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Average after one 5-star review",
+        "passed": true,
+        "actual": "Average: 5.0 / 5 (1 review)"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Average of 5 and 3 stars is 4.0",
+        "passed": true,
+        "actual": "Average: 4.0 / 5 (2 reviews)"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Two reviews listed",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Submit without rating shows error",
+        "passed": true,
+        "actual": "Please select a star rating."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Submit without comment shows error",
+        "passed": true,
+        "actual": "Please write a comment."
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Rating resets after submit",
+        "passed": true,
+        "actual": "No rating selected"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "name": "Empty state removed after submit",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T09:54:30.906Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "57036427-a2b3-4a17-9c7d-8679a5358c48",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T09:54:30.909Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "7619669e-fde9-4efe-8496-928e3f774166",
+        "review": true
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T09:54:32.180Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "7619669e-fde9-4efe-8496-928e3f774166",
+        "checks": 10,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Empty state removed after submit",
+            "verdict": "check-wrong",
+            "reason": "The check submits a review and then asserts #emptyState is not visible. The requirements say a Submit button adds the review to a list; the app removes the empty-state element entirely on submit, so a"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T09:54:32.180Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "testPlanId": "7619669e-fde9-4efe-8496-928e3f774166",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Click 4th star sets rating status",
+        "passed": true,
+        "actual": "You rated 4 stars"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Selected star aria-checked true",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Submit adds review comment",
+        "passed": true,
+        "actual": "Great widget"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Average after one 5-star review",
+        "passed": true,
+        "actual": "Average: 5.0 / 5 (1 review)"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Average of 5 and 3 stars is 4.0",
+        "passed": true,
+        "actual": "Average: 4.0 / 5 (2 reviews)"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Two reviews listed",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Submit without rating shows error",
+        "passed": true,
+        "actual": "Please select a star rating."
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Submit without comment shows error",
+        "passed": true,
+        "actual": "Please write a comment."
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Rating resets after submit",
+        "passed": true,
+        "actual": "No rating selected"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "name": "Empty state removed after submit",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T09:54:35.398Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "371a8521-2e98-40e7-83a8-94d30a34fb77",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T09:54:35.402Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Click 4th star sets rating status",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 3
+          }
+        ],
+        "selector": "#ratingStatus",
+        "expected": "You rated 4 stars"
+      },
+      {
+        "name": "Selected star aria-checked true",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 2
+          }
+        ],
+        "selector": "#starGroup .star",
+        "nth": 2,
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-checked"
+      },
+      {
+        "name": "Submit adds review comment",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 4
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "Great widget"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#reviewList .review-comment",
+        "expected": "Great widget"
+      },
+      {
+        "name": "Average after one 5-star review",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 4
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "Loved it"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#averageDisplay",
+        "expected": "Average: 5.0 / 5 (1 review)"
+      },
+      {
+        "name": "Average of 5 and 3 stars is 4.0",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 4
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "Five"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 2
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "Three"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#averageDisplay",
+        "expected": "Average: 4.0 / 5 (2 reviews)"
+      },
+      {
+        "name": "Two reviews listed",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 0
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "One"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          },
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 1
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "Two"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#reviewList .review-item",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Submit without rating shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "No stars"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#formError",
+        "expected": "Please select a star rating."
+      },
+      {
+        "name": "Submit without comment shows error",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 3
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#formError",
+        "expected": "Please write a comment."
+      },
+      {
+        "name": "Rating resets after submit",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 3
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "Nice"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#ratingStatus",
+        "expected": "No rating selected"
+      },
+      {
+        "name": "Empty state removed after submit",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#starGroup .star",
+            "nth": 4
+          },
+          {
+            "type": "input",
+            "selector": "#comment",
+            "value": "First"
+          },
+          {
+            "type": "click",
+            "selector": "#submitBtn"
+          }
+        ],
+        "selector": "#emptyState",
+        "expected": "0",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "Hover highlight cannot be reliably tested with synthetic DOM events; only click selection is covered.",
+      "Keyboard arrow/Enter star navigation is not tested because DOM key events are synthetic.",
+      "Review star glyph rendering (★/☆) and visual pixel styling are not asserted.",
+      "No persistence across reloads is expected or tested."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 5161,
+      "completion_tokens": 809,
+      "total_tokens": 5970,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 3753
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Expected ',' or '}' after property value in JSON at position 216 (line 1 column 217) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Product Review</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Product Review</h1>\n    <p class=\"product-name\">Pixel Perfect Widget</p>\n\n    <form id=\"reviewForm\" novalidate>\n      <fieldset class=\"rating-fieldset\">\n        <legend>Your rating</legend>\n        <div class=\"stars\" role=\"radiogroup\" aria-label=\"Star rating\" id=\"starGroup\">\n          <button type=\"button\" class=\"star\" data-value=\"1\" aria-label=\"1 star\" role=\"radio\" aria-checked=\"false\">★</button>\n          <button type=\"button\" class=\"star\" data-value=\"2\" aria-label=\"2 stars\" role=\"radio\" aria-checked=\"false\">★</button>\n          <button type=\"button\" class=\"star\" data-value=\"3\" aria-label=\"3 stars\" role=\"radio\" aria-checked=\"false\">★</button>\n          <button type=\"button\" class=\"star\" data-value=\"4\" aria-label=\"4 stars\" role=\"radio\" aria-checked=\"false\">★</button>\n          <button type=\"button\" class=\"star\" data-value=\"5\" aria-label=\"5 stars\" role=\"radio\" aria-checked=\"false\">★</button>\n        </div>\n        <p id=\"ratingStatus\" class=\"status\">No rating selected</p>\n      </fieldset>\n\n      <div class=\"field\">\n        <label for=\"comment\">Comment</label>\n        <textarea id=\"comment\" name=\"comment\" rows=\"3\" placeholder=\"Share your thoughts...\" required></textarea>\n      </div>\n\n      <button type=\"submit\" class=\"submit-btn\" id=\"submitBtn\">Submit Review</button>\n      <p id=\"formError\" class=\"error\" role=\"alert\" hidden></p>\n    </form>\n\n    <section class=\"reviews-section\" aria-labelledby=\"reviewsHeading\">\n      <div class=\"reviews-header\">\n        <h2 id=\"reviewsHeading\">Reviews</h2>\n        <p id=\"averageDisplay\" class=\"average\">Average: —</p>\n      </div>\n      <ul id=\"reviewList\" class=\"review-list\" aria-live=\"polite\">\n        <li class=\"empty-state\" id=\"emptyState\">No reviews yet. Be the first!</li>\n      </ul>\n    </section>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file with the review widget structure"
+    },
+    {
+      "path": "styles.css",
+      "content": "/* Palette: deep navy background, warm cream card, amber stars, slate text, soft red error */\n:root {\n  --bg: #1e293b;\n  --card: #fef3c7;\n  --card-text: #1e293b;\n  --accent: #f59e0b;\n  --accent-hover: #d97706;\n  --star-off: #cbd5e1;\n  --star-on: #f59e0b;\n  --error: #dc2626;\n  --border: #e2e8f0;\n  --radius: 12px;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  line-height: 1.5;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card);\n  color: var(--card-text);\n  padding: 24px 20px;\n  border-radius: var(--radius);\n  box-shadow: 0 10px 30px rgba(0,0,0,0.3);\n  width: 100%;\n  max-width: 520px;\n}\n\nh1 { margin: 0 0 4px; font-size: 1.6rem; }\n.product-name { margin: 0 0 20px; font-weight: 600; color: #475569; }\n\nfieldset {\n  border: none;\n  padding: 0;\n  margin: 0 0 16px;\n}\n\nlegend {\n  font-weight: 600;\n  margin-bottom: 8px;\n  padding: 0;\n}\n\n.stars {\n  display: flex;\n  gap: 4px;\n}\n\n.star {\n  background: none;\n  border: none;\n  font-size: 2rem;\n  line-height: 1;\n  cursor: pointer;\n  color: var(--star-off);\n  padding: 4px;\n  border-radius: 6px;\n  transition: color 0.15s, transform 0.1s;\n}\n\n.star:hover,\n.star.hovered,\n.star.selected {\n  color: var(--star-on);\n}\n\n.star:active { transform: scale(0.9); }\n\n.star:focus-visible {\n  outline: 2px solid var(--accent-hover);\n  outline-offset: 2px;\n}\n\n.status {\n  margin: 4px 0 0;\n  font-size: 0.9rem;\n  color: #475569;\n}\n\n.field { margin-bottom: 16px; }\n\nlabel {\n  display: block;\n  font-weight: 600;\n  margin-bottom: 4px;\n}\n\ntextarea {\n  width: 100%;\n  padding: 10px 12px;\n  font-family: var(--font);\n  font-size: 1rem;\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  resize: vertical;\n  background: #fff;\n  color: var(--card-text);\n}\n\ntextarea:focus-visible {\n  outline: 2px solid var(--accent-hover);\n  outline-offset: 1px;\n  border-color: var(--accent-hover);\n}\n\n.submit-btn {\n  display: inline-block;\n  width: 100%;\n  padding: 12px 16px;\n  font-size: 1rem;\n  font-weight: 700;\n  color: #fff;\n  background: var(--accent);\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s;\n}\n\n.submit-btn:hover { background: var(--accent-hover); }\n.submit-btn:active { transform: scale(0.98); }\n.submit-btn:focus-visible {\n  outline: 2px solid var(--accent-hover);\n  outline-offset: 2px;\n}\n\n.error {\n  color: var(--error);\n  font-size: 0.9rem;\n  margin: 8px 0 0;\n}\n\n.reviews-section { margin-top: 28px; }\n\n.reviews-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  flex-wrap: wrap;\n  gap: 8px;\n  border-bottom: 2px solid var(--border);\n  padding-bottom: 8px;\n  margin-bottom: 12px;\n}\n\n.reviews-header h2 { margin: 0; font-size: 1.2rem; }\n.average { margin: 0; font-weight: 600; color: #475569; }\n\n.review-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  max-height: 300px;\n  overflow-y: auto;\n}\n\n.review-item {\n  background: #fff;\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  padding: 10px 12px;\n}\n\n.review-stars {\n  color: var(--star-on);\n  font-size: 1.1rem;\n  letter-spacing: 2px;\n}\n\n.review-comment {\n  margin: 4px 0 0;\n  word-break: break-word;\n}\n\n.empty-state {\n  color: #64748b;\n  font-style: italic;\n  text-align: center;\n  padding: 16px 0;\n}\n\n[hidden] { display: none !important; }\n\n@media (max-width: 400px) {\n  .card { padding: 20px 16px; }\n  h1 { font-size: 1.4rem; }\n  .star { font-size: 1.8rem; }\n}\n",
+      "description": "Stylesheet with responsive layout, palette, and interactive states"
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const starGroup = document.getElementById('starGroup');\n  const stars = Array.from(starGroup.querySelectorAll('.star'));\n  const ratingStatus = document.getElementById('ratingStatus');\n  const commentInput = document.getElementById('comment');\n  const form = document.getElementById('reviewForm');\n  const formError = document.getElementById('formError');\n  const reviewList = document.getElementById('reviewList');\n  const emptyState = document.getElementById('emptyState');\n  const averageDisplay = document.getElementById('averageDisplay');\n\n  let selectedRating = 0;\n  const reviews = [];\n\n  function updateStars(highlightCount) {\n    stars.forEach((star, i) => {\n      const value = i + 1;\n      star.classList.toggle('hovered', highlightCount > 0 && value <= highlightCount);\n      star.classList.toggle('selected', highlightCount === 0 && value <= selectedRating);\n      star.setAttribute('aria-checked', value === selectedRating ? 'true' : 'false');\n      star.tabIndex = value === (selectedRating || 1) ? 0 : -1;\n    });\n  }\n\n  function setRating(value) {\n    selectedRating = value;\n    ratingStatus.textContent = value ? `You rated ${value} star${value > 1 ? 's' : ''}` : 'No rating selected';\n    updateStars(0);\n  }\n\n  stars.forEach((star, i) => {\n    star.addEventListener('mouseenter', () => updateStars(i + 1));\n    star.addEventListener('mouseleave', () => updateStars(0));\n    star.addEventListener('click', () => setRating(i + 1));\n    star.addEventListener('keydown', (e) => {\n      let newRating = selectedRating || 1;\n      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {\n        e.preventDefault();\n        newRating = Math.min(5, newRating + 1);\n        setRating(newRating);\n        stars[newRating - 1].focus();\n      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {\n        e.preventDefault();\n        newRating = Math.max(1, newRating - 1);\n        setRating(newRating);\n        stars[newRating - 1].focus();\n      } else if (e.key === ' ' || e.key === 'Enter') {\n        e.preventDefault();\n        setRating(i + 1);\n      }\n    });\n  });\n\n  function updateAverage() {\n    if (reviews.length === 0) {\n      averageDisplay.textContent = 'Average: —';\n      return;\n    }\n    const sum = reviews.reduce((acc, r) => acc + r.rating, 0);\n    const avg = (sum / reviews.length).toFixed(1);\n    averageDisplay.textContent = `Average: ${avg} / 5 (${reviews.length} review${reviews.length > 1 ? 's' : ''})`;\n  }\n\n  function addReviewToList(rating, comment) {\n    if (emptyState && emptyState.parentNode) emptyState.remove();\n    const li = document.createElement('li');\n    li.className = 'review-item';\n    const starSpan = document.createElement('span');\n    starSpan.className = 'review-stars';\n    starSpan.textContent = '★'.repeat(rating) + '☆'.repeat(5 - rating);\n    starSpan.setAttribute('aria-label', `${rating} out of 5 stars`);\n    const commentP = document.createElement('p');\n    commentP.className = 'review-comment';\n    commentP.textContent = comment;\n    li.appendChild(starSpan);\n    li.appendChild(commentP);\n    reviewList.appendChild(li);\n  }\n\n  form.addEventListener('submit', (e) => {\n    e.preventDefault();\n    formError.hidden = true;\n    const comment = commentInput.value.trim();\n    if (selectedRating === 0) {\n      formError.textContent = 'Please select a star rating.';\n      formError.hidden = false;\n      return;\n    }\n    if (!comment) {\n      formError.textContent = 'Please write a comment.';\n      formError.hidden = false;\n      return;\n    }\n    reviews.push({ rating: selectedRating, comment });\n    addReviewToList(selectedRating, comment);\n    updateAverage();\n    setRating(0);\n    commentInput.value = '';\n    commentInput.focus();\n  });\n\n  // Initialize tab indices\n  updateStars(0);\n})();\n",
+      "description": "JavaScript logic for star rating, form submission, review list, and average calculation"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Product Review Widget\n\nA self-contained, offline browser widget for collecting and displaying product reviews.\n\n## Features\n\n- 5-star rating with hover highlight and click selection\n- Keyboard-accessible star rating (arrow keys, Enter/Space)\n- Comment textarea with validation\n- Submit button adds review to a list\n- Dynamic average rating display\n- Empty state handling\n- Responsive layout down to 360px\n- Cohesive palette and accessible focus states\n\n## Usage\n\nOpen `index.html` in any modern browser. No server or network required.\n\n## Files\n\n- `index.html` — structure\n- `styles.css` — styling\n- `script.js` — interactivity\n\n## Accessibility\n\n- All controls are labeled and keyboard operable\n- ARIA roles and live regions used for dynamic content\n- Visible focus indicators\n\n## License\n\nMIT\n",
+      "description": "Project documentation with usage and accessibility notes"
+    }
+  ]
+}

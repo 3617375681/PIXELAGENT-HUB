@@ -220,3 +220,47 @@ Set F (8 new ideas, commit `7f0d675`) is this round's clean set.
 So the next round changes the app side as well as the checks:
 - the Coder is told to make `hidden` always hide;
 - checks can read computed styles.
+
+## Round 13 on `7d3e8d9`
+
+The round-13 changes (commit `7d3e8d9`):
+- **Apps:** the Coder's constraints ask for `[hidden] { display: none !important; }`. This is the first change in these rounds aimed at the apps rather than the checks.
+- **Checks:** `attribute: "css.<property>"` reads computed styles.
+
+Set G (8 new ideas, commit `49961f9`) is this round's clean set.
+
+| Set | Runs | Full pass | **Strict pass** | Checks dropped | Apps with the `[hidden]` rule | Median | Tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [**Set G**](r13-holdout-g/) (clean) | 16 | 13/16 | **13/16** | 0 | 16/16 | 36 s | 249,718 |
+| [Set F](r13-holdout-f/) (used for round 13) | 16 | 15/16 | 14/16 | 1 | 16/16 | 25 s | 209,678 |
+| [Showcase](r13-showcase/) | 18 | 16/18 | 15/18 | 1 | 18/18 | 28 s | 225,451 |
+| [Fixed cases](r13-fixed/) | 15 | **15/15** | 15/15 | 0 | 15/15 | 20 s | 134,596 |
+
+**The app-side fix held.** Every app of the round includes the rule, and no failure came from a `display` rule overriding `hidden`. In rounds 9–12, four apps had failed that way.
+
+**The remaining failures are model reasoning errors:**
+- **Maze 1 and 2:** the Tester traced a path through the maze and miscounted the steps. The review re-traced it and still miscounted.
+- **Focus log 2:** counted `#entries-list`, the list itself, instead of its items.
+- **Colour mixer 2:** wrote the pattern `rgb(255, 255, 255)` without escaping the parentheses. Since then, a pattern also matches its own text literally (commit after `7d3e8d9`; not measured).
+- **Memory and pet (showcase):** an invented reshuffle check, and mood thresholds the requirement does not state.
+
+## Where this leaves the held-out score
+
+| Round | Clean set | Strict | Full |
+| --- | --- | ---: | ---: |
+| baseline | A | 10/16 | 11/16 |
+| 8 | B | 10/16 | 12/16 |
+| 9 | C | 12/16 | 12/16 |
+| 10 | D | 14/16 | 15/16 |
+| 11 | E | 13/16 | 15/16 |
+| 12 | F | 12/16 | 13/16 |
+| 13 | G | 13/16 | 13/16 |
+
+On ideas the pipeline has never seen, `deepseek-chat` now produces an app that passes every one of its own Tester's checks in about **13 of 16 runs (80%)**. At the start of this work it was 10 of 16. The fixed cases passed 15/15 in eight rounds running.
+
+The failures still left are model reasoning errors:
+- tracing a maze;
+- arithmetic;
+- choosing a selector.
+
+Most of them are the Tester's. Further gains are more likely from a stronger model for the Tester than from more check vocabulary.
