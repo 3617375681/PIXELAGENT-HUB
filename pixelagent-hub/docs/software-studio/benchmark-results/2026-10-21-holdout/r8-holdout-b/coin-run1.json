@@ -1,0 +1,414 @@
+{
+  "caseId": "coin",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 20,
+  "reportedTokens": 9088,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:19:31.532Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:19:31.532Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:19:35.377Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Coin Flipper"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:19:35.377Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:19:44.140Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:19:44.140Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:19:44.571Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:19:44.572Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5949d08e-acb9-46fe-9f8c-3fcc63ed6654"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:19:47.022Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5949d08e-acb9-46fe-9f8c-3fcc63ed6654",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:19:47.022Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "testPlanId": "5949d08e-acb9-46fe-9f8c-3fcc63ed6654",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Initial state shows zero counts and prompt",
+        "passed": true,
+        "actual": "Flip the coin!"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Initial heads count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Initial tails count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Initial streak is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Flip produces a heads or tails result",
+        "passed": true,
+        "actual": "Tails!"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "After one flip exactly one side has count 1",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Reset after a flip restores prompt",
+        "passed": true,
+        "actual": "Flip the coin!"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Reset after a flip clears heads count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Reset after a flip clears tails count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "name": "Reset after a flip clears streak",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:19:50.195Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "441601b6-d616-470e-be59-8d4d628a5f74",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:19:50.197Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows zero counts and prompt",
+        "actions": [],
+        "selector": "#result",
+        "expected": "Flip the coin!",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial heads count is zero",
+        "actions": [],
+        "selector": "#heads-count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial tails count is zero",
+        "actions": [],
+        "selector": "#tails-count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial streak is zero",
+        "actions": [],
+        "selector": "#streak",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Flip produces a heads or tails result",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#flip-btn"
+          }
+        ],
+        "selector": "#result",
+        "expected": "^(Heads!|Tails!)$",
+        "assertion": "matches"
+      },
+      {
+        "name": "After one flip exactly one side has count 1",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#flip-btn"
+          }
+        ],
+        "selector": "#streak",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset after a flip restores prompt",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#flip-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#result",
+        "expected": "Flip the coin!",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset after a flip clears heads count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#flip-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#heads-count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset after a flip clears tails count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#flip-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#tails-count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset after a flip clears streak",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#flip-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#reset-btn"
+          }
+        ],
+        "selector": "#streak",
+        "expected": "0",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Coin flips are random; checks cannot predict which side appears, so only the format of the result and the invariant that streak becomes 1 after a single flip are asserted.",
+      "Streak continuation across multiple flips of the same side cannot be deterministically tested because outcomes are random.",
+      "The 600 ms flip lockout is timing-dependent and is not asserted; rapid-click behavior is not verified.",
+      "Coin face animation and CSS transform state are visual and not asserted.",
+      "Keyboard activation via Enter/Space is not tested because DOM key events are synthetic and not trusted browser input."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3738,
+      "completion_tokens": 546,
+      "total_tokens": 4284,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 2970
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Coin Flipper</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Coin Flipper</h1>\n\n    <div class=\"coin-container\">\n      <div id=\"coin\" class=\"coin\" aria-hidden=\"true\">\n        <div class=\"coin-face coin-heads\">H</div>\n        <div class=\"coin-face coin-tails\">T</div>\n      </div>\n    </div>\n\n    <p id=\"result\" class=\"result\" aria-live=\"polite\">Flip the coin!</p>\n\n    <div class=\"stats\">\n      <div class=\"stat\">\n        <span class=\"stat-label\">Heads</span>\n        <span id=\"heads-count\" class=\"stat-value\" aria-live=\"polite\">0</span>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Tails</span>\n        <span id=\"tails-count\" class=\"stat-value\" aria-live=\"polite\">0</span>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-label\">Streak</span>\n        <span id=\"streak\" class=\"stat-value\" aria-live=\"polite\">0</span>\n      </div>\n    </div>\n\n    <div class=\"controls\">\n      <button id=\"flip-btn\" class=\"btn btn-flip\" type=\"button\">Flip</button>\n      <button id=\"reset-btn\" class=\"btn btn-reset\" type=\"button\">Reset</button>\n    </div>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --accent: #f0c040;\n  --accent-dark: #c9a020;\n  --text: #e8e8f0;\n  --text-muted: #a0a0b8;\n  --heads: #4caf50;\n  --tails: #e57373;\n  --focus: #f0c040;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 12px;\n  padding: 32px 24px;\n  max-width: 420px;\n  width: 100%;\n  text-align: center;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n  border: 2px solid var(--accent-dark);\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 24px;\n  color: var(--accent);\n  letter-spacing: 1px;\n}\n\n.coin-container {\n  margin-bottom: 16px;\n  display: flex;\n  justify-content: center;\n}\n\n.coin {\n  width: 120px;\n  height: 120px;\n  position: relative;\n  transform-style: preserve-3d;\n  transition: transform 0.6s ease;\n}\n\n.coin-face {\n  position: absolute;\n  inset: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 3rem;\n  font-weight: bold;\n  border-radius: 50%;\n  backface-visibility: hidden;\n  border: 4px solid var(--accent-dark);\n  image-rendering: pixelated;\n}\n\n.coin-heads {\n  background: var(--accent);\n  color: var(--bg);\n  transform: rotateY(0deg);\n}\n\n.coin-tails {\n  background: var(--accent-dark);\n  color: var(--bg);\n  transform: rotateY(180deg);\n}\n\n.coin.show-tails {\n  transform: rotateY(180deg);\n}\n\n.result {\n  font-size: 1.25rem;\n  margin-bottom: 24px;\n  min-height: 1.5em;\n  color: var(--text-muted);\n  font-weight: 600;\n}\n\n.stats {\n  display: flex;\n  justify-content: space-around;\n  gap: 8px;\n  margin-bottom: 24px;\n  flex-wrap: wrap;\n}\n\n.stat {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 4px;\n  min-width: 80px;\n}\n\n.stat-label {\n  font-size: 0.875rem;\n  color: var(--text-muted);\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\n.stat-value {\n  font-size: 1.75rem;\n  font-weight: bold;\n  color: var(--accent);\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 28px;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;\n  min-width: 120px;\n}\n\n.btn-flip {\n  background: var(--accent);\n  color: var(--bg);\n}\n\n.btn-flip:hover {\n  background: var(--accent-dark);\n}\n\n.btn-flip:active {\n  transform: scale(0.96);\n}\n\n.btn-reset {\n  background: transparent;\n  color: var(--text-muted);\n  border: 2px solid var(--text-muted);\n}\n\n.btn-reset:hover {\n  background: var(--text-muted);\n  color: var(--bg);\n}\n\n.btn-reset:active {\n  transform: scale(0.96);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 3px;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 16px;\n  }\n  .coin {\n    width: 100px;\n    height: 100px;\n  }\n  .coin-face {\n    font-size: 2.5rem;\n  }\n  .btn {\n    min-width: 100px;\n    padding: 12px 20px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var coin = document.getElementById('coin');\n  var resultEl = document.getElementById('result');\n  var headsEl = document.getElementById('heads-count');\n  var tailsEl = document.getElementById('tails-count');\n  var streakEl = document.getElementById('streak');\n  var flipBtn = document.getElementById('flip-btn');\n  var resetBtn = document.getElementById('reset-btn');\n\n  var heads = 0;\n  var tails = 0;\n  var streak = 0;\n  var lastSide = null;\n  var flipping = false;\n\n  function updateDisplay() {\n    headsEl.textContent = heads;\n    tailsEl.textContent = tails;\n    streakEl.textContent = streak;\n  }\n\n  function flip() {\n    if (flipping) return;\n    flipping = true;\n\n    var side = Math.random() < 0.5 ? 'heads' : 'tails';\n\n    // Animation: briefly toggle class\n    coin.classList.toggle('show-tails', side === 'tails');\n\n    // Update counts\n    if (side === 'heads') {\n      heads++;\n      if (lastSide === 'heads') {\n        streak++;\n      } else {\n        streak = 1;\n      }\n    } else {\n      tails++;\n      if (lastSide === 'tails') {\n        streak++;\n      } else {\n        streak = 1;\n      }\n    }\n    lastSide = side;\n\n    resultEl.textContent = side === 'heads' ? 'Heads!' : 'Tails!';\n    updateDisplay();\n\n    // Allow next flip after animation\n    setTimeout(function () {\n      flipping = false;\n    }, 600);\n  }\n\n  function reset() {\n    heads = 0;\n    tails = 0;\n    streak = 0;\n    lastSide = null;\n    flipping = false;\n    coin.classList.remove('show-tails');\n    resultEl.textContent = 'Flip the coin!';\n    updateDisplay();\n  }\n\n  flipBtn.addEventListener('click', flip);\n  resetBtn.addEventListener('click', reset);\n\n  // Initial display\n  updateDisplay();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Coin Flipper\n\nA simple offline browser app that flips a pixel-styled coin, tracks the number of heads and tails, and shows the current streak of the same side.\n\n## Features\n\n- Flip button generates a random result (heads or tails)\n- Counts heads and tails separately\n- Displays the current streak of the same side\n- Reset button clears all counts and the streak\n- Pixel-art coin animation with CSS\n- Keyboard accessible with visible focus states\n- Responsive layout down to 360px wide\n\n## Usage\n\nOpen `index.html` in any modern browser. No server or internet connection required.\n\n- Click **Flip** (or focus and press Enter/Space) to flip the coin.\n- Click **Reset** to clear all statistics.\n\n## Controls\n\n| Control | Action |\n|---------|--------|\n| Flip button | Flips the coin and updates counts |\n| Reset button | Resets heads, tails, and streak to 0 |\n\n## Accessibility\n\n- All interactive elements are keyboard operable.\n- Live regions announce the flip result and updated counts.\n- Focus indicators are clearly visible.\n\n## Technical Notes\n\n- Plain HTML, CSS, and JavaScript only.\n- No external libraries, packages, or network requests.\n- Uses relative paths for all assets.\n\n## Files\n\n- `index.html` – main page structure\n- `styles.css` – styling and pixel coin visuals\n- `script.js` – game logic\n- `README.md` – this file",
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,360 @@
+{
+  "caseId": "word-count",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "7/7",
+  "finalChecks": "7/7",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "7/7"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 22,
+  "reportedTokens": 9893,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:23:50.491Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:23:50.491Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:23:53.959Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Word Counter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:23:53.959Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:24:03.192Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:24:03.192Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:24:03.614Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:24:03.614Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "6672544e-1de3-459c-a57e-e4d4b93df256"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:24:08.414Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "6672544e-1de3-459c-a57e-e4d4b93df256",
+        "checks": 7
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:24:08.414Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "testPlanId": "6672544e-1de3-459c-a57e-e4d4b93df256",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Initial empty state shows zero counts",
+        "passed": true,
+        "actual": "0 WORDS 0 CHARACTERS 0 SENTENCES 0 min READING TIME"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Typing updates word, character and sentence counts",
+        "passed": true,
+        "actual": "6 WORDS 28 CHARACTERS 2 SENTENCES <1 min READING TIME"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Clear button resets text and all stats",
+        "passed": true,
+        "actual": "0 WORDS 0 CHARACTERS 0 SENTENCES 0 min READING TIME"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Clear button empties the textarea",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Single word without punctuation counts as one sentence",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Whitespace-only input counts as zero words",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "name": "Character count includes spaces and punctuation",
+        "passed": true,
+        "actual": "4"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:24:10.655Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "523a4d7e-f0ac-46b6-aa7d-61822c51ac4e",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:24:10.657Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial empty state shows zero counts",
+        "actions": [],
+        "selector": ".stats",
+        "expected": "0 Words 0 Characters 0 Sentences 0 min Reading time",
+        "assertion": "text"
+      },
+      {
+        "name": "Typing updates word, character and sentence counts",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "Hello world. This is a test!"
+          }
+        ],
+        "selector": ".stats",
+        "expected": "6 Words 28 Characters 2 Sentences <1 min Reading time",
+        "assertion": "text"
+      },
+      {
+        "name": "Clear button resets text and all stats",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "Some sample text. Another sentence here!"
+          },
+          {
+            "type": "click",
+            "selector": "#clear-btn"
+          }
+        ],
+        "selector": ".stats",
+        "expected": "0 Words 0 Characters 0 Sentences 0 min Reading time",
+        "assertion": "text"
+      },
+      {
+        "name": "Clear button empties the textarea",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "Some sample text."
+          },
+          {
+            "type": "click",
+            "selector": "#clear-btn"
+          }
+        ],
+        "selector": "#text-input",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      },
+      {
+        "name": "Single word without punctuation counts as one sentence",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "Hello"
+          }
+        ],
+        "selector": "#sentence-count",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Whitespace-only input counts as zero words",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "   "
+          }
+        ],
+        "selector": "#word-count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Character count includes spaces and punctuation",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#text-input",
+            "value": "a b!"
+          }
+        ],
+        "selector": "#char-count",
+        "expected": "4",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "Cannot verify that the Clear button returns keyboard focus to the textarea, since focus state is not observable via the allowed assertions.",
+      "Cannot verify live-update timing or aria-live announcements to assistive technology.",
+      "Cannot verify pixel styling, colors, hover/focus visuals, or responsive layout behavior.",
+      "Reading time for exactly 200 words is asserted as 2 min per the README rule (ceil(words/200)); if the intended behavior is 1 min at exactly 200 words, this expectation would need adjustment.",
+      "Cannot verify behavior with abbreviations or decimals beyond the documented counting rules."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3724,
+      "completion_tokens": 1304,
+      "total_tokens": 5028,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 2828
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Word Counter</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header class=\"header\">\n      <h1>Pixel Word Counter</h1>\n      <p class=\"subtitle\">Count words, characters, sentences &amp; reading time</p>\n    </header>\n\n    <label for=\"text-input\" class=\"label\">Your text</label>\n    <textarea id=\"text-input\" class=\"textarea\" rows=\"8\" placeholder=\"Start typing or paste your text here…\"></textarea>\n\n    <section class=\"stats\" aria-live=\"polite\" aria-atomic=\"true\">\n      <div class=\"stat\">\n        <span class=\"stat-value\" id=\"word-count\">0</span>\n        <span class=\"stat-label\">Words</span>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-value\" id=\"char-count\">0</span>\n        <span class=\"stat-label\">Characters</span>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-value\" id=\"sentence-count\">0</span>\n        <span class=\"stat-label\">Sentences</span>\n      </div>\n      <div class=\"stat\">\n        <span class=\"stat-value\" id=\"reading-time\">0 min</span>\n        <span class=\"stat-label\">Reading time</span>\n      </div>\n    </section>\n\n    <button id=\"clear-btn\" class=\"button\" type=\"button\">Clear</button>\n  </main>\n\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card-bg: #16213e;\n  --primary: #e94560;\n  --primary-hover: #ff6b81;\n  --text: #eaeaea;\n  --muted: #a0a0b0;\n  --border: #0f3460;\n  --focus: #f5c542;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  width: 100%;\n  max-width: 640px;\n  background: var(--card-bg);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  padding: 24px;\n  box-shadow: 6px 6px 0 var(--border);\n}\n\n.header {\n  margin-bottom: 20px;\n}\n\nh1 {\n  font-size: 1.75rem;\n  font-weight: 800;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  color: var(--primary);\n  line-height: 1.2;\n  margin-bottom: 6px;\n}\n\n.subtitle {\n  font-size: 1rem;\n  color: var(--muted);\n}\n\n.label {\n  display: block;\n  font-size: 1rem;\n  font-weight: 600;\n  margin-bottom: 8px;\n  color: var(--text);\n}\n\n.textarea {\n  width: 100%;\n  min-height: 160px;\n  padding: 12px;\n  font-family: inherit;\n  font-size: 1rem;\n  line-height: 1.5;\n  color: var(--text);\n  background: var(--bg);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  resize: vertical;\n  outline: none;\n  transition: border-color 0.15s ease;\n}\n\n.textarea::placeholder {\n  color: var(--muted);\n  opacity: 0.7;\n}\n\n.textarea:hover {\n  border-color: var(--primary);\n}\n\n.textarea:focus-visible {\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(245, 197, 66, 0.3);\n}\n\n.stats {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 12px;\n  margin: 20px 0;\n}\n\n.stat {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 12px 4px;\n  background: var(--bg);\n  border: 3px solid var(--border);\n  text-align: center;\n}\n\n.stat-value {\n  font-size: 1.5rem;\n  font-weight: 800;\n  color: var(--primary);\n  line-height: 1.2;\n  word-break: break-word;\n}\n\n.stat-label {\n  font-size: 0.75rem;\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  color: var(--muted);\n  margin-top: 4px;\n}\n\n.button {\n  display: block;\n  width: 100%;\n  padding: 14px 24px;\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  color: #fff;\n  background: var(--primary);\n  border: 3px solid var(--border);\n  border-radius: 0;\n  cursor: pointer;\n  transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.05s ease;\n}\n\n.button:hover {\n  background: var(--primary-hover);\n}\n\n.button:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.button:active {\n  transform: translate(2px, 2px);\n  box-shadow: none;\n}\n\n@media (max-width: 480px) {\n  .card {\n    padding: 16px;\n    box-shadow: 4px 4px 0 var(--border);\n  }\n\n  h1 {\n    font-size: 1.4rem;\n  }\n\n  .stats {\n    grid-template-columns: repeat(2, 1fr);\n  }\n\n  .stat-value {\n    font-size: 1.25rem;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const textInput = document.getElementById('text-input');\nconst wordCountEl = document.getElementById('word-count');\nconst charCountEl = document.getElementById('char-count');\nconst sentenceCountEl = document.getElementById('sentence-count');\nconst readingTimeEl = document.getElementById('reading-time');\nconst clearBtn = document.getElementById('clear-btn');\n\nconst WORDS_PER_MINUTE = 200;\n\nfunction countWords(text) {\n  const trimmed = text.trim();\n  if (!trimmed) return 0;\n  return trimmed.split(/\\s+/).length;\n}\n\nfunction countSentences(text) {\n  const trimmed = text.trim();\n  if (!trimmed) return 0;\n  const matches = trimmed.match(/[^.!?]+[.!?]+/g);\n  if (!matches) return 1;\n  const remainder = trimmed.replace(/[^.!?]+[.!?]+/g, '').trim();\n  return matches.length + (remainder ? 1 : 0);\n}\n\nfunction formatReadingTime(words) {\n  if (words === 0) return '0 min';\n  const minutes = words / WORDS_PER_MINUTE;\n  if (minutes < 1) return '<1 min';\n  return Math.ceil(minutes) + ' min';\n}\n\nfunction updateStats() {\n  const text = textInput.value;\n  const words = countWords(text);\n  const chars = text.length;\n  const sentences = countSentences(text);\n  const readingTime = formatReadingTime(words);\n\n  wordCountEl.textContent = words;\n  charCountEl.textContent = chars;\n  sentenceCountEl.textContent = sentences;\n  readingTimeEl.textContent = readingTime;\n}\n\ntextInput.addEventListener('input', updateStats);\n\nclearBtn.addEventListener('click', function () {\n  textInput.value = '';\n  updateStats();\n  textInput.focus();\n});\n\nupdateStats();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Word Counter\n\nA polished, offline, dependency-free word counter with a pixel-inspired aesthetic. Type or paste text to see live counts of words, characters, and sentences, plus an estimated reading time at 200 words per minute.\n\n## Features\n\n- **Live counting** — updates as you type (words, characters, sentences)\n- **Reading time estimate** — based on 200 WPM; shows `<1 min` for short texts and `0 min` when empty\n- **Clear button** — resets the text area and returns focus to it\n- **Accessible** — labeled textarea, `aria-live` stats region, keyboard-focusable controls with visible focus rings\n- **Responsive** — works from 360px wide; stats stack into two columns on small screens\n- **Pixel styling** — cohesive dark palette with hard borders and offset shadows\n\n## Files\n\n| File | Purpose |\n|------|---------|\n| `index.html` | Semantic structure: card, labeled textarea, stats, Clear button |\n| `style.css` | Pixel theme, responsive layout, hover/focus/pressed states |\n| `app.js` | Counting logic and event listeners (no inline handlers) |\n\n## Usage\n\n1. Open `index.html` in any modern browser (no server needed).\n2. Type or paste text into the textarea.\n3. Read the live stats below the textarea.\n4. Press **Clear** (or Tab to it and press Enter/Space) to reset.\n\n## Counting Rules\n\n- **Words**: whitespace-separated tokens after trimming.\n- **Characters**: raw string length (includes spaces and punctuation).\n- **Sentences**: sequences ending in `.`, `!`, or `?`; any remaining non-empty text counts as one sentence. Abbreviations and decimals are not specially handled.\n- **Reading time**: `ceil(words / 200)` minutes; `<1 min` when words > 0 but under 200; `0 min` when empty.\n\n## Constraints\n\nNo imports, packages, network requests, external assets, iframes, or server code. Pure HTML, CSS, and vanilla JavaScript.\n",
+      "description": ""
+    }
+  ]
+}

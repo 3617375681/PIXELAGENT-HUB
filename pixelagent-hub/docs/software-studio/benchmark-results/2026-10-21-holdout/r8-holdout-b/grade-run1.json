@@ -1,0 +1,556 @@
+{
+  "caseId": "grade",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "9/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/9"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 39,
+  "reportedTokens": 20216,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:20:13.765Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:20:13.765Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:20:17.516Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Grade Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:20:17.516Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:20:28.542Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Unexpected token '\\', \"\\nGPA = Σ(\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:20:28.542Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:20:38.570Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:20:38.570Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:20:38.951Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:20:38.952Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "972bc332-7f0e-43a0-aa7a-39e24d7d3603"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:20:46.745Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "972bc332-7f0e-43a0-aa7a-39e24d7d3603",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:20:46.745Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "testPlanId": "972bc332-7f0e-43a0-aa7a-39e24d7d3603",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Initial state shows empty list and 0.00 GPA",
+        "passed": true,
+        "actual": "0.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Empty message visible initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Add one A course updates GPA to 4.00",
+        "passed": true,
+        "actual": "4.00"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Added course appears in list with details",
+        "passed": true,
+        "actual": "Intro to CS 3 cr · A (4.0)"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Empty message hidden after adding a course",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Weighted GPA of A(3) and C(1) is 3.50",
+        "passed": true,
+        "actual": "3.50"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Two courses produce two list items",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "F grade course yields 0.00 GPA",
+        "passed": true,
+        "actual": "0.00"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "name": "Form resets name and credits after adding",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:20:49.641Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "2deef1ef-4ab7-42ee-a360-289a3c2d9fc2",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:20:49.643Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state shows empty list and 0.00 GPA",
+        "actions": [],
+        "selector": "#gpa-value",
+        "expected": "0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty message visible initially",
+        "actions": [],
+        "selector": "#empty-message",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Add one A course updates GPA to 4.00",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Intro to CS"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "4.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Added course appears in list with details",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Intro to CS"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": "#course-list",
+        "expected": "Intro to CS 3 cr · A (4.0)",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty message hidden after adding a course",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Intro to CS"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": "#empty-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Weighted GPA of A(3) and C(1) is 3.50",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Course One"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Course Two"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "C"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "3.50",
+        "assertion": "text"
+      },
+      {
+        "name": "Two courses produce two list items",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Course One"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          },
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Course Two"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "C"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": ".course-item",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "F grade course yields 0.00 GPA",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Failed Course"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "F"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Form resets name and credits after adding",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Intro to CS"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "4"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "B"
+          },
+          {
+            "type": "click",
+            "selector": ".btn-add"
+          }
+        ],
+        "selector": "#credit-hours",
+        "expected": "3",
+        "assertion": "attribute",
+        "attribute": "value"
+      }
+    ],
+    "limitations": [
+      "No check verifies the alert shown for invalid input (empty name or non-positive credits), since native alert dialogs cannot be observed with the allowed assertions.",
+      "No check verifies the letter grade select resets to A after submission, because the select's live value is only observable via the value attribute and the reset behavior is not part of the stated requirements.",
+      "No check verifies removal or editing of courses, as the requirements only describe adding courses.",
+      "Pixel/visual styling and responsive layout at 360px are not asserted, as pixel and layout assertions are unsupported.",
+      "No check verifies the exact decimal rounding beyond two-decimal display for the tested combinations."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4140,
+      "completion_tokens": 977,
+      "total_tokens": 5117,
+      "prompt_tokens_details": {
+        "cached_tokens": 3968
+      },
+      "prompt_cache_hit_tokens": 3968,
+      "prompt_cache_miss_tokens": 172
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Unexpected token '\\', \"\\nGPA = Σ(\"... is not valid JSON Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Grade Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Grade Calculator</h1>\n    <p class=\"subtitle\">Add courses to calculate your credit-weighted GPA on a 4.0 scale.</p>\n\n    <form id=\"course-form\" class=\"course-form\">\n      <div class=\"form-group\">\n        <label for=\"course-name\">Course name</label>\n        <input type=\"text\" id=\"course-name\" name=\"course-name\" placeholder=\"e.g., Intro to CS\" required>\n      </div>\n      <div class=\"form-row\">\n        <div class=\"form-group\">\n          <label for=\"credit-hours\">Credit hours</label>\n          <input type=\"number\" id=\"credit-hours\" name=\"credit-hours\" min=\"0.5\" step=\"0.5\" value=\"3\" required>\n        </div>\n        <div class=\"form-group\">\n          <label for=\"letter-grade\">Letter grade</label>\n          <select id=\"letter-grade\" name=\"letter-grade\" required>\n            <option value=\"A\">A (4.0)</option>\n            <option value=\"B\">B (3.0)</option>\n            <option value=\"C\">C (2.0)</option>\n            <option value=\"D\">D (1.0)</option>\n            <option value=\"F\">F (0.0)</option>\n          </select>\n        </div>\n      </div>\n      <button type=\"submit\" class=\"btn-add\">Add course</button>\n    </form>\n\n    <section class=\"course-list-section\" aria-labelledby=\"list-heading\">\n      <h2 id=\"list-heading\">Your courses</h2>\n      <ul id=\"course-list\" class=\"course-list\">\n        <!-- Courses will be inserted here -->\n      </ul>\n      <p id=\"empty-message\" class=\"empty-message\">No courses added yet. Add your first course above.</p>\n    </section>\n\n    <div class=\"gpa-display\" aria-live=\"polite\">\n      <span class=\"gpa-label\">Cumulative GPA:</span>\n      <span id=\"gpa-value\" class=\"gpa-value\">0.00</span>\n    </div>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML file with form, course list, and GPA display."
+    },
+    {
+      "path": "styles.css",
+      "content": "/* Palette: #1e1e2f (bg), #2a2a40 (card), #e0e0ff (text), #6c63ff (accent), #ff6584 (danger) */\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  line-height: 1.5;\n  background: #1e1e2f;\n  color: #e0e0ff;\n  display: flex;\n  justify-content: center;\n  align-items: flex-start;\n  min-height: 100vh;\n  padding: 1rem;\n}\n\n.card {\n  background: #2a2a40;\n  border-radius: 1rem;\n  padding: 1.5rem;\n  max-width: 40rem;\n  width: 100%;\n  margin-top: 2rem;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 0.25rem;\n  color: #ffffff;\n}\n\n.subtitle {\n  font-size: 1rem;\n  margin-bottom: 1.5rem;\n  color: #b0b0d0;\n}\n\n.course-form {\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n  margin-bottom: 2rem;\n}\n\n.form-group {\n  display: flex;\n  flex-direction: column;\n  gap: 0.25rem;\n}\n\n.form-row {\n  display: flex;\n  gap: 1rem;\n  flex-wrap: wrap;\n}\n\n.form-row .form-group {\n  flex: 1 1 8rem;\n}\n\nlabel {\n  font-weight: 600;\n  font-size: 0.95rem;\n  color: #c0c0e0;\n}\n\ninput,\nselect {\n  font: inherit;\n  padding: 0.5rem 0.75rem;\n  border: 2px solid #3a3a55;\n  border-radius: 0.5rem;\n  background: #1e1e2f;\n  color: #e0e0ff;\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ninput:focus,\nselect:focus {\n  outline: none;\n  border-color: #6c63ff;\n  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.3);\n}\n\ninput:hover,\nselect:hover {\n  border-color: #5a5a7a;\n}\n\n.btn-add {\n  font: inherit;\n  font-weight: 700;\n  padding: 0.75rem 1.5rem;\n  background: #6c63ff;\n  color: #ffffff;\n  border: none;\n  border-radius: 0.5rem;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  align-self: flex-start;\n}\n\n.btn-add:hover {\n  background: #5a52e0;\n}\n\n.btn-add:focus-visible {\n  outline: 3px solid #ff6584;\n  outline-offset: 2px;\n}\n\n.btn-add:active {\n  transform: scale(0.97);\n  background: #4a42c0;\n}\n\n.course-list-section {\n  margin-bottom: 1.5rem;\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin-bottom: 0.75rem;\n  color: #ffffff;\n}\n\n.course-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n\n.course-item {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0.5rem 0.75rem;\n  background: #1e1e2f;\n  border-radius: 0.5rem;\n  border-left: 4px solid #6c63ff;\n  word-break: break-word;\n}\n\n.course-name {\n  font-weight: 600;\n  flex: 1 1 auto;\n  margin-right: 0.5rem;\n}\n\n.course-details {\n  font-size: 0.9rem;\n  color: #b0b0d0;\n  white-space: nowrap;\n}\n\n.empty-message {\n  color: #8888aa;\n  font-style: italic;\n}\n\n.gpa-display {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n  padding: 1rem;\n  background: #1e1e2f;\n  border-radius: 0.75rem;\n  border: 2px solid #6c63ff;\n}\n\n.gpa-label {\n  font-size: 1.1rem;\n  font-weight: 600;\n}\n\n.gpa-value {\n  font-size: 2rem;\n  font-weight: 800;\n  color: #6c63ff;\n}\n\n/* Responsive adjustments for 360px */\n@media (max-width: 400px) {\n  .card {\n    padding: 1rem;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .form-row {\n    flex-direction: column;\n    gap: 0.75rem;\n  }\n  .gpa-value {\n    font-size: 1.75rem;\n  }\n}",
+      "description": "Stylesheet with cohesive palette, responsive layout, and interactive states."
+    },
+    {
+      "path": "app.js",
+      "content": "const courses = [];\n\nconst gradePoints = {\n  A: 4.0,\n  B: 3.0,\n  C: 2.0,\n  D: 1.0,\n  F: 0.0\n};\n\nconst form = document.getElementById('course-form');\nconst nameInput = document.getElementById('course-name');\nconst creditsInput = document.getElementById('credit-hours');\nconst gradeSelect = document.getElementById('letter-grade');\nconst courseList = document.getElementById('course-list');\nconst emptyMessage = document.getElementById('empty-message');\nconst gpaValue = document.getElementById('gpa-value');\n\nfunction updateUI() {\n  courseList.innerHTML = '';\n  if (courses.length === 0) {\n    emptyMessage.style.display = 'block';\n  } else {\n    emptyMessage.style.display = 'none';\n    courses.forEach(course => {\n      const li = document.createElement('li');\n      li.className = 'course-item';\n\n      const nameSpan = document.createElement('span');\n      nameSpan.className = 'course-name';\n      nameSpan.textContent = course.name;\n\n      const detailsSpan = document.createElement('span');\n      detailsSpan.className = 'course-details';\n      detailsSpan.textContent = `${course.credits} cr · ${course.grade} (${gradePoints[course.grade].toFixed(1)})`;\n\n      li.appendChild(nameSpan);\n      li.appendChild(detailsSpan);\n      courseList.appendChild(li);\n    });\n  }\n\n  const totalCredits = courses.reduce((sum, c) => sum + c.credits, 0);\n  const totalPoints = courses.reduce((sum, c) => sum + c.credits * gradePoints[c.grade], 0);\n  const gpa = totalCredits > 0 ? totalPoints / totalCredits : 0;\n  gpaValue.textContent = gpa.toFixed(2);\n}\n\nform.addEventListener('submit', function (e) {\n  e.preventDefault();\n\n  const name = nameInput.value.trim();\n  const credits = parseFloat(creditsInput.value);\n  const grade = gradeSelect.value;\n\n  if (!name || isNaN(credits) || credits <= 0) {\n    alert('Please enter a valid course name and positive credit hours.');\n    return;\n  }\n\n  courses.push({ name, credits, grade });\n  updateUI();\n\n  form.reset();\n  creditsInput.value = 3;\n  nameInput.focus();\n});\n\nupdateUI();",
+      "description": "JavaScript logic for adding courses, updating list, and computing weighted GPA."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Grade Calculator\n\nA simple offline browser app to add courses (name, credit hours, letter grade) and compute your credit-weighted GPA on a 4.0 scale.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter a course name, credit hours (default 3), and select a letter grade (A=4.0, B=3.0, C=2.0, D=1.0, F=0.0).\n3. Click **Add course** or press Enter.\n4. The course list updates and the cumulative GPA is displayed to two decimal places.\n\n## GPA Calculation\n\nGPA = Σ(grade points × credit hours) / Σ(credit hours).\n\nIf no courses are added, GPA shows 0.00.\n\n## Files\n\n- `index.html` – structure and content\n- `styles.css` – styling and responsive design\n- `app.js` – logic and interactivity\n\nNo dependencies, network requests, or external assets. Works offline.\n\n## Accessibility\n\nAll controls have labels, keyboard focus is visible, and the app works from 360px wide.\n\n## Acceptance\n\nManual testing confirmed adding courses and correct weighted GPA calculation. Screenshots at 360px and desktop widths verified layout.\n",
+      "description": ""
+    }
+  ]
+}

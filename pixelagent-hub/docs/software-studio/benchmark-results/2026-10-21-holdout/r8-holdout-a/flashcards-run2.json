@@ -1,0 +1,443 @@
+{
+  "caseId": "flashcards",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 21,
+  "reportedTokens": 9396,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:28:49.043Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:28:49.043Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:28:52.414Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Flashcard Deck"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:28:52.414Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:29:01.651Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:29:01.652Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:29:02.095Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:29:02.095Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2ed01590-d442-404f-93c4-afdb7e58b152"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:29:04.398Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2ed01590-d442-404f-93c4-afdb7e58b152",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:29:04.399Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "testPlanId": "2ed01590-d442-404f-93c4-afdb7e58b152",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Initial deck state shows first card and zero known",
+        "passed": true,
+        "actual": "Card 1 of 5"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Clicking card flips to meaning and back to word",
+        "passed": true,
+        "actual": "Ephemeral"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Next advances card counter and word",
+        "passed": true,
+        "actual": "Card 2 of 5"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Previous is disabled on first card",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Next is disabled on last card",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Got it increments known count",
+        "passed": true,
+        "actual": "Known: 1"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Got it disables after marking current card",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Navigating resets flip to word side",
+        "passed": true,
+        "actual": "Serendipity"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Known count persists across navigation",
+        "passed": true,
+        "actual": "Known: 1"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "name": "Last card shows fifth word",
+        "passed": true,
+        "actual": "Ambiguous"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:29:07.592Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "dd25767f-cd11-4736-a91f-b3508122bdc7",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:29:07.595Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial deck state shows first card and zero known",
+        "actions": [],
+        "selector": "#card-counter",
+        "expected": "Card 1 of 5",
+        "assertion": "text"
+      },
+      {
+        "name": "Clicking card flips to meaning and back to word",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#card"
+          },
+          {
+            "type": "click",
+            "selector": "#card"
+          }
+        ],
+        "selector": "#word-text",
+        "expected": "Ephemeral",
+        "assertion": "text"
+      },
+      {
+        "name": "Next advances card counter and word",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          }
+        ],
+        "selector": "#card-counter",
+        "expected": "Card 2 of 5",
+        "assertion": "text"
+      },
+      {
+        "name": "Previous is disabled on first card",
+        "actions": [],
+        "selector": "#prev-btn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Next is disabled on last card",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          }
+        ],
+        "selector": "#next-btn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Got it increments known count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#got-it-btn"
+          }
+        ],
+        "selector": "#known-count",
+        "expected": "Known: 1",
+        "assertion": "text"
+      },
+      {
+        "name": "Got it disables after marking current card",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#got-it-btn"
+          }
+        ],
+        "selector": "#got-it-btn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Navigating resets flip to word side",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#card"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          }
+        ],
+        "selector": "#word-text",
+        "expected": "Serendipity",
+        "assertion": "text"
+      },
+      {
+        "name": "Known count persists across navigation",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#got-it-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          }
+        ],
+        "selector": "#known-count",
+        "expected": "Known: 1",
+        "assertion": "text"
+      },
+      {
+        "name": "Last card shows fifth word",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#next-btn"
+          }
+        ],
+        "selector": "#word-text",
+        "expected": "Ambiguous",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "3D flip animation and pixel/visual styling cannot be verified; only DOM text and state are checked.",
+      "Keyboard flip via Enter/Space is not tested because DOM key events are synthetic and not trusted browser input.",
+      "Back-face meaning text visibility during flip is not asserted since CSS 3D transforms and backface-visibility are not observable via text assertions.",
+      "Card counter and known count are checked individually; combined layout/positioning is not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3821,
+      "completion_tokens": 606,
+      "total_tokens": 4427,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 2925
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Flashcard Deck</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"app\">\n    <h1>Pixel Flashcards</h1>\n    <div class=\"deck-info\">\n      <span id=\"card-counter\">Card 1 of 5</span>\n      <span id=\"known-count\">Known: 0</span>\n    </div>\n    <div id=\"card\" class=\"card\" tabindex=\"0\" role=\"button\" aria-label=\"Flashcard. Click or press Enter to flip.\">\n      <div class=\"card-inner\">\n        <div class=\"card-front\">\n          <span class=\"card-label\">Word</span>\n          <span id=\"word-text\"></span>\n        </div>\n        <div class=\"card-back\">\n          <span class=\"card-label\">Meaning</span>\n          <span id=\"meaning-text\"></span>\n        </div>\n      </div>\n    </div>\n    <div class=\"controls\">\n      <button id=\"prev-btn\" aria-label=\"Previous card\">Previous</button>\n      <button id=\"got-it-btn\" aria-label=\"Mark this card as known\">Got it</button>\n      <button id=\"next-btn\" aria-label=\"Next card\">Next</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --text: #f0f0f5;\n  --accent: #ff6b6b;\n  --accent-hover: #ff8e8e;\n  --accent-pressed: #e05555;\n  --border: #3a3a55;\n  --shadow: rgba(0, 0, 0, 0.4);\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  line-height: 1.5;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 20px;\n}\n\n.app {\n  width: 100%;\n  max-width: 480px;\n  display: flex;\n  flex-direction: column;\n  gap: 24px;\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.8rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: var(--text);\n}\n\n.deck-info {\n  display: flex;\n  justify-content: space-between;\n  font-size: 1rem;\n  color: var(--text);\n  opacity: 0.8;\n}\n\n.card {\n  perspective: 1000px;\n  cursor: pointer;\n  outline: none;\n  border-radius: 16px;\n  box-shadow: 0 8px 20px var(--shadow);\n  transition: box-shadow 0.2s;\n}\n\n.card:focus-visible {\n  box-shadow: 0 0 0 4px var(--accent);\n}\n\n.card-inner {\n  position: relative;\n  width: 100%;\n  height: 260px;\n  transition: transform 0.5s;\n  transform-style: preserve-3d;\n  border-radius: 16px;\n}\n\n.card.flipped .card-inner {\n  transform: rotateY(180deg);\n}\n\n.card-front,\n.card-back {\n  position: absolute;\n  inset: 0;\n  backface-visibility: hidden;\n  border-radius: 16px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 24px;\n  background: var(--card-bg);\n  border: 2px solid var(--border);\n  gap: 12px;\n}\n\n.card-back {\n  transform: rotateY(180deg);\n}\n\n.card-label {\n  font-size: 0.85rem;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  opacity: 0.6;\n}\n\n#word-text,\n#meaning-text {\n  font-size: 1.6rem;\n  font-weight: 600;\n  word-break: break-word;\n}\n\n#meaning-text {\n  font-size: 1.3rem;\n  font-weight: 400;\n  line-height: 1.4;\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\nbutton {\n  background: var(--card-bg);\n  color: var(--text);\n  border: 2px solid var(--border);\n  border-radius: 12px;\n  padding: 12px 20px;\n  font-size: 1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, border-color 0.2s, transform 0.1s;\n  flex: 1 1 auto;\n  min-width: 100px;\n}\n\nbutton:hover {\n  background: var(--accent);\n  border-color: var(--accent);\n  color: #fff;\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  background: var(--accent-pressed);\n  border-color: var(--accent-pressed);\n  transform: scale(0.97);\n}\n\n#got-it-btn {\n  background: var(--accent);\n  border-color: var(--accent);\n  color: #fff;\n}\n\n#got-it-btn:hover {\n  background: var(--accent-hover);\n  border-color: var(--accent-hover);\n}\n\n#got-it-btn:active {\n  background: var(--accent-pressed);\n  border-color: var(--accent-pressed);\n}\n\n@media (max-width: 400px) {\n  body {\n    font-size: 16px;\n    padding: 12px;\n  }\n  .card-inner {\n    height: 200px;\n  }\n  #word-text {\n    font-size: 1.3rem;\n  }\n  #meaning-text {\n    font-size: 1.1rem;\n  }\n  button {\n    padding: 10px 14px;\n    font-size: 0.95rem;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const cards = [\n  { word: 'Ephemeral', meaning: 'Lasting for a very short time.' },\n  { word: 'Serendipity', meaning: 'The occurrence of happy or beneficial events by chance.' },\n  { word: 'Resilient', meaning: 'Able to recover quickly from difficulties.' },\n  { word: 'Meticulous', meaning: 'Showing great attention to detail; very careful and precise.' },\n  { word: 'Ambiguous', meaning: 'Open to more than one interpretation; not having one obvious meaning.' }\n];\n\nlet currentIndex = 0;\nlet flipped = false;\nconst knownSet = new Set();\n\nconst cardEl = document.getElementById('card');\nconst wordText = document.getElementById('word-text');\nconst meaningText = document.getElementById('meaning-text');\nconst cardCounter = document.getElementById('card-counter');\nconst knownCountEl = document.getElementById('known-count');\nconst prevBtn = document.getElementById('prev-btn');\nconst nextBtn = document.getElementById('next-btn');\nconst gotItBtn = document.getElementById('got-it-btn');\n\nfunction render() {\n  const card = cards[currentIndex];\n  wordText.textContent = card.word;\n  meaningText.textContent = card.meaning;\n  cardCounter.textContent = `Card ${currentIndex + 1} of ${cards.length}`;\n  knownCountEl.textContent = `Known: ${knownSet.size}`;\n  cardEl.classList.toggle('flipped', flipped);\n  cardEl.setAttribute('aria-label', `Flashcard ${currentIndex + 1} of ${cards.length}. ${flipped ? 'Meaning shown: ' + card.meaning : 'Word shown: ' + card.word}. Click or press Enter to flip.`);\n  prevBtn.disabled = currentIndex === 0;\n  nextBtn.disabled = currentIndex === cards.length - 1;\n  gotItBtn.disabled = knownSet.has(currentIndex);\n}\n\nfunction flipCard() {\n  flipped = !flipped;\n  render();\n}\n\nfunction goTo(index) {\n  if (index < 0 || index >= cards.length) return;\n  currentIndex = index;\n  flipped = false;\n  render();\n}\n\nfunction markKnown() {\n  if (!knownSet.has(currentIndex)) {\n    knownSet.add(currentIndex);\n    render();\n  }\n}\n\ncardEl.addEventListener('click', flipCard);\ncardEl.addEventListener('keydown', (e) => {\n  if (e.key === 'Enter' || e.key === ' ') {\n    e.preventDefault();\n    flipCard();\n  }\n});\n\nprevBtn.addEventListener('click', () => goTo(currentIndex - 1));\nnextBtn.addEventListener('click', () => goTo(currentIndex + 1));\ngotItBtn.addEventListener('click', markKnown);\n\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Flashcard Deck\n\nA simple offline flashcard app built with HTML, CSS, and plain JavaScript. It includes 5 built-in vocabulary cards. Click a card to flip between the word and its meaning. Use Previous/Next to navigate, and click \"Got it\" to mark a card as known. The known count updates automatically.\n\n## Features\n\n- 5 preloaded vocabulary cards\n- Flip animation on click or keyboard (Enter/Space)\n- Previous and Next buttons for navigation\n- \"Got it\" button to mark a card as known\n- Known count display\n- Keyboard accessible and responsive down to 360px\n- Cohesive dark theme with accent colors\n\n## How to Use\n\n1. Open `index.html` in any modern browser.\n2. Click the card (or focus and press Enter/Space) to flip between word and meaning.\n3. Use Previous/Next to move through the deck.\n4. Click \"Got it\" to mark the current card as known. The button disables for known cards.\n5. The known count updates as you mark cards.\n\nNo network requests, external assets, or server needed.\n\n## File Structure\n\n- `index.html` — main page\n- `styles.css` — styling\n- `script.js` — logic\n- `README.md` — this file\n\n## Accessibility\n\n- All controls are native buttons with labels\n- Card is focusable and responds to Enter/Space\n- Focus styles are visible\n- Works with screen readers via ARIA labels\n\n## Browser Support\n\nWorks in all modern browsers (Chrome, Firefox, Safari, Edge).",
+      "description": ""
+    }
+  ]
+}
