@@ -191,11 +191,13 @@ async function generate(entry: Entry, signal: AbortSignal) {
     emit(entry, 'phase', { phase: name }, round);
   };
   try {
-    phase('planning');
-    const plan = await ask('Manager', managerPrompt(description, { constraints: STUDIO_CONSTRAINTS, deliverable: STUDIO_DELIVERABLE }), parsePlanOutput, signal, AGENT_TIMEOUT_MS);
-    project.plan = { status: 'success', output: plan.output };
-    project.generationMetrics = metrics(entry);
-    emit(entry, 'plan_ready', { projectName: plan.output.projectName });
+    if (project.strategy !== 'coder-only') {
+      phase('planning');
+      const plan = await ask('Manager', managerPrompt(description, { constraints: STUDIO_CONSTRAINTS, deliverable: STUDIO_DELIVERABLE }), parsePlanOutput, signal, AGENT_TIMEOUT_MS);
+      project.plan = { status: 'success', output: plan.output };
+      project.generationMetrics = metrics(entry);
+      emit(entry, 'plan_ready', { projectName: plan.output.projectName });
+    }
     const files = await codeUntilBuilt(entry, signal, phase, { previousFiles: [], revisionNotes: [], maxRounds: 3 });
     const checks = await planChecks(entry, signal);
     if (checks) {
@@ -327,15 +329,15 @@ const providerLabel = (credentials: { provider: string; baseUrl?: string }) => {
   try { return new URL(customEndpoint(credentials.baseUrl || DEFAULT_CUSTOM_BASE_URL)).host; } catch { return provider.label; }
 };
 
-function start(description: string): { projectId: string; jobId: string } {
+function start(description: string, strategy: StudioProject['strategy'] = 'manager-coder'): { projectId: string; jobId: string } {
   const credentials = liveCredentials();
   if (!credentials) throw httpError('Add a model key to build live.', 401);
   const text = description.trim();
   if (!text || text.length > 4000) throw httpError('Provide a project description of 1–4000 characters', 400);
   const projectId = `${LIVE_PREFIX}${crypto.randomUUID()}`;
-  const entry: Entry = { project: { projectId, description: text, status: 'queued', startedAt: now(), strategy: 'manager-coder', rounds: [] }, events: [], diagnostics: [] };
+  const entry: Entry = { project: { projectId, description: text, status: 'queued', startedAt: now(), strategy, rounds: [] }, events: [], diagnostics: [] };
   entries.set(projectId, entry);
-  emit(entry, 'queued', { strategy: 'manager-coder', repair: false, revision: false, retry: false, source: 'browser', provider: providerLabel(credentials), model: credentials.model, ...(credentials.testerModel && credentials.testerModel !== credentials.model ? { testerModel: credentials.testerModel } : {}) });
+  emit(entry, 'queued', { strategy, repair: false, revision: false, retry: false, source: 'browser', provider: providerLabel(credentials), model: credentials.model, ...(credentials.testerModel && credentials.testerModel !== credentials.model ? { testerModel: credentials.testerModel } : {}) });
   const controller = new AbortController();
   controllers.set(projectId, controller);
   void generate(entry, controller.signal).finally(() => { controllers.delete(projectId); void persist(entry); });
@@ -387,10 +389,11 @@ export function importSharedRun(encoded: string): string {
   const projectId = `${SHARED_PREFIX}${shareId(encoded)}`;
   try { sessionStorage.setItem(`pixelagent:shared:${projectId}`, encoded); } catch { /* this tab only */ }
   const previewFile = `v${run.round}/dist/index.html`;
+  const strategy = run.events.find((event) => event.type === 'queued')?.data?.strategy === 'coder-only' ? 'coder-only' : 'manager-coder';
   entries.set(projectId, {
     project: {
       projectId, description: run.description, status: 'ready_for_review', phase: 'ready_for_review', startedAt: run.startedAt, finishedAt: run.finishedAt,
-      strategy: 'manager-coder', plan: { status: 'success', output: { projectName: run.projectName } }, previewFile, archiveFile: 'source.zip',
+      strategy, plan: strategy === 'coder-only' ? undefined : { status: 'success', output: { projectName: run.projectName } }, previewFile, archiveFile: 'source.zip',
       rounds: [{ round: run.round, code: { status: 'success', output: { files: run.files, llmProvider: run.provider, llmModel: run.model } }, build: { status: 'passed', errors: [], checkedFiles: run.files.map((file) => file.path), browserVerified: false } }],
     },
     events: run.events as StudioEvent[], html: run.html, files: run.files, diagnostics: [],
@@ -405,7 +408,10 @@ const pause = (ms: number, signal: AbortSignal) => new Promise<void>((resolve) =
 });
 
 export async function liveRequest(method: string, path: string, body?: string): Promise<unknown> {
-  if (method === 'POST' && path === '/api/studio/projects') return start(JSON.parse(body || '{}').description || '');
+  if (method === 'POST' && path === '/api/studio/projects') {
+    const input = JSON.parse(body || '{}');
+    return start(input.description || '', input.strategy === 'coder-only' ? 'coder-only' : 'manager-coder');
+  }
   const match = path.match(/^\/api\/studio\/projects\/([^/?]+)(?:\/([a-z-]+))?(?:\?(.*))?$/);
   if (!match || !isLiveProject(decodeURIComponent(match[1]))) return undefined;
   const projectId = decodeURIComponent(match[1]);
