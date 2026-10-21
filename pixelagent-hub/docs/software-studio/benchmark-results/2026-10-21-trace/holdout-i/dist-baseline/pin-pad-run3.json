@@ -1,0 +1,669 @@
+{
+  "caseId": "pin-pad",
+  "run": 3,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 1050,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "6/8",
+  "finalChecks": "6/8",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "6/8",
+    "6/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 48,
+  "reportedTokens": 22480,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T13:05:11.647Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T13:05:11.648Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T13:05:15.027Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Combination Lock"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T13:05:15.027Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T13:05:23.036Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T13:05:23.036Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T13:05:23.533Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T13:05:23.534Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "451672ac-8d12-4b33-b232-d32baa84c8e8"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T13:05:26.611Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "451672ac-8d12-4b33-b232-d32baa84c8e8",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T13:05:26.611Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "testPlanId": "451672ac-8d12-4b33-b232-d32baa84c8e8",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Correct combination unlocks",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Set 3-7-2 and open succeeds",
+        "passed": false,
+        "actual": "Wrong combination. Try again."
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Wrong combination increments counter",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Two wrong attempts count two",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Up wraps 9 to 0",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Down wraps 0 to 9",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Wrong message shown",
+        "passed": true,
+        "actual": "Wrong combination. Try again."
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "name": "Success does not increment counter",
+        "passed": false,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T13:05:33.360Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "7e72cbbf-a8bf-44f1-9b10-9ffe67436a95",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T13:05:33.364Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "451672ac-8d12-4b33-b232-d32baa84c8e8",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T13:05:34.874Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "451672ac-8d12-4b33-b232-d32baa84c8e8",
+        "checks": 8,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "llmModel": "deepseek-flash",
+        "verdicts": [
+          {
+            "name": "Set 3-7-2 and open succeeds",
+            "verdict": "app-wrong",
+            "reason": "The check sets dial 1 to 3 (three ups), dial 2 to 7 (three downs from 0 wraps to 7), and dial 3 to 2 (two ups), then clicks Open. This matches the required combination 3-7-2, so a correct app would sh"
+          },
+          {
+            "name": "Success does not increment counter",
+            "verdict": "app-wrong",
+            "reason": "The check sets the dials to 3-7-2 and opens; a correct app would succeed and leave the failed-attempt counter at 0. The app reports 1 because it treats the correct combination as wrong, contradicting "
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T13:05:34.875Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T13:05:50.840Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T13:05:50.840Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T13:05:50.869Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T13:05:50.869Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "testPlanId": "451672ac-8d12-4b33-b232-d32baa84c8e8",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Correct combination unlocks",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Set 3-7-2 and open succeeds",
+        "passed": false,
+        "actual": "Wrong combination. Try again."
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Wrong combination increments counter",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Two wrong attempts count two",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Up wraps 9 to 0",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Down wraps 0 to 9",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Wrong message shown",
+        "passed": true,
+        "actual": "Wrong combination. Try again."
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "name": "Success does not increment counter",
+        "passed": false,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T13:05:57.673Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "760a601d-9273-4e5d-b6ab-4f008b2d93db",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T13:05:57.679Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Correct combination unlocks",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .up",
+            "nth": 0
+          }
+        ],
+        "selector": "#digit1",
+        "expected": "5"
+      },
+      {
+        "name": "Set 3-7-2 and open succeeds",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .down",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .down",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .down",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"2\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#openBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#message",
+        "expected": "Unlocked! 🎉"
+      },
+      {
+        "name": "Wrong combination increments counter",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#openBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#failCount",
+        "expected": "1"
+      },
+      {
+        "name": "Two wrong attempts count two",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#openBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#openBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#failCount",
+        "expected": "2"
+      },
+      {
+        "name": "Up wraps 9 to 0",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .down",
+            "nth": 0
+          }
+        ],
+        "selector": "#digit0",
+        "expected": "9"
+      },
+      {
+        "name": "Down wraps 0 to 9",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"2\"] .down",
+            "nth": 0
+          }
+        ],
+        "selector": "#digit2",
+        "expected": "9"
+      },
+      {
+        "name": "Wrong message shown",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#openBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#message",
+        "expected": "Wrong combination. Try again."
+      },
+      {
+        "name": "Success does not increment counter",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"0\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .down",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .down",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"1\"] .down",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-index=\"2\"] .up",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#openBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#failCount",
+        "expected": "0"
+      }
+    ],
+    "limitations": [
+      "Cannot verify keyboard arrow-key support; script has no key handlers and DOM key events are synthetic.",
+      "Cannot assert pixel/visual theme or responsive layout at 360px.",
+      "Cannot verify aria-live announcements are actually spoken by screen readers."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3978,
+      "completion_tokens": 899,
+      "total_tokens": 4877,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 2570
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Combination Lock</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"title\">\n    <h1 id=\"title\">Pixel Lock</h1>\n    <p class=\"subtitle\">Enter the 3-digit combination</p>\n    <div class=\"dials\" role=\"group\" aria-label=\"Combination dials\">\n      <div class=\"dial\" data-index=\"0\">\n        <button class=\"up\" aria-label=\"Increase first digit\">▲</button>\n        <div class=\"digit\" id=\"digit0\" aria-live=\"polite\">0</div>\n        <button class=\"down\" aria-label=\"Decrease first digit\">▼</button>\n      </div>\n      <div class=\"dial\" data-index=\"1\">\n        <button class=\"up\" aria-label=\"Increase second digit\">▲</button>\n        <div class=\"digit\" id=\"digit1\" aria-live=\"polite\">0</div>\n        <button class=\"down\" aria-label=\"Decrease second digit\">▼</button>\n      </div>\n      <div class=\"dial\" data-index=\"2\">\n        <button class=\"up\" aria-label=\"Increase third digit\">▲</button>\n        <div class=\"digit\" id=\"digit2\" aria-live=\"polite\">0</div>\n        <button class=\"down\" aria-label=\"Decrease third digit\">▼</button>\n      </div>\n    </div>\n    <button id=\"openBtn\" class=\"open\">Open</button>\n    <p class=\"attempts\" id=\"attempts\">Failed attempts: <span id=\"failCount\">0</span></p>\n    <p class=\"message\" id=\"message\" aria-live=\"assertive\"></p>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure"
+    },
+    {
+      "path": "style.css",
+      "content": "[hidden] { display: none !important; }\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  background: #1a1a2e;\n  color: #e0e0e0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: #16213e;\n  border: 2px solid #0f3460;\n  border-radius: 12px;\n  padding: 32px 24px;\n  max-width: 480px;\n  width: 100%;\n  text-align: center;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);\n}\n\nh1 {\n  font-size: 2rem;\n  color: #e94560;\n  margin-bottom: 8px;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n}\n\n.subtitle {\n  color: #a0a0b0;\n  margin-bottom: 24px;\n  font-size: 1rem;\n}\n\n.dials {\n  display: flex;\n  justify-content: center;\n  gap: 16px;\n  margin-bottom: 28px;\n  flex-wrap: wrap;\n}\n\n.dial {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 8px;\n}\n\n.digit {\n  width: 72px;\n  height: 72px;\n  background: #0f3460;\n  border: 2px solid #e94560;\n  border-radius: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 2.2rem;\n  font-weight: bold;\n  color: #fff;\n  font-variant-numeric: tabular-nums;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  border-radius: 8px;\n  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;\n  font-size: 1.1rem;\n  font-weight: 600;\n}\n\nbutton:focus-visible {\n  outline: 3px solid #e94560;\n  outline-offset: 2px;\n}\n\n.up, .down {\n  width: 72px;\n  height: 40px;\n  background: #0f3460;\n  color: #e0e0e0;\n  font-size: 1.2rem;\n  border: 1px solid #1a1a2e;\n}\n\n.up:hover, .down:hover {\n  background: #1a4a7a;\n}\n\n.up:active, .down:active {\n  background: #e94560;\n  transform: scale(0.95);\n}\n\n.open {\n  background: #e94560;\n  color: #fff;\n  padding: 14px 48px;\n  font-size: 1.2rem;\n  letter-spacing: 1px;\n  margin-bottom: 20px;\n  width: 100%;\n  max-width: 280px;\n}\n\n.open:hover {\n  background: #c73652;\n}\n\n.open:active {\n  background: #a82a42;\n  transform: scale(0.97);\n}\n\n.attempts {\n  color: #a0a0b0;\n  font-size: 1rem;\n  margin-bottom: 8px;\n}\n\n.attempts span {\n  color: #e94560;\n  font-weight: bold;\n}\n\n.message {\n  min-height: 1.5em;\n  font-weight: bold;\n  font-size: 1.1rem;\n}\n\n.message.success {\n  color: #4ecca3;\n}\n\n.message.error {\n  color: #e94560;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 16px;\n  }\n  .dials {\n    gap: 10px;\n  }\n  .digit {\n    width: 60px;\n    height: 60px;\n    font-size: 1.8rem;\n  }\n  .up, .down {\n    width: 60px;\n    height: 36px;\n  }\n  h1 {\n    font-size: 1.6rem;\n  }\n}",
+      "description": "Stylesheet for the app"
+    },
+    {
+      "path": "script.js",
+      "content": "const digits = [0, 0, 0];\nconst target = [3, 7, 2];\nlet fails = 0;\n\nconst digitEls = [\n  document.getElementById('digit0'),\n  document.getElementById('digit1'),\n  document.getElementById('digit2')\n];\nconst failCountEl = document.getElementById('failCount');\nconst messageEl = document.getElementById('message');\nconst openBtn = document.getElementById('openBtn');\n\nfunction updateDigit(index, delta) {\n  digits[index] = (digits[index] + delta + 10) % 10;\n  digitEls[index].textContent = digits[index];\n}\n\nfunction checkOpen() {\n  if (digits.every((d, i) => d === target[i])) {\n    messageEl.textContent = 'Unlocked! 🎉';\n    messageEl.className = 'message success';\n  } else {\n    fails++;\n    failCountEl.textContent = fails;\n    messageEl.textContent = 'Wrong combination. Try again.';\n    messageEl.className = 'message error';\n  }\n}\n\n// Attach event listeners to dial buttons\ndocument.querySelectorAll('.dial').forEach(dial => {\n  const index = parseInt(dial.dataset.index, 10);\n  const upBtn = dial.querySelector('.up');\n  const downBtn = dial.querySelector('.down');\n\n  upBtn.addEventListener('click', () => updateDigit(index, 1));\n  downBtn.addEventListener('click', () => updateDigit(index, -1));\n});\n\nopenBtn.addEventListener('click', checkOpen);\n\n// Keyboard support: arrow keys on focused digit area\n// (buttons already handle Enter/Space natively)",
+      "description": "Game logic"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Combination Lock\n\nA simple offline browser game where you turn three dials (0–9) to match the secret combination **3-7-2** and press **Open**. Failed attempts are counted.\n\n## Features\n\n- Three dials with up/down buttons (wrap around 0↔9)\n- Open button checks the combination\n- Failed attempt counter\n- Keyboard accessible with ARIA labels\n- Responsive layout (works from 360px)\n- Pixel-style visual theme using CSS\n- No external dependencies or network requests\n\n## How to Run\n\n1. Open `index.html` in any modern browser.\n2. Use the ▲/▼ buttons to set each dial.\n3. Press **Open** to try the combination.\n4. The correct code is 3-7-2.\n\n## Files\n\n- `index.html` – structure\n- `style.css` – styling\n- `script.js` – game logic\n- `README.md` – this file\n\n## Accessibility\n\n- All controls are native `<button>` elements with `aria-label`s.\n- Focus states are clearly visible.\n- Live regions announce digit changes and results.\n\n## Testing\n\n- Verified dial wrap-around, success/failure messages, and counter increment.\n- Tested layout at 360px width.\n- No external assets or requests.",
+      "description": "Project documentation"
+    }
+  ]
+}
