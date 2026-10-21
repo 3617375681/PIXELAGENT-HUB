@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- PLAY LIVE: optional TESTER MODEL, used for the Tester's plan and review. A [benchmark](docs/software-studio/benchmark-results/2026-10-21-tester-model/README.md) on a fresh set found no gain from `deepseek-v4-pro` (20/24 strict vs 22/24, 3.4× slower), so the default stays one model
+
 ## [2.6.0] — 2026-10-21
 
 ### Added

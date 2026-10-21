@@ -1,0 +1,637 @@
+{
+  "caseId": "elevator",
+  "run": 2,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "7/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "7/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 57,
+  "reportedTokens": 24274,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T10:34:30.414Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T10:34:30.415Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T10:34:34.761Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Elevator Panel (Floors 1–6)"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T10:34:34.761Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:34:44.645Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:34:44.645Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:34:46.072Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:34:46.073Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "9c66b56f-3aef-49c3-9995-7a26662dcaa1"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:34:48.688Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "9c66b56f-3aef-49c3-9995-7a26662dcaa1",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:34:48.688Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "testPlanId": "9c66b56f-3aef-49c3-9995-7a26662dcaa1",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:35:04.402Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Initial floor and idle direction",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:35:04.402Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Initial direction idle",
+        "passed": true,
+        "actual": "IDLE"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Six floor buttons rendered",
+        "passed": true,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Queue floor 3 highlights button",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Direction shows up after queueing 3",
+        "passed": true,
+        "actual": "▲ UP"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Car reaches floor 2 after one second",
+        "passed": false,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Doors open on arrival at floor 3",
+        "passed": false,
+        "actual": "doors"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Floor 3 button clears after arrival",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Pressing current floor opens doors",
+        "passed": true,
+        "actual": "doors open"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "name": "Queue two floors then reach first",
+        "passed": false,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:35:04.403Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "824dc654-2673-47d8-8498-58c69f7766eb",
+        "status": "failed",
+        "passed": 7,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:35:04.407Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "9c66b56f-3aef-49c3-9995-7a26662dcaa1",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T10:35:06.356Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "9c66b56f-3aef-49c3-9995-7a26662dcaa1",
+        "checks": 10,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "llmModel": "deepseek-flash",
+        "verdicts": [
+          {
+            "name": "Car reaches floor 2 after one second",
+            "verdict": "app-wrong",
+            "reason": "The check clicks floor 3 and after 1100ms expects the display to read 2. The requirements say the car moves one floor per second toward the next queued floor; pressing 3 from floor 1 should move towar"
+          },
+          {
+            "name": "Doors open on arrival at floor 3",
+            "verdict": "app-wrong",
+            "reason": "The check clicks floor 3 and waits 2100ms, then expects the #doors class attribute to contain 'open'. The requirements say doors open on arrival. The app's arrival logic does add the 'open' class, but"
+          },
+          {
+            "name": "Queue two floors then reach first",
+            "verdict": "app-wrong",
+            "reason": "The check queues floors 2 and 5, then after 1100ms expects the display to read 2. The requirements say the car moves one floor per second toward the next queued floor; from floor 1 the nearest queued "
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T10:35:06.356Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T10:35:15.601Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T10:35:15.601Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T10:35:15.621Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T10:35:15.621Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "testPlanId": "9c66b56f-3aef-49c3-9995-7a26662dcaa1",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Initial floor and idle direction",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Initial direction idle",
+        "passed": true,
+        "actual": "IDLE"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Six floor buttons rendered",
+        "passed": true,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Queue floor 3 highlights button",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Direction shows up after queueing 3",
+        "passed": true,
+        "actual": "▲ UP"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Car reaches floor 2 after one second",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Doors open on arrival at floor 3",
+        "passed": true,
+        "actual": "doors open"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Floor 3 button clears after arrival",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Pressing current floor opens doors",
+        "passed": true,
+        "actual": "doors open"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "name": "Queue two floors then reach first",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T10:35:25.231Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "8e451dd6-d2a5-47d8-8e8b-ebf84374123e",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T10:35:25.234Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial floor and idle direction",
+        "actions": [],
+        "selector": "#floorDisplay",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial direction idle",
+        "actions": [],
+        "selector": "#direction",
+        "expected": "Idle",
+        "assertion": "text"
+      },
+      {
+        "name": "Six floor buttons rendered",
+        "actions": [],
+        "selector": "#panel button",
+        "expected": "6",
+        "assertion": "count"
+      },
+      {
+        "name": "Queue floor 3 highlights button",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"3\"]"
+          }
+        ],
+        "selector": "#panel button[data-floor=\"3\"]",
+        "expected": "true",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Direction shows up after queueing 3",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"3\"]"
+          }
+        ],
+        "selector": "#direction",
+        "expected": "▲ Up",
+        "assertion": "text"
+      },
+      {
+        "name": "Car reaches floor 2 after one second",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"3\"]"
+          },
+          {
+            "type": "wait",
+            "ms": 1100
+          }
+        ],
+        "selector": "#floorDisplay",
+        "expected": "2",
+        "assertion": "text"
+      },
+      {
+        "name": "Doors open on arrival at floor 3",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"3\"]"
+          },
+          {
+            "type": "wait",
+            "ms": 2100
+          }
+        ],
+        "selector": "#doors",
+        "expected": "open",
+        "assertion": "attribute",
+        "attribute": "class"
+      },
+      {
+        "name": "Floor 3 button clears after arrival",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"3\"]"
+          },
+          {
+            "type": "wait",
+            "ms": 2100
+          }
+        ],
+        "selector": "#panel button[data-floor=\"3\"]",
+        "expected": "false",
+        "assertion": "attribute",
+        "attribute": "aria-pressed"
+      },
+      {
+        "name": "Pressing current floor opens doors",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"1\"]"
+          }
+        ],
+        "selector": "#doors",
+        "expected": "open",
+        "assertion": "attribute",
+        "attribute": "class"
+      },
+      {
+        "name": "Queue two floors then reach first",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#panel button[data-floor=\"5\"]"
+          },
+          {
+            "type": "wait",
+            "ms": 1100
+          }
+        ],
+        "selector": "#floorDisplay",
+        "expected": "2",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Door close timing and subsequent movement after doors close are not asserted beyond the open state.",
+      "Direction text uses arrow glyphs; exact rendering may vary by font but text is asserted.",
+      "No check verifies the car never skips floors or the exact one-second cadence beyond a single wait."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4814,
+      "completion_tokens": 574,
+      "total_tokens": 5388,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 3406
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Elevator Panel</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Elevator</h1>\n    <div class=\"elevator\">\n      <div class=\"car\" id=\"car\">\n        <div class=\"doors\" id=\"doors\">\n          <div class=\"door left\" id=\"doorLeft\"></div>\n          <div class=\"door right\" id=\"doorRight\"></div>\n        </div>\n      </div>\n      <div class=\"readout\">\n        <div class=\"floor-display\" id=\"floorDisplay\" aria-live=\"polite\">1</div>\n        <div class=\"direction\" id=\"direction\" aria-live=\"polite\">Idle</div>\n      </div>\n      <div class=\"panel\" id=\"panel\" role=\"group\" aria-label=\"Floor buttons\">\n        <!-- Buttons injected by JS -->\n      </div>\n    </div>\n    <p class=\"hint\">Press floor buttons to queue. The car moves one floor per second.</p>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML page with elevator car, doors, readout, and panel container."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --color-bg: #1a1a2e;\n  --color-card: #16213e;\n  --color-accent: #e94560;\n  --color-text: #eaeaea;\n  --color-highlight: #0f3460;\n  --font-system: system-ui, 'Segoe UI', Roboto, sans-serif;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--color-bg);\n  font-family: var(--font-system);\n  font-size: 16px;\n  color: var(--color-text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--color-card);\n  border: 4px solid var(--color-highlight);\n  border-radius: 12px;\n  padding: 24px;\n  width: 100%;\n  max-width: 400px;\n  box-shadow: 0 8px 0 var(--color-highlight);\n}\n\nh1 {\n  margin: 0 0 16px;\n  font-size: 1.5rem;\n  text-align: center;\n  color: var(--color-accent);\n  letter-spacing: 2px;\n  text-transform: uppercase;\n}\n\n.elevator {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n\n.car {\n  background: #0a0a1a;\n  border: 3px solid var(--color-highlight);\n  border-radius: 8px;\n  height: 80px;\n  position: relative;\n  overflow: hidden;\n}\n\n.doors {\n  display: flex;\n  height: 100%;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n\n.door {\n  flex: 1;\n  background: var(--color-highlight);\n  transition: transform 0.3s ease;\n  border: 1px solid #0a0a1a;\n}\n\n.door.left { transform-origin: left; }\n.door.right { transform-origin: right; }\n\n.doors.open .door.left { transform: scaleX(0); }\n.doors.open .door.right { transform: scaleX(0); }\n\n.readout {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  background: #0a0a1a;\n  border: 3px solid var(--color-highlight);\n  border-radius: 8px;\n  padding: 12px 16px;\n}\n\n.floor-display {\n  font-size: 2rem;\n  font-weight: bold;\n  color: var(--color-accent);\n  font-family: monospace;\n}\n\n.direction {\n  font-size: 1rem;\n  color: var(--color-text);\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\n.panel {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n}\n\n.panel button {\n  background: var(--color-highlight);\n  color: var(--color-text);\n  border: 3px solid var(--color-accent);\n  border-radius: 8px;\n  padding: 12px 0;\n  font-size: 1.2rem;\n  font-family: monospace;\n  font-weight: bold;\n  cursor: pointer;\n  transition: background 0.1s, transform 0.1s;\n  min-height: 48px;\n}\n\n.panel button:hover {\n  background: var(--color-accent);\n  color: var(--color-card);\n}\n\n.panel button:focus-visible {\n  outline: 3px solid var(--color-accent);\n  outline-offset: 2px;\n}\n\n.panel button:active {\n  transform: translateY(2px);\n}\n\n.panel button.queued {\n  background: var(--color-accent);\n  color: var(--color-card);\n  border-color: var(--color-text);\n}\n\n.hint {\n  margin: 16px 0 0;\n  font-size: 0.9rem;\n  text-align: center;\n  color: #aaa;\n}\n\n[hidden] { display: none !important; }\n\n@media (max-width: 360px) {\n  .card { padding: 16px; }\n  .panel { gap: 8px; }\n  .panel button { font-size: 1rem; padding: 8px 0; }\n  .floor-display { font-size: 1.5rem; }\n}",
+      "description": "Pixel-art themed stylesheet with palette, layout, and interaction states."
+    },
+    {
+      "path": "app.js",
+      "content": "(function() {\n  'use strict';\n\n  const MIN_FLOOR = 1;\n  const MAX_FLOOR = 6;\n  const TICK_MS = 1000;\n\n  const state = {\n    currentFloor: 1,\n    direction: 'idle', // 'up', 'down', 'idle'\n    queue: new Set(),\n    doorsOpen: false,\n    moving: false\n  };\n\n  const floorDisplay = document.getElementById('floorDisplay');\n  const directionEl = document.getElementById('direction');\n  const panel = document.getElementById('panel');\n  const doors = document.getElementById('doors');\n\n  // Build floor buttons (6 to 1, top to bottom like a real panel)\n  for (let f = MAX_FLOOR; f >= MIN_FLOOR; f--) {\n    const btn = document.createElement('button');\n    btn.type = 'button';\n    btn.textContent = f;\n    btn.setAttribute('aria-label', 'Floor ' + f);\n    btn.dataset.floor = f;\n    btn.addEventListener('click', () => requestFloor(f));\n    panel.appendChild(btn);\n  }\n\n  function requestFloor(floor) {\n    if (floor === state.currentFloor) {\n      // Already here: open doors if idle\n      if (!state.moving && !state.doorsOpen) {\n        openDoors();\n        setTimeout(closeDoors, 800);\n      }\n      return;\n    }\n    state.queue.add(floor);\n    render();\n    if (!state.moving) {\n      startMoving();\n    }\n  }\n\n  function getNextTarget() {\n    if (state.queue.size === 0) return null;\n    const floors = Array.from(state.queue);\n    // Choose nearest floor in current direction preference\n    if (state.direction === 'up') {\n      const above = floors.filter(f => f > state.currentFloor).sort((a,b) => a-b);\n      if (above.length) return above[0];\n      const below = floors.filter(f => f < state.currentFloor).sort((a,b) => b-a);\n      if (below.length) return below[0];\n    } else if (state.direction === 'down') {\n      const below = floors.filter(f => f < state.currentFloor).sort((a,b) => b-a);\n      if (below.length) return below[0];\n      const above = floors.filter(f => f > state.currentFloor).sort((a,b) => a-b);\n      if (above.length) return above[0];\n    } else {\n      // idle: nearest\n      floors.sort((a,b) => Math.abs(a - state.currentFloor) - Math.abs(b - state.currentFloor));\n      return floors[0];\n    }\n    return null;\n  }\n\n  function startMoving() {\n    if (state.moving) return;\n    const target = getNextTarget();\n    if (target === null) {\n      state.direction = 'idle';\n      render();\n      return;\n    }\n    state.moving = true;\n    state.direction = target > state.currentFloor ? 'up' : 'down';\n    render();\n    // First move happens after one second\n    setTimeout(tick, TICK_MS);\n  }\n\n  function tick() {\n    if (!state.moving) return;\n    const target = getNextTarget();\n    if (target === null) {\n      state.moving = false;\n      state.direction = 'idle';\n      render();\n      return;\n    }\n\n    // Update direction based on target\n    if (target > state.currentFloor) state.direction = 'up';\n    else if (target < state.currentFloor) state.direction = 'down';\n\n    // Move one floor\n    if (state.direction === 'up') state.currentFloor++;\n    else if (state.direction === 'down') state.currentFloor--;\n\n    render();\n\n    // Check arrival\n    if (state.queue.has(state.currentFloor)) {\n      state.queue.delete(state.currentFloor);\n      state.moving = false;\n      openDoors();\n      render();\n      setTimeout(() => {\n        closeDoors();\n        // After doors close, continue if queue remains\n        setTimeout(() => {\n          if (state.queue.size > 0) {\n            startMoving();\n          } else {\n            state.direction = 'idle';\n            render();\n          }\n        }, 300);\n      }, 800);\n    } else {\n      setTimeout(tick, TICK_MS);\n    }\n  }\n\n  function openDoors() {\n    state.doorsOpen = true;\n    doors.classList.add('open');\n  }\n\n  function closeDoors() {\n    state.doorsOpen = false;\n    doors.classList.remove('open');\n  }\n\n  function render() {\n    floorDisplay.textContent = state.currentFloor;\n    directionEl.textContent = state.direction === 'idle' ? 'Idle' : (state.direction === 'up' ? '▲ Up' : '▼ Down');\n\n    // Update button states\n    const buttons = panel.querySelectorAll('button');\n    buttons.forEach(btn => {\n      const f = Number(btn.dataset.floor);\n      if (state.queue.has(f)) {\n        btn.classList.add('queued');\n        btn.setAttribute('aria-pressed', 'true');\n      } else {\n        btn.classList.remove('queued');\n        btn.setAttribute('aria-pressed', 'false');\n      }\n    });\n  }\n\n  // Initial render\n  render();\n})();",
+      "description": "Elevator state machine and queue logic, fixed to move one floor per second starting after the first second."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Elevator Panel\n\nA pixel-art styled elevator control panel for floors 1–6, built with plain HTML, CSS, and JavaScript. Works fully offline in any modern browser.\n\n## How to Run\n\n1. Open `index.html` in your browser.\n2. No build step, server, or network connection required.\n\n## Controls\n\n- Click (or focus and press Enter/Space) any floor button to queue that floor.\n- The car moves one floor per second toward the next queued floor.\n- When the car arrives at a queued floor, the doors open briefly, then close.\n- The current floor and direction are shown in the readout.\n- Queued buttons are highlighted.\n- Pressing the current floor's button while idle opens the doors.\n\n## Files\n\n- `index.html` — page structure and semantic markup.\n- `styles.css` — pixel-art theme, palette, responsive layout, interaction states.\n- `app.js` — elevator state machine, queue handling, animation timing.\n\n## Accessibility\n\n- All floor buttons are real `<button>` elements with `aria-label`.\n- Visible focus rings on keyboard navigation.\n- `aria-live` regions announce floor and direction changes.\n- Layout works from 360px wide and up.\n\n## Palette\n\n- Background: `#1a1a2e`\n- Card: `#16213e`\n- Accent: `#e94560`\n- Highlight: `#0f3460`\n- Text: `#eaeaea`",
+      "description": "Project README with usage, controls, and file overview."
+    }
+  ]
+}

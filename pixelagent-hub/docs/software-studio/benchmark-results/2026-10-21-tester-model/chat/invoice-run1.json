@@ -1,0 +1,619 @@
+{
+  "caseId": "invoice",
+  "run": 1,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 24,
+  "reportedTokens": 11323,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T10:37:22.747Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T10:37:22.747Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T10:37:26.398Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Invoice Builder"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T10:37:26.398Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T10:37:36.021Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T10:37:36.021Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T10:37:36.816Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T10:37:36.817Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "d231928e-c4dd-4391-9b28-c7d4ce5263a9"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T10:37:40.737Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "d231928e-c4dd-4391-9b28-c7d4ce5263a9",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T10:37:40.738Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "testPlanId": "d231928e-c4dd-4391-9b28-c7d4ce5263a9",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Add item shows line total and subtotal",
+        "passed": true,
+        "actual": "$7.00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Subtotal updates after adding item",
+        "passed": true,
+        "actual": "$7.00"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Tax rate computes tax to two decimals",
+        "passed": true,
+        "actual": "$0.70"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Grand total includes tax",
+        "passed": true,
+        "actual": "$7.70"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Line description shows quantity and unit price",
+        "passed": true,
+        "actual": "Gadget × 3 @ $1.25"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Empty message hidden after adding item",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Two items produce two rows",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Subtotal sums multiple items",
+        "passed": true,
+        "actual": "$3.00"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Tax updates live when rate changes",
+        "passed": true,
+        "actual": "$7.50"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "name": "Grand total with fractional tax rounds to two decimals",
+        "passed": true,
+        "actual": "$10.81"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T10:37:44.045Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "7c0cb77e-a3a9-4796-a399-d91d3972b7f9",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T10:37:44.047Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add item shows line total and subtotal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3.50"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          }
+        ],
+        "selector": "#items-list li .item-total",
+        "expected": "$7.00"
+      },
+      {
+        "name": "Subtotal updates after adding item",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3.50"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          }
+        ],
+        "selector": "#subtotal",
+        "expected": "$7.00"
+      },
+      {
+        "name": "Tax rate computes tax to two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3.50"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "10"
+          }
+        ],
+        "selector": "#tax",
+        "expected": "$0.70"
+      },
+      {
+        "name": "Grand total includes tax",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3.50"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "10"
+          }
+        ],
+        "selector": "#grand-total",
+        "expected": "$7.70"
+      },
+      {
+        "name": "Line description shows quantity and unit price",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Gadget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.25"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          }
+        ],
+        "selector": "#items-list li .item-desc",
+        "expected": "Gadget × 3 @ $1.25"
+      },
+      {
+        "name": "Empty message hidden after adding item",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.00"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          }
+        ],
+        "selector": "#empty-msg",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Two items produce two rows",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "A"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.00"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "B"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "2.00"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          }
+        ],
+        "selector": "#items-list li",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Subtotal sums multiple items",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "A"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.00"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "B"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "2.00"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          }
+        ],
+        "selector": "#subtotal",
+        "expected": "$3.00"
+      },
+      {
+        "name": "Tax updates live when rate changes",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "100.00"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "7.5"
+          }
+        ],
+        "selector": "#tax",
+        "expected": "$7.50"
+      },
+      {
+        "name": "Grand total with fractional tax rounds to two decimals",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#desc",
+            "value": "Widget"
+          },
+          {
+            "type": "input",
+            "selector": "#qty",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "9.99"
+          },
+          {
+            "type": "click",
+            "selector": "#item-form button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#tax-rate",
+            "value": "8.25"
+          }
+        ],
+        "selector": "#grand-total",
+        "expected": "$10.81"
+      }
+    ],
+    "limitations": [
+      "No check verifies removal or editing of existing line items; the app has no such controls.",
+      "No check verifies invalid input rejection beyond the empty-description guard; requirements do not specify error messaging.",
+      "No check verifies keyboard Enter submission separately; only the Add item button click is exercised.",
+      "No check verifies visual pixel-art styling, responsive layout, or focus states.",
+      "No check verifies rounding behavior for quantities with decimals; quantity step is 1."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4660,
+      "completion_tokens": 1199,
+      "total_tokens": 5859,
+      "prompt_tokens_details": {
+        "cached_tokens": 1280
+      },
+      "prompt_cache_hit_tokens": 1280,
+      "prompt_cache_miss_tokens": 3380
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Invoice Builder</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"invoice-card\">\n    <h1>Pixel Invoice Builder</h1>\n    <form id=\"item-form\" class=\"item-form\">\n      <div class=\"field\">\n        <label for=\"desc\">Description</label>\n        <input type=\"text\" id=\"desc\" name=\"desc\" placeholder=\"Item name\" autocomplete=\"off\">\n      </div>\n      <div class=\"field-row\">\n        <div class=\"field\">\n          <label for=\"qty\">Quantity</label>\n          <input type=\"number\" id=\"qty\" name=\"qty\" min=\"1\" step=\"1\" value=\"1\">\n        </div>\n        <div class=\"field\">\n          <label for=\"price\">Unit price</label>\n          <input type=\"number\" id=\"price\" name=\"price\" min=\"0\" step=\"0.01\" value=\"0.00\">\n        </div>\n      </div>\n      <button type=\"submit\" class=\"btn\">Add item</button>\n    </form>\n\n    <section class=\"items-section\" aria-labelledby=\"items-heading\">\n      <h2 id=\"items-heading\">Line items</h2>\n      <div id=\"empty-msg\" class=\"empty-msg\">No items yet. Add one above.</div>\n      <ul id=\"items-list\" class=\"items-list\"></ul>\n    </section>\n\n    <section class=\"totals\" aria-labelledby=\"totals-heading\">\n      <h2 id=\"totals-heading\">Summary</h2>\n      <div class=\"total-row\">\n        <span>Subtotal</span>\n        <span id=\"subtotal\">$0.00</span>\n      </div>\n      <div class=\"total-row\">\n        <label for=\"tax-rate\">Tax rate (%)</label>\n        <input type=\"number\" id=\"tax-rate\" min=\"0\" step=\"0.01\" value=\"0\" aria-label=\"Tax rate in percent\">\n      </div>\n      <div class=\"total-row\">\n        <span>Tax</span>\n        <span id=\"tax\">$0.00</span>\n      </div>\n      <div class=\"total-row grand-total\">\n        <span>Grand total</span>\n        <span id=\"grand-total\">$0.00</span>\n      </div>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #29366f;\n  --text: #f4f4f4;\n  --accent: #ffcd75;\n  --accent-dark: #ef7d57;\n  --border: #5d275d;\n  --font: 'Courier New', Courier, monospace;\n}\n\n* {\n  box-sizing: border-box;\n}\n\n[hidden] { display: none !important; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.invoice-card {\n  background: var(--card);\n  border: 4px solid var(--border);\n  padding: 24px;\n  width: 100%;\n  max-width: 560px;\n  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin: 0 0 24px;\n  text-align: center;\n  color: var(--accent);\n  letter-spacing: 1px;\n}\n\nh2 {\n  font-size: 1.125rem;\n  margin: 0 0 12px;\n  color: var(--accent);\n}\n\n.field {\n  margin-bottom: 16px;\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.field-row {\n  display: flex;\n  gap: 16px;\n}\n\n.field-row .field {\n  flex: 1;\n}\n\nlabel {\n  font-size: 0.875rem;\n  color: var(--text);\n}\n\ninput {\n  font-family: var(--font);\n  font-size: 1rem;\n  padding: 8px 10px;\n  border: 3px solid var(--border);\n  background: #1a1c2c;\n  color: var(--text);\n  outline: none;\n  width: 100%;\n}\n\ninput:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 2px var(--accent);\n}\n\n.btn {\n  font-family: var(--font);\n  font-size: 1rem;\n  font-weight: bold;\n  padding: 10px 16px;\n  background: var(--accent);\n  color: #1a1c2c;\n  border: 3px solid var(--border);\n  cursor: pointer;\n  width: 100%;\n  transition: transform 0.05s, background 0.1s;\n}\n\n.btn:hover {\n  background: var(--accent-dark);\n}\n\n.btn:active {\n  transform: translate(2px, 2px);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.items-section {\n  margin: 24px 0;\n}\n\n.empty-msg {\n  font-size: 0.875rem;\n  opacity: 0.7;\n}\n\n.items-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\n.items-list li {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 8px;\n  padding: 8px 0;\n  border-bottom: 2px dashed var(--border);\n  font-size: 0.9375rem;\n}\n\n.items-list li .item-desc {\n  flex: 1;\n  word-break: break-word;\n}\n\n.items-list li .item-total {\n  white-space: nowrap;\n  color: var(--accent);\n}\n\n.totals {\n  border-top: 4px solid var(--border);\n  padding-top: 16px;\n}\n\n.total-row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n  padding: 6px 0;\n  font-size: 1rem;\n}\n\n.total-row input {\n  width: 100px;\n  text-align: right;\n  padding: 4px 6px;\n}\n\n.grand-total {\n  font-size: 1.25rem;\n  font-weight: bold;\n  color: var(--accent);\n  border-top: 2px solid var(--border);\n  margin-top: 8px;\n  padding-top: 12px;\n}\n\n@media (max-width: 400px) {\n  .invoice-card {\n    padding: 16px;\n  }\n  .field-row {\n    flex-direction: column;\n    gap: 0;\n  }\n  .total-row input {\n    width: 80px;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var items = [];\n\n  var form = document.getElementById('item-form');\n  var descInput = document.getElementById('desc');\n  var qtyInput = document.getElementById('qty');\n  var priceInput = document.getElementById('price');\n  var taxInput = document.getElementById('tax-rate');\n  var itemsList = document.getElementById('items-list');\n  var emptyMsg = document.getElementById('empty-msg');\n  var subtotalEl = document.getElementById('subtotal');\n  var taxEl = document.getElementById('tax');\n  var grandEl = document.getElementById('grand-total');\n\n  function money(n) {\n    return '$' + n.toFixed(2);\n  }\n\n  function round2(n) {\n    return Math.round((n + Number.EPSILON) * 100) / 100;\n  }\n\n  function parsePositiveNumber(value) {\n    var n = parseFloat(value);\n    if (isNaN(n) || n < 0) return 0;\n    return n;\n  }\n\n  function render() {\n    itemsList.innerHTML = '';\n    items.forEach(function (item) {\n      var li = document.createElement('li');\n      var desc = document.createElement('span');\n      desc.className = 'item-desc';\n      desc.textContent = item.desc + ' × ' + item.qty + ' @ ' + money(item.price);\n      var total = document.createElement('span');\n      total.className = 'item-total';\n      total.textContent = money(item.total);\n      li.appendChild(desc);\n      li.appendChild(total);\n      itemsList.appendChild(li);\n    });\n    emptyMsg.hidden = items.length > 0;\n\n    var subtotal = items.reduce(function (sum, item) {\n      return sum + item.total;\n    }, 0);\n    subtotal = round2(subtotal);\n\n    var rate = parsePositiveNumber(taxInput.value);\n    var tax = round2(subtotal * rate / 100);\n    var grand = round2(subtotal + tax);\n\n    subtotalEl.textContent = money(subtotal);\n    taxEl.textContent = money(tax);\n    grandEl.textContent = money(grand);\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    var desc = descInput.value.trim();\n    var qty = parsePositiveNumber(qtyInput.value);\n    var price = parsePositiveNumber(priceInput.value);\n\n    if (!desc) {\n      descInput.focus();\n      return;\n    }\n    if (qty <= 0) {\n      qtyInput.focus();\n      return;\n    }\n\n    var total = round2(qty * price);\n    items.push({ desc: desc, qty: qty, price: price, total: total });\n    descInput.value = '';\n    qtyInput.value = '1';\n    priceInput.value = '0.00';\n    descInput.focus();\n    render();\n  });\n\n  taxInput.addEventListener('input', render);\n\n  render();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Invoice Builder\n\nA tiny offline invoice builder with a pixel-art look. Add line items (description, quantity, unit price), see per-line totals, the subtotal, a percent-based tax and the grand total — all formatted to two decimals.\n\n## Features\n\n- Add line items with description, quantity and unit price.\n- Each line shows its own total.\n- Subtotal, tax (from a percent input) and grand total update live.\n- All money values are formatted to exactly two decimals.\n- Keyboard accessible with labeled controls and visible focus states.\n- Responsive layout that works from 360px wide.\n- No network requests, no external assets, no packages — fully offline.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type a description, quantity and unit price, then press **Add item** (or Enter).\n3. Enter a tax rate in percent; totals update automatically.\n\n## Files\n\n- `index.html` — markup and form controls.\n- `style.css` — pixel-art theme and responsive layout.\n- `script.js` — calculation and rendering logic.\n- `README.md` — this file.\n\n## Notes\n\n- All paths are relative; only `.html`, `.css`, `.js` and `.md` files are used.\n- The app uses `addEventListener` only; no inline handlers.\n- `[hidden] { display: none !important; }` is included so the hidden attribute always works.\n",
+      "description": ""
+    }
+  ]
+}
