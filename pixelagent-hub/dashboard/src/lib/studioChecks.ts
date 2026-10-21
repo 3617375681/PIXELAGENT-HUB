@@ -1,4 +1,4 @@
-export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string; nth?: number } | { type: 'input'; selector: string; nth?: number; value: string } | { type: 'key'; selector: string; nth?: number; key: string } | { type: 'wait'; ms: number })[]; selector: string; nth?: number; expected: string; assertion?: 'text' | 'matches' | 'disabled' | 'visible' | 'count' | 'attribute' | 'changed' | 'unchanged' | 'stable'; attribute?: string };
+export type BrowserCheck = { name: string; trace?: string; actions: ({ type: 'click'; selector: string; nth?: number } | { type: 'input'; selector: string; nth?: number; value: string } | { type: 'key'; selector: string; nth?: number; key: string } | { type: 'wait'; ms: number })[]; selector: string; nth?: number; expected: string; assertion?: 'text' | 'matches' | 'disabled' | 'visible' | 'count' | 'attribute' | 'changed' | 'unchanged' | 'stable'; attribute?: string };
 export type BrowserCheckResult = { name: string; status: 'passed' | 'failed'; actual: string; error?: string };
 
 // This function is serialized into the sandbox. Keep all helpers local; no eval or model code.

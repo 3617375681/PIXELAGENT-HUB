@@ -1,4 +1,6 @@
-export type ArmSettings = { strategy: string; model: string; testerModel: string };
+import { basename, resolve } from 'node:path';
+
+export type ArmSettings = { strategy: string; model: string; testerModel: string; dist: string };
 export type BenchmarkArm = ArmSettings & { arm: string };
 
 export function parseArms(value: string | undefined, defaults: ArmSettings): BenchmarkArm[] {
@@ -10,12 +12,13 @@ export function parseArms(value: string | undefined, defaults: ArmSettings): Ben
       const index = setting.indexOf('=');
       if (index < 1) throw new Error(`Invalid arm setting: ${setting}`);
       const key = setting.slice(0, index).trim().replace(/^tester-model$/, 'testerModel');
-      if (key !== 'strategy' && key !== 'model' && key !== 'testerModel') throw new Error(`Unknown arm key: ${key}`);
+      if (key !== 'strategy' && key !== 'model' && key !== 'testerModel' && key !== 'dist') throw new Error(`Unknown arm key: ${key}`);
       const value = setting.slice(index + 1).trim();
       if (!value) throw new Error(`Empty arm setting: ${key}`);
       settings[key] = value;
-      labels.push(`${key}-${value}`);
+      labels.push(`${key}-${key === 'dist' ? basename(resolve(value)) : value}`);
     }
+    settings.dist = resolve(settings.dist);
     settings.testerModel ||= settings.model;
     const slug = (labels.join('-') || `strategy-${settings.strategy}`).toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
     let arm = slug;

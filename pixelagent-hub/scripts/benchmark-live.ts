@@ -26,21 +26,24 @@ const model = argument('--model') || 'deepseek-chat';
 const testerModel = argument('--tester-model') || '';
 const explicitArms = process.argv.includes('--arms');
 if (explicitArms && (!argument('--arms') || argument('--arms')!.startsWith('--'))) throw new Error('--arms requires settings');
-const arms = parseArms(argument('--arms'), { strategy, model, testerModel });
+const arms = parseArms(argument('--arms'), { strategy, model, testerModel, dist: distArg });
 for (const arm of arms) if (!['manager-coder', 'coder-only'].includes(arm.strategy)) throw new Error(`Arm ${arm.arm}: strategy must be manager-coder or coder-only`);
 const only = argument('--only')?.split(',');
-const dist = resolve(distArg);
 const out = resolve(outArg);
 const base = '/PIXELAGENT-HUB/';
 const cases = (JSON.parse(await readFile(resolve(argument('--cases') || 'config/studio-benchmark.json'), 'utf8')) as { id: string; title: string; description: string }[]).filter((item) => !only || only.includes(item.id));
 const types: Record<string, string> = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.zip': 'application/zip', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.wasm': 'application/wasm' };
-const server = createServer(async (req, res) => {
-  let file = join(dist, decodeURIComponent(new URL(req.url!, 'http://x').pathname).slice(base.length));
-  try { if ((await stat(file)).isDirectory()) file = join(file, 'index.html'); res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream' }).end(await readFile(file)); }
-  catch { res.writeHead(404).end(); }
-});
-await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
-const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+const servers = new Map<string, { server: ReturnType<typeof createServer>; origin: string }>();
+for (const dist of new Set(arms.map((arm) => arm.dist))) {
+  const server = createServer(async (req, res) => {
+    let file = join(dist, decodeURIComponent(new URL(req.url!, 'http://x').pathname).slice(base.length));
+    try { if ((await stat(file)).isDirectory()) file = join(file, 'index.html'); res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream' }).end(await readFile(file)); }
+    catch { res.writeHead(404).end(); }
+  });
+  await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  servers.set(dist, { server, origin });
+}
 const browser = await chromium.launch();
 type Event = { seq: number; at: string; type: string; round?: number; data?: Record<string, unknown> };
 const results = [];
@@ -60,7 +63,7 @@ try {
       await route.fulfill({ status: upstream.status, headers: { 'content-type': upstream.headers.get('content-type') || 'text/event-stream', 'access-control-allow-origin': '*' }, body });
     });
     const started = Date.now();
-    await page.goto(`${origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}&strategy=${arm.strategy}`);
+    await page.goto(`${servers.get(arm.dist)!.origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}&strategy=${arm.strategy}`);
     await page.waitForSelector('.studio-stage');
     await page.getByRole('button', { name: /BUILD LIVE/ }).click();
     await page.locator('#live-provider').selectOption('deepseek');
@@ -81,7 +84,7 @@ try {
     const compileFailures = events.filter((event) => event.type === 'build_failed').length;
     const reviews = events.filter((event) => event.type === 'test_plan_ready' && event.data?.review);
     const entry = {
-      caseId: testCase.id, run, ...(explicitArms ? { arm: arm.arm } : {}), strategy: arm.strategy, managerTokens: record.managerTokens, model: arm.model, testerModel: arm.testerModel, status: record.project.status, error: record.project.error,
+      caseId: testCase.id, run, ...(explicitArms ? { arm: arm.arm } : {}), strategy: arm.strategy, dist: arm.dist, managerTokens: record.managerTokens, model: arm.model, testerModel: arm.testerModel, status: record.project.status, error: record.project.error,
       coderRounds: record.project.rounds.length, compileFailures,
       firstChecks: browserRuns[0] ? `${browserRuns[0].passed}/${browserRuns[0].passed + browserRuns[0].failed}` : null,
       finalChecks: browserRuns.at(-1) ? `${browserRuns.at(-1)!.passed}/${browserRuns.at(-1)!.passed + browserRuns.at(-1)!.failed}` : null,
@@ -102,7 +105,7 @@ try {
   }
 } finally {
   await browser.close();
-  server.close();
+  for (const { server } of servers.values()) server.close();
   const revision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim() !== '';
   for (const arm of arms) await writeFile(join(explicitArms ? join(out, arm.arm) : out, 'summary.json'), JSON.stringify({ recordedAt: new Date().toISOString(), sourceRevision: revision, sourceDirty: dirty, model: arm.model, runsPerCase: runs, results: explicitArms ? results.filter((entry) => entry.arm === arm.arm) : results }, null, 2));

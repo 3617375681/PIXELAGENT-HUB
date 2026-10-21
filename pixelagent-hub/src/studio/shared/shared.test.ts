@@ -70,7 +70,7 @@ test('only real package names count as unsupported dependencies', async () => {
 
 test('a Tester review only revises a failing check with a valid corrected check of the same name', async () => {
   const { parseTesterReview } = await import('./parse.js');
-  const fixed = { name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' };
+  const fixed = { name: 'Adds one', trace: 'count starts 0; +1 → 1', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' };
   const verdicts = parseTesterReview({ verdicts: [
     { name: 'Adds one', verdict: 'check-wrong', reason: 'never clicked', check: fixed },
     { name: 'Resets', verdict: 'check-wrong', reason: 'no corrected check given' },
@@ -126,10 +126,11 @@ test('null optional check fields are normalised even when every check is valid',
 test('repair notes identify the counted selector and the compared attribute', async () => {
   const { browserFailureNotes } = await import('./repair.js');
   const checks = [
-    { name: 'Cards', actions: [], selector: '.card', expected: '16', assertion: 'count' as const },
+    { name: 'Cards', trace: 'board starts with 16 cards; no actions → 16', actions: [], selector: '.card', expected: '16', assertion: 'count' as const },
     { name: 'Hunger', actions: [], selector: '#hungerBar', expected: '90', assertion: 'attribute' as const, attribute: 'aria-valuenow' },
   ];
   const notes = browserFailureNotes(checks, checks.map((check) => ({ name: check.name, status: 'failed', actual: '' })));
+  assert.ok(notes.every((note) => !note.includes('trace') && !note.includes(checks[0].trace!)));
   assert.match(notes[0], /selector=".card", assertion="count"/);
   assert.match(notes[1], /assertion="attribute", attribute="aria-valuenow"/);
 });
@@ -248,4 +249,11 @@ test('attribute is optional only for attribute-aware assertions', async () => {
   const check = { name: 'State', actions: [{ type: 'click', selector: 'button' }], selector: '#state', expected: '', attribute: 'class' };
   for (const assertion of ['changed', 'unchanged', 'stable']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion }).success, true);
   for (const [assertion, expected] of [['text', ''], ['count', '0'], ['visible', 'true']]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion, expected }).success, false);
+});
+
+test('test plans preserve traces and reject traces over 300 characters', () => {
+  const check = { name: 'Adds one', trace: 'count starts 0; +1 → 1', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' };
+  assert.deepEqual(parseTestPlanOutput({ checks: [check] }).checks, [check]);
+  assert.equal(parseTestPlanOutput({ checks: [{ ...check, trace: 'x'.repeat(300) }] }).checks[0].trace?.length, 300);
+  assert.throws(() => parseTestPlanOutput({ checks: [{ ...check, trace: 'x'.repeat(301) }] }), /did not match/);
 });

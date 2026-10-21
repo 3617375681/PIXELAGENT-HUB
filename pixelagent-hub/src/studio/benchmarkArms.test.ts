@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { resolve } from 'node:path';
 import { parseArms, rotateArms } from './benchmarkArms.js';
 
-const defaults = { strategy: 'manager-coder', model: 'deepseek-chat', testerModel: '' };
+const defaults = { strategy: 'manager-coder', model: 'deepseek-chat', testerModel: '', dist: resolve('dist') };
 
 test('benchmark arms parse settings and fill defaults', () => {
   assert.deepEqual(parseArms('strategy=coder-only;model=other,tester-model=tester', defaults), [
-    { arm: 'strategy-coder-only', strategy: 'coder-only', model: 'deepseek-chat', testerModel: 'deepseek-chat' },
-    { arm: 'model-other-testermodel-tester', strategy: 'manager-coder', model: 'other', testerModel: 'tester' },
+    { arm: 'strategy-coder-only', strategy: 'coder-only', model: 'deepseek-chat', testerModel: 'deepseek-chat', dist: defaults.dist },
+    { arm: 'model-other-testermodel-tester', strategy: 'manager-coder', model: 'other', testerModel: 'tester', dist: defaults.dist },
   ]);
   assert.equal(parseArms('testerModel=tester', defaults)[0].testerModel, 'tester');
   assert.equal(parseArms('model=other', { ...defaults, testerModel: 'default-tester' })[0].testerModel, 'default-tester');
@@ -29,4 +30,11 @@ test('benchmark arms rotate for runs 1 through 3 without mutating the arms', () 
   assert.deepEqual([1, 2, 3].map((run) => rotateArms(arms, run)), [['A', 'B'], ['B', 'A'], ['A', 'B']]);
   assert.deepEqual([1, 2, 3].map((run) => rotateArms(['A', 'B', 'C'], run)), [['A', 'B', 'C'], ['B', 'C', 'A'], ['C', 'A', 'B']]);
   assert.deepEqual(arms, ['A', 'B']);
+});
+
+test('benchmark arms resolve dist overrides and default to the positional dist', () => {
+  const arms = parseArms('dist=builds/before/dist;dist=builds/after/dist;model=other', { ...defaults, dist: 'positional/dist' });
+  assert.deepEqual(arms.map(({ dist }) => dist), ['builds/before/dist', 'builds/after/dist', 'positional/dist'].map((dist) => resolve(dist)));
+  assert.deepEqual(arms.slice(0, 2).map(({ arm }) => arm), ['dist-dist', 'dist-dist-2']);
+  assert.equal(parseArms(undefined, { ...defaults, dist: 'positional/dist' })[0].dist, resolve('positional/dist'));
 });
