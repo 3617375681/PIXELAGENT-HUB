@@ -197,6 +197,12 @@ it('matches hex formats against rendered or source text and rejects short values
   expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'failed']);
 });
 
+it('a pattern also matches its own text literally, so unescaped parentheses still mean that string', async () => {
+  const document = { querySelectorAll: (selector: string) => [{ innerText: selector === '#same' ? 'rgb(255, 255, 255)' : 'rgb(1, 2, 3)', textContent: '' }] } as unknown as Document;
+  const results = await runDOMChecks(document, ['#same', '#other'].map((selector) => ({ name: selector, actions: [], selector, assertion: 'matches', expected: 'rgb(255, 255, 255)' })));
+  expect(results.map((result) => result.status)).toEqual(['passed', 'failed']);
+});
+
 it('selects nth for actions and checks, including relative checks and out-of-range errors', async () => {
   const buttons = [{ textContent: 'First', click: () => { throw new Error('Wrong button'); } }, { textContent: 'Second', click: () => { buttons[1].textContent = 'Clicked'; } }];
   const document = { querySelectorAll: () => buttons } as unknown as Document;

@@ -106,7 +106,8 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
         const deferredBaseline = assertion === 'changed' && await target.count() === 0;
         if (relative && !deferredBaseline) target = await element(check.selector, check.nth);
         const readValue = () => check.attribute ? target.evaluate((element, attribute) => attribute.startsWith('css.') ? getComputedStyle(element).getPropertyValue(attribute.slice(4)).trim() : attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute) : target.innerText().then(collapseWhitespace);
-        const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
+        // A pattern also matches its own text literally: "rgb(255, 255, 255)" written unescaped means that string.
+        const pattern = assertion === 'matches' ? new RegExp(`(?:${check.expected})|^${check.expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'u') : undefined;
         let expected = relative && !deferredBaseline ? await readValue() : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();

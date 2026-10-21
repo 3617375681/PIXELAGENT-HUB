@@ -74,7 +74,8 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         : assertion === 'visible' ? String(visible())
           : collapse(target!.innerText ?? target!.textContent ?? '');
       if (assertion === 'changed' && !baseline) expected = read();
-      const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
+      // A pattern also matches its own text literally: "rgb(255, 255, 255)" written unescaped means that string.
+      const pattern = assertion === 'matches' ? new RegExp(`(?:${check.expected})|^${check.expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'u') : undefined;
       const matches = (observed: string) => assertion === 'attribute' && check.attribute === 'class' ? (expected.trim() ? expected.trim().split(/\s+/).every((token) => target!.classList.contains(token)) : target!.classList.length === 0) : pattern ? pattern.test(observed) || (!check.attribute && (pattern.test(collapse(target!.textContent ?? '')) || pattern.test(collapse(untransformed(target!))))) : observed === expected || (!check.attribute && (assertion === 'text' || relative || assertion === 'stable') && (collapse(target!.textContent ?? '') === expected || collapse(untransformed(target!)) === expected));
       if (assertion === 'stable') {
         await new Promise((resolve) => setTimeout(resolve, 100));
