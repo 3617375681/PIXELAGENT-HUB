@@ -43,6 +43,7 @@ test('the coder prompt carries the shared constraints unchanged', () => {
   const { user } = coderPrompt('A counter', 'javascript', { constraints: STUDIO_CONSTRAINTS, revisionNotes: [] });
   assert.match(user, /^Task: "A counter"\nLanguage: javascript\nContext: /);
   assert.ok(user.includes(JSON.stringify(STUDIO_CONSTRAINTS)));
+  assert.ok(STUDIO_CONSTRAINTS.includes("[hidden] { display: none !important; }"));
   assert.ok(user.includes('"revisionNotes":[]'));
 });
 
@@ -218,8 +219,8 @@ test('inline style names are strict and stable allows zero actions with normalis
   assert.equal(browserCheckSchema.safeParse(check).success, true);
   for (const change of [{ expected: '25:00' }]) assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
   assert.equal(parseTestPlanOutput({ checks: [{ ...check, expected: '25:00' }], limitations: [] }).checks[0].expected, '');
-  for (const attribute of ['style.width', 'style.background-color', 'style.left']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, true);
-  for (const attribute of ['style.', 'style.Width', 'style.width1', 'style.' + 'a'.repeat(41)]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, false);
+  for (const attribute of ['style.width', 'style.background-color', 'style.left', 'css.transform', 'css.background-color']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, true);
+  for (const attribute of ['style.', 'style.Width', 'style.width1', 'style.' + 'a'.repeat(41), 'css.', 'css.Transform', 'css.width1', 'css.' + 'a'.repeat(41)]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, false);
 });
 
 test('matches accepts optional attributes with the same name rules', async () => {

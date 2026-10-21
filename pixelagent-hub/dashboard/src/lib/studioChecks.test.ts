@@ -349,3 +349,25 @@ it('compares attribute baselines and samples including created elements', async 
     expect((await deferred)[0]).toMatchObject({ status: 'passed', actual: '30px' });
   } finally { vi.useRealTimers(); }
 });
+
+
+it('reads computed styles and compares class-driven changes and stable samples', async () => {
+  vi.useFakeTimers();
+  try {
+    const target = { className: '', style: { getPropertyValue: () => '' } };
+    const button = { click: () => { target.className = target.className ? '' : 'open'; } };
+    const document = { querySelectorAll: (selector: string) => selector === 'button' ? [button] : [target], defaultView: { getComputedStyle: (element: typeof target) => ({ getPropertyValue: (name: string) => name === 'transform' ? ' matrix(-1, 0, 0, -1, 0, 0) ' : element.className === 'open' ? ' rgb(255, 0, 0) ' : ' rgb(0, 0, 0) ' }) } } as unknown as Document;
+    const pending = runDOMChecks(document, [
+      { name: 'Transform', actions: [], selector: '#arrow', assertion: 'attribute', attribute: 'css.transform', expected: 'matrix(-1, 0, 0, -1, 0, 0)' },
+      { name: 'Inline', actions: [], selector: '#arrow', assertion: 'attribute', attribute: 'style.transform', expected: '' },
+      { name: 'Colour', actions: [{ type: 'click', selector: 'button' }], selector: '#arrow', assertion: 'changed', attribute: 'css.background-color', expected: '' },
+      { name: 'Pattern', actions: [], selector: '#arrow', assertion: 'matches', attribute: 'css.background-color', expected: '^rgb\\(255, ' },
+      { name: 'Unchanged', actions: [{ type: 'wait', ms: 50 }], selector: '#arrow', assertion: 'unchanged', attribute: 'css.background-color', expected: '' },
+      { name: 'Stable', actions: [], selector: '#arrow', assertion: 'stable', attribute: 'css.background-color', expected: '' },
+    ]);
+    await vi.runAllTimersAsync();
+    const results = await pending;
+    expect(results.map(({ status }) => status)).toEqual(Array(6).fill('passed'));
+    expect(results.map(({ actual }) => actual)).toEqual(['matrix(-1, 0, 0, -1, 0, 0)', '', ...Array(4).fill('rgb(255, 0, 0)')]);
+  } finally { vi.useRealTimers(); }
+});

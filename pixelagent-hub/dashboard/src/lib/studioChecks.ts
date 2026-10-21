@@ -32,7 +32,7 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
       const relative = assertion === 'changed' || assertion === 'unchanged';
       const steady = assertion === 'unchanged' || assertion === 'stable';
       const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
-      const readAttribute = (element: HTMLElement, attribute: string) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '';
+      const readAttribute = (element: HTMLElement, attribute: string) => attribute.startsWith('css.') ? document.defaultView!.getComputedStyle(element).getPropertyValue(attribute.slice(4)).trim() : attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '';
       const baseline = relative && !(assertion === 'changed' && document.querySelectorAll(check.selector).length === 0) ? element(check.selector, check.nth) : undefined;
       let expected = baseline ? check.attribute ? readAttribute(baseline, check.attribute) : collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
       for (const action of check.actions) {

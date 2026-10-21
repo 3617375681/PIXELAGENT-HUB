@@ -331,3 +331,23 @@ test('real browser checks class membership and attribute changes', { skip: proce
     assert.equal(run.checks[8].actual, '20px');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+
+test('real browser reads class-driven computed styles and leaves inline styles empty', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-computed-style-'));
+  try {
+    const content = '<html><head><style>#arrow.open { transform: rotate(180deg); }</style></head><body><div id="arrow">Arrow</div><button>Open</button><script>document.querySelector("button").onclick=()=>document.querySelector("#arrow").classList.toggle("open")</script></body></html>';
+    const actions = [{ type: 'click', selector: 'button' }];
+    const checks = { checks: [
+      { name: 'Rotates', actions, selector: '#arrow', assertion: 'changed', attribute: 'css.transform', expected: '' },
+      { name: 'Inline', actions, selector: '#arrow', assertion: 'attribute', attribute: 'style.transform', expected: '' },
+      { name: 'Computed', actions, selector: '#arrow', assertion: 'attribute', attribute: 'css.transform', expected: 'matrix(-1, 0, 0, -1, 0, 0)' },
+      { name: 'Pattern', actions, selector: '#arrow', assertion: 'matches', attribute: 'css.transform', expected: '^matrix\\(' },
+      { name: 'Unchanged', actions: [{ type: 'wait', ms: 50 }], selector: '#arrow', assertion: 'unchanged', attribute: 'css.transform', expected: '' },
+      { name: 'Stable', actions, selector: '#arrow', assertion: 'stable', attribute: 'css.transform', expected: '' },
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.deepEqual(run.checks.map(({ actual }) => actual), ['matrix(-1, 0, 0, -1, 0, 0)', '', 'matrix(-1, 0, 0, -1, 0, 0)', 'matrix(-1, 0, 0, -1, 0, 0)', 'none', 'matrix(-1, 0, 0, -1, 0, 0)']);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
