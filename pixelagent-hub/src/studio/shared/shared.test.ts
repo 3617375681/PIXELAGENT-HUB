@@ -171,7 +171,7 @@ test('matches validates bounded Unicode patterns and nth preserves strict action
   const { browserCheckSchema } = await import('./schemas.js');
   const check = { name: 'Hex', actions: [], selector: '.color', assertion: 'matches', expected: '^#[0-9A-F]{6}$' };
   assert.equal(browserCheckSchema.safeParse(check).success, true);
-  for (const change of [{ expected: '[' }, { expected: '(a+)+' }, { expected: '' }, { expected: 'a'.repeat(201) }, { attribute: 'title' }, { nth: 50 }, { nth: -1 }, { nth: 0.5 }, { assertion: 'count', expected: '2', nth: 0 }]) {
+  for (const change of [{ expected: '[' }, { expected: '(a+)+' }, { expected: '' }, { expected: 'a'.repeat(201) }, { attribute: 'Title' }, { nth: 50 }, { nth: -1 }, { nth: 0.5 }, { assertion: 'count', expected: '2', nth: 0 }]) {
     assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false, JSON.stringify(change));
   }
   for (const action of [{ type: 'click' }, { type: 'input', value: 'a' }, { type: 'key', key: 'Enter' }]) {
@@ -191,4 +191,40 @@ test('null nth is omitted on checks and actions and reason-first reviews parse',
   const [review] = parseTesterReview(reply, ['Hex'], 1);
   assert.equal(review.verdict, 'check-wrong');
   assert.deepEqual(review.check, parsed);
+});
+
+
+test('review facts derive verdicts, override legacy verdicts and keep unsupported bounded', async () => {
+  const { parseTesterReview } = await import('./parse.js');
+  const check = { name: 'Fixed', actions: [], selector: '#count', expected: '1' };
+  const verdicts = [
+    { name: 'Fixed', reason: 'Wrong expectation', correctAppPasses: false, verdict: 'app-wrong', check },
+    { name: 'Unsupported', reason: 'No valid correction', correctAppPasses: false },
+    { name: 'Capped', reason: 'No valid correction', correctAppPasses: false },
+    { name: 'App', reason: 'App fails requirement', correctAppPasses: true, verdict: 'unsupported', check: { ...check, name: 'App' } },
+  ];
+  assert.deepEqual(parseTesterReview({ verdicts }, verdicts.map((item) => item.name), 4).map((item) => item.verdict), ['check-wrong', 'unsupported', 'app-wrong', 'app-wrong']);
+  for (const correction of [undefined, { ...check, name: 'Other' }, { ...check, actions: [{ type: 'wait' }] }]) {
+    const item = { name: 'Fixed', reason: 'No valid correction', correctAppPasses: false, check: correction };
+    assert.equal(parseTesterReview({ verdicts: [item] }, ['Fixed'], 1)[0].verdict, 'unsupported');
+    assert.equal(parseTesterReview({ verdicts: [{ ...item, reason: ' ' }] }, ['Fixed'], 1)[0].verdict, 'app-wrong');
+  }
+});
+
+
+test('inline style names are strict and stable allows zero actions with normalised expected', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'Stable', actions: [], selector: '#timer', assertion: 'stable', expected: '' };
+  assert.equal(browserCheckSchema.safeParse(check).success, true);
+  for (const change of [{ attribute: 'style.width' }, { expected: '25:00' }]) assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
+  assert.equal(parseTestPlanOutput({ checks: [{ ...check, expected: '25:00' }], limitations: [] }).checks[0].expected, '');
+  for (const attribute of ['style.width', 'style.background-color', 'style.left']) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, true);
+  for (const attribute of ['style.', 'style.Width', 'style.width1', 'style.' + 'a'.repeat(41)]) assert.equal(browserCheckSchema.safeParse({ ...check, assertion: 'attribute', attribute }).success, false);
+});
+
+test('matches accepts optional attributes with the same name rules', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  const check = { name: 'Pattern', actions: [], selector: 'input', assertion: 'matches', expected: '^.+$' };
+  for (const attribute of [undefined, 'aria-label', 'value', 'checked', 'style.width']) assert.equal(browserCheckSchema.safeParse({ ...check, attribute }).success, true);
+  for (const attribute of ['', 'Title', 'style.Width']) assert.equal(browserCheckSchema.safeParse({ ...check, attribute }).success, false);
 });

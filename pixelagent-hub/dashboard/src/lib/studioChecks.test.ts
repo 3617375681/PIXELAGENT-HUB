@@ -166,7 +166,7 @@ it('compares text with its baseline before actions and catches delayed changes',
   expect(results[1].error).toBe('Expected text to change from "B"');
   expect(results[3].error).toBe('Expected text to stay "B", observed "C"');
   expect(results[4].error).toContain('found 0');
-  expect(output.textContent).toBe('C');
+  expect(output.textContent).toBe('B'); // Missing changed baselines now allow the actions to run.
 });
 
 it('relative assertions accept source text and reject missing or ambiguous later matches', async () => {
@@ -210,4 +210,81 @@ it('selects nth for actions and checks, including relative checks and out-of-ran
   ]);
   expect(results.map((result) => result.status)).toEqual(['passed', 'passed', 'passed', 'passed', 'failed', 'failed']);
   expect(results.slice(4).map((result) => result.error)).toEqual(Array(2).fill('Selector matched 2 elements, no index 2: button'));
+});
+
+
+it.each(['radio', 'checkbox'])('input clicks a %s into the wanted checked state and leaves its value alone', async (type) => {
+  const clicks: boolean[] = [];
+  // A native click toggles the state (and fires click, input and change itself).
+  const input = { tagName: 'INPUT', type, checked: false, value: '2', click() { this.checked = !this.checked; clicks.push(this.checked); } };
+  const document = { querySelectorAll: () => [input] } as unknown as Document;
+  for (const value of ['2', 'true', 'false', 'false', '']) {
+    const [result] = await runDOMChecks(document, [{ name: 'State', actions: [{ type: 'input', selector: '#input', value }], selector: '#input', assertion: 'attribute', attribute: 'checked', expected: String(value !== 'false') }]);
+    expect(result.status).toBe('passed');
+    expect(input.value).toBe('2');
+  }
+  // Clicked only when the state had to change: on, (already on), off, (already off), on.
+  expect(clicks).toEqual([true, false, true]);
+});
+
+
+it('reads trimmed inline style values and missing properties', async () => {
+  const bar = { style: { getPropertyValue: (name: string) => name === 'width' ? ' 90% ' : '' } };
+  const document = { querySelectorAll: () => [bar] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Width', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.width', expected: '90%' },
+    { name: 'Missing', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.left', expected: '' },
+  ]);
+  expect(results.map(({ status, actual }) => ({ status, actual }))).toEqual([{ status: 'passed', actual: '90%' }, { status: 'passed', actual: '' }]);
+});
+
+it('accepts untransformed rendered text and restores inline values and priorities', async () => {
+  const style = (value: string, priority = '') => ({ textTransform: value, priority, getPropertyValue() { return this.textTransform; }, getPropertyPriority() { return this.priority; }, setProperty(_name: string, value: string, priority: string) { this.textTransform = value; this.priority = priority; }, removeProperty() { this.textTransform = ''; } });
+  const child = { style: style('uppercase', 'important') };
+  const output = { style: style(''), querySelectorAll: () => [child], textContent: 'Min 10Max 30', get innerText() { return this.style.textTransform === 'none' && child.style.textTransform === 'none' ? 'Min 10 Max 30' : 'MIN 10 MAX 30'; } };
+  const document = { querySelectorAll: () => [output] } as unknown as Document;
+  for (const assertion of ['text', 'matches'] as const) {
+    const [result] = await runDOMChecks(document, [{ name: 'Case', actions: [], selector: '#summary', assertion, expected: assertion === 'text' ? 'Min 10 Max 30' : '^Min 10 Max 30$' }]);
+    expect(result).toMatchObject({ status: 'passed', actual: 'MIN 10 MAX 30' });
+    expect(output.style.textTransform).toBe('');
+    expect(child.style.textTransform).toBe('uppercase');
+    expect(child.style.priority).toBe('important');
+  }
+});
+
+it('stable captures after actions, accepts static text and fails on a delayed change', async () => {
+  const output = { textContent: '25:00' };
+  const button = { click: () => { output.textContent = '00:30'; setTimeout(() => { output.textContent = '00:29'; }, 300); } };
+  const document = { querySelectorAll: (selector: string) => selector === '#timer' ? [output] : [button] } as unknown as Document;
+  const results = await runDOMChecks(document, [
+    { name: 'Static', actions: [], selector: '#timer', assertion: 'stable', expected: '' },
+    { name: 'Changes', actions: [{ type: 'click', selector: '#pause' }], selector: '#timer', assertion: 'stable', expected: '' },
+  ]);
+  expect(results[0]).toMatchObject({ status: 'passed', actual: '25:00' });
+  expect(results[1]).toMatchObject({ status: 'failed', actual: '00:29', error: 'Expected text to stay "00:30" after the actions, observed "00:29"' });
+});
+
+it.each([false, true])('changed captures a newly created element; unchanged needs it before (advances: %s)', async (advances) => {
+  const output = { textContent: '0' };
+  let created = false;
+  const button = { click: () => { created = true; if (advances) setTimeout(() => { output.textContent = '1'; }, 100); } };
+  const document = { querySelectorAll: (selector: string) => selector === 'button' ? [button] : created ? [output] : [] } as unknown as Document;
+  const actions = [{ type: 'click' as const, selector: 'button' }];
+  const results = await runDOMChecks(document, [
+    { name: 'Requires baseline', actions, selector: 'output', assertion: 'unchanged', expected: '' },
+    { name: 'Created timer advances', actions, selector: 'output', assertion: 'changed', expected: '' },
+  ]);
+  expect(results.map(({ status }) => status)).toEqual(['failed', advances ? 'passed' : 'failed']);
+  expect(results[1].actual).toBe(advances ? '1' : '0');
+});
+
+it('matches reads exact attributes and live properties without falling back to text', async () => {
+  const input = { tagName: 'INPUT', value: 'live', checked: true, textContent: 'text', getAttribute: (name: string) => name === 'aria-label' ? 'Card 2, revealed' : name === 'title' ? '  spaced  ' : null, style: { getPropertyValue: () => ' 90% ' } };
+  const document = { querySelectorAll: () => [input] } as unknown as Document;
+  for (const [attribute, expected, actual] of [['aria-label', '^Card \\d+, revealed$', 'Card 2, revealed'], ['value', '^live$', 'live'], ['checked', '^true$', 'true'], ['style.width', '^90%$', '90%'], ['title', '^  spaced  $', '  spaced  '], ['missing', '^$', '']]) {
+    const [result] = await runDOMChecks(document, [{ name: attribute, actions: [], selector: 'input', assertion: 'matches', attribute, expected }]);
+    expect(result).toMatchObject({ status: 'passed', actual });
+  }
+  const [result] = await runDOMChecks(document, [{ name: 'No text fallback', actions: [], selector: 'input', assertion: 'matches', attribute: 'missing', expected: '^text$' }]);
+  expect(result).toMatchObject({ status: 'failed', actual: '' });
 });

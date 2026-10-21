@@ -1,0 +1,773 @@
+{
+  "caseId": "tictactoe",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 3,
+  "compileFailures": 1,
+  "firstChecks": "9/10",
+  "finalChecks": "9/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "9/10",
+    "9/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 67,
+  "reportedTokens": 31017,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:00:19.445Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:00:19.445Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:00:23.855Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Tic-Tac-Toe"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:00:23.855Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:00:32.822Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:00:32.822Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:00:33.188Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:00:33.188Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "7f6bc80b-4d54-478b-9a1d-d2af4cd10b16"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:00:37.156Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "7f6bc80b-4d54-478b-9a1d-d2af4cd10b16",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:00:37.157Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "testPlanId": "7f6bc80b-4d54-478b-9a1d-d2af4cd10b16",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Initial state: X's turn, empty board, restart available",
+        "passed": true,
+        "actual": "Player X's turn"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "First move places X and hands turn to O",
+        "passed": true,
+        "actual": "Player O's turn"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Placed mark renders in the clicked cell",
+        "passed": true,
+        "actual": "X"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "X wins on top row and winning line is highlighted",
+        "passed": true,
+        "actual": "Player X wins!"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Winning line cells get the win highlight",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "O can win on the middle row",
+        "passed": true,
+        "actual": "Player O wins!"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Full board with no line is a draw",
+        "passed": false,
+        "actual": "Player X's turn"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Restart clears the board and returns to X's turn",
+        "passed": true,
+        "actual": "Player X's turn"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Restart clears all placed marks",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "name": "Occupied cell cannot be overwritten",
+        "passed": true,
+        "actual": "X"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:00:42.376Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "cef562ef-54a0-455d-95dd-a39bf1399ff7",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:00:42.380Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "7f6bc80b-4d54-478b-9a1d-d2af4cd10b16",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:00:45.162Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "7f6bc80b-4d54-478b-9a1d-d2af4cd10b16",
+        "checks": 10,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Full board with no line is a draw",
+            "verdict": "app-wrong",
+            "reason": "The check clicks cells 0,1,2,4,3,5,7,6, giving X at 0,2,3,7 and O at 1,4,5,6; that is only 8 marks, so the game is not over and the status legitimately still shows the next turn. The requirements say "
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T06:00:45.162Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T06:01:10.358Z",
+      "type": "build_failed",
+      "round": 2,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Bad control character in string literal in JSON at position 16893 (line 25 column 9267) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" stri"
+        ]
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T06:01:10.358Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T06:01:18.746Z",
+      "type": "code_ready",
+      "round": 3,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T06:01:18.746Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T06:01:18.779Z",
+      "type": "build_passed",
+      "round": 3
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T06:01:18.779Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "testPlanId": "7f6bc80b-4d54-478b-9a1d-d2af4cd10b16",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Initial state: X's turn, empty board, restart available",
+        "passed": true,
+        "actual": "Player X's turn"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "First move places X and hands turn to O",
+        "passed": true,
+        "actual": "Player O's turn"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Placed mark renders in the clicked cell",
+        "passed": true,
+        "actual": "X"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "X wins on top row and winning line is highlighted",
+        "passed": true,
+        "actual": "Player X wins!"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Winning line cells get the win highlight",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "O can win on the middle row",
+        "passed": true,
+        "actual": "Player O wins!"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Full board with no line is a draw",
+        "passed": false,
+        "actual": "Player X's turn"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Restart clears the board and returns to X's turn",
+        "passed": true,
+        "actual": "Player X's turn"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Restart clears all placed marks",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "name": "Occupied cell cannot be overwritten",
+        "passed": true,
+        "actual": "X"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T06:01:24.000Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "a1de9e3b-4ae3-4323-b950-a8e20716646f",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T06:01:24.003Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v3/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial state: X's turn, empty board, restart available",
+        "actions": [],
+        "selector": "#status",
+        "expected": "Player X's turn",
+        "assertion": "text"
+      },
+      {
+        "name": "First move places X and hands turn to O",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          }
+        ],
+        "selector": "#status",
+        "expected": "Player O's turn",
+        "assertion": "text"
+      },
+      {
+        "name": "Placed mark renders in the clicked cell",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          }
+        ],
+        "selector": ".cell",
+        "nth": 4,
+        "expected": "X",
+        "assertion": "text"
+      },
+      {
+        "name": "X wins on top row and winning line is highlighted",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 3
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 2
+          }
+        ],
+        "selector": "#status",
+        "expected": "Player X wins!",
+        "assertion": "text"
+      },
+      {
+        "name": "Winning line cells get the win highlight",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 3
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 2
+          }
+        ],
+        "selector": ".cell.win",
+        "expected": "3",
+        "assertion": "count"
+      },
+      {
+        "name": "O can win on the middle row",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 3
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 8
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 5
+          }
+        ],
+        "selector": "#status",
+        "expected": "Player O wins!",
+        "assertion": "text"
+      },
+      {
+        "name": "Full board with no line is a draw",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 2
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 3
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 5
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 7
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 6
+          }
+        ],
+        "selector": "#status",
+        "expected": "It's a draw!",
+        "assertion": "text"
+      },
+      {
+        "name": "Restart clears the board and returns to X's turn",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": "#restart"
+          }
+        ],
+        "selector": "#status",
+        "expected": "Player X's turn",
+        "assertion": "text"
+      },
+      {
+        "name": "Restart clears all placed marks",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": "#restart"
+          }
+        ],
+        "selector": ".cell.x, .cell.o",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Occupied cell cannot be overwritten",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          }
+        ],
+        "selector": ".cell",
+        "nth": 0,
+        "expected": "X",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "The pulsing win animation (opacity keyframes) and pixel-art visual styling are not verifiable through DOM assertions.",
+      "Only the win-highlight class count is checked; the exact winning-line indices are verified indirectly via the status text and class presence.",
+      "Keyboard activation of cells and Restart relies on native button behavior and is not exercised here since only synthetic keydown events are available.",
+      "Screen-reader announcements via aria-live and aria-label content are not asserted beyond visible status text."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3538,
+      "completion_tokens": 923,
+      "total_tokens": 4461,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 2642
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Bad control character in string literal in JSON at position 16893 (line 25 column 9267) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 3,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Tic-Tac-Toe</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"game-card\">\n    <h1>Pixel Tic-Tac-Toe</h1>\n    <p id=\"status\" class=\"status\" aria-live=\"polite\">Player X's turn</p>\n    <div id=\"board\" class=\"board\" role=\"grid\" aria-label=\"Tic Tac Toe board\">\n      <!-- 9 cells will be generated by JS -->\n    </div>\n    <button id=\"restart\" class=\"restart-btn\" type=\"button\">Restart</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "HTML structure with game card, status, board container, and restart button."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #0f3460;\n  --x-color: #e94560;\n  --o-color: #f5c542;\n  --text: #eaeaea;\n  --win-bg: #2d6a4f;\n  --cell-bg: #0f3460;\n  --cell-hover: #1b4b7a;\n  --cell-focus: #e94560;\n  --border: #eaeaea;\n  font-size: 16px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  color: var(--text);\n  padding: 1rem;\n}\n\n.game-card {\n  background: var(--card);\n  border: 4px solid var(--border);\n  border-radius: 0;\n  padding: 2rem 1.5rem;\n  max-width: 420px;\n  width: 100%;\n  text-align: center;\n  image-rendering: pixelated;\n  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.5rem;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  margin-bottom: 0.75rem;\n  color: var(--x-color);\n  text-shadow: 2px 2px 0 #000;\n}\n\n.status {\n  font-size: 1.125rem;\n  margin-bottom: 1.5rem;\n  min-height: 1.5em;\n  font-weight: 600;\n  letter-spacing: 1px;\n}\n\n.board {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 6px;\n  margin-bottom: 1.5rem;\n  background: var(--border);\n  padding: 6px;\n  border: 4px solid var(--border);\n}\n\n.cell {\n  aspect-ratio: 1 / 1;\n  background: var(--cell-bg);\n  border: none;\n  font-family: inherit;\n  font-size: 2.5rem;\n  font-weight: 700;\n  color: var(--text);\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transition: background 0.1s;\n  padding: 0;\n  line-height: 1;\n  image-rendering: pixelated;\n  box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.3);\n}\n\n.cell:hover:not(:disabled) {\n  background: var(--cell-hover);\n}\n\n.cell:focus-visible {\n  outline: 4px solid var(--cell-focus);\n  outline-offset: -4px;\n  z-index: 1;\n}\n\n.cell:active:not(:disabled) {\n  transform: translateY(2px);\n  box-shadow: inset 4px 4px 0 rgba(0, 0, 0, 0.3);\n}\n\n.cell.x {\n  color: var(--x-color);\n}\n\n.cell.o {\n  color: var(--o-color);\n}\n\n.cell.win {\n  background: var(--win-bg);\n  animation: pulse 0.6s ease-in-out infinite alternate;\n}\n\n@keyframes pulse {\n  from { opacity: 1; }\n  to { opacity: 0.75; }\n}\n\n.cell:disabled {\n  cursor: default;\n}\n\n.restart-btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 700;\n  letter-spacing: 1px;\n  text-transform: uppercase;\n  padding: 0.75rem 2rem;\n  background: var(--x-color);\n  color: #fff;\n  border: 3px solid var(--border);\n  border-radius: 0;\n  cursor: pointer;\n  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);\n  transition: background 0.1s, transform 0.05s;\n}\n\n.restart-btn:hover {\n  background: #c73a52;\n}\n\n.restart-btn:focus-visible {\n  outline: 4px solid var(--o-color);\n  outline-offset: 3px;\n}\n\n.restart-btn:active {\n  transform: translate(2px, 2px);\n  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);\n}\n\n@media (max-width: 400px) {\n  .game-card {\n    padding: 1.25rem 0.75rem;\n  }\n  h1 {\n    font-size: 1.25rem;\n  }\n  .cell {\n    font-size: 2rem;\n  }\n  .board {\n    gap: 4px;\n    padding: 4px;\n  }\n}",
+      "description": "CSS with pixel-art styling, responsive layout, and interactive states."
+    },
+    {
+      "path": "script.js",
+      "content": "const boardEl = document.getElementById('board');\nconst statusEl = document.getElementById('status');\nconst restartBtn = document.getElementById('restart');\n\nconst WIN_LINES = [\n  [0,1,2], [3,4,5], [6,7,8],\n  [0,3,6], [1,4,7], [2,5,8],\n  [0,4,8], [2,4,6]\n];\n\nlet board, currentPlayer, gameOver, winningLine;\n\nfunction init() {\n  board = Array(9).fill('');\n  currentPlayer = 'X';\n  gameOver = false;\n  winningLine = null;\n  renderBoard();\n  updateStatus();\n}\n\nfunction renderBoard() {\n  boardEl.innerHTML = '';\n  board.forEach((mark, i) => {\n    const btn = document.createElement('button');\n    btn.type = 'button';\n    btn.className = 'cell';\n    btn.dataset.index = i;\n    btn.setAttribute('role', 'gridcell');\n    btn.setAttribute('aria-label', `Cell ${i + 1}${mark ? ', ' + mark : ', empty'}`);\n    if (mark) {\n      btn.textContent = mark;\n      btn.classList.add(mark.toLowerCase());\n      btn.disabled = true;\n    }\n    if (winningLine && winningLine.includes(i)) {\n      btn.classList.add('win');\n    }\n    btn.addEventListener('click', handleCellClick);\n    boardEl.appendChild(btn);\n  });\n}\n\nfunction handleCellClick(e) {\n  const idx = Number(e.currentTarget.dataset.index);\n  if (gameOver || board[idx]) return;\n  board[idx] = currentPlayer;\n  const win = checkWin(currentPlayer);\n  if (win) {\n    gameOver = true;\n    winningLine = win;\n    renderBoard();\n    statusEl.textContent = `Player ${currentPlayer} wins!`;\n    return;\n  }\n  if (board.every(cell => cell)) {\n    gameOver = true;\n    renderBoard();\n    statusEl.textContent = \"It's a draw!\";\n    return;\n  }\n  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';\n  renderBoard();\n  updateStatus();\n}\n\nfunction checkWin(player) {\n  for (const line of WIN_LINES) {\n    if (line.every(i => board[i] === player)) return line;\n  }\n  return null;\n}\n\nfunction updateStatus() {\n  statusEl.textContent = `Player ${currentPlayer}'s turn`;\n}\n\nrestartBtn.addEventListener('click', init);\n\ninit();",
+      "description": "Game logic: board state, turn tracking, win/draw detection, restart."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Tic-Tac-Toe\n\nA two-player Tic-Tac-Toe game with a pixel-art aesthetic. Built with plain HTML, CSS, and JavaScript — no dependencies, no network requests, fully offline.\n\n## Features\n\n- Two-player local play (X goes first)\n- Current turn indicator\n- Win and draw detection\n- Winning line highlighted with animation\n- Restart button\n- Keyboard accessible with ARIA labels and live status announcements\n- Responsive layout from 360px wide\n\n## How to Run\n\nOpen `index.html` in any modern browser. No build step or server required.\n\n## Controls\n\n- Click or tap a cell to place your mark\n- Use Tab to navigate cells and the Restart button\n- Press Enter or Space to activate a focused cell or button\n- Click Restart to start a new game\n\n## Palette\n\n- Background: `#1a1a2e`\n- Card: `#16213e`\n- Accent / cells: `#0f3460`\n- X: `#e94560`\n- O: `#f5c542`\n\n## Files\n\n- `index.html` — markup\n- `style.css` — pixel styling and layout\n- `script.js` — game logic\n",
+      "description": "Project documentation with features, usage, and palette."
+    }
+  ]
+}

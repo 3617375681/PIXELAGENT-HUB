@@ -1,0 +1,652 @@
+{
+  "caseId": "light-switch",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "7/8",
+  "finalChecks": "6/8",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "7/8",
+    "7/8",
+    "6/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 39,
+  "reportedTokens": 18223,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:11:49.579Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:11:49.580Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:11:54.338Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Lights-Out Puzzle"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:11:54.338Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:12:01.966Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:12:01.966Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:12:02.527Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:12:02.527Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "734d5a5b-3b92-41e2-8f1d-391fff28e114"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:12:04.631Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "734d5a5b-3b92-41e2-8f1d-391fff28e114",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:12:04.632Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "testPlanId": "734d5a5b-3b92-41e2-8f1d-391fff28e114",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "Board renders nine cells",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "Initial move counter is zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "Win message hidden initially",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "Clicking a cell increments moves",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "Center click toggles center and neighbors",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "Corner click toggles three cells",
+        "passed": false,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "New Puzzle resets move counter",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "name": "New Puzzle hides win message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:12:09.237Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "9c2ca788-5d93-4e99-9265-918927e52fc5",
+        "status": "failed",
+        "passed": 7,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:12:09.240Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "734d5a5b-3b92-41e2-8f1d-391fff28e114",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:12:11.741Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "734d5a5b-3b92-41e2-8f1d-391fff28e114",
+        "checks": 8,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Corner click toggles three cells",
+            "verdict": "check-wrong",
+            "reason": "The check clicks the top-left corner cell and counts .cell.on, expecting 3. The requirement says clicking a cell toggles it and its up, down, left and right neighbours; a corner has only two in-bounds"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:12:11.741Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "testPlanId": "734d5a5b-3b92-41e2-8f1d-391fff28e114",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "Board renders nine cells",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "Initial move counter is zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "Win message hidden initially",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "Clicking a cell increments moves",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "Center click toggles center and neighbors",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "Corner click toggles three cells",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "New Puzzle resets move counter",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "name": "New Puzzle hides win message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T07:12:14.322Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "dc367115-f04f-4e68-a860-106f0c1026fa",
+        "status": "failed",
+        "passed": 7,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T07:12:14.325Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T07:12:21.673Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T07:12:21.673Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T07:12:21.743Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T07:12:21.743Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "testPlanId": "734d5a5b-3b92-41e2-8f1d-391fff28e114",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "Board renders nine cells",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "Initial move counter is zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "Win message hidden initially",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "Clicking a cell increments moves",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "Center click toggles center and neighbors",
+        "passed": false,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "Corner click toggles three cells",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "New Puzzle resets move counter",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "name": "New Puzzle hides win message",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-21T07:12:26.370Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "16ced0f5-4d29-46fd-97bf-3d58f6326f3b",
+        "status": "failed",
+        "passed": 6,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-21T07:12:26.373Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Board renders nine cells",
+        "actions": [],
+        "selector": ".cell",
+        "expected": "9",
+        "assertion": "count"
+      },
+      {
+        "name": "Initial move counter is zero",
+        "actions": [],
+        "selector": "#move-counter",
+        "expected": "Moves: 0"
+      },
+      {
+        "name": "Win message hidden initially",
+        "actions": [],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Clicking a cell increments moves",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "Moves: 1"
+      },
+      {
+        "name": "Center click toggles center and neighbors",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          }
+        ],
+        "selector": ".cell.on",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Corner click toggles three cells",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 0
+          }
+        ],
+        "selector": ".cell.on",
+        "expected": "",
+        "assertion": "changed"
+      },
+      {
+        "name": "New Puzzle resets move counter",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".cell",
+            "nth": 4
+          },
+          {
+            "type": "click",
+            "selector": "#new-game"
+          }
+        ],
+        "selector": "#move-counter",
+        "expected": "Moves: 0"
+      },
+      {
+        "name": "New Puzzle hides win message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#new-game"
+          }
+        ],
+        "selector": "#win-message",
+        "expected": "false",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "Puzzle layout is random, so a win state cannot be reached deterministically.",
+      "Win message visibility after solving is not directly verified.",
+      "Neighbor toggling is checked only by counts, not per-cell states.",
+      "No pixel or color assertions are made."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3487,
+      "completion_tokens": 419,
+      "total_tokens": 3906,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 2591
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Lights-Out Puzzle</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"game-container\">\n    <h1>Pixel Lights-Out</h1>\n    <p class=\"instructions\">Click a cell to toggle it and its neighbors. Turn all lights off to win!</p>\n    <div class=\"game-board\" id=\"board\" role=\"grid\" aria-label=\"3x3 lights-out puzzle grid\"></div>\n    <div class=\"status-area\">\n      <p class=\"move-counter\" id=\"move-counter\" aria-live=\"polite\">Moves: 0</p>\n      <p class=\"win-message\" id=\"win-message\" aria-live=\"assertive\" hidden>You win! All lights are off.</p>\n    </div>\n    <button id=\"new-game\" class=\"new-game-btn\" type=\"button\">New Puzzle</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML page with game board, move counter, win message, and New Puzzle button."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --cell-off: #3a3a5a;\n  --cell-on: #f0c040;\n  --text: #e0e0f0;\n  --accent: #5a7dff;\n  --focus: #ffffff;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.game-container {\n  background: var(--card-bg);\n  padding: 24px 20px;\n  border-radius: 16px;\n  box-shadow: 0 8px 24px rgba(0,0,0,0.4);\n  max-width: 400px;\n  width: 100%;\n  text-align: center;\n}\n\nh1 {\n  font-size: 1.5rem;\n  margin-bottom: 8px;\n  color: var(--accent);\n}\n\n.instructions {\n  font-size: 0.95rem;\n  margin-bottom: 20px;\n  opacity: 0.85;\n}\n\n.game-board {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 8px;\n  margin-bottom: 20px;\n}\n\n.cell {\n  aspect-ratio: 1;\n  background: var(--cell-off);\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s;\n  font-size: 1.2rem;\n  color: transparent;\n  padding: 0;\n}\n\n.cell.on {\n  background: var(--cell-on);\n}\n\n.cell:hover {\n  filter: brightness(1.2);\n}\n\n.cell:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.cell:active {\n  transform: scale(0.95);\n}\n\n.status-area {\n  margin-bottom: 20px;\n  min-height: 2.5em;\n}\n\n.move-counter {\n  font-size: 1.1rem;\n  font-weight: 600;\n}\n\n.win-message {\n  color: var(--cell-on);\n  font-weight: 700;\n  margin-top: 8px;\n}\n\n.new-game-btn {\n  background: var(--accent);\n  color: white;\n  border: none;\n  padding: 12px 24px;\n  font-size: 1rem;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  font-weight: 600;\n}\n\n.new-game-btn:hover {\n  background: #7a9aff;\n}\n\n.new-game-btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.new-game-btn:active {\n  transform: scale(0.97);\n}\n\n@media (max-width: 360px) {\n  .game-container {\n    padding: 16px 12px;\n  }\n  .cell {\n    border-radius: 6px;\n  }\n}",
+      "description": "CSS styling for the game with responsive layout and visual states."
+    },
+    {
+      "path": "script.js",
+      "content": "const boardEl = document.getElementById('board');\nconst moveCounterEl = document.getElementById('move-counter');\nconst winMessageEl = document.getElementById('win-message');\nconst newGameBtn = document.getElementById('new-game');\n\nconst SIZE = 3;\nlet grid = [];\nlet moves = 0;\nlet gameOver = false;\n\nfunction toggleCell(r, c) {\n  const dirs = [[0,0],[-1,0],[1,0],[0,-1],[0,1]];\n  for (const [dr, dc] of dirs) {\n    const nr = r + dr, nc = c + dc;\n    if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) {\n      grid[nr][nc] = grid[nr][nc] ? 0 : 1;\n    }\n  }\n}\n\nfunction isSolved() {\n  return grid.every(row => row.every(v => v === 0));\n}\n\nfunction updateUI() {\n  for (let r = 0; r < SIZE; r++) {\n    for (let c = 0; c < SIZE; c++) {\n      const cell = boardEl.children[r * SIZE + c];\n      cell.classList.toggle('on', grid[r][c] === 1);\n      cell.setAttribute('aria-label', `Row ${r+1} Column ${c+1} ${grid[r][c] ? 'on' : 'off'}`);\n    }\n  }\n  moveCounterEl.textContent = `Moves: ${moves}`;\n  if (gameOver) {\n    winMessageEl.hidden = false;\n  } else {\n    winMessageEl.hidden = true;\n  }\n}\n\nfunction handleCellClick(r, c) {\n  if (gameOver) return;\n  toggleCell(r, c);\n  moves++;\n  if (isSolved()) {\n    gameOver = true;\n  }\n  updateUI();\n}\n\nfunction createBoard() {\n  boardEl.innerHTML = '';\n  for (let r = 0; r < SIZE; r++) {\n    for (let c = 0; c < SIZE; c++) {\n      const btn = document.createElement('button');\n      btn.className = 'cell';\n      btn.type = 'button';\n      btn.setAttribute('role', 'gridcell');\n      btn.addEventListener('click', () => handleCellClick(r, c));\n      boardEl.appendChild(btn);\n    }\n  }\n}\n\nfunction newGame() {\n  grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));\n  // Apply random valid moves to ensure solvability\n  const numMoves = 5 + Math.floor(Math.random() * 5);\n  for (let i = 0; i < numMoves; i++) {\n    const r = Math.floor(Math.random() * SIZE);\n    const c = Math.floor(Math.random() * SIZE);\n    toggleCell(r, c);\n  }\n  // Ensure not already solved\n  if (isSolved()) {\n    toggleCell(1, 1);\n  }\n  moves = 0;\n  gameOver = false;\n  updateUI();\n}\n\ncreateBoard();\nnewGame();\nnewGameBtn.addEventListener('click', newGame);",
+      "description": "Game logic with toggle, move counter, win detection, and new puzzle generation."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Lights-Out Puzzle\n\nA classic 3x3 Lights-Out puzzle game built with plain HTML, CSS, and JavaScript. No external dependencies or network requests.\n\n## How to Play\n\n- Click any cell to toggle it and its up, down, left, and right neighbors.\n- The goal is to turn all lights off (dark cells).\n- The move counter tracks your clicks.\n- A win message appears when all lights are off.\n- Click \"New Puzzle\" to generate a new solvable puzzle.\n\n## Features\n\n- Fully offline, single-page app.\n- Keyboard accessible: all cells and buttons are focusable and operable via keyboard.\n- Responsive layout down to 360px width.\n- Cohesive dark theme with accent colors.\n- Solvable puzzles guaranteed by starting from a solved state and applying random valid moves.\n\n## Files\n\n- `index.html` – main page structure\n- `style.css` – styling and responsive layout\n- `script.js` – game logic\n\n## Running\n\nOpen `index.html` in any modern browser. No server required.\n\n## License\n\nMIT",
+      "description": "Project documentation with usage instructions."
+    }
+  ]
+}

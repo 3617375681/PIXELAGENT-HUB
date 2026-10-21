@@ -1,0 +1,538 @@
+{
+  "caseId": "stopwatch",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "6/7",
+  "finalChecks": "7/7",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "6/7",
+    "7/7"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 27,
+  "reportedTokens": 14784,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T05:59:06.733Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T05:59:06.733Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T05:59:10.327Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Stopwatch"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T05:59:10.327Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T05:59:20.870Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T05:59:20.870Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T05:59:21.246Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T05:59:21.246Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5cf56ad2-ed8f-4c9b-98aa-3d31797c1da2"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T05:59:24.433Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5cf56ad2-ed8f-4c9b-98aa-3d31797c1da2",
+        "checks": 7
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T05:59:24.434Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "testPlanId": "5cf56ad2-ed8f-4c9b-98aa-3d31797c1da2",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Start disables Start and enables Stop/Lap",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Stop after start is enabled and clickable",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Lap entry shows Lap 1 label",
+        "passed": true,
+        "actual": "Lap 1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Lap entry time has mm:ss.cs format",
+        "passed": true,
+        "actual": "00:00.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Reset clears laps and restores empty message",
+        "passed": true,
+        "actual": "No laps yet"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Reset returns display to zero",
+        "passed": true,
+        "actual": "00:00.00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "name": "Reset disabled when stopped with no laps",
+        "passed": false,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T05:59:28.678Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "7d448906-5dad-4472-b129-1e989ad320a5",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T05:59:28.681Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5cf56ad2-ed8f-4c9b-98aa-3d31797c1da2",
+        "review": true
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T05:59:30.176Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5cf56ad2-ed8f-4c9b-98aa-3d31797c1da2",
+        "checks": 7,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Reset disabled when stopped with no laps",
+            "verdict": "check-wrong",
+            "reason": "The check starts and stops the stopwatch, then expects Reset to be disabled. The app enables Reset after a stop because elapsed time is nonzero, which is correct behavior for a stopwatch with a record"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T05:59:30.176Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "testPlanId": "5cf56ad2-ed8f-4c9b-98aa-3d31797c1da2",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Start disables Start and enables Stop/Lap",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Stop after start is enabled and clickable",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Lap entry shows Lap 1 label",
+        "passed": true,
+        "actual": "Lap 1"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Lap entry time has mm:ss.cs format",
+        "passed": true,
+        "actual": "00:00.00"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Reset clears laps and restores empty message",
+        "passed": true,
+        "actual": "No laps yet"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Reset returns display to zero",
+        "passed": true,
+        "actual": "00:00.00"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "name": "Reset disabled when stopped with no laps",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T05:59:32.403Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "8d13cc52-2a1b-4350-bd91-9f0e76e2b268",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T05:59:32.406Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Start disables Start and enables Stop/Lap",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#stopBtn",
+        "nth": 0,
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Stop after start is enabled and clickable",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#stopBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#startBtn",
+        "nth": 0,
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Lap entry shows Lap 1 label",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#lapBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#lapList li .lap-num",
+        "nth": 0,
+        "expected": "Lap 1",
+        "assertion": "text"
+      },
+      {
+        "name": "Lap entry time has mm:ss.cs format",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#lapBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#lapList li .lap-time",
+        "nth": 0,
+        "expected": "^\\d{2}:\\d{2}\\.\\d{2}$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Reset clears laps and restores empty message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#lapBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#stopBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#resetBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#emptyLaps",
+        "nth": 0,
+        "expected": "No laps yet",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset returns display to zero",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#stopBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#resetBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#display",
+        "nth": 0,
+        "expected": "00:00.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset disabled when stopped with no laps",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#startBtn",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": "#stopBtn",
+            "nth": 0
+          }
+        ],
+        "selector": "#resetBtn",
+        "nth": 0,
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "3 planned check(s) were dropped because they did not match the check format.",
+      "Cannot verify real elapsed time accuracy or that the display advances while running; only format and state transitions are checked.",
+      "Lap times are time-dependent and are only checked for mm:ss.cs format, not exact values.",
+      "Keyboard shortcuts (Space, L, R) are not tested because DOM key events are synthetic and the handler ignores events targeted at buttons.",
+      "Visual/pixel styling, focus outlines, and responsive layout are not verified.",
+      "No test verifies Stop freezes the displayed value over time."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4211,
+      "completion_tokens": 869,
+      "total_tokens": 5080,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 3443
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Stopwatch</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"card\">\n    <h1 class=\"title\">Pixel Stopwatch</h1>\n    <div id=\"display\" class=\"display\" role=\"timer\" aria-live=\"off\" aria-label=\"Stopwatch time\">00:00.00</div>\n    <div class=\"controls\">\n      <button id=\"startBtn\" class=\"btn start\" type=\"button\">Start</button>\n      <button id=\"stopBtn\" class=\"btn stop\" type=\"button\" disabled>Stop</button>\n      <button id=\"lapBtn\" class=\"btn lap\" type=\"button\" disabled>Lap</button>\n      <button id=\"resetBtn\" class=\"btn reset\" type=\"button\" disabled>Reset</button>\n    </div>\n    <section class=\"laps\" aria-label=\"Lap times\">\n      <h2 class=\"laps-title\">Laps</h2>\n      <ol id=\"lapList\" class=\"lap-list\"></ol>\n      <p id=\"emptyLaps\" class=\"empty\">No laps yet</p>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #2a2e45;\n  --text: #f0f4ff;\n  --muted: #8a93b8;\n  --accent: #6ee7b7;\n  --accent-dark: #34d399;\n  --danger: #f87171;\n  --warn: #fbbf24;\n  --radius: 14px;\n}\n\n* { box-sizing: border-box; }\n\nhtml, body {\n  margin: 0;\n  min-height: 100%;\n}\n\nbody {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;\n  font-size: 16px;\n  background: radial-gradient(circle at 50% 20%, #262a44 0%, var(--bg) 70%);\n  color: var(--text);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  min-height: 100vh;\n}\n\n.card {\n  width: 100%;\n  max-width: 460px;\n  background: var(--card);\n  border: 2px solid #3b4266;\n  border-radius: var(--radius);\n  padding: 28px 24px 24px;\n  box-shadow: 0 12px 0 #14162a, 0 24px 40px rgba(0,0,0,0.45);\n}\n\n.title {\n  margin: 0 0 20px;\n  text-align: center;\n  font-size: 20px;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n\n.display {\n  font-size: clamp(40px, 12vw, 64px);\n  font-weight: 700;\n  text-align: center;\n  letter-spacing: 2px;\n  padding: 18px 8px;\n  margin-bottom: 22px;\n  background: #14162a;\n  border-radius: 10px;\n  border: 2px solid #3b4266;\n  color: var(--accent);\n  text-shadow: 0 0 12px rgba(110, 231, 183, 0.35);\n  font-variant-numeric: tabular-nums;\n  user-select: none;\n}\n\n.controls {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 17px;\n  font-weight: 700;\n  letter-spacing: 1px;\n  padding: 14px 12px;\n  border-radius: 10px;\n  border: 2px solid transparent;\n  cursor: pointer;\n  color: #14162a;\n  background: var(--accent);\n  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;\n  box-shadow: 0 4px 0 var(--accent-dark);\n}\n\n.btn:hover:not(:disabled) { background: #8af0c6; }\n.btn:focus-visible {\n  outline: 3px solid #ffffff;\n  outline-offset: 2px;\n}\n.btn:active:not(:disabled) {\n  transform: translateY(3px);\n  box-shadow: 0 1px 0 var(--accent-dark);\n}\n.btn:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n  box-shadow: none;\n}\n\n.btn.stop { background: var(--danger); box-shadow: 0 4px 0 #b91c1c; }\n.btn.stop:hover:not(:disabled) { background: #fca5a5; }\n.btn.stop:active:not(:disabled) { box-shadow: 0 1px 0 #b91c1c; }\n\n.btn.lap { background: var(--warn); box-shadow: 0 4px 0 #b45309; }\n.btn.lap:hover:not(:disabled) { background: #fcd34d; }\n.btn.lap:active:not(:disabled) { box-shadow: 0 1px 0 #b45309; }\n\n.btn.reset { background: var(--muted); box-shadow: 0 4px 0 #5b648a; }\n.btn.reset:hover:not(:disabled) { background: #a5aed4; }\n.btn.reset:active:not(:disabled) { box-shadow: 0 1px 0 #5b648a; }\n\n.laps {\n  border-top: 2px dashed #3b4266;\n  padding-top: 18px;\n}\n\n.laps-title {\n  margin: 0 0 12px;\n  font-size: 15px;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  color: var(--muted);\n}\n\n.lap-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  max-height: 200px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.lap-list li {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 10px 14px;\n  background: #14162a;\n  border-radius: 8px;\n  border-left: 4px solid var(--accent);\n  font-size: 16px;\n  font-variant-numeric: tabular-nums;\n}\n\n.lap-list li .lap-num {\n  color: var(--muted);\n  font-size: 14px;\n  letter-spacing: 1px;\n}\n\n.lap-list li .lap-time { color: var(--text); font-weight: 700; }\n\n.empty {\n  margin: 0;\n  color: var(--muted);\n  font-size: 15px;\n  text-align: center;\n  padding: 6px 0;\n}\n\n.empty.hidden { display: none; }\n\n@media (max-width: 380px) {\n  .card { padding: 22px 16px 18px; }\n  .btn { font-size: 15px; padding: 12px 8px; }\n  .title { font-size: 17px; }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  const display = document.getElementById('display');\n  const startBtn = document.getElementById('startBtn');\n  const stopBtn = document.getElementById('stopBtn');\n  const lapBtn = document.getElementById('lapBtn');\n  const resetBtn = document.getElementById('resetBtn');\n  const lapList = document.getElementById('lapList');\n  const emptyLaps = document.getElementById('emptyLaps');\n\n  let startTime = 0;\n  let elapsed = 0;\n  let running = false;\n  let rafId = null;\n  let laps = [];\n\n  function format(ms) {\n    if (ms < 0) ms = 0;\n    const totalCs = Math.floor(ms / 10);\n    const cs = totalCs % 100;\n    const totalSec = Math.floor(totalCs / 100);\n    const sec = totalSec % 60;\n    const min = Math.floor(totalSec / 60);\n    return (\n      String(min).padStart(2, '0') + ':' +\n      String(sec).padStart(2, '0') + '.' +\n      String(cs).padStart(2, '0')\n    );\n  }\n\n  function currentElapsed() {\n    return running ? elapsed + (performance.now() - startTime) : elapsed;\n  }\n\n  function render() {\n    display.textContent = format(currentElapsed());\n    if (running) {\n      rafId = requestAnimationFrame(render);\n    }\n  }\n\n  function setRunningUI(isRunning) {\n    startBtn.disabled = isRunning;\n    stopBtn.disabled = !isRunning;\n    lapBtn.disabled = !isRunning;\n    resetBtn.disabled = isRunning || (elapsed === 0 && laps.length === 0);\n  }\n\n  function start() {\n    if (running) return;\n    running = true;\n    startTime = performance.now();\n    setRunningUI(true);\n    rafId = requestAnimationFrame(render);\n  }\n\n  function stop() {\n    if (!running) return;\n    elapsed = currentElapsed();\n    running = false;\n    if (rafId !== null) {\n      cancelAnimationFrame(rafId);\n      rafId = null;\n    }\n    display.textContent = format(elapsed);\n    setRunningUI(false);\n  }\n\n  function lap() {\n    if (!running) return;\n    const t = currentElapsed();\n    laps.push(t);\n    const li = document.createElement('li');\n    const num = document.createElement('span');\n    num.className = 'lap-num';\n    num.textContent = 'Lap ' + laps.length;\n    const time = document.createElement('span');\n    time.className = 'lap-time';\n    time.textContent = format(t);\n    li.appendChild(num);\n    li.appendChild(time);\n    lapList.prepend(li);\n    emptyLaps.classList.add('hidden');\n  }\n\n  function reset() {\n    if (running) return;\n    elapsed = 0;\n    laps = [];\n    lapList.innerHTML = '';\n    emptyLaps.classList.remove('hidden');\n    display.textContent = format(0);\n    setRunningUI(false);\n  }\n\n  startBtn.addEventListener('click', start);\n  stopBtn.addEventListener('click', stop);\n  lapBtn.addEventListener('click', lap);\n  resetBtn.addEventListener('click', reset);\n\n  document.addEventListener('keydown', function (e) {\n    if (e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT')) return;\n    if (e.code === 'Space') {\n      e.preventDefault();\n      if (running) stop(); else start();\n    } else if (e.key === 'l' || e.key === 'L') {\n      lap();\n    } else if (e.key === 'r' || e.key === 'R') {\n      reset();\n    }\n  });\n\n  setRunningUI(false);\n  display.textContent = format(0);\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Stopwatch\n\nA pixel-styled stopwatch built with plain HTML, CSS, and JavaScript. Works fully offline in any modern browser.\n\n## Features\n\n- Large `mm:ss.cs` display\n- Start, Stop, Lap, and Reset buttons\n- Numbered lap list (newest first)\n- Keyboard accessible controls with visible focus states\n- Responsive layout down to 360px wide\n- Cohesive dark palette with pixel-inspired styling\n\n## Usage\n\n1. Open `index.html` in a browser.\n2. Click **Start** to begin timing.\n3. Click **Lap** while running to record a lap.\n4. Click **Stop** to pause; **Reset** to clear time and laps.\n\n### Keyboard shortcuts\n\n- `Space` — Start / Stop (when focus is not on a button)\n- `L` — Record a lap\n- `R` — Reset\n\nAll buttons are focusable and labeled; use `Tab` and `Enter`/`Space` to operate them.\n\n## Files\n\n- `index.html` — structure\n- `styles.css` — styling\n- `script.js` — stopwatch logic\n\nNo external assets, imports, or network requests are used.",
+      "description": ""
+    }
+  ]
+}

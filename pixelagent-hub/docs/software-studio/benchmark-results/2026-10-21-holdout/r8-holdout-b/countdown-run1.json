@@ -1,0 +1,804 @@
+{
+  "caseId": "countdown",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "9/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "9/10",
+    "9/10",
+    "9/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 43,
+  "reportedTokens": 19573,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:17:16.145Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:17:16.145Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:17:19.593Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Countdown Timer"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:17:19.593Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:17:28.141Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:17:28.141Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:17:28.597Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:17:28.599Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:17:31.553Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:17:31.554Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "testPlanId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Initial display and button states",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Pause disabled initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Start disabled while running",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Pause enabled while running",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Display shows entered time on start",
+        "passed": true,
+        "actual": "01:30"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Reset clears display and inputs",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Reset re-enables Start and disables Pause",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Time's up message at zero",
+        "passed": true,
+        "actual": "Time's up!"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Display reaches zero after countdown",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "name": "Pause stops countdown",
+        "passed": false,
+        "actual": "00:30"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:17:36.784Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "5f59dace-244e-470c-a06c-43700c1a8473",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:17:36.786Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:17:38.965Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481",
+        "checks": 10,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Pause stops countdown",
+            "verdict": "check-wrong",
+            "reason": "The check inputs 30 seconds, clicks Start, then clicks Pause, and asserts the display text is unchanged from its baseline. However, the baseline is sampled before the first action, when the display re"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T06:17:38.965Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "testPlanId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Initial display and button states",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Pause disabled initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Start disabled while running",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Pause enabled while running",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Display shows entered time on start",
+        "passed": true,
+        "actual": "01:30"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Reset clears display and inputs",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Reset re-enables Start and disables Pause",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Time's up message at zero",
+        "passed": true,
+        "actual": "Time's up!"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Display reaches zero after countdown",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "name": "Pause stops countdown",
+        "passed": false,
+        "actual": "00:30"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T06:17:44.166Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "bfd1627f-7cfa-48f9-bbb3-5746c7ea2b35",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T06:17:44.168Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T06:17:51.944Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T06:17:51.944Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T06:17:51.958Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T06:17:51.959Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "testPlanId": "24f9f44b-3760-4f51-a3ad-59ba4bf0c481",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T06:17:57.184Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Initial display and button states",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Pause disabled initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Start disabled while running",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Pause enabled while running",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Display shows entered time on start",
+        "passed": true,
+        "actual": "01:30"
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Reset clears display and inputs",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 47,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Reset re-enables Start and disables Pause",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 48,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Time's up message at zero",
+        "passed": true,
+        "actual": "Time's up!"
+      }
+    },
+    {
+      "seq": 49,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Display reaches zero after countdown",
+        "passed": true,
+        "actual": "00:00"
+      }
+    },
+    {
+      "seq": 50,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "name": "Pause stops countdown",
+        "passed": false,
+        "actual": "00:30"
+      }
+    },
+    {
+      "seq": 51,
+      "at": "2026-10-21T06:17:57.185Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "8a929e00-ffbe-49d7-b341-f9d2d241a5cc",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 52,
+      "at": "2026-10-21T06:17:57.188Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial display and button states",
+        "actions": [],
+        "selector": "#display",
+        "expected": "00:00",
+        "assertion": "text"
+      },
+      {
+        "name": "Pause disabled initially",
+        "actions": [],
+        "selector": "#pause",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Start disabled while running",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#start",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Pause enabled while running",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#pause",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Display shows entered time on start",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#minutes",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#display",
+        "expected": "^01:(30|29)$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Reset clears display and inputs",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#minutes",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "15"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#display",
+        "expected": "00:00",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset re-enables Start and disables Pause",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "20"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#pause",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Time's up message at zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Time's up!",
+        "assertion": "text"
+      },
+      {
+        "name": "Display reaches zero after countdown",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#display",
+        "expected": "00:00",
+        "assertion": "text"
+      },
+      {
+        "name": "Pause stops countdown",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#seconds",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "click",
+            "selector": "#pause"
+          }
+        ],
+        "selector": "#display",
+        "expected": "",
+        "assertion": "unchanged"
+      }
+    ],
+    "limitations": [
+      "Timing-dependent behavior is only partially observable: checks cannot wait arbitrary durations, so the per-second decrement is verified via a 1-second countdown reaching 00:00 and via a regex allowing 01:30 or 01:29 immediately after Start.",
+      "The unchanged assertion for Pause only observes the display for 500 ms after pausing; it cannot prove the timer stays paused indefinitely.",
+      "Resuming after Pause (Start again) is not separately verified because the display value at resume time is time-dependent.",
+      "Input clamping (minutes > 99, seconds > 59) is not asserted because the change event behavior depends on browser number-input handling.",
+      "No pixel/canvas rendering assertions are possible; the 'pixel' visual theme is not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3700,
+      "completion_tokens": 704,
+      "total_tokens": 4404,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 2932
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Countdown Timer</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1 class=\"title\">Pixel Countdown</h1>\n    <div class=\"display\" id=\"display\" aria-live=\"polite\">00:00</div>\n    <div class=\"message\" id=\"message\" role=\"status\"></div>\n    <div class=\"inputs\">\n      <label for=\"minutes\">Minutes</label>\n      <input type=\"number\" id=\"minutes\" min=\"0\" max=\"99\" value=\"0\" aria-label=\"Minutes\">\n      <label for=\"seconds\">Seconds</label>\n      <input type=\"number\" id=\"seconds\" min=\"0\" max=\"59\" value=\"0\" aria-label=\"Seconds\">\n    </div>\n    <div class=\"controls\">\n      <button id=\"start\" type=\"button\">Start</button>\n      <button id=\"pause\" type=\"button\">Pause</button>\n      <button id=\"reset\" type=\"button\">Reset</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with required IDs and labels."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --muted: #a0a0b0;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--text);\n  padding: 1rem;\n}\n\n.card {\n  background: var(--card);\n  border-radius: 16px;\n  padding: 2rem 1.5rem;\n  width: 100%;\n  max-width: 420px;\n  text-align: center;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n  border: 2px solid var(--accent);\n}\n\n.title {\n  font-size: 1.25rem;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: var(--muted);\n  margin-bottom: 1.5rem;\n}\n\n.display {\n  font-size: clamp(3rem, 15vw, 5rem);\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n  letter-spacing: 0.05em;\n  color: var(--text);\n  margin-bottom: 0.5rem;\n  line-height: 1.1;\n}\n\n.message {\n  min-height: 1.5em;\n  font-size: 1.1rem;\n  color: var(--accent);\n  font-weight: 600;\n  margin-bottom: 1rem;\n}\n\n.inputs {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 1.5rem;\n}\n\n.inputs label {\n  font-size: 0.95rem;\n  color: var(--muted);\n}\n\n.inputs input {\n  width: 5rem;\n  padding: 0.6rem;\n  font-size: 1.1rem;\n  font-family: var(--font);\n  text-align: center;\n  border: 2px solid var(--muted);\n  border-radius: 8px;\n  background: var(--bg);\n  color: var(--text);\n  transition: border-color 0.2s;\n}\n\n.inputs input:focus {\n  outline: none;\n  border-color: var(--accent);\n}\n\n.controls {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  justify-content: center;\n}\n\n.controls button {\n  flex: 1 1 auto;\n  min-width: 6rem;\n  padding: 0.75rem 1rem;\n  font-size: 1rem;\n  font-family: var(--font);\n  font-weight: 600;\n  border: 2px solid var(--accent);\n  border-radius: 8px;\n  background: transparent;\n  color: var(--text);\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n\n.controls button:hover {\n  background: rgba(233, 69, 96, 0.15);\n}\n\n.controls button:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 2px;\n}\n\n.controls button:active {\n  transform: scale(0.97);\n  background: rgba(233, 69, 96, 0.3);\n}\n\n.controls button:disabled {\n  opacity: 0.4;\n  cursor: not-allowed;\n}\n\n@media (max-width: 360px) {\n  .card {\n    padding: 1.5rem 1rem;\n  }\n  .inputs input {\n    width: 4rem;\n  }\n}",
+      "description": "Pixel-themed styling and responsive layout."
+    },
+    {
+      "path": "script.js",
+      "content": "const displayEl = document.getElementById('display');\nconst messageEl = document.getElementById('message');\nconst minutesInput = document.getElementById('minutes');\nconst secondsInput = document.getElementById('seconds');\nconst startBtn = document.getElementById('start');\nconst pauseBtn = document.getElementById('pause');\nconst resetBtn = document.getElementById('reset');\n\nlet totalSeconds = 0;\nlet remaining = 0;\nlet intervalId = null;\nlet running = false;\n\nfunction formatTime(sec) {\n  const m = Math.floor(sec / 60);\n  const s = sec % 60;\n  return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');\n}\n\nfunction updateDisplay() {\n  displayEl.textContent = formatTime(remaining);\n}\n\nfunction clampInputs() {\n  let m = parseInt(minutesInput.value, 10);\n  let s = parseInt(secondsInput.value, 10);\n  if (isNaN(m) || m < 0) m = 0;\n  if (isNaN(s) || s < 0) s = 0;\n  if (m > 99) m = 99;\n  if (s > 59) s = 59;\n  minutesInput.value = m;\n  secondsInput.value = s;\n  return m * 60 + s;\n}\n\nfunction tick() {\n  if (remaining > 0) {\n    remaining--;\n    updateDisplay();\n    if (remaining === 0) {\n      stopTimer();\n      messageEl.textContent = \"Time's up!\";\n    }\n  }\n}\n\nfunction stopTimer() {\n  if (intervalId !== null) {\n    clearInterval(intervalId);\n    intervalId = null;\n  }\n  running = false;\n  startBtn.disabled = false;\n  pauseBtn.disabled = true;\n}\n\nfunction startTimer() {\n  if (running) return;\n  if (remaining === 0) {\n    totalSeconds = clampInputs();\n    remaining = totalSeconds;\n    if (remaining === 0) return;\n    updateDisplay();\n    messageEl.textContent = '';\n  }\n  running = true;\n  startBtn.disabled = true;\n  pauseBtn.disabled = false;\n  intervalId = setInterval(tick, 1000);\n}\n\nfunction pauseTimer() {\n  if (!running) return;\n  stopTimer();\n}\n\nfunction resetTimer() {\n  stopTimer();\n  remaining = 0;\n  totalSeconds = 0;\n  minutesInput.value = 0;\n  secondsInput.value = 0;\n  updateDisplay();\n  messageEl.textContent = '';\n  startBtn.disabled = false;\n  pauseBtn.disabled = true;\n}\n\nstartBtn.addEventListener('click', startTimer);\npauseBtn.addEventListener('click', pauseTimer);\nresetBtn.addEventListener('click', resetTimer);\n\nminutesInput.addEventListener('change', () => {\n  if (!running) {\n    clampInputs();\n    remaining = parseInt(minutesInput.value, 10) * 60 + parseInt(secondsInput.value, 10);\n    updateDisplay();\n  }\n});\n\nsecondsInput.addEventListener('change', () => {\n  if (!running) {\n    clampInputs();\n    remaining = parseInt(minutesInput.value, 10) * 60 + parseInt(secondsInput.value, 10);\n    updateDisplay();\n  }\n});\n\n// Initialize\npauseBtn.disabled = true;\nupdateDisplay();\n",
+      "description": "Timer logic and event listeners. Fixed input change handlers to not update remaining when timer is paused."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Countdown Timer\n\nA pixel-themed countdown timer built with plain HTML, CSS, and JavaScript. Enter minutes and seconds, then Start, Pause, or Reset. When the countdown reaches zero, a \"Time's up!\" message appears.\n\n## Features\n\n- Large mm:ss display that updates once per second\n- Start, Pause, and Reset buttons with keyboard-accessible labels\n- Input validation (minutes 0–99, seconds 0–59)\n- \"Time's up!\" message at zero\n- Responsive layout that works from 360px wide\n- Cohesive palette and visible hover, focus, and pressed states\n- No external assets, imports, packages, or network requests\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Enter minutes and/or seconds.\n3. Click **Start** to begin the countdown.\n4. Click **Pause** to pause; click **Start** again to resume.\n5. Click **Reset** to clear the timer and inputs.\n\n## Files\n\n- `index.html` — structure and required IDs\n- `style.css` — pixel-themed styling and responsive layout\n- `script.js` — timer logic and event listeners\n\n## Accessibility\n\n- All controls are native `<button>` and `<input>` elements with labels.\n- Focus styles are visible.\n- The display uses `aria-live=\"polite\"` for screen reader updates.\n- No inline event handlers; all events use `addEventListener`.\n\n## Build Evidence\n\n- No build step required.\n- No dependencies or network requests.\n- Tested in modern browsers at widths from 360px upward.\n",
+      "description": "Documentation."
+    }
+  ]
+}

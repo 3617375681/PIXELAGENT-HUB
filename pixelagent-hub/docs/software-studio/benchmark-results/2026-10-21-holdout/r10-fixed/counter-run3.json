@@ -1,0 +1,415 @@
+{
+  "caseId": "counter",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 19,
+  "reportedTokens": 6441,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T08:02:54.425Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T08:02:54.425Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T08:02:57.522Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Offline Pixel-Style Counter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T08:02:57.522Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T08:03:03.713Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T08:03:03.713Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T08:03:04.228Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T08:03:04.228Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "971e3aef-c40b-4c5f-8d6a-e99ca9790aad"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T08:03:06.757Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "971e3aef-c40b-4c5f-8d6a-e99ca9790aad",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T08:03:06.758Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "testPlanId": "971e3aef-c40b-4c5f-8d6a-e99ca9790aad",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Initial count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Increase adds one",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Decrease goes negative",
+        "passed": true,
+        "actual": "-1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Reset returns to zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Multiple increases accumulate",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Increase button labeled",
+        "passed": true,
+        "actual": "Increase count by one"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Decrease button labeled",
+        "passed": true,
+        "actual": "Decrease count by one"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Reset button labeled",
+        "passed": true,
+        "actual": "Reset count to zero"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Three control buttons present",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "name": "Count shows only integer",
+        "passed": true,
+        "actual": "-2"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T08:03:10.002Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f7f392e5-c362-407a-8d87-c0935f448eb6",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T08:03:10.004Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial count is zero",
+        "actions": [],
+        "selector": "#count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Increase adds one",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          }
+        ],
+        "selector": "#count",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Decrease goes negative",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#count",
+        "expected": "-1",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset returns to zero",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Multiple increases accumulate",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#increase"
+          }
+        ],
+        "selector": "#count",
+        "expected": "3",
+        "assertion": "text"
+      },
+      {
+        "name": "Increase button labeled",
+        "actions": [],
+        "selector": "#increase",
+        "expected": "Increase count by one",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      },
+      {
+        "name": "Decrease button labeled",
+        "actions": [],
+        "selector": "#decrease",
+        "expected": "Decrease count by one",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      },
+      {
+        "name": "Reset button labeled",
+        "actions": [],
+        "selector": "#reset",
+        "expected": "Reset count to zero",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      },
+      {
+        "name": "Three control buttons present",
+        "actions": [],
+        "selector": "button",
+        "expected": "3",
+        "assertion": "count"
+      },
+      {
+        "name": "Count shows only integer",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          },
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#count",
+        "expected": "^-?\\d+$",
+        "assertion": "matches"
+      }
+    ],
+    "limitations": [
+      "Keyboard activation via Tab/Enter/Space cannot be tested with synthetic DOM key events.",
+      "README content and total source line count under 200 are not verifiable in the browser.",
+      "Offline/no-storage behavior and absence of network requests are not observable here.",
+      "Pixel aesthetic and responsive layout are visual and not asserted."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 2669,
+      "completion_tokens": 464,
+      "total_tokens": 3133,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 1517
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Counter</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1 class=\"title\">Pixel Counter</h1>\n    <output id=\"count\" class=\"count\" aria-live=\"polite\">0</output>\n    <div class=\"controls\">\n      <button id=\"decrease\" class=\"btn\" aria-label=\"Decrease count by one\">−</button>\n      <button id=\"reset\" class=\"btn\" aria-label=\"Reset count to zero\">Reset</button>\n      <button id=\"increase\" class=\"btn\" aria-label=\"Increase count by one\">+</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #29366f;\n  --accent: #41a6f6;\n  --text: #f4f4f4;\n  --edge: #566c86;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card);\n  padding: 32px 24px;\n  border-radius: 0;\n  box-shadow: 0 0 0 4px var(--edge), 0 0 0 8px var(--bg), 0 12px 24px rgba(0,0,0,0.5);\n  text-align: center;\n  width: 100%;\n  max-width: 360px;\n  image-rendering: pixelated;\n}\n\n.title {\n  color: var(--text);\n  font-size: 1.25rem;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  margin-bottom: 24px;\n  text-shadow: 2px 2px 0 var(--bg);\n}\n\n.count {\n  display: block;\n  color: var(--accent);\n  font-size: 4rem;\n  font-weight: 700;\n  line-height: 1;\n  margin-bottom: 32px;\n  font-variant-numeric: tabular-nums;\n  text-shadow: 4px 4px 0 var(--bg);\n  word-break: break-all;\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1.25rem;\n  font-weight: 700;\n  color: var(--text);\n  background: var(--edge);\n  border: none;\n  padding: 12px 20px;\n  min-width: 64px;\n  cursor: pointer;\n  transition: transform 0.05s, background 0.15s;\n  box-shadow: 0 4px 0 var(--bg);\n}\n\n.btn:hover {\n  background: var(--accent);\n  color: var(--bg);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.btn:active {\n  transform: translateY(4px);\n  box-shadow: none;\n}\n\n@media (max-width: 400px) {\n  .card { padding: 24px 16px; }\n  .count { font-size: 3rem; }\n  .btn { padding: 10px 16px; min-width: 56px; }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const countEl = document.getElementById('count');\nlet value = 0;\n\nfunction render() {\n  countEl.textContent = value;\n}\n\ndocument.getElementById('increase').addEventListener('click', () => {\n  value += 1;\n  render();\n});\n\ndocument.getElementById('decrease').addEventListener('click', () => {\n  value -= 1;\n  render();\n});\n\ndocument.getElementById('reset').addEventListener('click', () => {\n  value = 0;\n  render();\n});\n\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Offline Pixel-Style Counter\n\nA dependency-free, offline browser counter with a retro pixel aesthetic.\n\n## Features\n\n- Starts at 0\n- Increase (+1), decrease (−1), and reset to 0\n- Supports negative numbers\n- Keyboard-accessible labeled buttons\n- No network requests, storage, or external assets\n- Responsive down to 360px wide\n\n## Usage\n\nOpen `index.html` in any modern browser. Click the buttons or use Tab + Enter/Space to interact.\n\n## Files\n\n- `index.html` — markup and structure\n- `style.css` — pixel-themed styling\n- `script.js` — counter logic\n\n## Accessibility\n\nButtons have `aria-label` attributes and visible focus states. The count is announced via `aria-live=\"polite\"`.\n\n## Offline\n\nNo imports, packages, or network requests. Works entirely offline.",
+      "description": ""
+    }
+  ]
+}

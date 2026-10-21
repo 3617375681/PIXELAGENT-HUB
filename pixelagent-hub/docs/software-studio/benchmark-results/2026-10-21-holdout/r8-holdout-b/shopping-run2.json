@@ -1,0 +1,603 @@
+{
+  "caseId": "shopping",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "8/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "8/9",
+    "9/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 41,
+  "reportedTokens": 24249,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:18:51.867Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:18:51.867Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:18:57.065Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Shopping List"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:18:57.065Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:19:07.607Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:19:07.607Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:19:08.082Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:19:08.083Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "3ebc21ab-6a7a-4233-8b54-af709949b2bd"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:19:10.800Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "3ebc21ab-6a7a-4233-8b54-af709949b2bd",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:19:10.800Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "testPlanId": "3ebc21ab-6a7a-4233-8b54-af709949b2bd",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Initial remaining count and bought item placement",
+        "passed": true,
+        "actual": "2 items remaining"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Add item with quantity updates remaining count",
+        "passed": true,
+        "actual": "3 items remaining"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Added item appears in active list with quantity",
+        "passed": true,
+        "actual": "Apples ×3"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Ticking an item moves it to bought list and decrements remaining",
+        "passed": true,
+        "actual": "1 item remaining"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Ticked item appears in bought list",
+        "passed": false,
+        "actual": "Eggs ×12"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Clear bought removes bought items and disables button",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Clear bought empties bought list",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Clear bought leaves active items intact",
+        "passed": true,
+        "actual": "2 items remaining"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "name": "Empty active list message shown after ticking all active items",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:19:15.746Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "0b8f1c90-8a35-4399-842f-bfa50f0c696e",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:19:15.748Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "3ebc21ab-6a7a-4233-8b54-af709949b2bd",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:19:17.309Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "3ebc21ab-6a7a-4233-8b54-af709949b2bd",
+        "checks": 9,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Ticked item appears in bought list",
+            "verdict": "app-wrong",
+            "reason": "The check ticks Milk's checkbox and expects the last bought item to read \"Milk ×2\". The app does move Milk to the bought list, but the bought list already contains Eggs, and Milk is appended after it,"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:19:17.310Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T06:19:27.096Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T06:19:27.096Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T06:19:27.124Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T06:19:27.124Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "testPlanId": "3ebc21ab-6a7a-4233-8b54-af709949b2bd",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Initial remaining count and bought item placement",
+        "passed": true,
+        "actual": "2 items remaining"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Add item with quantity updates remaining count",
+        "passed": true,
+        "actual": "3 items remaining"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Added item appears in active list with quantity",
+        "passed": true,
+        "actual": "Apples ×3"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Ticking an item moves it to bought list and decrements remaining",
+        "passed": true,
+        "actual": "1 item remaining"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Ticked item appears in bought list",
+        "passed": true,
+        "actual": "Milk ×2"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Clear bought removes bought items and disables button",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Clear bought empties bought list",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Clear bought leaves active items intact",
+        "passed": true,
+        "actual": "2 items remaining"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "name": "Empty active list message shown after ticking all active items",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T06:19:30.010Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "31804261-692e-456d-a250-9d060ae7d397",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T06:19:30.015Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial remaining count and bought item placement",
+        "actions": [],
+        "selector": "#remaining",
+        "expected": "2 items remaining",
+        "assertion": "text"
+      },
+      {
+        "name": "Add item with quantity updates remaining count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Apples"
+          },
+          {
+            "type": "input",
+            "selector": "#item-qty",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#remaining",
+        "expected": "3 items remaining",
+        "assertion": "text"
+      },
+      {
+        "name": "Added item appears in active list with quantity",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Apples"
+          },
+          {
+            "type": "input",
+            "selector": "#item-qty",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#active-list li:last-child",
+        "expected": "Apples ×3",
+        "assertion": "text"
+      },
+      {
+        "name": "Ticking an item moves it to bought list and decrements remaining",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#active-list li[data-id=\"1\"] input[type=\"checkbox\"]"
+          }
+        ],
+        "selector": "#remaining",
+        "expected": "1 item remaining",
+        "assertion": "text"
+      },
+      {
+        "name": "Ticked item appears in bought list",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#active-list li[data-id=\"1\"] input[type=\"checkbox\"]"
+          }
+        ],
+        "selector": "#bought-list li:last-child",
+        "expected": "Milk ×2",
+        "assertion": "text"
+      },
+      {
+        "name": "Clear bought removes bought items and disables button",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#clear-bought"
+          }
+        ],
+        "selector": "#clear-bought",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Clear bought empties bought list",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#clear-bought"
+          }
+        ],
+        "selector": "#bought-list li",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Clear bought leaves active items intact",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#clear-bought"
+          }
+        ],
+        "selector": "#remaining",
+        "expected": "2 items remaining",
+        "assertion": "text"
+      },
+      {
+        "name": "Empty active list message shown after ticking all active items",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#active-list li[data-id=\"1\"] input[type=\"checkbox\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#active-list li[data-id=\"2\"] input[type=\"checkbox\"]"
+          }
+        ],
+        "selector": "#empty-active",
+        "expected": "true",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "Struck-through styling of bought items is a CSS text-decoration effect and cannot be verified by text, visibility, or attribute assertions.",
+      "Bought items moving to the bottom is only partially covered by asserting the bought list contents; relative ordering across sections is not directly asserted.",
+      "Quantity input min=1 validation and browser native required-field validation are not exercised.",
+      "Keyboard interaction (Enter to submit, focus management) is not tested because DOM key events are synthetic and not trusted browser input.",
+      "Responsive layout at 360px and pixel styling are not verifiable through DOM assertions."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4484,
+      "completion_tokens": 650,
+      "total_tokens": 5134,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 3588
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Shopping List</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header>\n      <h1>Pixel Shopping List</h1>\n      <p id=\"remaining\" aria-live=\"polite\">0 items remaining</p>\n    </header>\n\n    <form id=\"add-form\" aria-label=\"Add a new item\">\n      <div class=\"input-group\">\n        <label for=\"item-name\">Item name</label>\n        <input type=\"text\" id=\"item-name\" name=\"name\" required placeholder=\"e.g., Apples\" autocomplete=\"off\">\n      </div>\n      <div class=\"input-group\">\n        <label for=\"item-qty\">Quantity</label>\n        <input type=\"number\" id=\"item-qty\" name=\"qty\" min=\"1\" value=\"1\" required>\n      </div>\n      <button type=\"submit\" id=\"add-btn\">Add item</button>\n    </form>\n\n    <section aria-labelledby=\"active-heading\">\n      <h2 id=\"active-heading\">To buy</h2>\n      <ul id=\"active-list\" class=\"item-list\"></ul>\n      <p id=\"empty-active\" class=\"empty-msg\" hidden>No items to buy. Add something above!</p>\n    </section>\n\n    <section aria-labelledby=\"bought-heading\">\n      <div class=\"bought-header\">\n        <h2 id=\"bought-heading\">Bought</h2>\n        <button type=\"button\" id=\"clear-bought\" disabled>Clear bought</button>\n      </div>\n      <ul id=\"bought-list\" class=\"item-list\"></ul>\n      <p id=\"empty-bought\" class=\"empty-msg\" hidden>No items bought yet.</p>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML structure with form, active and bought lists, and status area."
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #f4f1de;\n  --card-bg: #ffffff;\n  --text: #3d405b;\n  --primary: #e07a5f;\n  --primary-dark: #c0604a;\n  --secondary: #81b29a;\n  --border: #dcdcdc;\n  --radius: 12px;\n  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  background-color: var(--bg);\n  color: var(--text);\n  font-size: 16px;\n  line-height: 1.5;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: var(--radius);\n  box-shadow: var(--shadow);\n  padding: 24px;\n  width: 100%;\n  max-width: 480px;\n  margin: 16px auto;\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin-bottom: 4px;\n  color: var(--primary);\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin-bottom: 8px;\n  color: var(--text);\n}\n\nheader {\n  margin-bottom: 20px;\n}\n\n#remaining {\n  font-size: 1rem;\n  color: var(--secondary);\n  font-weight: 600;\n}\n\nform {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n  margin-bottom: 24px;\n  align-items: flex-end;\n}\n\n.input-group {\n  display: flex;\n  flex-direction: column;\n  flex: 1 1 140px;\n}\n\n.input-group label {\n  font-size: 0.875rem;\n  font-weight: 600;\n  margin-bottom: 4px;\n}\n\ninput {\n  font: inherit;\n  padding: 10px 12px;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  background: #fff;\n  color: var(--text);\n  transition: border-color 0.2s, box-shadow 0.2s;\n}\n\ninput:focus {\n  outline: none;\n  border-color: var(--primary);\n  box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.3);\n}\n\ninput:hover {\n  border-color: var(--secondary);\n}\n\nbutton {\n  font: inherit;\n  font-weight: 600;\n  padding: 10px 20px;\n  border: none;\n  border-radius: 8px;\n  background: var(--primary);\n  color: #fff;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  min-height: 44px;\n  touch-action: manipulation;\n}\n\nbutton:hover {\n  background: var(--primary-dark);\n}\n\nbutton:focus-visible {\n  outline: 3px solid var(--secondary);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.97);\n}\n\nbutton:disabled {\n  background: #ccc;\n  cursor: not-allowed;\n  transform: none;\n}\n\n#add-btn {\n  flex: 0 0 auto;\n  align-self: flex-end;\n  margin-bottom: 1px; /* align with inputs */\n}\n\n.item-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}\n\n.item-list li {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 8px;\n  border-bottom: 1px solid var(--border);\n  transition: background 0.2s;\n}\n\n.item-list li:last-child {\n  border-bottom: none;\n}\n\n.item-list li:hover {\n  background: #fafafa;\n}\n\n.item-list li .item-name {\n  flex: 1;\n  font-weight: 500;\n  word-break: break-word;\n}\n\n.item-list li .item-qty {\n  font-size: 0.875rem;\n  color: var(--secondary);\n  font-weight: 600;\n  white-space: nowrap;\n}\n\n.item-list li input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  accent-color: var(--primary);\n  cursor: pointer;\n  flex-shrink: 0;\n}\n\n.item-list li input[type=\"checkbox\"]:focus-visible {\n  outline: 3px solid var(--secondary);\n  outline-offset: 2px;\n}\n\n#bought-list li {\n  text-decoration: line-through;\n  opacity: 0.7;\n}\n\n#bought-list .item-name {\n  text-decoration: line-through;\n}\n\n.bought-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 8px;\n  margin-bottom: 8px;\n}\n\n.bought-header h2 {\n  margin-bottom: 0;\n}\n\n#clear-bought {\n  background: var(--secondary);\n  font-size: 0.875rem;\n  padding: 8px 16px;\n}\n\n#clear-bought:hover:not(:disabled) {\n  background: #6a9c83;\n}\n\n.empty-msg {\n  color: #999;\n  font-style: italic;\n  padding: 12px 0;\n  text-align: center;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 16px;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  form {\n    flex-direction: column;\n    align-items: stretch;\n  }\n  #add-btn {\n    align-self: stretch;\n  }\n}",
+      "description": "Styling for the app, including layout, colors, responsive behavior, and states."
+    },
+    {
+      "path": "script.js",
+      "content": "'use strict';\n\nconst state = {\n  items: [\n    { id: 1, name: 'Milk', qty: 2, bought: false },\n    { id: 2, name: 'Bread', qty: 1, bought: false },\n    { id: 3, name: 'Eggs', qty: 12, bought: true },\n  ],\n  nextId: 4,\n};\n\nconst addForm = document.getElementById('add-form');\nconst itemNameInput = document.getElementById('item-name');\nconst itemQtyInput = document.getElementById('item-qty');\nconst activeList = document.getElementById('active-list');\nconst boughtList = document.getElementById('bought-list');\nconst remainingEl = document.getElementById('remaining');\nconst emptyActive = document.getElementById('empty-active');\nconst emptyBought = document.getElementById('empty-bought');\nconst clearBoughtBtn = document.getElementById('clear-bought');\n\nfunction render() {\n  const activeItems = state.items.filter(i => !i.bought);\n  const boughtItems = state.items.filter(i => i.bought);\n\n  activeList.innerHTML = '';\n  boughtList.innerHTML = '';\n\n  activeItems.forEach(item => {\n    const li = document.createElement('li');\n    li.dataset.id = item.id;\n\n    const checkbox = document.createElement('input');\n    checkbox.type = 'checkbox';\n    checkbox.id = `bought-${item.id}`;\n    checkbox.checked = false;\n    checkbox.setAttribute('aria-label', `Mark ${item.name} as bought`);\n    checkbox.addEventListener('change', () => toggleBought(item.id));\n\n    const nameSpan = document.createElement('span');\n    nameSpan.className = 'item-name';\n    nameSpan.textContent = item.name;\n\n    const qtySpan = document.createElement('span');\n    qtySpan.className = 'item-qty';\n    qtySpan.textContent = `×${item.qty}`;\n\n    li.append(checkbox, nameSpan, qtySpan);\n    activeList.appendChild(li);\n  });\n\n  boughtItems.forEach(item => {\n    const li = document.createElement('li');\n    li.dataset.id = item.id;\n\n    const nameSpan = document.createElement('span');\n    nameSpan.className = 'item-name';\n    nameSpan.textContent = item.name;\n\n    const qtySpan = document.createElement('span');\n    qtySpan.className = 'item-qty';\n    qtySpan.textContent = `×${item.qty}`;\n\n    li.append(nameSpan, qtySpan);\n    boughtList.appendChild(li);\n  });\n\n  const remaining = activeItems.length;\n  remainingEl.textContent = `${remaining} item${remaining !== 1 ? 's' : ''} remaining`;\n\n  emptyActive.hidden = activeItems.length > 0;\n  emptyBought.hidden = boughtItems.length > 0;\n  clearBoughtBtn.disabled = boughtItems.length === 0;\n}\n\nfunction addItem(name, qty) {\n  const trimmed = name.trim();\n  if (!trimmed) return;\n  const quantity = Math.max(1, parseInt(qty, 10) || 1);\n  state.items.push({\n    id: state.nextId++,\n    name: trimmed,\n    qty: quantity,\n    bought: false,\n  });\n  render();\n}\n\nfunction toggleBought(id) {\n  const item = state.items.find(i => i.id === id);\n  if (item) {\n    item.bought = !item.bought;\n    // Move the item to the end of the array so it appears at the bottom of the bought list\n    state.items = state.items.filter(i => i.id !== id);\n    state.items.push(item);\n    render();\n  }\n}\n\nfunction clearBought() {\n  state.items = state.items.filter(i => !i.bought);\n  render();\n}\n\naddForm.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const name = itemNameInput.value;\n  const qty = itemQtyInput.value;\n  if (!name.trim()) return;\n  addItem(name, qty);\n  itemNameInput.value = '';\n  itemQtyInput.value = '1';\n  itemNameInput.focus();\n});\n\nclearBoughtBtn.addEventListener('click', clearBought);\n\nrender();",
+      "description": "JavaScript logic for state management, rendering, and event handling."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Shopping List\n\nA fully offline, accessible shopping list web app built with only HTML, CSS, and plain JavaScript.\n\n## Features\n\n- Add items with a name and quantity.\n- Mark items as bought — they move to the bottom section and are struck through.\n- See how many items remain.\n- Clear all bought items with one button.\n- Keyboard accessible with labeled controls.\n- Responsive layout from 360px wide.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type an item name and quantity, then press **Add item** (or press Enter).\n3. Check the checkbox next to an item to move it to the **Bought** section.\n4. Click **Clear bought** to remove all bought items.\n\nNo network requests, external assets, or server code are used.\n\n## Files\n\n- `index.html` — structure and content\n- `style.css` — visual design and responsive layout\n- `script.js` — state management and interactivity\n- `README.md` — this file\n\n## Constraints\n\n- Offline only: no imports, packages, network requests, external assets, iframes, or server code.\n- All event handling uses `addEventListener`.\n- Controls are keyboard-accessible and labeled.\n- Layout works down to 360px wide.\n",
+      "description": "Project documentation with features, usage, and constraints."
+    }
+  ]
+}

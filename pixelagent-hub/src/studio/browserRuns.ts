@@ -93,6 +93,7 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
       try {
         const assertion = check.assertion || 'text';
         const relative = assertion === 'changed' || assertion === 'unchanged';
+        const steady = assertion === 'unchanged' || assertion === 'stable';
         const element = async (selector: string, nth?: number) => {
           const locator = frame.locator(`css=${selector}`);
           const count = await locator.count();
@@ -101,48 +102,78 @@ export async function executeBrowserRun(options: { root: string; run: BrowserRun
           return nth === undefined ? locator : locator.nth(nth);
         };
         let target = frame.locator(`css=${check.selector}`);
-        if (relative) target = await element(check.selector, check.nth);
+        const deferredBaseline = assertion === 'changed' && await target.count() === 0;
+        if (relative && !deferredBaseline) target = await element(check.selector, check.nth);
         const pattern = assertion === 'matches' ? new RegExp(check.expected, 'u') : undefined;
-        const expected = relative ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
+        let expected = relative && !deferredBaseline ? collapseWhitespace(await target.innerText()) : assertion === 'text' ? collapseWhitespace(check.expected) : check.expected;
         for (const action of check.actions) {
           controller.signal.throwIfAborted();
           const target = await element(action.selector, action.nth);
           if (action.type === 'click') await target.click();
           else if (action.type === 'input') {
-            if (await target.evaluate((element) => element.tagName) === 'SELECT') await target.selectOption(action.value);
+            const kind = await target.evaluate((element) => element.tagName === 'INPUT' ? (element as HTMLInputElement).type : element.tagName);
+            if (kind === 'checkbox' || kind === 'radio') {
+              if (action.value === 'false') await target.uncheck();
+              else await target.check();
+            } else if (kind === 'SELECT') await target.selectOption(action.value);
             else await target.fill(action.value);
           }
           else await target.press(action.key);
         }
-        if (assertion !== 'count') target = await element(check.selector, check.nth);
-        const deadline = Date.now() + (assertion === 'unchanged' ? 500 : 2000);
-        // Text matches either what is rendered (innerText: paragraph breaks, CSS casing) or the source
-        // text (textContent), with runs of whitespace as one space; the rendered text is reported.
+        if (assertion !== 'count' && assertion !== 'stable') target = await element(check.selector, check.nth);
+        if (deferredBaseline) expected = collapseWhitespace(await target.innerText());
+        if (assertion === 'stable') {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          target = await element(check.selector, check.nth);
+          expected = collapseWhitespace(await target.innerText());
+        }
+        const deadline = Date.now() + (assertion === 'stable' ? 1500 : assertion === 'unchanged' ? 500 : 2000);
+        // Text accepts rendered, source or untransformed rendered text; rendered text is reported.
         // Visibility uses Playwright plus no opacity:0 on the element or ancestors.
         let matched = false;
         do {
           controller.signal.throwIfAborted();
-          if (relative) target = await element(check.selector, check.nth);
-          if (assertion === 'text' || pattern || relative) {
-            const [rendered, source] = await target.evaluate((element) => [(element as HTMLElement).innerText ?? '', element.textContent ?? '']);
+          if (relative || assertion === 'stable') target = await element(check.selector, check.nth);
+          if (assertion === 'text' || (pattern && !check.attribute) || relative || assertion === 'stable') {
+            // Inline on purpose: a named helper inside evaluate() gets a `__name` wrapper from
+            // tsx/esbuild that does not exist in the page.
+            const [rendered, source, plain] = await target.evaluate((element) => {
+              const root = element as HTMLElement;
+              const rendered = root.innerText ?? '';
+              const elements = [root, ...Array.from(root.querySelectorAll('*')) as HTMLElement[]].filter((item) => item.style);
+              const previous = elements.map((item) => [item.style.getPropertyValue('text-transform'), item.style.getPropertyPriority('text-transform')]);
+              let plain = rendered;
+              try {
+                for (const item of elements) item.style.textTransform = 'none';
+                plain = root.innerText ?? '';
+              } finally {
+                elements.forEach((item, index) => {
+                  const [value, priority] = previous[index];
+                  if (value) item.style.setProperty('text-transform', value, priority);
+                  else item.style.removeProperty('text-transform');
+                });
+              }
+              return [rendered, root.textContent ?? '', plain];
+            });
             actual = collapseWhitespace(rendered);
-            matched = pattern ? pattern.test(actual) || pattern.test(collapseWhitespace(source)) : actual === expected || collapseWhitespace(source) === expected;
+            matched = pattern ? pattern.test(actual) || pattern.test(collapseWhitespace(source)) || pattern.test(collapseWhitespace(plain)) : actual === expected || collapseWhitespace(source) === expected || collapseWhitespace(plain) === expected;
             if (assertion === 'changed') matched = !matched;
           } else {
             actual = assertion === 'count' ? String(await target.count())
-              : assertion === 'attribute' ? await target.evaluate((element, attribute) => attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
+              : assertion === 'attribute' || (pattern && check.attribute) ? await target.evaluate((element, attribute) => attribute.startsWith('style.') ? (element as HTMLElement).style.getPropertyValue(attribute.slice(6)).trim() : attribute === 'value' && ['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName) ? (element as HTMLInputElement).value : attribute === 'checked' && element.tagName === 'INPUT' ? String((element as HTMLInputElement).checked) : element.getAttribute(attribute) ?? '', check.attribute!)
                 : assertion === 'disabled' ? String(await target.evaluate((element) => element.matches(':disabled'))) : String(await target.isVisible() && await target.evaluate((element) => {
                   for (let current: Element | null = element; current; current = current.parentElement) {
                     if (parseFloat(getComputedStyle(current).opacity) === 0) return false;
                   }
                   return true;
                 }));
-            matched = actual === expected;
+            matched = pattern ? pattern.test(actual) : actual === expected;
           }
-          if (assertion === 'unchanged' ? !matched : matched) break;
+          if (steady ? !matched : matched) break;
           if (Date.now() >= deadline) break;
-          await new Promise((resolve) => setTimeout(resolve, 50));
-        } while (assertion === 'unchanged' ? matched : !matched);
+          await new Promise((resolve) => setTimeout(resolve, assertion === 'stable' ? 100 : 50));
+        } while (steady ? matched : !matched);
+        if (!matched && assertion === 'stable') throw new Error(`Expected text to stay ${JSON.stringify(expected)} after the actions, observed ${JSON.stringify(actual.slice(0, 300))}`);
         if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected text to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual.slice(0, 300))}` : `Expected text to change from ${JSON.stringify(expected)}`);
         if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual.slice(0, 300))}`);
         run.checks.push({ name: check.name, status: 'passed', actual: actual.slice(0, 300) });

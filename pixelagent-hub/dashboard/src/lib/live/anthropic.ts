@@ -10,13 +10,14 @@ export const CLAUDE_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-ha
 // Server-side refusal fallbacks: on the Claude API for Opus and Sonnet, not for Haiku.
 const supportsFallbacks = (model: string) => !model.startsWith('claude-haiku');
 
-export async function streamClaude(options: { apiKey: string; model: string; system: string; user: string; signal?: AbortSignal }): Promise<LlmReply> {
+export async function streamClaude(options: { apiKey: string; model: string; system: string; user: string; signal?: AbortSignal; temperature?: number }): Promise<LlmReply> {
   const sdk = await import('@anthropic-ai/sdk');
   const client = new sdk.default({ apiKey: options.apiKey, dangerouslyAllowBrowser: true, maxRetries: 1 });
   try {
     const stream = client.beta.messages.stream({
       model: options.model,
       max_tokens: 64000,
+      ...(options.temperature === undefined ? {} : { temperature: options.temperature }),
       system: options.system,
       messages: [{ role: 'user', content: options.user }],
       output_config: { effort: 'medium' },

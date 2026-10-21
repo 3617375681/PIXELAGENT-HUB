@@ -1,0 +1,570 @@
+{
+  "caseId": "temperature",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "6/9",
+  "finalChecks": "6/6",
+  "reviewTriggered": true,
+  "checksDropped": 3,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "6/9",
+    "6/6"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 32,
+  "reportedTokens": 14458,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:15:34.210Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:15:34.210Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:15:38.265Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Temperature Log"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:15:38.265Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:15:47.306Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:15:47.306Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:15:47.680Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:15:47.680Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "72a4aa55-9c1c-46fd-8e08-b832913401ef"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:15:51.004Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "72a4aa55-9c1c-46fd-8e08-b832913401ef",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:15:51.005Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "testPlanId": "72a4aa55-9c1c-46fd-8e08-b832913401ef",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Add a single reading updates list and stats",
+        "passed": true,
+        "actual": "23.5°C"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Min, max and average across multiple readings",
+        "passed": false,
+        "actual": "MIN 10.0°C MAX 30.0°C AVG 20.0°C"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Average rounds to one decimal",
+        "passed": true,
+        "actual": "1.5°C"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Negative readings handled in stats",
+        "passed": true,
+        "actual": "-5.0°C"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "List shows one entry per added reading",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Clear All resets list and stats",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Clear All resets stat values to placeholder",
+        "passed": false,
+        "actual": "MIN — MAX — AVG —"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Input cleared after adding",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "name": "Initial stats show placeholders",
+        "passed": false,
+        "actual": "MIN — MAX — AVG —"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:15:59.973Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "c957358d-6531-4f22-83a4-a726aa9bfa99",
+        "status": "failed",
+        "passed": 6,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:15:59.977Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "72a4aa55-9c1c-46fd-8e08-b832913401ef",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:16:03.183Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "72a4aa55-9c1c-46fd-8e08-b832913401ef",
+        "checks": 6,
+        "review": true,
+        "revised": 0,
+        "dropped": 3,
+        "verdicts": [
+          {
+            "name": "Min, max and average across multiple readings",
+            "verdict": "unsupported",
+            "reason": "The check expects the rendered text of .stats to be \"Min 10.0°C Max 30.0°C Avg 20.0°C\", but the app renders the labels uppercase via CSS text-transform, producing \"MIN 10.0°C MAX 30.0°C AVG 20.0°C\". T"
+          },
+          {
+            "name": "Clear All resets stat values to placeholder",
+            "verdict": "unsupported",
+            "reason": "The check expects the rendered text of .stats to be \"Min — Max — Avg —\", but the app renders uppercase labels (\"MIN — MAX — AVG —\") due to CSS text-transform. The requirements only ask for a Clear but"
+          },
+          {
+            "name": "Initial stats show placeholders",
+            "verdict": "unsupported",
+            "reason": "The check expects the rendered text of .stats to be \"Min — Max — Avg —\", but the app renders uppercase labels (\"MIN — MAX — AVG —\") due to CSS text-transform. The requirements only ask to show min, ma"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:16:03.183Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "testPlanId": "72a4aa55-9c1c-46fd-8e08-b832913401ef",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T06:16:05.075Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "name": "Add a single reading updates list and stats",
+        "passed": true,
+        "actual": "23.5°C"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T06:16:05.076Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "name": "Average rounds to one decimal",
+        "passed": true,
+        "actual": "1.5°C"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T06:16:05.076Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "name": "Negative readings handled in stats",
+        "passed": true,
+        "actual": "-5.0°C"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T06:16:05.076Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "name": "List shows one entry per added reading",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T06:16:05.076Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "name": "Clear All resets list and stats",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T06:16:05.076Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "name": "Input cleared after adding",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T06:16:05.076Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "5a25d7ff-1a76-461e-a146-d6e627c4d4fb",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T06:16:05.080Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Add a single reading updates list and stats",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "23.5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#readings-list",
+        "expected": "23.5°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Average rounds to one decimal",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#avg-val",
+        "expected": "1.5°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Negative readings handled in stats",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "-5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#min-val",
+        "expected": "-5.0°C",
+        "assertion": "text"
+      },
+      {
+        "name": "List shows one entry per added reading",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "12"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "14"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "16"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#readings-list li",
+        "expected": "3",
+        "assertion": "count"
+      },
+      {
+        "name": "Clear All resets list and stats",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "18"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "22"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#clear-btn"
+          }
+        ],
+        "selector": "#readings-list li",
+        "expected": "0",
+        "assertion": "count"
+      },
+      {
+        "name": "Input cleared after adding",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "25"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#temp-input",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      }
+    ],
+    "limitations": [
+      "Cannot verify native form validation blocking empty submissions, since synthetic input actions do not trigger browser constraint validation UI.",
+      "Cannot verify focus movement after Add or Clear (input.focus()) reliably via DOM assertions.",
+      "Cannot verify aria-live announcements or screen reader behavior.",
+      "Cannot verify visual pixel styling, colors, or responsive layout.",
+      "Cannot verify Enter-key submission because DOM key events are synthetic and not trusted browser input.",
+      "Not checked: Min, max and average across multiple readings: The check expects the rendered text of .stats to be \"Min 10.0°C Max 30.0°C Avg 20.0°C\", but the app renders the labels uppercase via CSS text-transform, producing \"MIN 10.0°C MAX 30.0°C AVG 20.0°C\". T",
+      "Not checked: Clear All resets stat values to placeholder: The check expects the rendered text of .stats to be \"Min — Max — Avg —\", but the app renders uppercase labels (\"MIN — MAX — AVG —\") due to CSS text-transform. The requirements only ask for a Clear but",
+      "Not checked: Initial stats show placeholders: The check expects the rendered text of .stats to be \"Min — Max — Avg —\", but the app renders uppercase labels (\"MIN — MAX — AVG —\") due to CSS text-transform. The requirements only ask to show min, ma"
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3819,
+      "completion_tokens": 826,
+      "total_tokens": 4645,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 2923
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Temperature Log</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Temperature Log</h1>\n    <p class=\"subtitle\">Enter readings in °C</p>\n\n    <form id=\"temp-form\" class=\"input-group\">\n      <label for=\"temp-input\" class=\"visually-hidden\">Temperature in Celsius</label>\n      <input type=\"number\" id=\"temp-input\" name=\"temp\" step=\"any\" placeholder=\"e.g. 23.5\" required>\n      <button type=\"submit\" id=\"add-btn\" class=\"btn primary\">Add</button>\n    </form>\n\n    <div class=\"stats\" aria-live=\"polite\">\n      <div class=\"stat\"><span class=\"stat-label\">Min</span><span id=\"min-val\" class=\"stat-value\">—</span></div>\n      <div class=\"stat\"><span class=\"stat-label\">Max</span><span id=\"max-val\" class=\"stat-value\">—</span></div>\n      <div class=\"stat\"><span class=\"stat-label\">Avg</span><span id=\"avg-val\" class=\"stat-value\">—</span></div>\n    </div>\n\n    <ul id=\"readings-list\" class=\"readings\" aria-label=\"Temperature readings\"></ul>\n\n    <button id=\"clear-btn\" class=\"btn secondary\" type=\"button\">Clear All</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --text: #e0e0f0;\n  --accent: #ff6b6b;\n  --accent-hover: #ff4757;\n  --secondary: #4a4a6a;\n  --secondary-hover: #5a5a7a;\n  --border: #3a3a5a;\n  --focus: #ffd93d;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 16px;\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n  border: 1px solid var(--border);\n}\n\nh1 {\n  font-size: 1.75rem;\n  font-weight: 700;\n  margin-bottom: 4px;\n  text-align: center;\n}\n\n.subtitle {\n  text-align: center;\n  color: #a0a0c0;\n  margin-bottom: 24px;\n  font-size: 0.95rem;\n}\n\n.input-group {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 24px;\n}\n\ninput[type=\"number\"] {\n  flex: 1;\n  padding: 12px 16px;\n  border-radius: 10px;\n  border: 2px solid var(--border);\n  background: #1e1e2f;\n  color: var(--text);\n  font-size: 1rem;\n  font-family: inherit;\n  outline: none;\n  transition: border-color 0.2s;\n  min-width: 0;\n}\n\ninput[type=\"number\"]:focus-visible {\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(255, 217, 61, 0.25);\n}\n\ninput[type=\"number\"]::placeholder {\n  color: #6a6a8a;\n}\n\n.btn {\n  padding: 12px 20px;\n  border-radius: 10px;\n  border: none;\n  font-size: 1rem;\n  font-family: inherit;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n  white-space: nowrap;\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.btn.primary {\n  background: var(--accent);\n  color: #fff;\n}\n\n.btn.primary:hover {\n  background: var(--accent-hover);\n}\n\n.btn.secondary {\n  background: var(--secondary);\n  color: var(--text);\n  width: 100%;\n  margin-top: 16px;\n}\n\n.btn.secondary:hover {\n  background: var(--secondary-hover);\n}\n\n.stats {\n  display: flex;\n  gap: 12px;\n  margin-bottom: 20px;\n}\n\n.stat {\n  flex: 1;\n  background: #1e1e2f;\n  border-radius: 10px;\n  padding: 12px 8px;\n  text-align: center;\n  border: 1px solid var(--border);\n}\n\n.stat-label {\n  display: block;\n  font-size: 0.8rem;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  color: #a0a0c0;\n  margin-bottom: 4px;\n}\n\n.stat-value {\n  font-size: 1.25rem;\n  font-weight: 700;\n  color: var(--accent);\n}\n\n.readings {\n  list-style: none;\n  max-height: 200px;\n  overflow-y: auto;\n  margin-bottom: 8px;\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.readings li {\n  background: #1e1e2f;\n  padding: 10px 14px;\n  border-radius: 8px;\n  border: 1px solid var(--border);\n  font-size: 0.95rem;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.readings li .value {\n  font-weight: 600;\n  color: var(--accent);\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 16px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n  .input-group {\n    flex-direction: column;\n  }\n  .btn.primary {\n    width: 100%;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var readings = [];\n  var form = document.getElementById('temp-form');\n  var input = document.getElementById('temp-input');\n  var list = document.getElementById('readings-list');\n  var minEl = document.getElementById('min-val');\n  var maxEl = document.getElementById('max-val');\n  var avgEl = document.getElementById('avg-val');\n  var clearBtn = document.getElementById('clear-btn');\n\n  function updateStats() {\n    if (readings.length === 0) {\n      minEl.textContent = '—';\n      maxEl.textContent = '—';\n      avgEl.textContent = '—';\n      return;\n    }\n    var min = Math.min.apply(null, readings);\n    var max = Math.max.apply(null, readings);\n    var sum = readings.reduce(function (a, b) { return a + b; }, 0);\n    var avg = sum / readings.length;\n    minEl.textContent = min.toFixed(1) + '°C';\n    maxEl.textContent = max.toFixed(1) + '°C';\n    avgEl.textContent = avg.toFixed(1) + '°C';\n  }\n\n  function renderList() {\n    list.innerHTML = '';\n    readings.forEach(function (val) {\n      var li = document.createElement('li');\n      var span = document.createElement('span');\n      span.className = 'value';\n      span.textContent = val.toFixed(1) + '°C';\n      li.appendChild(span);\n      list.appendChild(li);\n    });\n  }\n\n  function addReading(value) {\n    readings.push(value);\n    renderList();\n    updateStats();\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    var raw = input.value.trim();\n    if (raw === '') return;\n    var num = parseFloat(raw);\n    if (isNaN(num)) {\n      input.setCustomValidity('Please enter a valid number.');\n      input.reportValidity();\n      return;\n    }\n    input.setCustomValidity('');\n    addReading(num);\n    input.value = '';\n    input.focus();\n  });\n\n  clearBtn.addEventListener('click', function () {\n    readings = [];\n    renderList();\n    updateStats();\n    input.focus();\n  });\n\n  // Initialize\n  updateStats();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Temperature Log\n\nA simple offline browser app to log temperature readings in Celsius and view the minimum, maximum, and average of all entered readings.\n\n## Features\n\n- Enter a temperature in °C and add it to the list.\n- See real-time stats: minimum, maximum, and average.\n- Clear all readings with one button.\n- Fully keyboard-accessible with visible focus states.\n- Responsive design works from 360px wide.\n- No external dependencies, network requests, or server code.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type a temperature value (e.g., `23.5`) in the input field.\n3. Press **Add** or hit Enter to log the reading.\n4. The stats update automatically.\n5. Click **Clear All** to reset everything.\n\n## File Structure\n\n- `index.html` — main HTML structure\n- `style.css` — styling and responsive layout\n- `script.js` — core logic and event handling\n- `README.md` — this file\n\n## Accessibility\n\n- All controls are labeled and focusable.\n- Focus indicators are clearly visible.\n- The readings list is announced via `aria-live`.\n\n## License\n\nMIT",
+      "description": ""
+    }
+  ]
+}

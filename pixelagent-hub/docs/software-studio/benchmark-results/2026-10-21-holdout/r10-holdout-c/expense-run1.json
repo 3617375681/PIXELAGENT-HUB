@@ -1,0 +1,478 @@
+{
+  "caseId": "expense",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "9/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/9"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 22,
+  "reportedTokens": 10341,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:46:38.513Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:46:38.513Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:46:41.981Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Expense Splitter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:46:41.981Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:46:51.854Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:46:51.854Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:46:52.332Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:46:52.333Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "fbc5dc40-da59-4c08-8f21-719ea4370a08"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:46:55.947Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "fbc5dc40-da59-4c08-8f21-719ea4370a08",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:46:55.948Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "testPlanId": "fbc5dc40-da59-4c08-8f21-719ea4370a08",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "No expenses yet."
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Initial summary settled",
+        "passed": true,
+        "actual": "Alice settled Bob settled Charlie settled Total spent $0.00"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Add expense shows in list",
+        "passed": true,
+        "actual": "Alice paid $15.00 Delete"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Single payer owed after one expense",
+        "passed": true,
+        "actual": "Alice is owed $10.00 Bob owes $5.00 Charlie owes $5.00 Total spent $15.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Invalid amount shows error",
+        "passed": true,
+        "actual": "Please enter a positive whole number of cents."
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Invalid amount adds no expense",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Delete removes expense",
+        "passed": true,
+        "actual": "No expenses yet."
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Two expenses list count",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "name": "Two expenses summary balances",
+        "passed": true,
+        "actual": "Alice owes $5.00 Bob is owed $5.00 Charlie settled Total spent $15.00"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:46:58.826Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "196b2554-4db8-45c7-a68f-994e09b90dce",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:46:58.829Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial empty state",
+        "actions": [],
+        "selector": "#expense-list",
+        "expected": "No expenses yet.",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial summary settled",
+        "actions": [],
+        "selector": "#summary",
+        "expected": "Alice settled Bob settled Charlie settled Total spent $0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Add expense shows in list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1500"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          }
+        ],
+        "selector": "#expense-list li",
+        "nth": 0,
+        "expected": "Alice paid $15.00 Delete",
+        "assertion": "text"
+      },
+      {
+        "name": "Single payer owed after one expense",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1500"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          }
+        ],
+        "selector": "#summary",
+        "expected": "Alice is owed $10.00 Bob owes $5.00 Charlie owes $5.00 Total spent $15.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid amount shows error",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          }
+        ],
+        "selector": "#amount-error",
+        "expected": "Please enter a positive whole number of cents.",
+        "assertion": "text"
+      },
+      {
+        "name": "Invalid amount adds no expense",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "0"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          }
+        ],
+        "selector": "#expense-list li",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "Delete removes expense",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1500"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Alice"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          },
+          {
+            "type": "click",
+            "selector": "#expense-list button"
+          }
+        ],
+        "selector": "#expense-list",
+        "expected": "No expenses yet.",
+        "assertion": "text"
+      },
+      {
+        "name": "Two expenses list count",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1000"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Bob"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Charlie"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          }
+        ],
+        "selector": "#expense-list li",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Two expenses summary balances",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "1000"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Bob"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          },
+          {
+            "type": "input",
+            "selector": "#amount",
+            "value": "500"
+          },
+          {
+            "type": "input",
+            "selector": "#payer",
+            "value": "Charlie"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=submit]"
+          }
+        ],
+        "selector": "#summary",
+        "expected": "Alice owes $5.00 Bob is owed $5.00 Charlie settled Total spent $15.00",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "No per-person total paid display exists; only net balances and grand total are shown.",
+      "Remainder cents are assigned to Alice first; requirement does not specify remainder handling.",
+      "No persistence across reloads; each check starts fresh.",
+      "Cannot verify visual pixel styling or colors beyond text content."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4339,
+      "completion_tokens": 922,
+      "total_tokens": 5261,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 3315
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Expense Splitter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Expense Splitter</h1>\n    <p class=\"subtitle\">Split expenses equally among three friends.</p>\n\n    <section aria-labelledby=\"add-expense-heading\">\n      <h2 id=\"add-expense-heading\">Add Expense</h2>\n      <form id=\"expense-form\" novalidate>\n        <div class=\"field\">\n          <label for=\"amount\">Amount (in cents)</label>\n          <input type=\"number\" id=\"amount\" name=\"amount\" min=\"1\" step=\"1\" required placeholder=\"e.g., 1500\" aria-describedby=\"amount-error\">\n          <span id=\"amount-error\" class=\"error\" role=\"alert\"></span>\n        </div>\n        <div class=\"field\">\n          <label for=\"payer\">Who paid?</label>\n          <select id=\"payer\" name=\"payer\" required>\n            <option value=\"Alice\">Alice</option>\n            <option value=\"Bob\">Bob</option>\n            <option value=\"Charlie\">Charlie</option>\n          </select>\n        </div>\n        <button type=\"submit\" class=\"btn primary\">Add Expense</button>\n      </form>\n    </section>\n\n    <section aria-labelledby=\"expenses-heading\">\n      <h2 id=\"expenses-heading\">Expenses</h2>\n      <ul id=\"expense-list\" class=\"expense-list\" aria-live=\"polite\"></ul>\n    </section>\n\n    <section aria-labelledby=\"summary-heading\">\n      <h2 id=\"summary-heading\">Summary</h2>\n      <div id=\"summary\" class=\"summary\"></div>\n    </section>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card-bg: #2a2d45;\n  --text: #f0f0f0;\n  --accent: #ffcd75;\n  --accent-dark: #e6b85c;\n  --border: #5a5f7a;\n  --danger: #ff6b6b;\n  --success: #6bffb8;\n  --focus: #ffcd75;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  padding: 24px;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 0 4px 0 var(--border);\n}\n\nh1 {\n  font-size: 1.75rem;\n  margin: 0 0 4px;\n  letter-spacing: 1px;\n}\n\n.subtitle {\n  margin: 0 0 24px;\n  color: #b0b4d0;\n  font-size: 0.95rem;\n}\n\nh2 {\n  font-size: 1.25rem;\n  margin: 0 0 12px;\n  border-bottom: 2px dashed var(--border);\n  padding-bottom: 6px;\n}\n\nsection {\n  margin-bottom: 24px;\n}\n\n.field {\n  margin-bottom: 16px;\n}\n\nlabel {\n  display: block;\n  margin-bottom: 6px;\n  font-weight: 600;\n}\n\ninput, select {\n  width: 100%;\n  padding: 10px 12px;\n  font-size: 1rem;\n  font-family: inherit;\n  background: #1e2030;\n  border: 2px solid var(--border);\n  border-radius: 6px;\n  color: var(--text);\n  transition: border-color 0.15s;\n}\n\ninput:focus, select:focus {\n  outline: none;\n  border-color: var(--focus);\n  box-shadow: 0 0 0 3px rgba(255, 205, 117, 0.3);\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  padding: 10px 18px;\n  border: 2px solid var(--border);\n  border-radius: 6px;\n  background: var(--accent);\n  color: #1a1c2c;\n  font-weight: 700;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.05s;\n}\n\n.btn:hover {\n  background: var(--accent-dark);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.btn:active {\n  transform: translateY(2px);\n}\n\n.btn.primary {\n  width: 100%;\n  margin-top: 4px;\n}\n\n.btn.small {\n  padding: 4px 10px;\n  font-size: 0.85rem;\n  background: transparent;\n  color: var(--danger);\n  border-color: var(--danger);\n}\n\n.btn.small:hover {\n  background: var(--danger);\n  color: #1a1c2c;\n}\n\n.error {\n  display: block;\n  color: var(--danger);\n  font-size: 0.85rem;\n  min-height: 1.2em;\n  margin-top: 4px;\n}\n\n.expense-list {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n  max-height: 180px;\n  overflow-y: auto;\n}\n\n.expense-list li {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 8px 0;\n  border-bottom: 1px solid var(--border);\n  font-size: 0.95rem;\n}\n\n.expense-list li:last-child {\n  border-bottom: none;\n}\n\n.summary p {\n  margin: 6px 0;\n  display: flex;\n  justify-content: space-between;\n  font-size: 1rem;\n}\n\n.summary .positive {\n  color: var(--success);\n}\n\n.summary .negative {\n  color: var(--danger);\n}\n\n.summary .total {\n  font-weight: 700;\n  border-top: 2px solid var(--border);\n  padding-top: 8px;\n  margin-top: 8px;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 16px;\n  }\n  h1 {\n    font-size: 1.4rem;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const FRIENDS = ['Alice', 'Bob', 'Charlie'];\nlet expenses = [];\n\nconst form = document.getElementById('expense-form');\nconst amountInput = document.getElementById('amount');\nconst payerSelect = document.getElementById('payer');\nconst amountError = document.getElementById('amount-error');\nconst expenseList = document.getElementById('expense-list');\nconst summaryDiv = document.getElementById('summary');\n\nfunction formatCents(cents) {\n  return '$' + (cents / 100).toFixed(2);\n}\n\nfunction render() {\n  renderExpenses();\n  renderSummary();\n}\n\nfunction renderExpenses() {\n  expenseList.innerHTML = '';\n  if (expenses.length === 0) {\n    const li = document.createElement('li');\n    li.textContent = 'No expenses yet.';\n    li.style.opacity = '0.6';\n    expenseList.appendChild(li);\n    return;\n  }\n  expenses.forEach((exp, index) => {\n    const li = document.createElement('li');\n    const desc = document.createElement('span');\n    desc.textContent = `${exp.payer} paid ${formatCents(exp.amount)}`;\n    const btn = document.createElement('button');\n    btn.className = 'btn small';\n    btn.textContent = 'Delete';\n    btn.setAttribute('aria-label', `Delete expense: ${exp.payer} paid ${formatCents(exp.amount)}`);\n    btn.addEventListener('click', () => {\n      expenses.splice(index, 1);\n      render();\n    });\n    li.appendChild(desc);\n    li.appendChild(btn);\n    expenseList.appendChild(li);\n  });\n}\n\nfunction renderSummary() {\n  const totalPaid = {};\n  FRIENDS.forEach(f => totalPaid[f] = 0);\n  let grandTotal = 0;\n  expenses.forEach(exp => {\n    totalPaid[exp.payer] += exp.amount;\n    grandTotal += exp.amount;\n  });\n\n  const equalShare = Math.floor(grandTotal / FRIENDS.length);\n  const remainder = grandTotal % FRIENDS.length;\n  const balances = {};\n  FRIENDS.forEach((f, i) => {\n    const share = equalShare + (i < remainder ? 1 : 0);\n    balances[f] = totalPaid[f] - share;\n  });\n\n  summaryDiv.innerHTML = '';\n\n  FRIENDS.forEach(f => {\n    const p = document.createElement('p');\n    const nameSpan = document.createElement('span');\n    nameSpan.textContent = f;\n    const amountSpan = document.createElement('span');\n    const bal = balances[f];\n    if (bal > 0) {\n      amountSpan.textContent = `is owed ${formatCents(bal)}`;\n      amountSpan.className = 'positive';\n    } else if (bal < 0) {\n      amountSpan.textContent = `owes ${formatCents(-bal)}`;\n      amountSpan.className = 'negative';\n    } else {\n      amountSpan.textContent = 'settled';\n    }\n    p.appendChild(nameSpan);\n    p.appendChild(amountSpan);\n    summaryDiv.appendChild(p);\n  });\n\n  const totalP = document.createElement('p');\n  totalP.className = 'total';\n  const totalLabel = document.createElement('span');\n  totalLabel.textContent = 'Total spent';\n  const totalAmount = document.createElement('span');\n  totalAmount.textContent = formatCents(grandTotal);\n  totalP.appendChild(totalLabel);\n  totalP.appendChild(totalAmount);\n  summaryDiv.appendChild(totalP);\n}\n\nform.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const amount = parseInt(amountInput.value, 10);\n  if (isNaN(amount) || amount <= 0) {\n    amountError.textContent = 'Please enter a positive whole number of cents.';\n    amountInput.focus();\n    return;\n  }\n  amountError.textContent = '';\n  expenses.push({ payer: payerSelect.value, amount });\n  amountInput.value = '';\n  amountInput.focus();\n  render();\n});\n\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Expense Splitter\n\nAn offline, single-page browser app to split expenses equally among three friends.\n\n## Features\n\n- Add expenses with payer and amount (in cents).\n- View list of expenses with delete option.\n- See each person's total paid and net balance (owes or is owed).\n- Balances always sum to zero.\n\n## Usage\n\nOpen `index.html` in any modern browser. No server or network required.\n\n## Files\n\n- `index.html` – main page\n- `styles.css` – pixel-themed styling\n- `app.js` – logic\n\n## Accessibility\n\n- All controls are keyboard accessible and labeled.\n- Error messages are announced via `role=\"alert\"`.\n\n## Design\n\nCohesive palette of dark blue, gold accent, and pastel green/red for balances. Responsive from 360px width.",
+      "description": ""
+    }
+  ]
+}

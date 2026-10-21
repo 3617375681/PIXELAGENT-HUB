@@ -1,0 +1,704 @@
+{
+  "caseId": "light-switch",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "7/9",
+  "finalChecks": "6/9",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 2,
+  "coderRepair": true,
+  "checkRuns": [
+    "7/9",
+    "7/9",
+    "6/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 59,
+  "reportedTokens": 22660,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:21:17.513Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:21:17.513Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:21:21.249Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Lights Out Puzzle"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:21:21.249Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:21:29.648Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:21:29.648Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:21:30.048Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:21:30.048Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:21:32.924Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:21:32.925Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "testPlanId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "Board renders nine cells and initial status",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "Initial move counter shows zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "Clicking a cell increments move counter",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "Clicking a cell toggles it and its orthogonal neighbours",
+        "passed": false,
+        "actual": "6"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "Corner click toggles only three cells",
+        "passed": false,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "New puzzle resets move counter",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "New puzzle clears win message",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "New puzzle button is visible and enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "name": "Board cell aria-label reflects on/off state",
+        "passed": true,
+        "actual": "Row 2, column 2, on"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:21:39.831Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "0364f3d1-df43-4a33-8e41-30783c440e64",
+        "status": "failed",
+        "passed": 7,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:21:39.834Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:21:42.613Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7",
+        "checks": 9,
+        "review": true,
+        "revised": 2,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Clicking a cell toggles it and its orthogonal neighbours",
+            "verdict": "check-wrong",
+            "reason": "The check clicks the center cell and expects exactly 5 lit cells, but the puzzle starts from a random board, so the number of lit cells after a click depends on the initial random configuration and is"
+          },
+          {
+            "name": "Corner click toggles only three cells",
+            "verdict": "check-wrong",
+            "reason": "The check clicks the top-left corner and expects exactly 3 lit cells, but the board is randomly generated, so the resulting count of lit cells is not determined by the requirements. The requirement on"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:21:42.613Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "testPlanId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "Board renders nine cells and initial status",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "Initial move counter shows zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "Clicking a cell increments move counter",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "Clicking a cell toggles it and its orthogonal neighbours",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "Corner click toggles only three cells",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "New puzzle resets move counter",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "New puzzle clears win message",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "New puzzle button is visible and enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "name": "Board cell aria-label reflects on/off state",
+        "passed": true,
+        "actual": "Row 2, column 2, on"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T06:21:45.456Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "b88a6a76-f7dd-4593-b114-9e8ed952b75a",
+        "status": "failed",
+        "passed": 7,
+        "failed": 2,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T06:21:45.457Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T06:22:09.674Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T06:22:09.674Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-21T06:22:09.700Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-21T06:22:09.700Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "testPlanId": "98ad4e9d-682f-445a-9cd2-4680d4e7b7d7",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "Board renders nine cells and initial status",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "Initial move counter shows zero",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "Clicking a cell increments move counter",
+        "passed": true,
+        "actual": "Moves: 1"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "Clicking a cell toggles it and its orthogonal neighbours",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "Corner click toggles only three cells",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 44,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "New puzzle resets move counter",
+        "passed": true,
+        "actual": "Moves: 0"
+      }
+    },
+    {
+      "seq": 45,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "New puzzle clears win message",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 46,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "New puzzle button is visible and enabled",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 47,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "name": "Board cell aria-label reflects on/off state",
+        "passed": false,
+        "actual": "Row 2, column 2, off"
+      }
+    },
+    {
+      "seq": 48,
+      "at": "2026-10-21T06:22:14.576Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "027ff5d6-6437-4722-bb5c-53dff5ca8ca2",
+        "status": "failed",
+        "passed": 6,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 49,
+      "at": "2026-10-21T06:22:14.582Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Board renders nine cells and initial status",
+        "actions": [],
+        "selector": "#board .cell",
+        "expected": "9",
+        "assertion": "count"
+      },
+      {
+        "name": "Initial move counter shows zero",
+        "actions": [],
+        "selector": "#moveCount",
+        "expected": "Moves: 0"
+      },
+      {
+        "name": "Clicking a cell increments move counter",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#board .cell",
+            "nth": 4
+          }
+        ],
+        "selector": "#moveCount",
+        "expected": "Moves: 1"
+      },
+      {
+        "name": "Clicking a cell toggles it and its orthogonal neighbours",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#board .cell",
+            "nth": 4
+          }
+        ],
+        "selector": "#board .cell.on",
+        "expected": "",
+        "assertion": "changed"
+      },
+      {
+        "name": "Corner click toggles only three cells",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#board .cell",
+            "nth": 0
+          }
+        ],
+        "selector": "#board .cell.on",
+        "expected": "",
+        "assertion": "changed"
+      },
+      {
+        "name": "New puzzle resets move counter",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#board .cell",
+            "nth": 4
+          },
+          {
+            "type": "click",
+            "selector": "#newPuzzleBtn"
+          }
+        ],
+        "selector": "#moveCount",
+        "expected": "Moves: 0"
+      },
+      {
+        "name": "New puzzle clears win message",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#newPuzzleBtn"
+          }
+        ],
+        "selector": "#winMessage",
+        "expected": ""
+      },
+      {
+        "name": "New puzzle button is visible and enabled",
+        "actions": [],
+        "selector": "#newPuzzleBtn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Board cell aria-label reflects on/off state",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#board .cell",
+            "nth": 4
+          }
+        ],
+        "selector": "#board .cell",
+        "nth": 4,
+        "expected": "Row 2, column 2, on",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      }
+    ],
+    "limitations": [
+      "Puzzle layout is randomized, so no check can predict which cells start on or off; win-state and exact toggle outcomes from a known board cannot be asserted deterministically.",
+      "Win message text and the solved lock cannot be reliably triggered because the initial board is random and the solution sequence is unknown.",
+      "The New puzzle button's effect on the board layout is random and cannot be asserted as changed or unchanged.",
+      "CSS pixel colours and visual glow effects are not asserted; only DOM state and text are checked.",
+      "Keyboard focus behaviour and responsive layout are not covered."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 3555,
+      "completion_tokens": 521,
+      "total_tokens": 4076,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 2787
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Lights Out Puzzle</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Lights Out</h1>\n    <p class=\"subtitle\">Turn off all the lights</p>\n    <div id=\"board\" class=\"board\" role=\"grid\" aria-label=\"3 by 3 lights out grid\"></div>\n    <div class=\"status\">\n      <span id=\"moveCount\" class=\"moves\" aria-live=\"polite\">Moves: 0</span>\n      <span id=\"winMessage\" class=\"win-message\" role=\"status\" aria-live=\"polite\"></span>\n    </div>\n    <button id=\"newPuzzleBtn\" class=\"btn\">New puzzle</button>\n  </main>\n  <script src=\"game.js\"></script>\n</body>\n</html>",
+      "description": "Main HTML page with game board, status, and controls."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --text: #f0f0f5;\n  --accent: #6c63ff;\n  --accent-hover: #5a52d5;\n  --light-on: #ffd166;\n  --light-off: #3a3a55;\n  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: 24px;\n  padding: 32px 28px;\n  box-shadow: var(--shadow);\n  width: 100%;\n  max-width: 420px;\n  text-align: center;\n}\n\nh1 {\n  font-size: 2rem;\n  font-weight: 700;\n  letter-spacing: 0.02em;\n  margin-bottom: 4px;\n}\n\n.subtitle {\n  font-size: 1rem;\n  color: #b0b0c8;\n  margin-bottom: 24px;\n}\n\n.board {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 10px;\n  margin-bottom: 24px;\n}\n\n.cell {\n  aspect-ratio: 1 / 1;\n  border: none;\n  border-radius: 14px;\n  background: var(--light-off);\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;\n  font-size: 0;\n  position: relative;\n}\n\n.cell::after {\n  content: '';\n  position: absolute;\n  inset: 0;\n  border-radius: 14px;\n  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.05);\n  pointer-events: none;\n}\n\n.cell.on {\n  background: var(--light-on);\n  box-shadow: 0 0 12px rgba(255, 209, 102, 0.6);\n}\n\n.cell:hover {\n  transform: scale(1.04);\n}\n\n.cell:active {\n  transform: scale(0.96);\n}\n\n.cell:focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.status {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  margin-bottom: 24px;\n  min-height: 3em;\n}\n\n.moves {\n  font-size: 1.1rem;\n  color: #c8c8e0;\n}\n\n.win-message {\n  font-size: 1.2rem;\n  font-weight: 700;\n  color: var(--light-on);\n  min-height: 1.5em;\n}\n\n.btn {\n  display: inline-block;\n  width: 100%;\n  padding: 14px 20px;\n  font-size: 1.1rem;\n  font-weight: 600;\n  color: #fff;\n  background: var(--accent);\n  border: none;\n  border-radius: 14px;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s;\n}\n\n.btn:hover {\n  background: var(--accent-hover);\n}\n\n.btn:active {\n  transform: scale(0.97);\n}\n\n.btn:focus-visible {\n  outline: 3px solid #fff;\n  outline-offset: 3px;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 24px 18px;\n  }\n  h1 {\n    font-size: 1.6rem;\n  }\n  .board {\n    gap: 8px;\n  }\n}",
+      "description": "CSS styling for the game."
+    },
+    {
+      "path": "game.js",
+      "content": "(function () {\n  'use strict';\n\n  const SIZE = 3;\n  const boardEl = document.getElementById('board');\n  const moveCountEl = document.getElementById('moveCount');\n  const winMessageEl = document.getElementById('winMessage');\n  const newPuzzleBtn = document.getElementById('newPuzzleBtn');\n\n  let grid = [];\n  let moves = 0;\n  let solved = false;\n\n  function createGrid() {\n    return Array.from({ length: SIZE }, () => Array(SIZE).fill(false));\n  }\n\n  function randomizeGrid() {\n    grid = createGrid();\n    // Generate a solvable puzzle by applying random toggles from the all-off state\n    for (let i = 0; i < SIZE; i++) {\n      for (let j = 0; j < SIZE; j++) {\n        if (Math.random() < 0.5) {\n          toggleCell(i, j);\n        }\n      }\n    }\n    // Ensure the puzzle is not already solved\n    if (isSolved()) {\n      toggleCell(0, 0);\n    }\n  }\n\n  function toggleCell(row, col) {\n    const directions = [\n      [0, 0],\n      [-1, 0],\n      [1, 0],\n      [0, -1],\n      [0, 1]\n    ];\n    for (const [dr, dc] of directions) {\n      const r = row + dr;\n      const c = col + dc;\n      if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {\n        grid[r][c] = !grid[r][c];\n      }\n    }\n  }\n\n  function isSolved() {\n    return grid.every(row => row.every(cell => !cell));\n  }\n\n  function render() {\n    boardEl.innerHTML = '';\n    for (let i = 0; i < SIZE; i++) {\n      for (let j = 0; j < SIZE; j++) {\n        const btn = document.createElement('button');\n        btn.className = 'cell' + (grid[i][j] ? ' on' : '');\n        btn.setAttribute('aria-label', `Row ${i + 1}, column ${j + 1}, ${grid[i][j] ? 'on' : 'off'}`);\n        btn.setAttribute('role', 'gridcell');\n        btn.dataset.row = i;\n        btn.dataset.col = j;\n        btn.addEventListener('click', handleCellClick);\n        boardEl.appendChild(btn);\n      }\n    }\n    moveCountEl.textContent = `Moves: ${moves}`;\n  }\n\n  function handleCellClick(e) {\n    if (solved) return;\n    const row = parseInt(e.currentTarget.dataset.row, 10);\n    const col = parseInt(e.currentTarget.dataset.col, 10);\n    toggleCell(row, col);\n    moves++;\n    render();\n    checkWin();\n  }\n\n  function checkWin() {\n    if (isSolved()) {\n      solved = true;\n      winMessageEl.textContent = `You win! Solved in ${moves} move${moves !== 1 ? 's' : ''}.`;\n    } else {\n      winMessageEl.textContent = '';\n    }\n  }\n\n  function newGame() {\n    randomizeGrid();\n    moves = 0;\n    solved = false;\n    winMessageEl.textContent = '';\n    render();\n  }\n\n  newPuzzleBtn.addEventListener('click', newGame);\n\n  // Initialize\n  newGame();\n})();",
+      "description": "Game logic for Lights Out puzzle."
+    },
+    {
+      "path": "README.md",
+      "content": "# Lights Out Puzzle\n\nA classic 3x3 Lights Out puzzle built with plain HTML, CSS, and JavaScript. No dependencies, no network requests — fully offline.\n\n## How to play\n\nClick any cell to toggle it and its orthogonal neighbours (up, down, left, right). The goal is to turn off all lights. The move counter tracks your clicks. A win message appears when all lights are off. Use the **New puzzle** button to start over with a fresh random board.\n\n## Features\n\n- 3x3 grid with toggle mechanics\n- Move counter\n- Win detection and message\n- New puzzle button\n- Keyboard accessible with focus indicators\n- Responsive layout down to 360px\n- Cohesive dark theme with accent colors\n\n## Run\n\nOpen `index.html` in any modern browser. No build step or server required.\n\n## Files\n\n- `index.html` — page structure\n- `styles.css` — styling and responsive layout\n- `game.js` — game logic\n\n## License\n\nMIT",
+      "description": "Project documentation."
+    }
+  ]
+}

@@ -25,7 +25,7 @@ const action = z.discriminatedUnion('type', [
   z.object({ type: z.literal('key'), selector, nth, key: z.string().min(1).max(32) }).strict(),
 ]);
 // changed/unchanged: text relative to before actions; text: rendered text; disabled: native :disabled state; visible: shown; count: matches; attribute: exact attribute or live value.
-export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, nth, expected: z.string().max(300), assertion: z.enum(['text', 'matches', 'disabled', 'visible', 'count', 'attribute', 'changed', 'unchanged']).optional(), attribute: z.string().regex(/^[a-z][a-z0-9-]{0,49}$/).optional() }).strict()
+export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), actions: z.array(action).max(8), selector, nth, expected: z.string().max(300), assertion: z.enum(['text', 'matches', 'disabled', 'visible', 'count', 'attribute', 'changed', 'unchanged', 'stable']).optional(), attribute: z.string().regex(/^(?:[a-z][a-z0-9-]{0,49}|style\.[a-z][a-z-]{0,39})$/).optional() }).strict()
   .refine((check) => check.assertion !== 'count' || check.nth === undefined, 'Count forbids nth')
   .refine((check) => {
     if (check.assertion !== 'matches') return true;
@@ -33,10 +33,10 @@ export const browserCheckSchema = z.object({ name: z.string().min(1).max(120), a
     try { new RegExp(check.expected, 'u'); return true; } catch { return false; }
   }, 'Matches requires a valid 1–200 character Unicode pattern without nested group quantifiers')
   .refine((check) => !['disabled', 'visible'].includes(check.assertion || 'text') || ['true', 'false'].includes(check.expected), 'Disabled and visible assertions require expected "true" or "false"')
-  .refine((check) => !['changed', 'unchanged'].includes(check.assertion || '') || check.expected === '', 'Changed and unchanged require expected empty')
+  .refine((check) => !['changed', 'unchanged', 'stable'].includes(check.assertion || '') || check.expected === '', 'Changed, unchanged and stable require expected empty')
   .refine((check) => !['changed', 'unchanged'].includes(check.assertion || '') || check.actions.length > 0, 'changed and unchanged need at least one action')
   .refine((check) => check.assertion !== 'count' || /^\d{1,4}$/.test(check.expected), 'Count assertions require expected to be 1–4 digits')
-  .refine((check) => (check.assertion === 'attribute') === (check.attribute !== undefined), 'Attribute is required only for attribute assertions');
+  .refine((check) => check.assertion === 'attribute' ? check.attribute !== undefined : check.attribute === undefined || check.assertion === 'matches', 'Attribute is required for attribute assertions and optional for matches');
 // isolation: 'shared' (default; saved and fixed plans) runs checks in order on one page; 'fresh' reloads the app before each check.
 export const testPlanSchema = z.object({ checks: z.array(browserCheckSchema).min(1).max(10), limitations: z.array(z.string().max(300)).max(10), isolation: z.enum(['shared', 'fresh']).optional() }).strict().refine((plan) => new Set(plan.checks.map((check) => check.name)).size === plan.checks.length, 'Check names must be unique');
 

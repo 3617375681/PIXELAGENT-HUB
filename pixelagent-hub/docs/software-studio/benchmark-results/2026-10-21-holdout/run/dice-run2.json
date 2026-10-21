@@ -1,0 +1,612 @@
+{
+  "caseId": "dice",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "5/8",
+  "finalChecks": "5/8",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "5/8",
+    "5/8"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 53,
+  "reportedTokens": 24235,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T05:56:42.653Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T05:56:42.653Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T05:56:46.517Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Dice Roller"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T05:56:46.517Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T05:56:57.107Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T05:56:57.107Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T05:56:57.678Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T05:56:57.679Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8dec4c5d-4146-4588-8811-51c5bd4cbb21"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T05:57:01.688Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8dec4c5d-4146-4588-8811-51c5bd4cbb21",
+        "checks": 8
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T05:57:01.689Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "testPlanId": "8dec4c5d-4146-4588-8811-51c5bd4cbb21",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "Single die count and total format",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "Two dice produce two faces",
+        "passed": false,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "Three dice produce three faces",
+        "passed": false,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "Total text format after roll",
+        "passed": true,
+        "actual": "Total: 6"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "History gets one entry per roll",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "History capped at five entries",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T05:57:10.300Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "Placeholder before any roll",
+        "passed": true,
+        "actual": "Press Roll to start"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T05:57:10.301Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "name": "History entry shows faces and sum",
+        "passed": false,
+        "actual": "2 = 2"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T05:57:10.301Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "c0895dc2-ee44-40f2-b39f-12d5d49d1504",
+        "status": "failed",
+        "passed": 5,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T05:57:10.304Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8dec4c5d-4146-4588-8811-51c5bd4cbb21",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T05:57:12.401Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8dec4c5d-4146-4588-8811-51c5bd4cbb21",
+        "checks": 8,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Two dice produce two faces",
+            "verdict": "app-wrong",
+            "reason": "The check selects the 2-dice radio and clicks Roll, expecting two .die elements. The app's renderDice creates one .die per result, so with two dice it should render two dice; the observed count of 1 i"
+          },
+          {
+            "name": "Three dice produce three faces",
+            "verdict": "app-wrong",
+            "reason": "The check selects the 3-dice radio and clicks Roll, expecting three .die elements. The app should render one die per selected count; observing only 1 means the app failed to use the chosen count, cont"
+          },
+          {
+            "name": "History entry shows faces and sum",
+            "verdict": "app-wrong",
+            "reason": "The check rolls two dice and expects the first history entry to match faces joined by ' · ' followed by ' = total'. The app renders faces with entry.results.join(' · ') and sum as '= ' + total, so a t"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T05:57:12.402Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T05:57:24.604Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T05:57:24.605Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T05:57:24.622Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T05:57:24.623Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "testPlanId": "8dec4c5d-4146-4588-8811-51c5bd4cbb21",
+        "checks": 8,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "Single die count and total format",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "Two dice produce two faces",
+        "passed": false,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "Three dice produce three faces",
+        "passed": false,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "Total text format after roll",
+        "passed": true,
+        "actual": "Total: 2"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "History gets one entry per roll",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "History capped at five entries",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "Placeholder before any roll",
+        "passed": true,
+        "actual": "Press Roll to start"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "name": "History entry shows faces and sum",
+        "passed": false,
+        "actual": "5 = 5"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T05:57:33.274Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "f7280f01-bd7a-4dd4-b78b-73f0beeed274",
+        "status": "failed",
+        "passed": 5,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T05:57:33.279Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Single die count and total format",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"1\"]",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": ".die",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "Two dice produce two faces",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"2\"]",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": ".die",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "Three dice produce three faces",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"3\"]",
+            "value": "3"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": ".die",
+        "expected": "3",
+        "assertion": "count"
+      },
+      {
+        "name": "Total text format after roll",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"1\"]",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": "#total",
+        "expected": "^Total: [1-6]$",
+        "assertion": "matches"
+      },
+      {
+        "name": "History gets one entry per roll",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"1\"]",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": "#history-list li",
+        "expected": "1",
+        "assertion": "count"
+      },
+      {
+        "name": "History capped at five entries",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"1\"]",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": "#history-list li",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Placeholder before any roll",
+        "actions": [],
+        "selector": "#dice-area",
+        "expected": "Press Roll to start"
+      },
+      {
+        "name": "History entry shows faces and sum",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "input[name=\"dice-count\"][value=\"2\"]",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#roll-btn"
+          }
+        ],
+        "selector": "#history-list li",
+        "nth": 0,
+        "expected": "^[1-6] · [1-6] = \\d{1,2}$",
+        "assertion": "matches"
+      }
+    ],
+    "limitations": [
+      "2 planned check(s) were dropped because they did not match the check format.",
+      "Random die values cannot be predicted; checks only assert formats, counts and ranges, never specific faces.",
+      "The first check's count assertion expects an empty string which is invalid for count; it is superseded by the dedicated single-die count check and should be ignored.",
+      "Pip layout correctness (which pips are lit for each face) is not verified beyond the aria-label, since pip positions are visual styling.",
+      "The 'unchanged'/'changed' behaviours of history ordering (newest first) are not asserted because values are random; ordering could be checked only by structure, not content.",
+      "Keyboard activation of the Roll button via Enter/Space is not tested because only synthetic key events are available.",
+      "aria-live announcements and screen-reader behaviour cannot be verified in this environment."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4429,
+      "completion_tokens": 895,
+      "total_tokens": 5324,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 3533
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Dice Roller</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"app-title\">\n    <h1 id=\"app-title\">Pixel Dice Roller</h1>\n\n    <fieldset class=\"dice-count\">\n      <legend>Number of dice</legend>\n      <div class=\"radio-group\">\n        <label class=\"radio-label\">\n          <input type=\"radio\" name=\"dice-count\" value=\"1\" checked />\n          <span>1</span>\n        </label>\n        <label class=\"radio-label\">\n          <input type=\"radio\" name=\"dice-count\" value=\"2\" />\n          <span>2</span>\n        </label>\n        <label class=\"radio-label\">\n          <input type=\"radio\" name=\"dice-count\" value=\"3\" />\n          <span>3</span>\n        </label>\n      </div>\n    </fieldset>\n\n    <button id=\"roll-btn\" type=\"button\" class=\"roll-btn\">Roll Dice</button>\n\n    <section id=\"dice-area\" class=\"dice-area\" aria-live=\"polite\" aria-atomic=\"true\">\n      <div class=\"placeholder\">Press Roll to start</div>\n    </section>\n\n    <p id=\"total\" class=\"total\" aria-live=\"polite\">Total: —</p>\n\n    <section class=\"history\" aria-labelledby=\"history-title\">\n      <h2 id=\"history-title\">Last 5 rolls</h2>\n      <ol id=\"history-list\" class=\"history-list\"></ol>\n    </section>\n  </main>\n\n  <script src=\"script.js\"></script>\n</body>\n</html>\n",
+      "description": "Main page structure with controls, dice area, total, and history."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2e;\n  --card: #2a2a3c;\n  --accent: #f5a623;\n  --text: #e8e8f0;\n  --muted: #9a9ab0;\n  --die-bg: #f0f0f8;\n  --die-pip: #1e1e2e;\n  --focus: #f5a623;\n  font-size: 18px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  padding: 1rem;\n}\n\n.card {\n  background: var(--card);\n  border-radius: 20px;\n  padding: 2rem 1.5rem;\n  width: 100%;\n  max-width: 480px;\n  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);\n  display: flex;\n  flex-direction: column;\n  gap: 1.5rem;\n}\n\nh1 {\n  font-size: 1.8rem;\n  text-align: center;\n  letter-spacing: 1px;\n  color: var(--accent);\n}\n\nh2 {\n  font-size: 1.1rem;\n  color: var(--muted);\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 0.5rem;\n}\n\nfieldset {\n  border: none;\n}\n\nlegend {\n  font-size: 1rem;\n  color: var(--muted);\n  margin-bottom: 0.5rem;\n  display: block;\n}\n\n.radio-group {\n  display: flex;\n  gap: 0.75rem;\n}\n\n.radio-label {\n  flex: 1;\n  position: relative;\n  cursor: pointer;\n}\n\n.radio-label input {\n  position: absolute;\n  opacity: 0;\n  width: 100%;\n  height: 100%;\n  cursor: pointer;\n}\n\n.radio-label span {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  min-height: 48px;\n  background: var(--bg);\n  border: 2px solid transparent;\n  border-radius: 12px;\n  font-size: 1.2rem;\n  font-weight: 700;\n  color: var(--text);\n  transition: background 0.15s, border-color 0.15s, color 0.15s;\n}\n\n.radio-label:hover span {\n  background: #3a3a50;\n}\n\n.radio-label input:checked + span {\n  background: var(--accent);\n  color: var(--bg);\n  border-color: var(--accent);\n}\n\n.radio-label input:focus-visible + span {\n  outline: 3px solid var(--focus);\n  outline-offset: 2px;\n}\n\n.roll-btn {\n  min-height: 56px;\n  background: var(--accent);\n  color: var(--bg);\n  border: none;\n  border-radius: 14px;\n  font-size: 1.3rem;\n  font-weight: 800;\n  letter-spacing: 1px;\n  cursor: pointer;\n  transition: transform 0.1s, background 0.15s, box-shadow 0.15s;\n  box-shadow: 0 4px 0 #b87a10;\n}\n\n.roll-btn:hover {\n  background: #ffb733;\n}\n\n.roll-btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 3px;\n}\n\n.roll-btn:active {\n  transform: translateY(3px);\n  box-shadow: 0 1px 0 #b87a10;\n}\n\n.dice-area {\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  gap: 1rem;\n  min-height: 100px;\n  align-items: center;\n}\n\n.placeholder {\n  color: var(--muted);\n  font-style: italic;\n}\n\n.die {\n  width: 80px;\n  height: 80px;\n  background: var(--die-bg);\n  border-radius: 14px;\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-template-rows: repeat(3, 1fr);\n  padding: 10px;\n  gap: 4px;\n  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.3);\n  animation: pop 0.25s ease-out;\n}\n\n@keyframes pop {\n  0% { transform: scale(0.6); opacity: 0; }\n  100% { transform: scale(1); opacity: 1; }\n}\n\n.pip {\n  width: 100%;\n  height: 100%;\n  border-radius: 50%;\n  background: var(--die-pip);\n  opacity: 0;\n}\n\n.pip.on {\n  opacity: 1;\n}\n\n.total {\n  text-align: center;\n  font-size: 1.4rem;\n  font-weight: 700;\n  color: var(--accent);\n  min-height: 1.6em;\n}\n\n.history-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 0.4rem;\n  font-size: 1rem;\n  color: var(--text);\n}\n\n.history-list li {\n  background: var(--bg);\n  padding: 0.5rem 0.75rem;\n  border-radius: 8px;\n  display: flex;\n  justify-content: space-between;\n  gap: 0.5rem;\n  animation: slide 0.2s ease-out;\n}\n\n@keyframes slide {\n  from { transform: translateX(-10px); opacity: 0; }\n  to { transform: translateX(0); opacity: 1; }\n}\n\n.history-list .faces {\n  color: var(--muted);\n  letter-spacing: 2px;\n}\n\n.history-list .sum {\n  font-weight: 700;\n  color: var(--accent);\n}\n\n@media (max-width: 400px) {\n  :root { font-size: 16px; }\n  .card { padding: 1.5rem 1rem; }\n  .die { width: 64px; height: 64px; padding: 8px; gap: 3px; }\n  .radio-label span { min-height: 44px; }\n  .roll-btn { min-height: 50px; font-size: 1.15rem; }\n}\n",
+      "description": "Theme, layout, and pixel-dice styling."
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  // Pip positions for each face (1-6) on a 3x3 grid (indices 0-8).\n  var FACES = {\n    1: [4],\n    2: [0, 8],\n    3: [0, 4, 8],\n    4: [0, 2, 6, 8],\n    5: [0, 2, 4, 6, 8],\n    6: [0, 2, 3, 5, 6, 8]\n  };\n\n  var diceArea = document.getElementById('dice-area');\n  var totalEl = document.getElementById('total');\n  var historyList = document.getElementById('history-list');\n  var rollBtn = document.getElementById('roll-btn');\n  var countRadios = document.querySelectorAll('input[name=\"dice-count\"]');\n\n  var history = [];\n  var MAX_HISTORY = 5;\n\n  function getDiceCount() {\n    for (var i = 0; i < countRadios.length; i++) {\n      if (countRadios[i].checked) return parseInt(countRadios[i].value, 10);\n    }\n    return 1;\n  }\n\n  function rollDie() {\n    return Math.floor(Math.random() * 6) + 1;\n  }\n\n  function createDie(value) {\n    var die = document.createElement('div');\n    die.className = 'die';\n    die.setAttribute('role', 'img');\n    die.setAttribute('aria-label', 'Die showing ' + value);\n\n    for (var i = 0; i < 9; i++) {\n      var pip = document.createElement('div');\n      pip.className = 'pip';\n      if (FACES[value].indexOf(i) !== -1) {\n        pip.classList.add('on');\n      }\n      die.appendChild(pip);\n    }\n    return die;\n  }\n\n  function renderDice(results) {\n    diceArea.innerHTML = '';\n    for (var i = 0; i < results.length; i++) {\n      diceArea.appendChild(createDie(results[i]));\n    }\n  }\n\n  function renderHistory() {\n    historyList.innerHTML = '';\n    for (var i = 0; i < history.length; i++) {\n      var entry = history[i];\n      var li = document.createElement('li');\n\n      var faces = document.createElement('span');\n      faces.className = 'faces';\n      faces.textContent = entry.results.join(' · ');\n\n      var sum = document.createElement('span');\n      sum.className = 'sum';\n      sum.textContent = '= ' + entry.total;\n\n      li.appendChild(faces);\n      li.appendChild(sum);\n      historyList.appendChild(li);\n    }\n  }\n\n  function roll() {\n    var count = getDiceCount();\n    var results = [];\n    var total = 0;\n\n    for (var i = 0; i < count; i++) {\n      var value = rollDie();\n      results.push(value);\n      total += value;\n    }\n\n    renderDice(results);\n    totalEl.textContent = 'Total: ' + total;\n\n    history.unshift({ results: results, total: total });\n    if (history.length > MAX_HISTORY) {\n      history.pop();\n    }\n    renderHistory();\n  }\n\n  rollBtn.addEventListener('click', roll);\n})();\n",
+      "description": "Roll logic, rendering, and history management."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Dice Roller\n\nA small offline browser app that rolls 1–3 pixel-art dice, shows each die face and the total, and keeps a history of the last 5 rolls.\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Choose the number of dice (1, 2, or 3) using the radio buttons.\n3. Click **Roll Dice** (or focus it and press Enter/Space) to roll.\n4. Each die face and the total are displayed. The last 5 rolls appear in the history list.\n\nNo installation, build step, network requests, or external assets are required. Everything runs locally from the three source files.\n\n## Files\n\n- `index.html` – page structure and controls\n- `styles.css` – theme, layout, and pixel-dice styling\n- `script.js` – roll logic, rendering, and history\n\n## Accessibility\n\n- All controls are keyboard accessible and labeled.\n- Dice faces expose an `aria-label` describing the value.\n- Total and dice area use `aria-live` for screen-reader updates.\n- Visible hover, focus, and pressed states are provided.\n- Layout works down to 360px wide.\n",
+      "description": "Documentation and usage instructions."
+    }
+  ]
+}

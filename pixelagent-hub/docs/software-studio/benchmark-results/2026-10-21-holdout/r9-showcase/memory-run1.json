@@ -1,0 +1,140 @@
+{
+  "caseId": "memory",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": null,
+  "finalChecks": null,
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [],
+  "repairTriggered": false,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 19,
+  "reportedTokens": 13323,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:19:49.675Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:19:49.675Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:19:53.425Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Memory Match"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:19:53.425Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:20:02.053Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:20:02.054Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:20:02.485Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:20:02.486Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8822e8a6-49a1-4ae2-8040-905292910f39"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:20:06.954Z",
+      "type": "test_plan_failed",
+      "data": {
+        "planId": "8822e8a6-49a1-4ae2-8040-905292910f39",
+        "status": "failed",
+        "error": "The test plan did not match the expected format: ✖ Invalid input"
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:20:06.954Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Memory Match</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"game-container\">\n    <header>\n      <h1>Pixel Memory Match</h1>\n      <div class=\"stats\">\n        <span id=\"moves-display\" aria-live=\"polite\">Moves: 0</span>\n      </div>\n    </header>\n    <div id=\"game-board\" class=\"game-board\" role=\"grid\" aria-label=\"Memory match game board\"></div>\n    <div id=\"win-message\" class=\"win-message\" role=\"status\" aria-live=\"polite\"></div>\n    <button id=\"new-game-btn\" class=\"new-game-btn\" type=\"button\">New Game</button>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #2d1b4e;\n  --surface: #3e2a6b;\n  --primary: #f72585;\n  --secondary: #4cc9f0;\n  --text: #f8f9fa;\n  --card-back: #6a4c93;\n  --card-hover: #7b5ea7;\n  --win: #b5179e;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 18px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 16px;\n}\n\n.game-container {\n  background: var(--surface);\n  border-radius: 24px;\n  padding: 24px;\n  max-width: 600px;\n  width: 100%;\n  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\nheader {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 12px;\n}\n\nh1 {\n  font-size: 1.6rem;\n  font-weight: 700;\n  letter-spacing: 0.5px;\n  color: var(--secondary);\n}\n\n.stats {\n  font-size: 1.1rem;\n  background: rgba(255, 255, 255, 0.1);\n  padding: 6px 16px;\n  border-radius: 20px;\n}\n\n.game-board {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 12px;\n  justify-content: center;\n}\n\n.card {\n  aspect-ratio: 1 / 1;\n  border-radius: 12px;\n  cursor: pointer;\n  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;\n  background: var(--card-back);\n  border: 2px solid transparent;\n  position: relative;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 1.4rem;\n  font-weight: 700;\n  color: transparent;\n  user-select: none;\n}\n\n.card:hover:not(.matched):not(.flipped) {\n  background: var(--card-hover);\n  transform: scale(1.03);\n}\n\n.card:focus-visible {\n  outline: 3px solid var(--secondary);\n  outline-offset: 2px;\n}\n\n.card.flipped,\n.card.matched {\n  background: var(--primary);\n  color: var(--text);\n  cursor: default;\n  transform: none;\n}\n\n.card.matched {\n  background: var(--win);\n  box-shadow: 0 0 12px var(--win);\n}\n\n.win-message {\n  text-align: center;\n  font-size: 1.2rem;\n  font-weight: 600;\n  min-height: 1.6em;\n  color: var(--secondary);\n}\n\n.new-game-btn {\n  font-family: inherit;\n  font-size: 1.1rem;\n  font-weight: 600;\n  padding: 14px 24px;\n  border: none;\n  border-radius: 12px;\n  background: var(--primary);\n  color: var(--text);\n  cursor: pointer;\n  transition: background 0.2s ease, transform 0.1s ease;\n  align-self: center;\n  min-width: 180px;\n}\n\n.new-game-btn:hover {\n  background: #ff4d9e;\n}\n\n.new-game-btn:focus-visible {\n  outline: 3px solid var(--secondary);\n  outline-offset: 2px;\n}\n\n.new-game-btn:active {\n  transform: scale(0.97);\n}\n\n@media (max-width: 480px) {\n  body {\n    padding: 8px;\n    font-size: 16px;\n  }\n  .game-container {\n    padding: 16px;\n    border-radius: 16px;\n  }\n  h1 {\n    font-size: 1.3rem;\n  }\n  .game-board {\n    gap: 8px;\n  }\n  .card {\n    border-radius: 8px;\n    font-size: 1.1rem;\n  }\n  .new-game-btn {\n    font-size: 1rem;\n    padding: 12px 20px;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const COLORS = [\n  '#e63946', '#f4a261', '#2a9d8f', '#457b9d',\n  '#9b5de5', '#f15bb5', '#00bbf9', '#00f5d4'\n];\n\nlet deck = [];\nlet flippedCards = [];\nlet matchedPairs = 0;\nlet moves = 0;\nlet lockBoard = false;\n\nconst board = document.getElementById('game-board');\nconst movesDisplay = document.getElementById('moves-display');\nconst winMessage = document.getElementById('win-message');\nconst newGameBtn = document.getElementById('new-game-btn');\n\nfunction shuffle(array) {\n  for (let i = array.length - 1; i > 0; i--) {\n    const j = Math.floor(Math.random() * (i + 1));\n    [array[i], array[j]] = [array[j], array[i]];\n  }\n  return array;\n}\n\nfunction createDeck() {\n  const pairs = COLORS.flatMap(color => [color, color]);\n  return shuffle(pairs);\n}\n\nfunction renderBoard() {\n  board.innerHTML = '';\n  deck.forEach((color, index) => {\n    const card = document.createElement('button');\n    card.type = 'button';\n    card.className = 'card';\n    card.dataset.color = color;\n    card.dataset.index = index;\n    card.setAttribute('aria-label', 'Hidden card');\n    card.addEventListener('click', () => handleCardClick(card));\n    board.appendChild(card);\n  });\n}\n\nfunction handleCardClick(card) {\n  if (lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;\n\n  card.classList.add('flipped');\n  card.style.background = card.dataset.color;\n  card.setAttribute('aria-label', 'Revealed card');\n  flippedCards.push(card);\n\n  if (flippedCards.length === 2) {\n    moves++;\n    movesDisplay.textContent = `Moves: ${moves}`;\n    checkMatch();\n  }\n}\n\nfunction checkMatch() {\n  const [card1, card2] = flippedCards;\n  const isMatch = card1.dataset.color === card2.dataset.color;\n\n  if (isMatch) {\n    card1.classList.add('matched');\n    card2.classList.add('matched');\n    card1.setAttribute('aria-label', 'Matched card');\n    card2.setAttribute('aria-label', 'Matched card');\n    matchedPairs++;\n    flippedCards = [];\n    if (matchedPairs === COLORS.length) {\n      winMessage.textContent = `You won in ${moves} moves!`;\n    }\n  } else {\n    lockBoard = true;\n    setTimeout(() => {\n      card1.classList.remove('flipped');\n      card2.classList.remove('flipped');\n      card1.style.background = '';\n      card2.style.background = '';\n      card1.setAttribute('aria-label', 'Hidden card');\n      card2.setAttribute('aria-label', 'Hidden card');\n      flippedCards = [];\n      lockBoard = false;\n    }, 800);\n  }\n}\n\nfunction resetGame() {\n  deck = createDeck();\n  flippedCards = [];\n  matchedPairs = 0;\n  moves = 0;\n  lockBoard = false;\n  movesDisplay.textContent = 'Moves: 0';\n  winMessage.textContent = '';\n  renderBoard();\n}\n\nnewGameBtn.addEventListener('click', resetGame);\n\nresetGame();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Memory Match\n\nA simple offline memory-match game built with HTML, CSS, and plain JavaScript.\n\n## How to Play\n\n- Click or tap any card to flip it.\n- Flip two cards at a time to find matching colored pairs.\n- Matched pairs stay open.\n- The move counter increases with each pair attempt.\n- Match all 8 pairs to win!\n- Use the **New Game** button to reshuffle and start over.\n\n## How to Run\n\nOpen `index.html` in any modern web browser. No server or internet connection required.\n\n## Files\n\n- `index.html` — Game structure and content.\n- `styles.css` — Themed styling and responsive layout.\n- `script.js` — Game logic (deck, shuffle, flip, match, win detection).\n\n## Accessibility\n\n- All interactive elements are keyboard-accessible.\n- Cards and the New Game button have visible focus states.\n- The move counter and win message use live regions for screen readers.",
+      "description": ""
+    }
+  ]
+}

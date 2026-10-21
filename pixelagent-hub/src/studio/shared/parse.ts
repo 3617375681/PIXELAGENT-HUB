@@ -36,7 +36,7 @@ const normaliseCheck = (check: unknown) => {
     const { nth, ...rest } = action;
     return { ...rest, ...(nth == null ? {} : { nth }) };
   }) : actions;
-  return { ...rest, actions: normalisedActions, ...(nth == null ? {} : { nth }), ...(['changed', 'unchanged'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
+  return { ...rest, actions: normalisedActions, ...(nth == null ? {} : { nth }), ...(['changed', 'unchanged', 'stable'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
 };
 
 /**
@@ -73,19 +73,23 @@ export const parseTesterReview = (object: unknown, failing: readonly string[], p
     if (!item || typeof item !== 'object') return [];
     const value = item as Record<string, unknown>;
     const check = value.check ? browserCheckSchema.safeParse(normaliseCheck(value.check)) : undefined;
+    const verdict = typeof value.correctAppPasses === 'boolean'
+      ? value.correctAppPasses ? 'app-wrong' : check?.success && check.data.name === value.name ? 'check-wrong' : 'unsupported'
+      : value.verdict;
     return [{
       name: typeof value.name === 'string' ? value.name : '',
-      verdict: value.verdict === 'check-wrong' ? 'check-wrong' as const : 'app-wrong' as const,
+      verdict: verdict === 'check-wrong' ? 'check-wrong' as const : verdict === 'unsupported' ? 'unsupported' as const : 'app-wrong' as const,
       reason: (typeof value.reason === 'string' ? value.reason : value.reason == null ? '' : JSON.stringify(value.reason)).slice(0, 500),
+      hasReason: typeof value.reason === 'string' && !!value.reason.trim(),
       check: check?.success ? check.data : undefined,
     }];
   });
   const unsupported = new Set<string>();
   const seen = new Set<string>();
-  for (const item of raw) {
-    if (!item || typeof item !== 'object' || !failing.includes(item.name) || seen.has(item.name)) continue;
+  for (const item of verdicts) {
+    if (!failing.includes(item.name) || seen.has(item.name)) continue;
     seen.add(item.name);
-    if (item.verdict === 'unsupported' && typeof item.reason === 'string' && item.reason.trim() && unsupported.size < Math.max(1, Math.floor(planSize / 3))) unsupported.add(item.name);
+    if (item.verdict === 'unsupported' && item.hasReason && unsupported.size < Math.max(1, Math.floor(planSize / 3))) unsupported.add(item.name);
   }
   return failing.map((name) => {
     const verdict = verdicts.find((item) => item.name === name);

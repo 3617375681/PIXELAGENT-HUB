@@ -1,0 +1,674 @@
+{
+  "caseId": "quiz-maker",
+  "run": 2,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/9",
+    "9/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 32,
+  "reportedTokens": 19683,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T06:16:43.197Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T06:16:43.197Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T06:16:46.391Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Quiz Maker"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T06:16:46.391Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T06:16:55.860Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T06:16:55.861Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T06:16:56.274Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T06:16:56.275Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "6f504d39-8fb1-4276-99db-3439da407729"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T06:17:04.070Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "6f504d39-8fb1-4276-99db-3439da407729",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T06:17:04.071Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "testPlanId": "6f504d39-8fb1-4276-99db-3439da407729",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Start Quiz disabled with no cards",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Adding a card enables Start Quiz and shows card",
+        "passed": true,
+        "actual": "Is the sky blue? YES Delete"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Start Quiz enabled after adding card",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Play mode shows first question in order",
+        "passed": true,
+        "actual": "First question?"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Correct answer increments score display",
+        "passed": false,
+        "actual": "Final score: 1 / 1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Final score after answering all cards",
+        "passed": true,
+        "actual": "Is grass red?"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Final score text after completing quiz",
+        "passed": true,
+        "actual": "Score: 1 / 1"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Answer buttons disabled after quiz complete",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T06:17:09.006Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "name": "Back to Maker returns to maker panel",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T06:17:09.007Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "b9953d7d-9616-460b-a0ae-0e32392bfd14",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T06:17:09.013Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "6f504d39-8fb1-4276-99db-3439da407729",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T06:17:10.917Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "6f504d39-8fb1-4276-99db-3439da407729",
+        "checks": 9,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Correct answer increments score display",
+            "verdict": "check-wrong",
+            "reason": "The check adds one card, starts the quiz, and answers Yes, then expects #score to read \"Score: 1 / 1\". The app, after answering the only card, advances past the last card and shows the final score \"Fi"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T06:17:10.918Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "testPlanId": "6f504d39-8fb1-4276-99db-3439da407729",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Start Quiz disabled with no cards",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Adding a card enables Start Quiz and shows card",
+        "passed": true,
+        "actual": "Is the sky blue? YES Delete"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Start Quiz enabled after adding card",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Play mode shows first question in order",
+        "passed": true,
+        "actual": "First question?"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Correct answer increments score display",
+        "passed": true,
+        "actual": "Final score: 1 / 1"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Final score after answering all cards",
+        "passed": true,
+        "actual": "Is grass red?"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Final score text after completing quiz",
+        "passed": true,
+        "actual": "Score: 1 / 1"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Answer buttons disabled after quiz complete",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "name": "Back to Maker returns to maker panel",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T06:17:13.822Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "ef9ad5e9-e740-498e-969b-cf3bd53a68ff",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T06:17:13.826Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Start Quiz disabled with no cards",
+        "actions": [],
+        "selector": "#start-play",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Adding a card enables Start Quiz and shows card",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "input[name=\"answer\"][value=\"yes\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#card-list",
+        "expected": "Is the sky blue? YES Delete"
+      },
+      {
+        "name": "Start Quiz enabled after adding card",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#start-play",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Play mode shows first question in order",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "First question?"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Second question?"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#start-play"
+          }
+        ],
+        "selector": "#play-card",
+        "expected": "First question?"
+      },
+      {
+        "name": "Correct answer increments score display",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "input[name=\"answer\"][value=\"yes\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#start-play"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          }
+        ],
+        "selector": "#score",
+        "expected": "Final score: 1 / 1"
+      },
+      {
+        "name": "Final score after answering all cards",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "input[name=\"answer\"][value=\"yes\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is grass red?"
+          },
+          {
+            "type": "click",
+            "selector": "input[name=\"answer\"][value=\"no\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#start-play"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          }
+        ],
+        "selector": "#play-card",
+        "expected": "Is grass red?"
+      },
+      {
+        "name": "Final score text after completing quiz",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "input[name=\"answer\"][value=\"yes\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is grass red?"
+          },
+          {
+            "type": "click",
+            "selector": "input[name=\"answer\"][value=\"no\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#start-play"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          }
+        ],
+        "selector": "#score",
+        "expected": "Score: 1 / 1"
+      },
+      {
+        "name": "Answer buttons disabled after quiz complete",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#start-play"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          }
+        ],
+        "selector": "#answer-yes",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Back to Maker returns to maker panel",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#question",
+            "value": "Is the sky blue?"
+          },
+          {
+            "type": "click",
+            "selector": "#card-form button[type=\"submit\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#start-play"
+          },
+          {
+            "type": "click",
+            "selector": "#answer-yes"
+          },
+          {
+            "type": "click",
+            "selector": "#back-to-maker"
+          }
+        ],
+        "selector": "#maker",
+        "expected": "true",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "Cannot verify pixel-art styling or visual appearance; only DOM text and state are checked.",
+      "Cannot verify keyboard accessibility beyond synthetic DOM events.",
+      "Cannot verify responsive layout at 360px width.",
+      "Cannot verify that the final score text appears after the last answer in a single check because the score element updates between cards; separate checks cover intermediate and final states."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4181,
+      "completion_tokens": 967,
+      "total_tokens": 5148,
+      "prompt_tokens_details": {
+        "cached_tokens": 3968
+      },
+      "prompt_cache_hit_tokens": 3968,
+      "prompt_cache_miss_tokens": 213
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Quiz Maker</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"app\">\n    <h1>Pixel Quiz Maker</h1>\n    <section id=\"maker\" class=\"panel\" aria-label=\"Quiz maker\">\n      <form id=\"card-form\" class=\"card-form\">\n        <label for=\"question\">Question</label>\n        <input type=\"text\" id=\"question\" name=\"question\" required placeholder=\"e.g. Is the sky blue?\" autocomplete=\"off\">\n        <fieldset>\n          <legend>Answer</legend>\n          <label><input type=\"radio\" name=\"answer\" value=\"yes\" checked> Yes</label>\n          <label><input type=\"radio\" name=\"answer\" value=\"no\"> No</label>\n        </fieldset>\n        <button type=\"submit\" class=\"btn\">Add Card</button>\n      </form>\n      <div id=\"card-list\" class=\"card-list\" aria-live=\"polite\"></div>\n      <button id=\"start-play\" class=\"btn btn-primary\" disabled>Start Quiz</button>\n    </section>\n    <section id=\"play\" class=\"panel hidden\" aria-label=\"Quiz play\">\n      <div id=\"play-card\" class=\"play-card\"></div>\n      <div class=\"play-actions\">\n        <button id=\"answer-yes\" class=\"btn\">Yes</button>\n        <button id=\"answer-no\" class=\"btn\">No</button>\n      </div>\n      <p id=\"score\" class=\"score\"></p>\n      <button id=\"back-to-maker\" class=\"btn\">Back to Maker</button>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --panel: #2a2a40;\n  --text: #f0f0f5;\n  --accent: #6c63ff;\n  --accent-hover: #5a52d5;\n  --danger: #ff4d6d;\n  --success: #4caf50;\n  --border: #3a3a55;\n  --radius: 12px;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: var(--font);\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.app {\n  width: 100%;\n  max-width: 480px;\n  background: var(--panel);\n  border-radius: var(--radius);\n  padding: 24px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  margin: 0 0 24px;\n  font-size: 1.5rem;\n  text-align: center;\n  letter-spacing: 0.5px;\n}\n\n.panel { display: flex; flex-direction: column; gap: 20px; }\n.hidden { display: none; }\n\n.card-form {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\nlabel { font-weight: 600; }\n\ninput[type=\"text\"] {\n  padding: 12px;\n  font-size: 1rem;\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  background: var(--bg);\n  color: var(--text);\n  transition: border-color 0.2s;\n}\n\ninput[type=\"text\"]:focus {\n  outline: none;\n  border-color: var(--accent);\n}\n\nfieldset {\n  border: 2px solid var(--border);\n  border-radius: 8px;\n  padding: 8px 12px;\n  display: flex;\n  gap: 16px;\n}\n\nlegend { font-weight: 600; padding: 0 4px; }\n\nfieldset label {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  font-weight: 400;\n  cursor: pointer;\n}\n\ninput[type=\"radio\"] { accent-color: var(--accent); }\n\n.btn {\n  padding: 12px 16px;\n  font-size: 1rem;\n  font-weight: 600;\n  border: none;\n  border-radius: 8px;\n  background: var(--border);\n  color: var(--text);\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n\n.btn:hover { background: var(--accent-hover); }\n.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }\n.btn:active { transform: scale(0.97); }\n.btn:disabled { opacity: 0.5; cursor: not-allowed; }\n.btn:disabled:hover { background: var(--border); }\n\n.btn-primary { background: var(--accent); }\n.btn-primary:hover { background: var(--accent-hover); }\n\n.card-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  max-height: 200px;\n  overflow-y: auto;\n}\n\n.card-item {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 10px 12px;\n  background: var(--bg);\n  border-radius: 8px;\n  border: 1px solid var(--border);\n  gap: 8px;\n}\n\n.card-item span { flex: 1; word-break: break-word; }\n\n.card-item .answer-tag {\n  font-size: 0.85rem;\n  padding: 2px 8px;\n  border-radius: 4px;\n  background: var(--accent);\n  color: #fff;\n  flex: 0 0 auto;\n}\n\n.delete-btn {\n  background: var(--danger);\n  padding: 6px 10px;\n  font-size: 0.85rem;\n}\n\n.delete-btn:hover { background: #e0435f; }\n\n.play-card {\n  background: var(--bg);\n  padding: 24px;\n  border-radius: 8px;\n  text-align: center;\n  font-size: 1.25rem;\n  min-height: 80px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border: 2px solid var(--border);\n}\n\n.play-actions {\n  display: flex;\n  gap: 12px;\n}\n\n.play-actions .btn { flex: 1; }\n\n.score {\n  text-align: center;\n  font-size: 1.1rem;\n  margin: 0;\n}\n\n@media (max-width: 400px) {\n  .app { padding: 16px; }\n  h1 { font-size: 1.25rem; }\n  .play-card { font-size: 1.1rem; padding: 16px; }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const state = {\n  cards: [],\n  playIndex: 0,\n  correct: 0,\n  playing: false\n};\n\nconst makerEl = document.getElementById('maker');\nconst playEl = document.getElementById('play');\nconst formEl = document.getElementById('card-form');\nconst questionInput = document.getElementById('question');\nconst cardListEl = document.getElementById('card-list');\nconst startPlayBtn = document.getElementById('start-play');\nconst playCardEl = document.getElementById('play-card');\nconst scoreEl = document.getElementById('score');\nconst answerYesBtn = document.getElementById('answer-yes');\nconst answerNoBtn = document.getElementById('answer-no');\nconst backToMakerBtn = document.getElementById('back-to-maker');\n\nfunction renderCards() {\n  cardListEl.innerHTML = '';\n  state.cards.forEach((card, i) => {\n    const div = document.createElement('div');\n    div.className = 'card-item';\n    const span = document.createElement('span');\n    span.textContent = card.question;\n    const tag = document.createElement('span');\n    tag.className = 'answer-tag';\n    tag.textContent = card.answer.toUpperCase();\n    const del = document.createElement('button');\n    del.className = 'btn delete-btn';\n    del.textContent = 'Delete';\n    del.setAttribute('aria-label', `Delete card: ${card.question}`);\n    del.addEventListener('click', () => {\n      state.cards.splice(i, 1);\n      renderCards();\n      updateStartButton();\n    });\n    div.append(span, tag, del);\n    cardListEl.appendChild(div);\n  });\n}\n\nfunction updateStartButton() {\n  startPlayBtn.disabled = state.cards.length === 0;\n}\n\nformEl.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const question = questionInput.value.trim();\n  if (!question) return;\n  const answer = formEl.querySelector('input[name=\"answer\"]:checked').value;\n  state.cards.push({ question, answer });\n  questionInput.value = '';\n  renderCards();\n  updateStartButton();\n  questionInput.focus();\n});\n\nfunction startPlay() {\n  state.playIndex = 0;\n  state.correct = 0;\n  state.playing = true;\n  makerEl.classList.add('hidden');\n  playEl.classList.remove('hidden');\n  showCurrentCard();\n}\n\nfunction showCurrentCard() {\n  if (state.playIndex >= state.cards.length) {\n    finishPlay();\n    return;\n  }\n  const card = state.cards[state.playIndex];\n  playCardEl.textContent = card.question;\n  scoreEl.textContent = `Score: ${state.correct} / ${state.playIndex}`;\n  answerYesBtn.disabled = false;\n  answerNoBtn.disabled = false;\n}\n\nfunction answer(value) {\n  if (!state.playing) return;\n  const card = state.cards[state.playIndex];\n  if (value === card.answer) state.correct++;\n  state.playIndex++;\n  showCurrentCard();\n}\n\nfunction finishPlay() {\n  state.playing = false;\n  playCardEl.textContent = 'Quiz complete!';\n  scoreEl.textContent = `Final score: ${state.correct} / ${state.cards.length}`;\n  answerYesBtn.disabled = true;\n  answerNoBtn.disabled = true;\n}\n\nfunction backToMaker() {\n  state.playing = false;\n  playEl.classList.add('hidden');\n  makerEl.classList.remove('hidden');\n  renderCards();\n  updateStartButton();\n}\n\nstartPlayBtn.addEventListener('click', startPlay);\nanswerYesBtn.addEventListener('click', () => answer('yes'));\nanswerNoBtn.addEventListener('click', () => answer('no'));\nbackToMakerBtn.addEventListener('click', backToMaker);\n\nrenderCards();\nupdateStartButton();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Quiz Maker\n\nAn offline browser app to create and play a yes/no quiz.\n\n## Features\n- Add question cards with a yes/no answer.\n- Delete cards.\n- Play mode asks each card in order, tracks correct answers, and shows the final score.\n- Keyboard accessible, responsive down to 360px.\n\n## Usage\n1. Open `index.html` in any modern browser.\n2. Type a question, select Yes or No, and click **Add Card**.\n3. Repeat to add more cards.\n4. Click **Start Quiz** to begin.\n5. Answer each question with **Yes** or **No**.\n6. See your final score and click **Back to Maker** to edit or restart.\n\n## Tech\n- Plain HTML, CSS, JavaScript.\n- No dependencies, network requests, or external assets.\n- All interactions use `addEventListener`.\n\n## Files\n- `index.html` – structure\n- `styles.css` – styling\n- `script.js` – logic\n- `README.md` – this file",
+      "description": ""
+    }
+  ]
+}

@@ -238,3 +238,59 @@ test('real browser matches formats and selects nth for actions and assertions', 
     assert.equal(run.checks[5].error, 'Selector matched 2 elements, no index 2: button');
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+
+test('real browser input actions select radios and set checkboxes', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-checked-'));
+  try {
+    const content = '<html><body><input type="radio" name="dice" id="one" value="1" checked><input type="radio" name="dice" id="two" value="2"><input type="checkbox" id="box"></body></html>';
+    const actions = [{ type: 'input', selector: '#two', value: '2' }];
+    const checks = { checks: [
+      { name: 'Radio selected', actions, selector: '#two', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+      { name: 'Other radio cleared', actions: [], selector: '#one', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+      { name: 'Checkbox selected', actions: [{ type: 'input', selector: '#box', value: 'true' }], selector: '#box', assertion: 'attribute', attribute: 'checked', expected: 'true' },
+      { name: 'Checkbox cleared', actions: [{ type: 'input', selector: '#box', value: 'false' }], selector: '#box', assertion: 'attribute', attribute: 'checked', expected: 'false' },
+      { name: 'Radio value preserved', actions: [], selector: '#two', assertion: 'attribute', attribute: 'value', expected: '2' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.status, 'passed', JSON.stringify(run));
+    assert.equal(run.checks.length, 5);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+
+test('real browser reads inline styles, untransformed text and stability after actions', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-stable-style-'));
+  try {
+    const content = '<html><body><div id="bar" style="width:90%"></div><div id="summary" style="text-transform:uppercase"><div>Min 10</div><div style="text-transform:uppercase">Max 30</div></div><output>25:00</output><button>Pause</button><script>document.querySelector("button").onclick=()=>{document.querySelector("output").textContent="00:30";setTimeout(()=>document.querySelector("output").textContent="00:29",300)}</script></body></html>';
+    const checks = { checks: [
+      { name: 'Width', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.width', expected: '90%' },
+      { name: 'Missing', actions: [], selector: '#bar', assertion: 'attribute', attribute: 'style.left', expected: '' },
+      { name: 'Case', actions: [], selector: '#summary', expected: 'Min 10 Max 30' },
+      { name: 'Pattern', actions: [], selector: '#summary', assertion: 'matches', expected: '^Min 10 Max 30$' },
+      { name: 'Static', actions: [], selector: 'output', assertion: 'stable', expected: '' },
+      { name: 'Changes', actions: [{ type: 'click', selector: 'button' }], selector: 'output', assertion: 'stable', expected: '' },
+    ], limitations: [] };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map((check) => check.status), ['passed', 'passed', 'passed', 'passed', 'passed', 'failed'], JSON.stringify(run));
+    assert.deepEqual(run.checks.map((check) => check.actual), ['90%', '', 'MIN 10 MAX 30', 'MIN 10 MAX 30', '25:00', '00:29']);
+    assert.equal(run.checks[5].error, 'Expected text to stay "00:30" after the actions, observed "00:29"');
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('real browser captures created timers and matches attributes', { skip: process.env.RUN_STUDIO_BROWSER_TESTS !== '1' }, async () => {
+  const root = await mkdtemp(join(tmpdir(), 'browser-created-pattern-'));
+  try {
+    const content = '<html><body><button>Add</button><input value="initial" type="checkbox" aria-label="Card 2, revealed" title="  spaced  " style="width:90%">text<script>document.querySelector("button").onclick=()=>{const timer=document.createElement("output");timer.textContent="0";document.body.append(timer);setInterval(()=>timer.textContent=String(Number(timer.textContent)+1),200)}</script></body></html>';
+    const actions = [{ type: 'click', selector: 'button' }];
+    const checks = { checks: [
+      { name: 'Needs baseline', actions, selector: 'output', assertion: 'unchanged', expected: '' },
+      { name: 'Created timer', actions, selector: 'output', assertion: 'changed', expected: '' },
+      ...[['aria-label', '^Card \\d+, revealed$'], ['value', '^initial$'], ['checked', '^false$'], ['style.width', '^90%$'], ['title', '^  spaced  $'], ['missing', '^$'], ['missing', '^text$']].map(([attribute, expected], index) => ({ name: `Attribute ${index}`, actions: [], selector: 'input', assertion: 'matches', attribute, expected })),
+    ], limitations: [], isolation: 'fresh' };
+    const run = await executeBrowserRun({ root, run: makeRun(content, checks), html: content, plan: checks, signal: new AbortController().signal, executablePath: process.env.STUDIO_BROWSER_EXECUTABLE });
+    assert.equal(run.error, undefined);
+    assert.deepEqual(run.checks.map(({ status }) => status), ['failed', 'passed', 'passed', 'passed', 'passed', 'passed', 'passed', 'passed', 'failed'], JSON.stringify(run));
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

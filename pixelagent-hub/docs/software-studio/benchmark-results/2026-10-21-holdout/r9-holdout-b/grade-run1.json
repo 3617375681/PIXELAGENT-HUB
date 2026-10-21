@@ -1,0 +1,747 @@
+{
+  "caseId": "grade",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "9/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/10",
+    "10/10"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 32,
+  "reportedTokens": 17372,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:10:48.811Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:10:48.812Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:10:52.549Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Grade Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:10:52.549Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:11:04.117Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:11:04.118Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:11:04.682Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:11:04.685Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "750cf36a-ef37-4900-a90e-394a5610d28f"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:11:08.460Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "750cf36a-ef37-4900-a90e-394a5610d28f",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:11:08.461Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "testPlanId": "750cf36a-ef37-4900-a90e-394a5610d28f",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Empty message visible initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Add one A course shows GPA 4.00",
+        "passed": true,
+        "actual": "4.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Course row shows name, credits, grade",
+        "passed": false,
+        "actual": "Intro to CS 3 credits A ×"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Weighted GPA of A(3) and C(1) is 3.50",
+        "passed": true,
+        "actual": "3.50"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Total credits detail after two courses",
+        "passed": true,
+        "actual": "Total credits: 4"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Two courses listed",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "F grade gives GPA 0.00",
+        "passed": true,
+        "actual": "0.00"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Remove course restores empty GPA",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "name": "Form resets after adding a course",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:11:13.791Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "c3e18d40-ce47-42dc-be3c-3d718d26fcbd",
+        "status": "failed",
+        "passed": 9,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:11:13.796Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "750cf36a-ef37-4900-a90e-394a5610d28f",
+        "review": true
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:11:15.432Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "750cf36a-ef37-4900-a90e-394a5610d28f",
+        "checks": 10,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Course row shows name, credits, grade",
+            "verdict": "check-wrong",
+            "reason": "The check asserts the entire rendered text of the first course row equals \"Intro to CS 3 credits A\", but the app's row also contains a remove button labeled \"×\". The requirements ask to show the list "
+          }
+        ]
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:11:15.432Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "testPlanId": "750cf36a-ef37-4900-a90e-394a5610d28f",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Empty message visible initially",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Add one A course shows GPA 4.00",
+        "passed": true,
+        "actual": "4.00"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Course row shows name, credits, grade",
+        "passed": true,
+        "actual": "Intro to CS 3 credits A ×"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Weighted GPA of A(3) and C(1) is 3.50",
+        "passed": true,
+        "actual": "3.50"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Total credits detail after two courses",
+        "passed": true,
+        "actual": "Total credits: 4"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Two courses listed",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "F grade gives GPA 0.00",
+        "passed": true,
+        "actual": "0.00"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Remove course restores empty GPA",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "name": "Form resets after adding a course",
+        "passed": true,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-21T07:11:18.710Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "21c6195e-dcd5-43ff-827f-eb883dae49d1",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-21T07:11:18.714Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial empty state",
+        "actions": [],
+        "selector": "#gpa-value",
+        "expected": "—"
+      },
+      {
+        "name": "Empty message visible initially",
+        "actions": [],
+        "selector": "#empty-message",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Add one A course shows GPA 4.00",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Intro to CS"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "4.00"
+      },
+      {
+        "name": "Course row shows name, credits, grade",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Intro to CS"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".course-item",
+        "nth": 0,
+        "expected": "^Intro to CS\\s+3 credits\\s+A(\\s+×)?$",
+        "assertion": "matches"
+      },
+      {
+        "name": "Weighted GPA of A(3) and C(1) is 3.50",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Math"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Art"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "C"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "3.50"
+      },
+      {
+        "name": "Total credits detail after two courses",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Math"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Art"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "C"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#gpa-detail",
+        "expected": "Total credits: 4"
+      },
+      {
+        "name": "Two courses listed",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Math"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Art"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "C"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": ".course-item",
+        "expected": "2",
+        "assertion": "count"
+      },
+      {
+        "name": "F grade gives GPA 0.00",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Fail"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "F"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "0.00"
+      },
+      {
+        "name": "Remove course restores empty GPA",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Math"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "A"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "click",
+            "selector": ".btn.remove",
+            "nth": 0
+          }
+        ],
+        "selector": "#gpa-value",
+        "expected": "—"
+      },
+      {
+        "name": "Form resets after adding a course",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#course-name",
+            "value": "Math"
+          },
+          {
+            "type": "input",
+            "selector": "#credit-hours",
+            "value": "4"
+          },
+          {
+            "type": "input",
+            "selector": "#letter-grade",
+            "value": "B"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#course-name",
+        "expected": "",
+        "assertion": "attribute",
+        "attribute": "value"
+      }
+    ],
+    "limitations": [
+      "No check for invalid/empty submissions because native required validation blocks submit without visible feedback.",
+      "Decimal credit display formatting (e.g. 2.5 credits) not verified beyond integer credits.",
+      "Keyboard Enter submission and focus behavior are not tested; only click submission.",
+      "No pixel/visual styling assertions (colors, layout, responsiveness)."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 5070,
+      "completion_tokens": 1010,
+      "total_tokens": 6080,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 4174
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Grade Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Grade Calculator</h1>\n    <p class=\"subtitle\">Add courses to calculate your credit-weighted GPA (4.0 scale).</p>\n\n    <form id=\"course-form\" class=\"course-form\">\n      <div class=\"form-group\">\n        <label for=\"course-name\">Course name</label>\n        <input type=\"text\" id=\"course-name\" name=\"course-name\" placeholder=\"e.g. Intro to CS\" required autocomplete=\"off\">\n      </div>\n      <div class=\"form-group\">\n        <label for=\"credit-hours\">Credit hours</label>\n        <input type=\"number\" id=\"credit-hours\" name=\"credit-hours\" min=\"0.5\" step=\"0.5\" value=\"3\" required>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"letter-grade\">Letter grade</label>\n        <select id=\"letter-grade\" name=\"letter-grade\" required>\n          <option value=\"A\">A (4.0)</option>\n          <option value=\"B\">B (3.0)</option>\n          <option value=\"C\">C (2.0)</option>\n          <option value=\"D\">D (1.0)</option>\n          <option value=\"F\">F (0.0)</option>\n        </select>\n      </div>\n      <button type=\"submit\" id=\"add-btn\" class=\"btn primary\">Add course</button>\n    </form>\n\n    <section class=\"gpa-display\" aria-live=\"polite\">\n      <span class=\"gpa-label\">Current GPA</span>\n      <span id=\"gpa-value\" class=\"gpa-value\">—</span>\n      <span id=\"gpa-detail\" class=\"gpa-detail\"></span>\n    </section>\n\n    <section class=\"course-list-section\">\n      <h2>Courses</h2>\n      <ul id=\"course-list\" class=\"course-list\"></ul>\n      <p id=\"empty-message\" class=\"empty-message\">No courses added yet. Add your first course above.</p>\n    </section>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2f;\n  --card-bg: #2a2a40;\n  --accent: #7c6ff0;\n  --accent-hover: #9a8ff5;\n  --text: #f0f0f5;\n  --text-muted: #b0b0c0;\n  --border: #3e3e5a;\n  --danger: #f06f6f;\n  --radius: 12px;\n}\n\n* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 16px;\n  background: var(--bg);\n  color: var(--text);\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: flex-start;\n  padding: 24px 16px;\n  line-height: 1.5;\n}\n\n.card {\n  background: var(--card-bg);\n  border-radius: var(--radius);\n  padding: 28px 24px;\n  width: 100%;\n  max-width: 560px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n}\n\nh1 {\n  font-size: 1.75rem;\n  font-weight: 700;\n  margin-bottom: 4px;\n  color: var(--text);\n}\n\n.subtitle {\n  color: var(--text-muted);\n  font-size: 0.95rem;\n  margin-bottom: 24px;\n}\n\n.course-form {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n  margin-bottom: 24px;\n}\n\n.form-group {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\nlabel {\n  font-size: 0.9rem;\n  font-weight: 600;\n  color: var(--text-muted);\n}\n\ninput, select {\n  font-family: inherit;\n  font-size: 1rem;\n  padding: 10px 12px;\n  border-radius: 8px;\n  border: 2px solid var(--border);\n  background: var(--bg);\n  color: var(--text);\n  transition: border-color 0.15s, box-shadow 0.15s;\n  width: 100%;\n}\n\ninput:focus, select:focus {\n  outline: none;\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(124, 111, 240, 0.3);\n}\n\ninput::placeholder {\n  color: var(--text-muted);\n  opacity: 0.7;\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 20px;\n  border-radius: 8px;\n  border: none;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.1s;\n  min-height: 44px;\n}\n\n.btn.primary {\n  background: var(--accent);\n  color: #fff;\n}\n\n.btn.primary:hover {\n  background: var(--accent-hover);\n}\n\n.btn.primary:active {\n  transform: scale(0.98);\n}\n\n.btn.primary:focus-visible {\n  outline: 3px solid var(--accent-hover);\n  outline-offset: 2px;\n}\n\n.btn.remove {\n  background: transparent;\n  color: var(--danger);\n  font-size: 1.2rem;\n  padding: 4px 10px;\n  min-height: 36px;\n  border-radius: 6px;\n  line-height: 1;\n}\n\n.btn.remove:hover {\n  background: rgba(240, 111, 111, 0.15);\n}\n\n.btn.remove:active {\n  transform: scale(0.92);\n}\n\n.btn.remove:focus-visible {\n  outline: 3px solid var(--danger);\n  outline-offset: 2px;\n}\n\n.gpa-display {\n  background: var(--bg);\n  border-radius: var(--radius);\n  padding: 20px;\n  text-align: center;\n  margin-bottom: 24px;\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n}\n\n.gpa-label {\n  font-size: 0.9rem;\n  font-weight: 600;\n  color: var(--text-muted);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n}\n\n.gpa-value {\n  font-size: 2.5rem;\n  font-weight: 800;\n  color: var(--accent);\n  line-height: 1.2;\n}\n\n.gpa-detail {\n  font-size: 0.85rem;\n  color: var(--text-muted);\n}\n\n.course-list-section h2 {\n  font-size: 1.15rem;\n  font-weight: 700;\n  margin-bottom: 12px;\n}\n\n.course-list {\n  list-style: none;\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.course-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  background: var(--bg);\n  border-radius: 8px;\n  padding: 12px 14px;\n  border-left: 4px solid var(--accent);\n}\n\n.course-info {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  min-width: 0;\n}\n\n.course-name {\n  font-weight: 600;\n  font-size: 1rem;\n  overflow-wrap: break-word;\n  word-break: break-word;\n}\n\n.course-meta {\n  font-size: 0.85rem;\n  color: var(--text-muted);\n}\n\n.course-grade {\n  font-weight: 700;\n  font-size: 1.1rem;\n  color: var(--accent);\n  flex-shrink: 0;\n}\n\n.empty-message {\n  color: var(--text-muted);\n  font-size: 0.95rem;\n  text-align: center;\n  padding: 16px 0;\n  font-style: italic;\n}\n\n.empty-message.hidden {\n  display: none;\n}\n\n@media (min-width: 480px) {\n  .course-form {\n    flex-direction: row;\n    flex-wrap: wrap;\n    align-items: flex-end;\n  }\n  .form-group {\n    flex: 1 1 120px;\n  }\n  .form-group:first-child {\n    flex: 2 1 160px;\n  }\n  .btn.primary {\n    flex: 0 0 auto;\n  }\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 20px 16px;\n  }\n  h1 {\n    font-size: 1.5rem;\n  }\n  .gpa-value {\n    font-size: 2rem;\n  }\n  .course-item {\n    flex-wrap: wrap;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "(function () {\n  'use strict';\n\n  var GRADE_POINTS = { A: 4.0, B: 3.0, C: 2.0, D: 1.0, F: 0.0 };\n\n  var courses = [];\n\n  var form = document.getElementById('course-form');\n  var nameInput = document.getElementById('course-name');\n  var creditInput = document.getElementById('credit-hours');\n  var gradeSelect = document.getElementById('letter-grade');\n  var listEl = document.getElementById('course-list');\n  var gpaValueEl = document.getElementById('gpa-value');\n  var gpaDetailEl = document.getElementById('gpa-detail');\n  var emptyMsg = document.getElementById('empty-message');\n\n  function calculateGPA() {\n    var totalCredits = 0;\n    var totalPoints = 0;\n    for (var i = 0; i < courses.length; i++) {\n      var c = courses[i];\n      totalCredits += c.credits;\n      totalPoints += c.credits * GRADE_POINTS[c.grade];\n    }\n    if (totalCredits === 0) {\n      return { gpa: null, totalCredits: 0 };\n    }\n    return { gpa: totalPoints / totalCredits, totalCredits: totalCredits };\n  }\n\n  function render() {\n    listEl.innerHTML = '';\n    if (courses.length === 0) {\n      emptyMsg.classList.remove('hidden');\n    } else {\n      emptyMsg.classList.add('hidden');\n    }\n\n    for (var i = 0; i < courses.length; i++) {\n      (function (index) {\n        var c = courses[index];\n        var li = document.createElement('li');\n        li.className = 'course-item';\n\n        var info = document.createElement('div');\n        info.className = 'course-info';\n\n        var nameSpan = document.createElement('span');\n        nameSpan.className = 'course-name';\n        nameSpan.textContent = c.name;\n\n        var metaSpan = document.createElement('span');\n        metaSpan.className = 'course-meta';\n        metaSpan.textContent = c.credits + ' credit' + (c.credits !== 1 ? 's' : '');\n\n        info.appendChild(nameSpan);\n        info.appendChild(metaSpan);\n\n        var gradeSpan = document.createElement('span');\n        gradeSpan.className = 'course-grade';\n        gradeSpan.textContent = c.grade;\n\n        var removeBtn = document.createElement('button');\n        removeBtn.type = 'button';\n        removeBtn.className = 'btn remove';\n        removeBtn.textContent = '\\u00d7';\n        removeBtn.setAttribute('aria-label', 'Remove ' + c.name);\n        removeBtn.addEventListener('click', function () {\n          courses.splice(index, 1);\n          render();\n        });\n\n        li.appendChild(info);\n        li.appendChild(gradeSpan);\n        li.appendChild(removeBtn);\n        listEl.appendChild(li);\n      })(i);\n    }\n\n    var result = calculateGPA();\n    if (result.gpa === null) {\n      gpaValueEl.textContent = '\\u2014';\n      gpaDetailEl.textContent = '';\n    } else {\n      gpaValueEl.textContent = result.gpa.toFixed(2);\n      gpaDetailEl.textContent = 'Total credits: ' + result.totalCredits;\n    }\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n\n    var name = nameInput.value.trim();\n    var credits = parseFloat(creditInput.value);\n    var grade = gradeSelect.value;\n\n    if (!name) {\n      nameInput.focus();\n      return;\n    }\n    if (isNaN(credits) || credits <= 0) {\n      creditInput.focus();\n      return;\n    }\n\n    courses.push({ name: name, credits: credits, grade: grade });\n    nameInput.value = '';\n    creditInput.value = '3';\n    gradeSelect.value = 'A';\n    nameInput.focus();\n    render();\n  });\n\n  render();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Grade Calculator\n\nA simple offline browser app to track courses and calculate a credit-weighted GPA on a 4.0 scale.\n\n## Features\n\n- Add courses with a name, credit hours, and letter grade (A, B, C, D, F).\n- View the list of added courses.\n- Automatically calculates the credit-weighted GPA.\n- Remove individual courses.\n- Fully keyboard-accessible with visible focus states.\n- Responsive layout works from 360px wide.\n\n## Usage\n\n1. Open `index.html` in any modern web browser.\n2. Enter a course name, credit hours, and select a letter grade.\n3. Click **Add course** (or press Enter).\n4. The GPA updates automatically.\n5. Click the **×** button next to a course to remove it.\n\n## GPA Calculation\n\nGrade points: A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0.\n\nGPA = (sum of credit hours × grade points) / (total credit hours)\n\n## Files\n\n- `index.html` — Structure and content.\n- `styles.css` — Styling and responsive layout.\n- `script.js` — Logic and event handling.\n\n## Constraints\n\nNo external dependencies, network requests, or server code. Works entirely offline.",
+      "description": ""
+    }
+  ]
+}

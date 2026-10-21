@@ -1,0 +1,508 @@
+{
+  "caseId": "temperature",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 25,
+  "reportedTokens": 10786,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:05:33.776Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:05:33.776Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:05:37.305Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Temperature Log"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:05:37.305Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:05:48.486Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:05:48.486Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:05:49.112Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:05:49.113Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "eecdeb9d-2611-458c-8d47-b1fec50b60e5"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:05:51.965Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "eecdeb9d-2611-458c-8d47-b1fec50b60e5",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:05:51.966Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "testPlanId": "eecdeb9d-2611-458c-8d47-b1fec50b60e5",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:05:55.218Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Initial empty state",
+        "passed": true,
+        "actual": "No readings yet."
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Initial stats show dashes",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Add single reading updates min",
+        "passed": true,
+        "actual": "21.5°C"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Add single reading updates max and avg",
+        "passed": true,
+        "actual": "21.5°C"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Reading appears in list",
+        "passed": true,
+        "actual": "21.5°C ×"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Multiple readings min",
+        "passed": true,
+        "actual": "-5°C"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Multiple readings max",
+        "passed": true,
+        "actual": "30°C"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Multiple readings average",
+        "passed": true,
+        "actual": "11.7°C"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Clear resets list and stats",
+        "passed": true,
+        "actual": "No readings yet."
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "name": "Clear resets stats to dashes",
+        "passed": true,
+        "actual": "—"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:05:55.219Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "1aff13d8-49cf-4aa7-af41-827bb770f620",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:05:55.222Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial empty state",
+        "actions": [],
+        "selector": "#readings-list",
+        "expected": "No readings yet.",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial stats show dashes",
+        "actions": [],
+        "selector": "#stat-min",
+        "expected": "—",
+        "assertion": "text"
+      },
+      {
+        "name": "Add single reading updates min",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "21.5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#stat-min",
+        "expected": "21.5°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Add single reading updates max and avg",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "21.5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#stat-avg",
+        "expected": "21.5°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Reading appears in list",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "21.5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#readings-list li",
+        "expected": "21.5°C ×",
+        "assertion": "text"
+      },
+      {
+        "name": "Multiple readings min",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "-5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#stat-min",
+        "expected": "-5°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Multiple readings max",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "-5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#stat-max",
+        "expected": "30°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Multiple readings average",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "-5"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "30"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          }
+        ],
+        "selector": "#stat-avg",
+        "expected": "11.7°C",
+        "assertion": "text"
+      },
+      {
+        "name": "Clear resets list and stats",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#clear-btn"
+          }
+        ],
+        "selector": "#readings-list",
+        "expected": "No readings yet.",
+        "assertion": "text"
+      },
+      {
+        "name": "Clear resets stats to dashes",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#temp-input",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#clear-btn"
+          }
+        ],
+        "selector": "#stat-avg",
+        "expected": "—",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "No checks for keyboard Enter submission since DOM key events are synthetic.",
+      "No pixel or visual styling assertions (colors, layout) are covered.",
+      "Delete individual reading buttons are not exercised."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4644,
+      "completion_tokens": 749,
+      "total_tokens": 5393,
+      "prompt_tokens_details": {
+        "cached_tokens": 896
+      },
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 3748
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Temperature Log</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <header>\n      <h1>Pixel Temperature Log</h1>\n      <p class=\"subtitle\">Enter readings in °C</p>\n    </header>\n\n    <form id=\"reading-form\" class=\"input-row\">\n      <label for=\"temp-input\" class=\"visually-hidden\">Temperature in Celsius</label>\n      <input\n        id=\"temp-input\"\n        type=\"number\"\n        step=\"any\"\n        inputmode=\"decimal\"\n        placeholder=\"e.g. 21.5\"\n        aria-describedby=\"input-hint\"\n        required\n      >\n      <button type=\"submit\" id=\"add-btn\">Add</button>\n    </form>\n    <p id=\"input-hint\" class=\"hint\">Negative and decimal values are allowed.</p>\n\n    <section aria-labelledby=\"stats-heading\" class=\"stats\">\n      <h2 id=\"stats-heading\" class=\"visually-hidden\">Statistics</h2>\n      <div class=\"stat-grid\">\n        <div class=\"stat\">\n          <span class=\"stat-label\">Min</span>\n          <span id=\"stat-min\" class=\"stat-value\">—</span>\n        </div>\n        <div class=\"stat\">\n          <span class=\"stat-label\">Max</span>\n          <span id=\"stat-max\" class=\"stat-value\">—</span>\n        </div>\n        <div class=\"stat\">\n          <span class=\"stat-label\">Avg</span>\n          <span id=\"stat-avg\" class=\"stat-value\">—</span>\n        </div>\n      </div>\n    </section>\n\n    <section aria-labelledby=\"readings-heading\" class=\"readings\">\n      <div class=\"readings-header\">\n        <h2 id=\"readings-heading\">Readings</h2>\n        <button type=\"button\" id=\"clear-btn\" class=\"clear-btn\">Clear</button>\n      </div>\n      <ul id=\"readings-list\" class=\"readings-list\">\n        <li class=\"empty-state\">No readings yet.</li>\n      </ul>\n    </section>\n  </main>\n\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1e1e2e;\n  --card-bg: #2a2a3c;\n  --text: #e0e0f0;\n  --accent: #7aa2f7;\n  --accent-hover: #9bb8ff;\n  --danger: #f7768e;\n  --border: #3b3b52;\n  --radius: 12px;\n  --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  color: var(--text);\n  font-family: var(--font);\n  font-size: 16px;\n  line-height: 1.5;\n  padding: 16px;\n}\n\n.card {\n  width: 100%;\n  max-width: 480px;\n  background: var(--card-bg);\n  border-radius: var(--radius);\n  padding: 24px;\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\n}\n\nheader {\n  margin-bottom: 20px;\n}\n\nh1 {\n  margin: 0 0 4px;\n  font-size: 1.5rem;\n  font-weight: 700;\n}\n\n.subtitle {\n  margin: 0;\n  font-size: 0.9rem;\n  opacity: 0.7;\n}\n\n.input-row {\n  display: flex;\n  gap: 8px;\n  margin-bottom: 4px;\n}\n\ninput[type=\"number\"] {\n  flex: 1;\n  min-width: 0;\n  padding: 10px 12px;\n  font-size: 1rem;\n  font-family: inherit;\n  color: var(--text);\n  background: var(--bg);\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  outline: none;\n  transition: border-color 0.15s;\n}\n\ninput[type=\"number\"]:focus {\n  border-color: var(--accent);\n  box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.3);\n}\n\ninput[type=\"number\"]::placeholder {\n  color: var(--text);\n  opacity: 0.4;\n}\n\nbutton {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 10px 18px;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: background 0.15s, transform 0.05s;\n}\n\nbutton:focus-visible {\n  outline: 2px solid var(--accent);\n  outline-offset: 2px;\n}\n\nbutton:active {\n  transform: scale(0.97);\n}\n\n#add-btn {\n  background: var(--accent);\n  color: #1e1e2e;\n}\n\n#add-btn:hover {\n  background: var(--accent-hover);\n}\n\n.clear-btn {\n  background: transparent;\n  color: var(--danger);\n  border: 1px solid var(--danger);\n  padding: 6px 12px;\n  font-size: 0.85rem;\n}\n\n.clear-btn:hover {\n  background: var(--danger);\n  color: #1e1e2e;\n}\n\n.hint {\n  margin: 0 0 20px;\n  font-size: 0.8rem;\n  opacity: 0.5;\n}\n\n.stats {\n  margin-bottom: 20px;\n}\n\n.stat-grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 8px;\n}\n\n.stat {\n  background: var(--bg);\n  border-radius: 8px;\n  padding: 12px 8px;\n  text-align: center;\n}\n\n.stat-label {\n  display: block;\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  opacity: 0.6;\n  margin-bottom: 4px;\n}\n\n.stat-value {\n  display: block;\n  font-size: 1.15rem;\n  font-weight: 700;\n  word-break: break-word;\n}\n\n.readings-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 8px;\n}\n\n.readings-header h2 {\n  margin: 0;\n  font-size: 1.1rem;\n}\n\n.readings-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  max-height: 220px;\n  overflow-y: auto;\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.readings-list li {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  background: var(--bg);\n  border-radius: 8px;\n  padding: 8px 12px;\n  font-size: 0.95rem;\n  word-break: break-word;\n}\n\n.readings-list li.empty-state {\n  justify-content: center;\n  opacity: 0.5;\n  font-style: italic;\n}\n\n.delete-btn {\n  background: transparent;\n  color: var(--text);\n  opacity: 0.5;\n  padding: 2px 6px;\n  font-size: 1rem;\n  line-height: 1;\n  border-radius: 4px;\n}\n\n.delete-btn:hover {\n  opacity: 1;\n  color: var(--danger);\n}\n\n.visually-hidden {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}\n\n@media (max-width: 400px) {\n  .card {\n    padding: 16px;\n  }\n  .input-row {\n    flex-direction: column;\n  }\n  #add-btn {\n    width: 100%;\n  }\n}",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var readings = [];\n\n  var form = document.getElementById('reading-form');\n  var input = document.getElementById('temp-input');\n  var list = document.getElementById('readings-list');\n  var clearBtn = document.getElementById('clear-btn');\n  var statMin = document.getElementById('stat-min');\n  var statMax = document.getElementById('stat-max');\n  var statAvg = document.getElementById('stat-avg');\n\n  function format(value) {\n    return Number.isInteger(value) ? String(value) : value.toFixed(1);\n  }\n\n  function renderStats() {\n    if (readings.length === 0) {\n      statMin.textContent = '\\u2014';\n      statMax.textContent = '\\u2014';\n      statAvg.textContent = '\\u2014';\n      return;\n    }\n    var min = Math.min.apply(null, readings);\n    var max = Math.max.apply(null, readings);\n    var avg = readings.reduce(function (a, b) { return a + b; }, 0) / readings.length;\n    statMin.textContent = format(min) + '\\u00B0C';\n    statMax.textContent = format(max) + '\\u00B0C';\n    statAvg.textContent = format(avg) + '\\u00B0C';\n  }\n\n  function renderList() {\n    list.innerHTML = '';\n    if (readings.length === 0) {\n      var empty = document.createElement('li');\n      empty.className = 'empty-state';\n      empty.textContent = 'No readings yet.';\n      list.appendChild(empty);\n      return;\n    }\n    readings.forEach(function (value, index) {\n      var li = document.createElement('li');\n      var span = document.createElement('span');\n      span.textContent = format(value) + '\\u00B0C';\n      var del = document.createElement('button');\n      del.type = 'button';\n      del.className = 'delete-btn';\n      del.textContent = '\\u00D7';\n      del.setAttribute('aria-label', 'Remove reading ' + format(value) + ' degrees Celsius');\n      del.addEventListener('click', function () {\n        readings.splice(index, 1);\n        render();\n      });\n      li.appendChild(span);\n      li.appendChild(del);\n      list.appendChild(li);\n    });\n  }\n\n  function render() {\n    renderList();\n    renderStats();\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    var raw = input.value.trim();\n    if (raw === '') {\n      return;\n    }\n    var value = Number(raw);\n    if (!isFinite(value)) {\n      input.value = '';\n      return;\n    }\n    readings.push(value);\n    input.value = '';\n    input.focus();\n    render();\n  });\n\n  clearBtn.addEventListener('click', function () {\n    readings = [];\n    render();\n    input.focus();\n  });\n\n  render();\n})();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Temperature Log\n\nAn offline, single-page browser app for logging temperature readings in degrees Celsius. Enter a reading, and the app tracks the minimum, maximum, and average of all readings. A Clear button resets the log.\n\n## Features\n\n- Add Celsius readings (negative and decimal values supported)\n- Live minimum, maximum, and average statistics\n- Remove individual readings from the list\n- Clear all readings at once\n- Fully keyboard-accessible with labeled controls\n- Responsive layout that works from 360px wide\n- Cohesive dark palette with visible hover, focus, and pressed states\n\n## Usage\n\n1. Open `index.html` in any modern browser.\n2. Type a temperature in the input field and press **Add** (or Enter).\n3. View the Min, Max, and Avg values update automatically.\n4. Click the **×** button next to a reading to remove it, or **Clear** to reset everything.\n\nNo network requests, external assets, or server code are used. Everything runs locally.\n\n## File Structure\n\n- `index.html` — page structure and accessible labels\n- `styles.css` — themed card layout and control states\n- `app.js` — reading storage, statistics, and event handling\n- `README.md` — this file\n\n## Accessibility Notes\n\n- All controls have associated labels or `aria-label` attributes.\n- Focus outlines are visible on inputs and buttons.\n- The statistics region uses a visually hidden heading for screen readers.\n- The readings list announces its empty state.\n\n## Development\n\nPlain HTML, CSS, and JavaScript. No build step or dependencies. Edit the files directly and reload the browser to see changes.",
+      "description": ""
+    }
+  ]
+}

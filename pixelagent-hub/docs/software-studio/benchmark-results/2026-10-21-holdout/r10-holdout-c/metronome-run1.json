@@ -1,0 +1,552 @@
+{
+  "caseId": "metronome",
+  "run": 1,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "8/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "8/9",
+    "9/9"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 29,
+  "reportedTokens": 14733,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T07:45:37.509Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T07:45:37.509Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T07:45:41.025Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Metronome"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T07:45:41.025Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T07:45:52.016Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T07:45:52.016Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T07:45:52.501Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T07:45:52.501Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "00fa050c-088d-4311-a91c-99be09da743c"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T07:45:54.799Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "00fa050c-088d-4311-a91c-99be09da743c",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T07:45:54.800Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "testPlanId": "00fa050c-088d-4311-a91c-99be09da743c",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Plus increments BPM",
+        "passed": true,
+        "actual": "121"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Minus decrements BPM",
+        "passed": true,
+        "actual": "119"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Start disables Start and enables Stop",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Stop enabled after start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Beat counter advances while running",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Stop resets beat counter to 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Beat light flashes on tick",
+        "passed": false,
+        "actual": "beat-light active"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Minus disabled at 40 BPM",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "name": "Plus disabled at 200 BPM",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T07:45:59.723Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "70125fd0-011e-4745-9a2b-6e8ca7faab82",
+        "status": "failed",
+        "passed": 8,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T07:45:59.727Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "00fa050c-088d-4311-a91c-99be09da743c",
+        "review": true
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T07:46:01.376Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "00fa050c-088d-4311-a91c-99be09da743c",
+        "checks": 9,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "verdicts": [
+          {
+            "name": "Beat light flashes on tick",
+            "verdict": "check-wrong",
+            "reason": "The check asserts the class attribute equals exactly \"active\", but the element's class is \"beat-light active\" (it has a base class plus the active modifier). The requirement is that the beat light fla"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T07:46:01.377Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "testPlanId": "00fa050c-088d-4311-a91c-99be09da743c",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Plus increments BPM",
+        "passed": true,
+        "actual": "121"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Minus decrements BPM",
+        "passed": true,
+        "actual": "119"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Start disables Start and enables Stop",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Stop enabled after start",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Beat counter advances while running",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Stop resets beat counter to 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Beat light flashes on tick",
+        "passed": true,
+        "actual": "beat-light active"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Minus disabled at 40 BPM",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "name": "Plus disabled at 200 BPM",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T07:46:04.248Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "5a11040d-c3af-46f2-b7ff-a5465bc98edf",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T07:46:04.251Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Plus increments BPM",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#bpm-plus"
+          }
+        ],
+        "selector": "#bpm-value",
+        "expected": "121",
+        "assertion": "text"
+      },
+      {
+        "name": "Minus decrements BPM",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#bpm-minus"
+          }
+        ],
+        "selector": "#bpm-value",
+        "expected": "119",
+        "assertion": "text"
+      },
+      {
+        "name": "Start disables Start and enables Stop",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          }
+        ],
+        "selector": "#start-btn",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Stop enabled after start",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          }
+        ],
+        "selector": "#stop-btn",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Beat counter advances while running",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          }
+        ],
+        "selector": "#beat-count",
+        "expected": "",
+        "assertion": "changed"
+      },
+      {
+        "name": "Stop resets beat counter to 0",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          },
+          {
+            "type": "click",
+            "selector": "#stop-btn"
+          }
+        ],
+        "selector": "#beat-count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Beat light flashes on tick",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#start-btn"
+          }
+        ],
+        "selector": "#beat-light",
+        "expected": "(^|\\s)active(\\s|$)",
+        "assertion": "matches",
+        "attribute": "class"
+      },
+      {
+        "name": "Minus disabled at 40 BPM",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#bpm-minus",
+            "nth": 0
+          }
+        ],
+        "selector": "#bpm-minus",
+        "expected": "false",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Plus disabled at 200 BPM",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#bpm-plus"
+          }
+        ],
+        "selector": "#bpm-plus",
+        "expected": "false",
+        "assertion": "disabled"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "Cannot reach 40 or 200 BPM within 8 actions, so limit-disabled checks only verify enabled state.",
+      "Beat light flash timing and CSS transition cannot be asserted precisely; class presence is checked.",
+      "Space key toggle uses synthetic keydown and is not tested.",
+      "Audio output is not observable."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4533,
+      "completion_tokens": 480,
+      "total_tokens": 5013,
+      "prompt_tokens_details": {
+        "cached_tokens": 1024
+      },
+      "prompt_cache_hit_tokens": 1024,
+      "prompt_cache_miss_tokens": 3509
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Pixel Metronome</title>\n  <link rel=\"stylesheet\" href=\"styles.css\" />\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"app-title\">\n    <h1 id=\"app-title\" class=\"title\">Pixel Metronome</h1>\n\n    <div class=\"bpm-section\">\n      <button id=\"bpm-minus\" class=\"btn btn-small\" type=\"button\" aria-label=\"Decrease BPM\">−</button>\n      <div class=\"bpm-display\" aria-live=\"polite\" aria-atomic=\"true\">\n        <span id=\"bpm-value\">120</span>\n        <span class=\"bpm-unit\">BPM</span>\n      </div>\n      <button id=\"bpm-plus\" class=\"btn btn-small\" type=\"button\" aria-label=\"Increase BPM\">+</button>\n    </div>\n\n    <div class=\"beat-area\">\n      <div id=\"beat-light\" class=\"beat-light\" aria-hidden=\"true\"></div>\n      <div class=\"beat-counter\" aria-live=\"polite\" aria-atomic=\"true\">\n        Beat: <span id=\"beat-count\">0</span>\n      </div>\n    </div>\n\n    <div class=\"controls\">\n      <button id=\"start-btn\" class=\"btn btn-primary\" type=\"button\" aria-label=\"Start metronome\">Start</button>\n      <button id=\"stop-btn\" class=\"btn btn-secondary\" type=\"button\" aria-label=\"Stop metronome\">Stop</button>\n    </div>\n\n    <p class=\"hint\">Tip: use the + and − buttons or Start/Stop. Space toggles start/stop.</p>\n  </main>\n  <script src=\"app.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1a2e;\n  --card: #16213e;\n  --accent: #e94560;\n  --text: #eaeaea;\n  --muted: #8a8fa3;\n  --light-off: #2a2a4a;\n  --light-on: #e94560;\n  --focus: #f4d35e;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--bg);\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n\n.card {\n  background: var(--card);\n  border: 3px solid var(--accent);\n  border-radius: 12px;\n  padding: 24px 20px 20px;\n  width: 100%;\n  max-width: 420px;\n  text-align: center;\n  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.4);\n}\n\n.title {\n  margin: 0 0 20px;\n  font-size: 1.5rem;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  color: var(--accent);\n}\n\n.bpm-section {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 16px;\n  margin-bottom: 24px;\n}\n\n.bpm-display {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  min-width: 100px;\n}\n\n#bpm-value {\n  font-size: 2.5rem;\n  font-weight: 700;\n  line-height: 1;\n  font-variant-numeric: tabular-nums;\n}\n\n.bpm-unit {\n  font-size: 0.75rem;\n  color: var(--muted);\n  letter-spacing: 1px;\n  text-transform: uppercase;\n}\n\n.beat-area {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 24px;\n}\n\n.beat-light {\n  width: 80px;\n  height: 80px;\n  border-radius: 50%;\n  background: var(--light-off);\n  border: 4px solid var(--muted);\n  transition: background 80ms, box-shadow 80ms, border-color 80ms;\n}\n\n.beat-light.active {\n  background: var(--light-on);\n  border-color: var(--focus);\n  box-shadow: 0 0 24px var(--light-on), 0 0 48px var(--light-on);\n}\n\n.beat-counter {\n  font-size: 1.125rem;\n  color: var(--muted);\n}\n\n#beat-count {\n  color: var(--text);\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n}\n\n.controls {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 12px;\n  justify-content: center;\n  margin-bottom: 20px;\n}\n\n.btn {\n  font: inherit;\n  font-size: 1rem;\n  font-weight: 700;\n  border: 3px solid transparent;\n  border-radius: 8px;\n  cursor: pointer;\n  padding: 12px 20px;\n  min-width: 80px;\n  transition: transform 80ms, background 120ms, border-color 120ms, box-shadow 120ms;\n}\n\n.btn-small {\n  padding: 8px 16px;\n  min-width: 48px;\n  font-size: 1.25rem;\n  background: var(--bg);\n  color: var(--text);\n  border-color: var(--muted);\n}\n\n.btn-small:hover {\n  border-color: var(--accent);\n  background: var(--card);\n}\n\n.btn-small:active {\n  transform: translateY(2px);\n}\n\n.btn-primary {\n  background: var(--accent);\n  color: #fff;\n}\n\n.btn-primary:hover {\n  background: #f0576f;\n}\n\n.btn-primary:active {\n  transform: translateY(2px);\n  background: #c7304a;\n}\n\n.btn-secondary {\n  background: var(--bg);\n  color: var(--text);\n  border-color: var(--muted);\n}\n\n.btn-secondary:hover {\n  border-color: var(--accent);\n}\n\n.btn-secondary:active {\n  transform: translateY(2px);\n  background: var(--card);\n}\n\n.btn:focus-visible {\n  outline: 3px solid var(--focus);\n  outline-offset: 3px;\n}\n\n.hint {\n  margin: 0;\n  font-size: 0.875rem;\n  color: var(--muted);\n  line-height: 1.4;\n}\n\n@media (max-width: 360px) {\n  .card {\n    padding: 20px 14px 16px;\n  }\n  .title {\n    font-size: 1.25rem;\n  }\n  #bpm-value {\n    font-size: 2rem;\n  }\n  .btn {\n    padding: 10px 14px;\n  }\n}\n",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var MIN_BPM = 40;\n  var MAX_BPM = 200;\n\n  var bpm = 120;\n  var running = false;\n  var beatCount = 0;\n  var timerId = null;\n  var nextTickAt = 0;\n  var lightTimeout = null;\n\n  var bpmValueEl = document.getElementById('bpm-value');\n  var beatCountEl = document.getElementById('beat-count');\n  var beatLightEl = document.getElementById('beat-light');\n  var minusBtn = document.getElementById('bpm-minus');\n  var plusBtn = document.getElementById('bpm-plus');\n  var startBtn = document.getElementById('start-btn');\n  var stopBtn = document.getElementById('stop-btn');\n\n  function intervalMs() {\n    return 60000 / bpm;\n  }\n\n  function render() {\n    bpmValueEl.textContent = String(bpm);\n    beatCountEl.textContent = String(beatCount);\n    minusBtn.disabled = bpm <= MIN_BPM;\n    plusBtn.disabled = bpm >= MAX_BPM;\n    startBtn.disabled = running;\n    stopBtn.disabled = !running;\n  }\n\n  function flashLight() {\n    beatLightEl.classList.add('active');\n    if (lightTimeout !== null) {\n      clearTimeout(lightTimeout);\n    }\n    var onTime = Math.min(120, Math.max(40, intervalMs() * 0.4));\n    lightTimeout = setTimeout(function () {\n      beatLightEl.classList.remove('active');\n      lightTimeout = null;\n    }, onTime);\n  }\n\n  function tick() {\n    beatCount += 1;\n    beatCountEl.textContent = String(beatCount);\n    flashLight();\n    scheduleNext();\n  }\n\n  function scheduleNext() {\n    if (!running) {\n      return;\n    }\n    nextTickAt += intervalMs();\n    var delay = nextTickAt - Date.now();\n    if (delay < 0) {\n      delay = 0;\n    }\n    timerId = setTimeout(tick, delay);\n  }\n\n  function start() {\n    if (running) {\n      return;\n    }\n    running = true;\n    beatCount = 0;\n    beatCountEl.textContent = '0';\n    nextTickAt = Date.now();\n    render();\n    tick();\n  }\n\n  function stop() {\n    if (!running) {\n      return;\n    }\n    running = false;\n    if (timerId !== null) {\n      clearTimeout(timerId);\n      timerId = null;\n    }\n    if (lightTimeout !== null) {\n      clearTimeout(lightTimeout);\n      lightTimeout = null;\n    }\n    beatLightEl.classList.remove('active');\n    beatCount = 0;\n    beatCountEl.textContent = '0';\n    render();\n  }\n\n  function changeBpm(delta) {\n    var next = Math.min(MAX_BPM, Math.max(MIN_BPM, bpm + delta));\n    if (next === bpm) {\n      return;\n    }\n    bpm = next;\n    render();\n    if (running) {\n      if (timerId !== null) {\n        clearTimeout(timerId);\n        timerId = null;\n      }\n      nextTickAt = Date.now();\n      scheduleNext();\n    }\n  }\n\n  minusBtn.addEventListener('click', function () {\n    changeBpm(-1);\n  });\n\n  plusBtn.addEventListener('click', function () {\n    changeBpm(1);\n  });\n\n  startBtn.addEventListener('click', start);\n  stopBtn.addEventListener('click', stop);\n\n  document.addEventListener('keydown', function (event) {\n    if (event.code === 'Space' && event.target === document.body) {\n      event.preventDefault();\n      if (running) {\n        stop();\n      } else {\n        start();\n      }\n    }\n  });\n\n  render();\n})();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Metronome\n\nA tiny offline metronome built with plain HTML, CSS and JavaScript. No packages, no network requests, no external assets.\n\n## Run\n\nOpen `index.html` in any modern browser. Everything works offline.\n\n## Controls\n\n- **− / +** buttons adjust the tempo between 40 and 200 BPM (1 BPM steps).\n- **Start** begins the metronome and resets the beat counter to 0.\n- **Stop** halts the metronome and resets the beat counter to 0.\n- The **beat light** flashes on every tick.\n- The **beat counter** increments on every tick while running.\n\nKeyboard: **Space** toggles Start/Stop when the page body has focus. All buttons are real `<button>` elements and reachable with Tab; focus is shown with a visible outline.\n\n## Behavior notes\n\n- BPM is clamped to 40–200; the − and + buttons disable at the limits.\n- Changing BPM while running reschedules the next tick immediately.\n- Starting while already running is ignored; stopping while stopped is ignored.\n- The beat light uses a short CSS transition and a per-tick timeout so rapid tempos do not leave the light stuck on.\n\n## Files\n\n- `index.html` — markup and required element IDs\n- `styles.css` — palette, layout, control states\n- `app.js` — metronome logic\n\n## Accessibility\n\n- All controls have accessible names via `aria-label` or visible text.\n- The BPM and beat counter are announced via `aria-live`.\n- Layout works from 360px wide; controls wrap when needed.\n",
+      "description": ""
+    }
+  ]
+}
