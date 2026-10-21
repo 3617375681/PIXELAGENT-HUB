@@ -5,6 +5,7 @@
  * real key never enters the page. Each run uses a fresh browser profile; its recorded events are saved.
  *
  *   npx tsx scripts/benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs 3] [--model deepseek-chat] [--tester-model deepseek-reasoner] [--only counter,todo] [--cases file.json]
+ *   --arms "model=deepseek-chat;model=deepseek-reasoner" interleaves arms, rotating the first arm each run.
  *
  * Calls the paid model.
  */
@@ -13,15 +14,20 @@ import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
+import { parseArms, rotateArms } from '../src/studio/benchmarkArms.js';
 
 const [distArg, outArg] = process.argv.slice(2);
-if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs N] [--model M] [--tester-model M] [--only ids]');
+if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs N] [--model M] [--tester-model M] [--only ids] [--arms "strategy=manager-coder;strategy=coder-only"]');
 const argument = (name: string) => { const index = process.argv.indexOf(name); return index >= 0 ? process.argv[index + 1] : undefined; };
 const strategy = argument('--strategy') ?? 'manager-coder';
 if (!['manager-coder', 'coder-only'].includes(strategy)) throw new Error('--strategy must be manager-coder or coder-only');
 const runs = Number(argument('--runs') || 3);
 const model = argument('--model') || 'deepseek-chat';
 const testerModel = argument('--tester-model') || '';
+const explicitArms = process.argv.includes('--arms');
+if (explicitArms && (!argument('--arms') || argument('--arms')!.startsWith('--'))) throw new Error('--arms requires settings');
+const arms = parseArms(argument('--arms'), { strategy, model, testerModel });
+for (const arm of arms) if (!['manager-coder', 'coder-only'].includes(arm.strategy)) throw new Error(`Arm ${arm.arm}: strategy must be manager-coder or coder-only`);
 const only = argument('--only')?.split(',');
 const dist = resolve(distArg);
 const out = resolve(outArg);
@@ -39,8 +45,11 @@ const browser = await chromium.launch();
 type Event = { seq: number; at: string; type: string; round?: number; data?: Record<string, unknown> };
 const results = [];
 await mkdir(out, { recursive: true });
+for (const arm of arms) if (explicitArms) await mkdir(join(out, arm.arm), { recursive: true });
+if (explicitArms) await writeFile(join(out, 'arms.json'), JSON.stringify(arms.map(({ arm, ...settings }) => ({ arm, settings, directory: arm })), null, 2));
 try {
-  for (const testCase of cases) for (let run = 1; run <= runs; run++) {
+  for (const testCase of cases) for (let run = 1; run <= runs; run++) for (const arm of rotateArms(arms, run)) {
+    const directory = explicitArms ? join(out, arm.arm) : out;
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await context.newPage();
     let tokens = 0;
@@ -51,13 +60,13 @@ try {
       await route.fulfill({ status: upstream.status, headers: { 'content-type': upstream.headers.get('content-type') || 'text/event-stream', 'access-control-allow-origin': '*' }, body });
     });
     const started = Date.now();
-    await page.goto(`${origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}&strategy=${strategy}`);
+    await page.goto(`${origin}${base}#/studio?idea=${encodeURIComponent(testCase.description)}&strategy=${arm.strategy}`);
     await page.waitForSelector('.studio-stage');
     await page.getByRole('button', { name: /BUILD LIVE/ }).click();
     await page.locator('#live-provider').selectOption('deepseek');
     await page.locator('#live-key').fill('sk-benchmark-0000000000000000000000000000');
-    await page.locator('#live-model').fill(model);
-    await page.locator('#live-tester-model').fill(testerModel);
+    await page.locator('#live-model').fill(arm.model);
+    await page.locator('#live-tester-model').fill(arm.testerModel);
     await page.getByRole('button', { name: /SAVE & BUILD/ }).click();
     await page.waitForURL(/studio\/live-/, { timeout: 15_000 });
     await page.waitForFunction(() => /Built\. Ready to play|Run failed|Run cancelled/.test(document.body.innerText), null, { timeout: 1_800_000, polling: 1000 });
@@ -72,7 +81,7 @@ try {
     const compileFailures = events.filter((event) => event.type === 'build_failed').length;
     const reviews = events.filter((event) => event.type === 'test_plan_ready' && event.data?.review);
     const entry = {
-      caseId: testCase.id, run, strategy, managerTokens: record.managerTokens, model, testerModel: testerModel || model, status: record.project.status, error: record.project.error,
+      caseId: testCase.id, run, ...(explicitArms ? { arm: arm.arm } : {}), strategy: arm.strategy, managerTokens: record.managerTokens, model: arm.model, testerModel: arm.testerModel, status: record.project.status, error: record.project.error,
       coderRounds: record.project.rounds.length, compileFailures,
       firstChecks: browserRuns[0] ? `${browserRuns[0].passed}/${browserRuns[0].passed + browserRuns[0].failed}` : null,
       finalChecks: browserRuns.at(-1) ? `${browserRuns.at(-1)!.passed}/${browserRuns.at(-1)!.passed + browserRuns.at(-1)!.failed}` : null,
@@ -88,7 +97,7 @@ try {
     };
     results.push(entry);
     console.log(JSON.stringify(entry));
-    await writeFile(join(out, `${testCase.id}-run${run}.json`), JSON.stringify({ ...entry, events, plan: record.plan, rounds: record.project.rounds, files: record.files }, null, 2));
+    await writeFile(join(directory, `${testCase.id}-run${run}.json`), JSON.stringify({ ...entry, events, plan: record.plan, rounds: record.project.rounds, files: record.files }, null, 2));
     await context.close();
   }
 } finally {
@@ -96,5 +105,5 @@ try {
   server.close();
   const revision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=no'], { encoding: 'utf8' }).trim() !== '';
-  await writeFile(join(out, 'summary.json'), JSON.stringify({ recordedAt: new Date().toISOString(), sourceRevision: revision, sourceDirty: dirty, model, runsPerCase: runs, results }, null, 2));
+  for (const arm of arms) await writeFile(join(explicitArms ? join(out, arm.arm) : out, 'summary.json'), JSON.stringify({ recordedAt: new Date().toISOString(), sourceRevision: revision, sourceDirty: dirty, model: arm.model, runsPerCase: runs, results: explicitArms ? results.filter((entry) => entry.arm === arm.arm) : results }, null, 2));
 }
