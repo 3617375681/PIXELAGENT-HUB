@@ -64,7 +64,7 @@ export async function streamChat(options: { apiKey: string; model: string; syste
       // Local servers often need no key; then no Authorization header is sent at all.
       headers: { 'Content-Type': 'application/json', ...(options.apiKey ? { Authorization: `Bearer ${options.apiKey}` } : {}) },
       body: JSON.stringify({
-        model: options.model, ...(maxTokens ? { max_tokens: maxTokens } : {}), temperature: options.temperature ?? 0.7, ...(json ? { response_format: { type: 'json_object' } } : {}), stream: true, ...(withUsage ? { stream_options: { include_usage: true } } : {}),
+        model: options.model, ...(maxTokens ? { max_tokens: maxTokens } : {}), ...(!options.withoutOptional ? { temperature: options.temperature ?? 0.7 } : {}), ...(json ? { response_format: { type: 'json_object' } } : {}), stream: true, ...(withUsage ? { stream_options: { include_usage: true } } : {}),
         messages: [{ role: 'system', content: options.system }, { role: 'user', content: options.user }],
       }),
     });
@@ -76,7 +76,7 @@ export async function streamChat(options: { apiKey: string; model: string; syste
       : `Could not reach ${host.host}. Check your connection.`);
   }
   // Retry once without optional parameters rejected by some compatible servers.
-  if (res.status === 400 && (json || withUsage || maxTokens)) return streamChat({ ...options, withoutOptional: true });
+  if (res.status === 400 && !options.withoutOptional) return streamChat({ ...options, withoutOptional: true });
   if (!res.ok || !res.body) throw new LiveModelError(statusMessage(provider, options.model, res.status, redact(await res.text().catch(() => ''), options.apiKey)), res.status);
   const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
   let buffer = '';

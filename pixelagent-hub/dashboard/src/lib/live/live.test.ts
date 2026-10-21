@@ -11,10 +11,10 @@ const code = { language: 'javascript', files: [{ path: 'index.html', content: '<
 const testPlan = { checks: [{ name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' }], limitations: [] };
 
 /** A DeepSeek-style SSE body that splits the reply across chunks, with usage in the last one. */
-const sse = (reply: unknown, usage: object | null = { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }) => {
+const sse = (reply: unknown, usage: object | null = { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }, model = 'deepseek-flash') => {
   const text = '```json\n' + JSON.stringify(reply) + '\n```';
   const half = Math.floor(text.length / 2);
-  const chunk = (content: string, usage?: object) => `data: ${JSON.stringify({ model: 'deepseek-flash', choices: [{ delta: { content } }], usage: usage ?? null })}\n\n`;
+  const chunk = (content: string, usage?: object) => `data: ${JSON.stringify({ model, choices: [{ delta: { content } }], usage: usage ?? null })}\n\n`;
   return new Response(new ReadableStream({ start(controller) {
     const encoder = new TextEncoder();
     controller.enqueue(encoder.encode(chunk(text.slice(0, half))));
@@ -358,7 +358,8 @@ it.each([1, 2, 3])('400 fallback removes all optional parameters once (%s errors
   expect(bodies[0].max_tokens).toBe(8192);
   expect(bodies[1].max_tokens).toBeUndefined();
   expect(bodies[1].stream_options).toBeUndefined();
-  expect(bodies.every((body) => body.temperature === 0.2)).toBe(true);
+  expect(bodies[0].temperature).toBe(0.2);
+  expect(bodies[1].temperature).toBeUndefined();
 });
 
 it.each(['json', 'schema'])('an invalid review gets one correction (%s)', async (invalid) => {
@@ -380,4 +381,56 @@ it.each(['json', 'schema'])('an invalid review gets one correction (%s)', async 
   expect(events.filter((event) => event.type === 'test_plan_ready').at(-1)?.data).toMatchObject({ review: true, revised: 1 });
   expect((checks.mock.calls[1][1] as { actions: unknown[] }[])[0].actions).toEqual([{ type: 'click', selector: '#add' }]);
   expect(build).toHaveBeenCalledTimes(1);
+});
+
+
+it.each([undefined, '', 'deepseek-chat', 'deepseek-reasoner'])('routes only Tester calls to its optional model (%s)', async (testerModel) => {
+  key.saveLiveCredentials({ provider: 'deepseek', key: 'sk-test-key-0123456789abcdef', model: 'deepseek-chat', testerModel }, false);
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const body = JSON.parse(String(init.body));
+    const system: string = body.messages[0].content;
+    return sse(system.includes('project manager') ? plan : system.includes('test planner') ? testPlan : system.includes('review failing') ? review('check-wrong') : code, { total_tokens: 30 }, body.model);
+  });
+  build.mockResolvedValue({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html></html>' });
+  checks.mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'failed', actual: '0' }], errors: [] })
+    .mockResolvedValueOnce({ results: [{ name: 'Adds one', status: 'passed', actual: '1' }], errors: [] });
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  expect(fetchMock.mock.calls.map(([, init]) => JSON.parse(String(init.body)).model)).toEqual(['deepseek-chat', 'deepseek-chat', testerModel || 'deepseek-chat', testerModel || 'deepseek-chat']);
+  expect(events.find((event) => event.type === 'test_plan_ready' && event.data?.review)?.data?.llmModel).toBe(testerModel || 'deepseek-chat');
+  const saved = await live.liveRequest('GET', `/api/studio/projects/${projectId}/test-plans`) as { plans: { result: { output: { llmModel: string } } }[] };
+  expect(saved.plans[0].result.output.llmModel).toBe(testerModel || 'deepseek-chat');
+  const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: StudioProject };
+  expect(project.generationMetrics).toMatchObject({ agentTasks: 2, reportedTokens: 60, models: ['deepseek/deepseek-chat'] });
+  const { decodeSharedRun } = await import('./share');
+  const shared = decodeSharedRun((await live.shareLink(projectId, 'https://example.test/')).split('#/s/')[1]);
+  expect(shared.testerModel).toBe(testerModel && testerModel !== 'deepseek-chat' ? testerModel : undefined);
+  expect(live.importSharedRun((await live.shareLink(projectId, 'https://example.test/')).split('#/s/')[1])).toMatch(/^shared-/);
+});
+
+it.each([true, false])('round-trips the Tester model through storage (remember: %s)', async (remember) => {
+  const sessionStore = new Map<string, string>();
+  const localStore = new Map<string, string>();
+  const storage = (map: Map<string, string>) => ({ getItem: (name: string) => map.get(name) ?? null, setItem: (name: string, value: string) => { map.set(name, value); }, removeItem: (name: string) => { map.delete(name); } });
+  vi.stubGlobal('sessionStorage', storage(sessionStore));
+  vi.stubGlobal('localStorage', storage(localStore));
+  const credentials = { provider: 'deepseek', key: 'sk-test', model: 'deepseek-chat', testerModel: 'deepseek-reasoner' };
+  key.saveLiveCredentials(credentials, remember);
+  expect(sessionStore.get('pixelagent:live-tester-model')).toBe(credentials.testerModel);
+  expect(localStore.get('pixelagent:live-tester-model')).toBe(remember ? credentials.testerModel : undefined);
+  vi.resetModules();
+  key = await import('./key');
+  expect(key.liveCredentials()).toEqual(credentials);
+  if (remember) {
+    sessionStore.clear();
+    expect(key.liveCredentials()).toEqual(credentials);
+  }
+  key.saveLiveCredentials({ ...credentials, testerModel: '' }, remember);
+  expect(sessionStore.has('pixelagent:live-tester-model') || localStore.has('pixelagent:live-tester-model')).toBe(false);
+  vi.resetModules();
+  key = await import('./key');
+  expect(key.liveCredentials()?.testerModel).toBeUndefined();
+  key.saveLiveCredentials(credentials, true);
+  key.forgetLiveCredentials();
+  expect(sessionStore.size + localStore.size).toBe(0);
 });

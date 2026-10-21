@@ -10,6 +10,7 @@ export default function LiveKeyDialog({ open, onOpenChange, onSaved }: { open: b
   const [providerId, setProviderId] = useState(saved?.provider || LIVE_PROVIDERS[0].id);
   const [key, setKey] = useState(saved?.key || '');
   const [model, setModel] = useState(saved?.model || LIVE_PROVIDERS[0].models[0]);
+  const [testerModel, setTesterModel] = useState(saved?.testerModel || '');
   const [baseUrl, setBaseUrl] = useState(saved?.baseUrl || DEFAULT_CUSTOM_BASE_URL);
   const [remember, setRemember] = useState(false);
   const provider = liveProvider(providerId);
@@ -22,11 +23,12 @@ export default function LiveKeyDialog({ open, onOpenChange, onSaved }: { open: b
   // A local server may need no key; hosted providers always do.
   const trimmedKey = key.trim();
   const keyOk = provider.custom ? !/\s/.test(trimmedKey) && trimmedKey.length <= 300 : /^\S{20,300}$/.test(trimmedKey);
-  const valid = keyOk && !urlError && /^\S{1,120}$/.test(model.trim());
+  const valid = keyOk && !urlError && /^\S{1,120}$/.test(model.trim()) && (!testerModel.trim() || /^\S{1,120}$/.test(testerModel.trim()));
   const pick = (id: string) => {
     const next = liveProvider(id);
     setProviderId(next.id);
     setModel(next.models[0]);
+    setTesterModel('');
     if (saved?.provider !== next.id) setKey('');
   };
   return (
@@ -36,7 +38,7 @@ export default function LiveKeyDialog({ open, onOpenChange, onSaved }: { open: b
         <DialogDescription>
           Build your own idea right here. The four agents run in this browser tab and call the model with <b>your</b> key. Nothing goes through a PixelAgent server.
         </DialogDescription>
-        <form onSubmit={(event) => { event.preventDefault(); if (!valid) return; saveLiveCredentials({ provider: provider.id, key: trimmedKey, model: model.trim(), ...(provider.custom ? { baseUrl: baseUrl.trim() } : {}) }, remember); soundEngine.success(); onSaved(); }}>
+        <form onSubmit={(event) => { event.preventDefault(); if (!valid) return; saveLiveCredentials({ provider: provider.id, key: trimmedKey, model: model.trim(), ...(testerModel.trim() ? { testerModel: testerModel.trim() } : {}), ...(provider.custom ? { baseUrl: baseUrl.trim() } : {}) }, remember); soundEngine.success(); onSaved(); }}>
           <label className="pixel-font" htmlFor="live-provider">PROVIDER</label>
           <select id="live-provider" value={provider.id} onChange={(event) => pick(event.target.value)}>
             {LIVE_PROVIDERS.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
@@ -50,6 +52,9 @@ export default function LiveKeyDialog({ open, onOpenChange, onSaved }: { open: b
           <input id="live-key" type="password" autoComplete="off" spellCheck={false} placeholder={provider.custom ? 'Leave empty for a local server' : `${provider.label} key`} value={key} onChange={(event) => setKey(event.target.value)} />
           <label className="pixel-font" htmlFor="live-model">MODEL</label>
           <input id="live-model" list="live-models" autoComplete="off" spellCheck={false} value={model} onChange={(event) => setModel(event.target.value)} />
+          <label className="pixel-font" htmlFor="live-tester-model">TESTER MODEL (OPTIONAL)</label>
+          <input id="live-tester-model" list="live-models" autoComplete="off" spellCheck={false} placeholder="Same as MODEL" value={testerModel} onChange={(event) => setTesterModel(event.target.value)} />
+          <p>A reasoning model here can catch more of its own mistakes; it is slower.</p>
           <datalist id="live-models">{provider.models.map((item) => <option key={item} value={item} />)}</datalist>
           <label className="studio-live-remember"><input type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} /> Remember on this device</label>
           <ul>
