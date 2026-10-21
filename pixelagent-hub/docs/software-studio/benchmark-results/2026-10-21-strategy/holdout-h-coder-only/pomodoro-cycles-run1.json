@@ -1,0 +1,589 @@
+{
+  "caseId": "pomodoro-cycles",
+  "run": 1,
+  "strategy": "coder-only",
+  "managerTokens": 0,
+  "model": "deepseek-chat",
+  "testerModel": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 1,
+  "firstChecks": "9/9",
+  "finalChecks": "9/9",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "9/9"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 38,
+  "reportedTokens": 18244,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T12:07:03.851Z",
+      "type": "queued",
+      "data": {
+        "strategy": "coder-only",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T12:07:03.851Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T12:07:16.326Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 5
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T12:07:16.326Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T12:07:16.327Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Duplicate source path: style.css"
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T12:07:16.327Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T12:07:24.911Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T12:07:24.911Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T12:07:25.392Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T12:07:25.394Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "5a43704b-26d4-476d-a7db-6d9323a507d4"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T12:07:28.678Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "5a43704b-26d4-476d-a7db-6d9323a507d4",
+        "checks": 9
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T12:07:28.679Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "testPlanId": "5a43704b-26d4-476d-a7db-6d9323a507d4",
+        "checks": 9,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Start shows work phase and round",
+        "passed": true,
+        "actual": "WORK"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Initial countdown shows work seconds",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Round label shows total rounds",
+        "passed": true,
+        "actual": "Round 1 of 2"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Work counts down after a second",
+        "passed": true,
+        "actual": "2"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Work transitions to rest",
+        "passed": true,
+        "actual": "REST"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Workout complete at end",
+        "passed": true,
+        "actual": "Workout complete"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Display hidden after completion",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Pause stops countdown",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "name": "Stop hides display",
+        "passed": true,
+        "actual": "false"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T12:07:39.563Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "638651bc-6474-4f92-99c0-be617f94f2b4",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T12:07:39.566Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Start shows work phase and round",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#phase",
+        "expected": "Work",
+        "assertion": "text"
+      },
+      {
+        "name": "Initial countdown shows work seconds",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#time",
+        "expected": "2",
+        "assertion": "text"
+      },
+      {
+        "name": "Round label shows total rounds",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "2"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          }
+        ],
+        "selector": "#round",
+        "expected": "Round 1 of 2",
+        "assertion": "text"
+      },
+      {
+        "name": "Work counts down after a second",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 1100
+          }
+        ],
+        "selector": "#time",
+        "expected": "2",
+        "assertion": "text"
+      },
+      {
+        "name": "Work transitions to rest",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "3"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 1100
+          }
+        ],
+        "selector": "#phase",
+        "expected": "Rest",
+        "assertion": "text"
+      },
+      {
+        "name": "Workout complete at end",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 2100
+          }
+        ],
+        "selector": "#status",
+        "expected": "Workout complete",
+        "assertion": "text"
+      },
+      {
+        "name": "Display hidden after completion",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "1"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "wait",
+            "ms": 2100
+          }
+        ],
+        "selector": "#display",
+        "expected": "false",
+        "assertion": "visible"
+      },
+      {
+        "name": "Pause stops countdown",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "click",
+            "selector": "#pause"
+          },
+          {
+            "type": "wait",
+            "ms": 1500
+          }
+        ],
+        "selector": "#time",
+        "expected": "5",
+        "assertion": "text"
+      },
+      {
+        "name": "Stop hides display",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#work",
+            "value": "5"
+          },
+          {
+            "type": "input",
+            "selector": "#rest",
+            "value": "1"
+          },
+          {
+            "type": "input",
+            "selector": "#rounds",
+            "value": "2"
+          },
+          {
+            "type": "click",
+            "selector": "#start"
+          },
+          {
+            "type": "click",
+            "selector": "#stop"
+          }
+        ],
+        "selector": "#display",
+        "expected": "false",
+        "assertion": "visible"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "Speech synthesis audio output cannot be verified in the browser test.",
+      "Timing checks depend on real-time waits and may be sensitive to slow environments.",
+      "Input clamping to min/max values is not verified."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 4591,
+      "completion_tokens": 936,
+      "total_tokens": 5527,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 1408,
+      "prompt_cache_miss_tokens": 3183
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Duplicate source path: style.css"
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Pixel Interval Trainer</title>\n<link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n<main class=\"card\">\n  <h1>Pixel Interval Trainer</h1>\n\n  <form id=\"settings\" class=\"settings\" autocomplete=\"off\">\n    <label for=\"work\">Work seconds</label>\n    <input id=\"work\" type=\"number\" min=\"1\" max=\"3600\" value=\"30\" inputmode=\"numeric\">\n    <label for=\"rest\">Rest seconds</label>\n    <input id=\"rest\" type=\"number\" min=\"1\" max=\"3600\" value=\"15\" inputmode=\"numeric\">\n    <label for=\"rounds\">Rounds</label>\n    <input id=\"rounds\" type=\"number\" min=\"1\" max=\"99\" value=\"5\" inputmode=\"numeric\">\n    <button id=\"start\" type=\"submit\" class=\"btn primary\">Start</button>\n  </form>\n\n  <section id=\"display\" class=\"display\" aria-live=\"polite\" hidden>\n    <p id=\"phase\" class=\"phase\">Get ready</p>\n    <p id=\"time\" class=\"time\">30</p>\n    <p id=\"round\" class=\"round\">Round 1 of 5</p>\n    <div class=\"controls\">\n      <button id=\"pause\" type=\"button\" class=\"btn\">Pause</button>\n      <button id=\"stop\" type=\"button\" class=\"btn danger\">Stop</button>\n    </div>\n  </section>\n\n  <p id=\"status\" class=\"status\" role=\"status\" aria-live=\"assertive\"></p>\n</main>\n<script src=\"app.js\"></script>\n</body>\n</html>\n",
+      "description": "Main HTML page"
+    },
+    {
+      "path": "style.css",
+      "content": ":root {\n  --bg: #1b1f2a;\n  --card: #262c3b;\n  --accent: #4fd1c5;\n  --accent-dark: #2c9c92;\n  --text: #eef2f7;\n  --muted: #9aa6b8;\n  --danger: #e26d6d;\n}\n\n* { box-sizing: border-box; }\n\n[hidden] { display: none !important; }\n\nbody {\n  margin: 0;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px 16px;\n  background: radial-gradient(circle at 50% 0%, #2a3245, var(--bg));\n  color: var(--text);\n  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;\n  font-size: 17px;\n  line-height: 1.5;\n}\n\n.card {\n  width: 100%;\n  max-width: 420px;\n  background: var(--card);\n  border-radius: 18px;\n  padding: 28px 24px 24px;\n  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);\n  border: 1px solid rgba(255, 255, 255, 0.06);\n}\n\nh1 {\n  margin: 0 0 22px;\n  font-size: 1.45rem;\n  text-align: center;\n  letter-spacing: 0.5px;\n}\n\n.settings {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px 14px;\n  align-items: center;\n}\n\n.settings label {\n  font-size: 0.95rem;\n  color: var(--muted);\n}\n\n.settings input {\n  width: 100%;\n  padding: 10px 12px;\n  font-size: 1rem;\n  font-family: inherit;\n  color: var(--text);\n  background: #1e2431;\n  border: 2px solid #3a4356;\n  border-radius: 10px;\n  transition: border-color 0.15s, box-shadow 0.15s;\n}\n\n.settings input:focus {\n  outline: none;\n  border-color: var(--accent);\n  box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.25);\n}\n\n.btn {\n  font-family: inherit;\n  font-size: 1rem;\n  font-weight: 600;\n  padding: 12px 18px;\n  border-radius: 10px;\n  border: 2px solid transparent;\n  background: #3a4356;\n  color: var(--text);\n  cursor: pointer;\n  transition: background 0.15s, transform 0.05s, box-shadow 0.15s;\n}\n\n.btn:hover { background: #4a5468; }\n.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.45); }\n.btn:active { transform: translateY(1px); }\n\n.btn.primary {\n  grid-column: 1 / -1;\n  margin-top: 6px;\n  background: var(--accent);\n  color: #10201e;\n}\n.btn.primary:hover { background: #63e0d4; }\n.btn.primary:focus-visible { box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.5); }\n\n.btn.danger { background: var(--danger); color: #2a0d0d; }\n.btn.danger:hover { background: #ef8080; }\n.btn.danger:focus-visible { box-shadow: 0 0 0 3px rgba(226, 109, 109, 0.5); }\n\n.display {\n  text-align: center;\n  margin-top: 24px;\n}\n\n.phase {\n  margin: 0;\n  font-size: 1.1rem;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  color: var(--accent);\n}\n\n.time {\n  margin: 8px 0;\n  font-size: 4.5rem;\n  font-weight: 800;\n  line-height: 1;\n  font-variant-numeric: tabular-nums;\n}\n\n.round {\n  margin: 0 0 20px;\n  color: var(--muted);\n}\n\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n}\n\n.controls .btn { flex: 1; }\n\n.status {\n  margin: 18px 0 0;\n  min-height: 1.5em;\n  text-align: center;\n  font-weight: 600;\n  color: var(--accent);\n}\n\n@media (max-width: 380px) {\n  .time { font-size: 3.5rem; }\n  .settings { grid-template-columns: 1fr; }\n}\n",
+      "description": "Stylesheet"
+    },
+    {
+      "path": "app.js",
+      "content": "(function () {\n  'use strict';\n\n  var form = document.getElementById('settings');\n  var workInput = document.getElementById('work');\n  var restInput = document.getElementById('rest');\n  var roundsInput = document.getElementById('rounds');\n  var display = document.getElementById('display');\n  var phaseEl = document.getElementById('phase');\n  var timeEl = document.getElementById('time');\n  var roundEl = document.getElementById('round');\n  var pauseBtn = document.getElementById('pause');\n  var stopBtn = document.getElementById('stop');\n  var statusEl = document.getElementById('status');\n\n  var timer = null;\n  var state = null;\n\n  function readConfig() {\n    var work = clamp(parseInt(workInput.value, 10) || 1, 1, 3600);\n    var rest = clamp(parseInt(restInput.value, 10) || 1, 1, 3600);\n    var rounds = clamp(parseInt(roundsInput.value, 10) || 1, 1, 99);\n    return { work: work, rest: rest, rounds: rounds };\n  }\n\n  function clamp(n, min, max) {\n    return Math.min(max, Math.max(min, n));\n  }\n\n  function start() {\n    var cfg = readConfig();\n    state = {\n      work: cfg.work,\n      rest: cfg.rest,\n      rounds: cfg.rounds,\n      round: 1,\n      phase: 'work',\n      remaining: cfg.work,\n      paused: false\n    };\n    statusEl.textContent = '';\n    display.hidden = false;\n    pauseBtn.textContent = 'Pause';\n    render();\n    tickLoop();\n  }\n\n  function tickLoop() {\n    clearInterval(timer);\n    timer = setInterval(tick, 1000);\n  }\n\n  function tick() {\n    if (!state || state.paused) return;\n    state.remaining -= 1;\n    if (state.remaining > 0) {\n      render();\n      return;\n    }\n    advance();\n  }\n\n  function advance() {\n    if (state.phase === 'work') {\n      state.phase = 'rest';\n      state.remaining = state.rest;\n      render();\n      return;\n    }\n    if (state.round >= state.rounds) {\n      finish();\n      return;\n    }\n    state.round += 1;\n    state.phase = 'work';\n    state.remaining = state.work;\n    render();\n  }\n\n  function render() {\n    phaseEl.textContent = state.phase === 'work' ? 'Work' : 'Rest';\n    timeEl.textContent = String(state.remaining);\n    roundEl.textContent = 'Round ' + state.round + ' of ' + state.rounds;\n  }\n\n  function finish() {\n    clearInterval(timer);\n    timer = null;\n    state = null;\n    display.hidden = true;\n    statusEl.textContent = 'Workout complete';\n    say('Workout complete');\n  }\n\n  function togglePause() {\n    if (!state) return;\n    state.paused = !state.paused;\n    pauseBtn.textContent = state.paused ? 'Resume' : 'Pause';\n    statusEl.textContent = state.paused ? 'Paused' : '';\n  }\n\n  function stop() {\n    clearInterval(timer);\n    timer = null;\n    state = null;\n    display.hidden = true;\n    statusEl.textContent = '';\n  }\n\n  function say(text) {\n    if (typeof window.speechSynthesis !== 'undefined' && window.SpeechSynthesisUtterance) {\n      try {\n        var u = new SpeechSynthesisUtterance(text);\n        window.speechSynthesis.cancel();\n        window.speechSynthesis.speak(u);\n      } catch (e) { /* speech unavailable */ }\n    }\n  }\n\n  form.addEventListener('submit', function (e) {\n    e.preventDefault();\n    start();\n  });\n  pauseBtn.addEventListener('click', togglePause);\n  stopBtn.addEventListener('click', stop);\n})();\n",
+      "description": "Timer logic"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Interval Trainer\n\nA tiny offline interval timer built with plain HTML, CSS and JavaScript.\n\n## Features\n\n- Set work seconds, rest seconds and number of rounds.\n- Start counts down through each work phase, then rest, for every round.\n- Displays the current phase (Work/Rest), remaining seconds and round number.\n- Pause/Resume and Stop controls.\n- Announces \"Workout complete\" (on screen and via the Web Speech API when available).\n- Keyboard-accessible labeled inputs and buttons.\n\n## Usage\n\nOpen `index.html` in any modern browser. No build step, packages, network requests or server required.\n\n## Files\n\n- `index.html` – markup and controls\n- `style.css` – theme and layout\n- `app.js` – timer logic\n",
+      "description": "Project documentation"
+    }
+  ]
+}
