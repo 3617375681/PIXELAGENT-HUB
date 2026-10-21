@@ -149,3 +149,20 @@ test('unsupported reviews require a reason, ignore passing checks and cap drops 
   }
   assert.equal(parseTesterReview({ verdicts: [reply.verdicts[2]] }, ['Third'], 1)[0].verdict, 'unsupported');
 });
+
+
+test('relative text assertions require actions, empty expected and no attribute; model values normalise', async () => {
+  const { browserCheckSchema } = await import('./schemas.js');
+  for (const assertion of ['changed', 'unchanged']) {
+    const check = { name: assertion, actions: [{ type: 'click', selector: '#generate' }], selector: '#color', assertion, expected: '' };
+    assert.equal(browserCheckSchema.safeParse(check).success, true);
+    for (const change of [{ actions: [] }, { attribute: 'value' }, { expected: '__CAPTURED_HEX__' }]) {
+      assert.equal(browserCheckSchema.safeParse({ ...check, ...change }).success, false);
+    }
+    const invalid = browserCheckSchema.safeParse({ ...check, actions: [] });
+    assert.ok(!invalid.success && invalid.error.issues.some((issue) => issue.message === 'changed and unchanged need at least one action'));
+    const parsed = parseTestPlanOutput({ checks: [{ ...check, expected: '__CAPTURED_HEX__' }], limitations: [] });
+    assert.equal(parsed.checks[0].expected, '');
+    assert.equal(parsed.checks[0].assertion, assertion);
+  }
+});

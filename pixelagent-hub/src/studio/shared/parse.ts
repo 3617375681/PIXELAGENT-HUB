@@ -31,7 +31,7 @@ export const parseCodeOutput = (object: unknown) => {
 const normaliseCheck = (check: unknown) => {
   if (!check || typeof check !== 'object' || Array.isArray(check)) return check;
   const { assertion, attribute, ...rest } = check as Record<string, unknown>;
-  return { ...rest, ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
+  return { ...rest, ...(['changed', 'unchanged'].includes(String(assertion)) ? { expected: '' } : {}), ...(assertion == null ? {} : { assertion }), ...(attribute == null ? {} : { attribute }) };
 };
 
 /**

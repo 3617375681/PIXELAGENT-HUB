@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 
+## [2.3.0] — 2026-10-20
+
 ### Added
+- `changed` / `unchanged` check assertions: an element's text compared with its own text before the check's actions, so random or generated values (a palette, dice, a shuffle) can be checked without predicting them
+- PLAY LIVE benchmark 2026-10-20 (`2026-10-20-live/`): fixed cases **15/15** for the first time; showcase 15/18 (round 5 was 17/18, within run-to-run swings). All 6 `changed`/`unchanged` checks passed; first real use of `unsupported`
 - `count` check assertion: how many elements the selector matches (the only assertion where it may match several or none), for "16 cards" or "5 swatches"
 - `attribute` check assertion with an `attribute` field: one attribute compared exactly (`aria-valuenow`, `aria-pressed`, …; `value` reads the live input value). 5 of the 7 failed showcase runs were correct apps the old language could not check
 - Ctrl/Cmd+Enter in the prompt box builds; PLAY LIVE shows the tokens spent so far while a run is going

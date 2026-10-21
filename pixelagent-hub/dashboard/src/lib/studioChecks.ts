@@ -1,4 +1,4 @@
-export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string } | { type: 'input'; selector: string; value: string } | { type: 'key'; selector: string; key: string })[]; selector: string; expected: string; assertion?: 'text' | 'disabled' | 'visible' | 'count' | 'attribute'; attribute?: string };
+export type BrowserCheck = { name: string; actions: ({ type: 'click'; selector: string } | { type: 'input'; selector: string; value: string } | { type: 'key'; selector: string; key: string })[]; selector: string; expected: string; assertion?: 'text' | 'disabled' | 'visible' | 'count' | 'attribute' | 'changed' | 'unchanged'; attribute?: string };
 export type BrowserCheckResult = { name: string; status: 'passed' | 'failed'; actual: string; error?: string };
 
 // This function is serialized into the sandbox. Keep all helpers local; no eval or model code.
@@ -13,6 +13,11 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
     let actual = '';
     try {
       const previousErrors = errorCount();
+      const assertion = check.assertion || 'text';
+      const relative = assertion === 'changed' || assertion === 'unchanged';
+      const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
+      const baseline = relative ? element(check.selector) : undefined;
+      const expected = baseline ? collapse(baseline.innerText ?? baseline.textContent ?? '') : assertion === 'text' ? collapse(check.expected) : check.expected;
       for (const action of check.actions) {
         const target = element(action.selector);
         if (action.type === 'click') target.click();
@@ -26,13 +31,10 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         } else throw new Error('Unsupported check action');
         await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      const target = check.assertion === 'count' ? undefined : element(check.selector);
+      let target = check.assertion === 'count' ? undefined : element(check.selector);
       // Same rules as the server's browser runs: rendered text with runs of whitespace as one space,
       // visibility like Playwright plus no opacity:0 on the element or ancestors, and up to 2 s for the
       // expected value to appear (timers, transitions).
-      const assertion = check.assertion || 'text';
-      const collapse = (text: string) => text.replace(/\s+/g, ' ').trim();
-      const expected = assertion === 'text' ? collapse(check.expected) : check.expected;
       const visible = () => {
         const box = target!.getBoundingClientRect?.();
         const style = document.defaultView?.getComputedStyle?.(target!);
@@ -48,12 +50,22 @@ export async function runDOMChecks(document: Document, checks: BrowserCheck[], e
         : assertion === 'disabled' ? String(target!.matches(':disabled'))
         : assertion === 'visible' ? String(visible())
           : collapse(target!.innerText ?? target!.textContent ?? '');
-      const matches = (observed: string) => observed === expected || (assertion === 'text' && collapse(target!.textContent ?? '') === expected);
-      let observed = read();
-      for (const deadline = Date.now() + 2000; !matches(observed) && Date.now() < deadline; observed = read()) await new Promise((resolve) => setTimeout(resolve, 50));
-      actual = observed.slice(0, 300);
+      const matches = (observed: string) => observed === expected || ((assertion === 'text' || relative) && collapse(target!.textContent ?? '') === expected);
+      let observed = '';
+      let matched = false;
+      const deadline = Date.now() + (assertion === 'unchanged' ? 500 : 2000);
+      do {
+        if (relative) target = element(check.selector);
+        observed = read();
+        actual = observed.slice(0, 300);
+        matched = assertion === 'changed' ? !matches(observed) : matches(observed);
+        if (assertion === 'unchanged' ? !matched : matched) break;
+        if (Date.now() >= deadline) break;
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      } while (assertion === 'unchanged' ? matched : !matched);
       if (errorCount() > previousErrors) throw new Error('Runtime error observed during this check');
-      if (!matches(observed)) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
+      if (!matched && relative) throw new Error(assertion === 'unchanged' ? `Expected text to stay ${JSON.stringify(expected)}, observed ${JSON.stringify(actual)}` : `Expected text to change from ${JSON.stringify(expected)}`);
+      if (!matched) throw new Error(`Expected ${JSON.stringify(check.expected)}, observed ${JSON.stringify(actual)}`);
       results.push({ name: check.name, status: 'passed', actual });
     } catch (error) {
       results.push({ name: check.name, status: 'failed', actual, error: (error instanceof Error ? error.message : String(error)).slice(0, 2000) });

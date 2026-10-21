@@ -1,0 +1,415 @@
+{
+  "caseId": "counter",
+  "run": 3,
+  "model": "deepseek-chat",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "10/10",
+  "finalChecks": "10/10",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "10/10"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 22,
+  "reportedTokens": 5874,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-20T16:21:02.231Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "DeepSeek",
+        "model": "deepseek-chat"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-20T16:21:02.231Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-20T16:21:05.599Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Counter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-20T16:21:05.600Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-20T16:21:10.201Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-20T16:21:10.201Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-20T16:21:11.235Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-20T16:21:11.236Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "566a1619-94fd-416b-81cc-d2ca716420c8"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-20T16:21:13.652Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "566a1619-94fd-416b-81cc-d2ca716420c8",
+        "checks": 10
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-20T16:21:13.652Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "testPlanId": "566a1619-94fd-416b-81cc-d2ca716420c8",
+        "checks": 10,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-20T16:21:16.861Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Initial count is zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Increase adds one",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Decrease below zero shows negative",
+        "passed": true,
+        "actual": "-1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Increase then decrease returns to zero",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Reset returns to zero after increases",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Reset returns to zero after decreases",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Increase button has accessible label",
+        "passed": true,
+        "actual": "Increase count by one"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Decrease button has accessible label",
+        "passed": true,
+        "actual": "Decrease count by one"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Reset button has accessible label",
+        "passed": true,
+        "actual": "Reset count to zero"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "name": "Three control buttons present",
+        "passed": true,
+        "actual": "3"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-20T16:21:16.862Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "a4052662-2f8f-4f87-94e8-f954fdb50643",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-20T16:21:16.865Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial count is zero",
+        "actions": [],
+        "selector": "#count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Increase adds one",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          }
+        ],
+        "selector": "#count",
+        "expected": "1",
+        "assertion": "text"
+      },
+      {
+        "name": "Decrease below zero shows negative",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#count",
+        "expected": "-1",
+        "assertion": "text"
+      },
+      {
+        "name": "Increase then decrease returns to zero",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#decrease"
+          }
+        ],
+        "selector": "#count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset returns to zero after increases",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#increase"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Reset returns to zero after decreases",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#decrease"
+          },
+          {
+            "type": "click",
+            "selector": "#decrease"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#count",
+        "expected": "0",
+        "assertion": "text"
+      },
+      {
+        "name": "Increase button has accessible label",
+        "actions": [],
+        "selector": "#increase",
+        "expected": "Increase count by one",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      },
+      {
+        "name": "Decrease button has accessible label",
+        "actions": [],
+        "selector": "#decrease",
+        "expected": "Decrease count by one",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      },
+      {
+        "name": "Reset button has accessible label",
+        "actions": [],
+        "selector": "#reset",
+        "expected": "Reset count to zero",
+        "assertion": "attribute",
+        "attribute": "aria-label"
+      },
+      {
+        "name": "Three control buttons present",
+        "actions": [],
+        "selector": "button",
+        "expected": "3",
+        "assertion": "count"
+      }
+    ],
+    "limitations": [
+      "Keyboard activation (real Tab/Enter/Space) cannot be tested because key actions are synthetic DOM keydown events, not trusted browser input; only ARIA labels and native button semantics are checked.",
+      "Pixel styling, visible focus outlines, hover/active styles, and pixel font appearance cannot be verified without pixel or computed-style assertions.",
+      "README content and the under-200-line source constraint are not observable through the rendered page.",
+      "No storage or network behavior is asserted; offline operation is not directly testable in this harness."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 1995,
+      "completion_tokens": 515,
+      "total_tokens": 2510,
+      "prompt_tokens_details": {
+        "cached_tokens": 640
+      },
+      "prompt_cache_hit_tokens": 640,
+      "prompt_cache_miss_tokens": 1355
+    },
+    "llmModel": "deepseek-flash",
+    "llmProvider": "deepseek"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Pixel Counter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n</head>\n<body>\n  <main class=\"card\">\n    <h1>Pixel Counter</h1>\n    <output id=\"count\" aria-live=\"polite\">0</output>\n    <div class=\"controls\">\n      <button id=\"decrease\" aria-label=\"Decrease count by one\">−1</button>\n      <button id=\"increase\" aria-label=\"Increase count by one\">+1</button>\n      <button id=\"reset\" aria-label=\"Reset count to zero\">Reset</button>\n    </div>\n  </main>\n  <script src=\"script.js\"></script>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  --bg: #1a1c2c;\n  --card: #5d275d;\n  --accent: #ef7d57;\n  --text: #f4f4f4;\n  --shadow: #0d0e17;\n}\n* { box-sizing: border-box; margin: 0; padding: 0; }\nbody {\n  min-height: 100vh;\n  display: grid;\n  place-items: center;\n  background: var(--bg);\n  font-family: system-ui, sans-serif;\n  font-size: 16px;\n  color: var(--text);\n  padding: 16px;\n}\n.card {\n  background: var(--card);\n  padding: 32px 24px;\n  border: 4px solid var(--shadow);\n  box-shadow: 8px 8px 0 var(--shadow);\n  text-align: center;\n  width: min(100%, 400px);\n}\nh1 {\n  font-size: 1.5rem;\n  letter-spacing: 2px;\n  text-transform: uppercase;\n  margin-bottom: 24px;\n}\n#count {\n  display: block;\n  font-size: 4rem;\n  font-weight: 700;\n  margin: 24px 0;\n  color: var(--accent);\n  text-shadow: 3px 3px 0 var(--shadow);\n}\n.controls {\n  display: flex;\n  gap: 12px;\n  justify-content: center;\n  flex-wrap: wrap;\n}\nbutton {\n  font: inherit;\n  font-weight: 700;\n  padding: 12px 20px;\n  min-width: 64px;\n  background: var(--accent);\n  color: var(--bg);\n  border: 3px solid var(--shadow);\n  box-shadow: 4px 4px 0 var(--shadow);\n  cursor: pointer;\n  transition: transform 0.05s, box-shadow 0.05s, background 0.15s;\n}\nbutton:hover { background: #ff9a6e; }\nbutton:focus-visible {\n  outline: 3px solid var(--text);\n  outline-offset: 3px;\n}\nbutton:active {\n  transform: translate(4px, 4px);\n  box-shadow: 0 0 0 var(--shadow);\n}\n#reset { background: var(--text); }\n#reset:hover { background: #ffffff; }\n@media (max-width: 400px) {\n  #count { font-size: 3rem; }\n  button { padding: 10px 14px; }\n}",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const countEl = document.getElementById('count');\nlet count = 0;\n\nfunction render() {\n  countEl.textContent = count;\n}\n\ndocument.getElementById('increase').addEventListener('click', () => {\n  count += 1;\n  render();\n});\n\ndocument.getElementById('decrease').addEventListener('click', () => {\n  count -= 1;\n  render();\n});\n\ndocument.getElementById('reset').addEventListener('click', () => {\n  count = 0;\n  render();\n});\n\nrender();",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Counter\n\nAn offline pixel-style counter built with plain HTML, CSS, and JavaScript. No dependencies, no storage, no network requests.\n\n## Run\n\nOpen `index.html` in any modern browser. Everything works offline.\n\n## Usage\n\n- **+1** (`#increase`): adds one to the count.\n- **−1** (`#decrease`): subtracts one from the count (negative numbers supported).\n- **Reset** (`#reset`): sets the count back to zero.\n\nThe current integer is shown in the `#count` output element. All buttons are keyboard-accessible with visible focus states and ARIA labels.\n\n## Files\n\n- `index.html` – structure and controls\n- `styles.css` – pixel-themed styling\n- `script.js` – counter logic",
+      "description": ""
+    }
+  ]
+}
