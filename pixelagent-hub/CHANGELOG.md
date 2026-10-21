@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+- Each Tester check may carry a `trace`, written before `expected`: the starting state, each action's effect and the arithmetic. A [preliminary interleaved A/B](docs/software-studio/benchmark-results/2026-10-21-trace/README.md) on held-out set I passed 8/10 strict, against 5/10 without traces, and used 18% fewer tokens. The run was cut short when the API key ran out of balance.
+- `benchmark-live.ts --arms` takes `dist=<built site>` to compare two builds interleaved
+
 ## [2.7.0] — 2026-10-21
 
 ### Added

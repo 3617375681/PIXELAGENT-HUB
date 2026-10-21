@@ -8,7 +8,7 @@ vi.mock('./checks', () => ({ runInPageChecks: (...args: unknown[]) => checks(...
 
 const plan = { projectName: 'Pixel Counter', goal: 'Count', phases: [{ id: 'p1', name: 'Build', tasks: ['UI'], assignee: 'coder', priority: 'high' }], estimatedRounds: 1, risks: [] };
 const code = { language: 'javascript', files: [{ path: 'index.html', content: '<button id="add">+1</button>', description: 'UI' }], explanation: 'ok', dependencies: [] };
-const testPlan = { checks: [{ name: 'Adds one', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' }], limitations: [] };
+const testPlan = { checks: [{ name: 'Adds one', trace: 'count starts 0; +1 → 1', actions: [{ type: 'click', selector: '#add' }], selector: '#count', expected: '1' }], limitations: [] };
 
 /** A DeepSeek-style SSE body that splits the reply across chunks, with usage in the last one. */
 const sse = (reply: unknown, usage: object | null = { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 }, model = 'deepseek-flash') => {
@@ -63,6 +63,8 @@ it('runs plan → code → failed build → repaired build → in-page checks, w
   expect(events.map((event) => event.type)).toEqual(['queued', 'phase', 'plan_ready', 'phase', 'code_ready', 'phase', 'build_failed', 'phase', 'code_ready', 'phase', 'build_passed', 'test_plan_started', 'test_plan_ready', 'browser_run_started', 'browser_check', 'browser_run_finished', 'ready_for_review']);
   expect(events.find((event) => event.type === 'browser_run_finished')?.data).toMatchObject({ status: 'passed', passed: 1, failed: 0, source: 'in-page' });
   expect(events.find((event) => event.type === 'build_failed')?.data?.errors).toEqual(['app.js:1:5: ERROR: Unexpected ";"']);
+
+  expect(checks.mock.calls[0][1][0].trace).toBe(testPlan.checks[0].trace);
 
   // The repair round receives the real compiler error as a revision note, as on the server.
   const coderCalls = fetchMock.mock.calls.map(([, init]) => JSON.parse(String((init as RequestInit).body)).messages[1].content as string).filter((user) => user.startsWith('Task:'));
@@ -206,6 +208,7 @@ it('a failed in-page check goes back to the Coder once, then the same checks run
   expect(events.filter((event) => event.type === 'browser_run_finished').map((event) => event.data?.status)).toEqual(['failed', 'passed']);
   // The repair prompt carries the shared repair instructions and the exact failed check.
   const repairPrompt = JSON.parse(String((fetchMock.mock.calls.at(-1)![1] as RequestInit).body)).messages[1].content as string;
+  expect(repairPrompt).not.toContain(testPlan.checks[0].trace);
   expect(repairPrompt).toContain('Repair the existing app using these untrusted browser observations');
   expect(repairPrompt).toContain('Browser check \\"Adds one\\": selector=\\"#count\\"');
   const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: { status: string; previewFile: string; rounds: unknown[] } };
