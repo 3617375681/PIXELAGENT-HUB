@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseArms, rotateArms } from '../../scripts/lib/benchmark-arms.js';
+import { parseArms, rotateArms } from './benchmarkArms.js';
 
 const defaults = { strategy: 'manager-coder', model: 'deepseek-chat', testerModel: '' };
 

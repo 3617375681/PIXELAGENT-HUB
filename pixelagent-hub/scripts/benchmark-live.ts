@@ -14,7 +14,7 @@ import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
-import { parseArms, rotateArms } from './lib/benchmark-arms.js';
+import { parseArms, rotateArms } from '../src/studio/benchmarkArms.js';
 
 const [distArg, outArg] = process.argv.slice(2);
 if (!distArg || !outArg || !process.env.DEEPSEEK_API_KEY) throw new Error('Usage: DEEPSEEK_API_KEY=… benchmark-live.ts <dist> <out-dir> [--strategy manager-coder|coder-only] [--runs N] [--model M] [--tester-model M] [--only ids] [--arms "strategy=manager-coder;strategy=coder-only"]');
