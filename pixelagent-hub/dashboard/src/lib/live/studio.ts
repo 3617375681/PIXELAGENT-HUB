@@ -307,7 +307,7 @@ async function reviewChecks(entry: Entry, checks: BrowserCheck[], results: Brows
     const revisedChecks = checks.filter((check) => !removed.some((verdict) => verdict.name === check.name)).map((check) => verdicts.find((verdict) => verdict.name === check.name && verdict.check)?.check || check);
     const revised = verdicts.filter((verdict) => verdict.verdict === 'check-wrong').length;
     if (entry.plan?.result && (revised || dropped)) entry.plan.result.output = { ...entry.plan.result.output, checks: revisedChecks, limitations: [...entry.plan.result.output.limitations, ...removed.map(({ name, reason }) => `Not checked: ${name}: ${reason.slice(0, 200)}`)] };
-    emit(entry, 'test_plan_ready', { planId, checks: revisedChecks.length, review: true, revised, dropped, llmModel: reply.output.llmModel, verdicts: verdicts.map(({ name, verdict, reason }) => ({ name, verdict, reason: reason.slice(0, 200) })) });
+    emit(entry, 'test_plan_ready', { planId, checks: revisedChecks.length, review: true, revised, dropped, llmModel: reply.output.llmModel, llmUsage: reply.output.llmUsage, verdicts: verdicts.map(({ name, verdict, reason }) => ({ name, verdict, reason: reason.slice(0, 200) })) });
     return { checks: revisedChecks, revised, dropped };
   } catch (error) {
     if (signal.aborted) throw error;
