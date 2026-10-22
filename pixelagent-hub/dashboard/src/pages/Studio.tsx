@@ -10,6 +10,7 @@ import './Studio.css';
 import StudioReviewPanel from '../components/StudioReviewPanel';
 import StudioBrowserPanel from '../components/StudioBrowserPanel';
 import StudioPipeline from '../components/StudioPipeline';
+import { agentUsage } from '../lib/studioUsage';
 import { reducePipeline } from '../lib/studioPipeline';
 import { useStudioEvents } from '../hooks/useStudioEvents';
 import ApiConnection from '../components/ApiConnection';
@@ -427,9 +428,9 @@ export default function Studio() {
             <h3 className="pixel-font">USAGE</h3>
             <dl className="studio-usage-grid">
               <div><dt>Time</dt><dd>{generationMetrics.elapsedMs === null ? running ? '…' : 'unknown' : `${(generationMetrics.elapsedMs / 1000).toFixed(1)} s`}</dd></div>
-              <div><dt>Tokens</dt><dd>{generationMetrics.reportedUsageTasks ? generationMetrics.reportedTokens.toLocaleString() : 'not reported'}</dd></div>
+              <div><dt>Generation tokens</dt><dd>{generationMetrics.reportedUsageTasks ? generationMetrics.reportedTokens.toLocaleString() : 'not reported'}</dd></div>
               <div><dt>Compiles / failed</dt><dd>{generationMetrics.buildAttempts} / {generationMetrics.failedBuilds}</dd></div>
-              <div><dt>Model</dt><dd>{generationMetrics.models.join(', ') || 'unknown'}</dd></div>
+              {agentUsage(project, testPlans, timeline.events).map((usage) => <div key={usage.agent}><dt>{usage.agent}</dt><dd>{usage.models.join(', ') || 'unknown'} · {usage.tokens === null ? 'not reported' : `${usage.tokens.toLocaleString()} tokens`}</dd></div>)}
             </dl>
           </section>}
 

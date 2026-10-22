@@ -4,7 +4,7 @@ export type StudioReview = { id: string; savedAt: string; source: 'manual-review
 import type { BrowserCheck, BrowserCheckResult } from '../lib/studioChecks';
 export type StudioBrowserRun = { id: string; projectId: string; testPlanId: string; source: 'server-browser' | 'in-page'; status: 'queued' | 'running' | 'passed' | 'failed' | 'cancelled'; repairable?: boolean; startedAt: string; finishedAt?: string; previewHash: string; planHash: string; browserVersion?: string; error?: string; checks: BrowserCheckResult[]; errors: string[]; blockedRequests: string[]; screenshots: ('initial.png' | 'final.png')[] };
 export type StudioDiagnostic = { id: string; savedAt: string; source: 'browser-client'; previewFile: string; loaded: boolean; errors: string[]; testPlanId?: string; checks?: BrowserCheckResult[] };
-export type StudioTestPlan = { id: string; projectId: string; previewFile: string; jobId: string; status: 'queued' | 'running' | 'ready' | 'failed' | 'cancelled'; error?: string; result?: { status: string; output: { checks: BrowserCheck[]; limitations: string[]; isolation?: 'shared' | 'fresh'; llmProvider?: string; llmModel?: string } } };
+export type StudioTestPlan = { id: string; projectId: string; previewFile: string; jobId: string; status: 'queued' | 'running' | 'ready' | 'failed' | 'cancelled'; error?: string; result?: { status: string; output: { checks: BrowserCheck[]; limitations: string[]; isolation?: 'shared' | 'fresh'; llmProvider?: string; llmModel?: string; llmUsage?: { total_tokens: number } } } };
 export type StudioChanges = { projectId: string; parentProjectId: string; fromPreview: string; toPreview: string; unchanged: number; files: { path: string; status: 'added' | 'removed' | 'modified'; before?: string; after?: string }[] };
 export type StudioSummary = { projectId: string; description: string; status: StudioStatus; startedAt: string; phase?: string; jobId?: string; review?: StudioReview | null; repair?: { parentProjectId: string; diagnosticId?: string; browserRunId?: string; testPlanId?: string; previewFile: string; errors: string[] }; revision?: { parentProjectId: string; previewFile: string; changeRequest: string }; retry?: { parentProjectId: string } };
 export type StudioVersions = { rootProjectId: string; selectedProjectId: string | null; versions: StudioSummary[] };
@@ -12,8 +12,8 @@ export type StudioProject = StudioSummary & {
   generationMetrics?: StudioGenerationMetrics;
   strategy?: 'manager-coder' | 'coder-only';
   finishedAt?: string; error?: string; stoppedPhase?: string;
-  plan?: { status: string; output: { projectName?: string; goal?: string; phases?: { id: string; name: string; tasks: string[] }[]; llmProvider?: string; llmModel?: string }; reasoning?: string };
-  rounds: { round: number; code: { status: string; output?: { files?: { path: string; content: string }[]; llmProvider?: string; llmModel?: string }; reasoning?: string }; build?: { status: 'passed' | 'failed'; errors: string[]; checkedFiles: string[]; browserVerified: boolean } }[];
+  plan?: { status: string; output: { projectName?: string; goal?: string; phases?: { id: string; name: string; tasks: string[] }[]; llmProvider?: string; llmModel?: string; llmUsage?: { total_tokens: number } }; reasoning?: string };
+  rounds: { round: number; code: { status: string; output?: { files?: { path: string; content: string }[]; llmProvider?: string; llmModel?: string; llmUsage?: { total_tokens: number } }; reasoning?: string }; build?: { status: 'passed' | 'failed'; errors: string[]; checkedFiles: string[]; browserVerified: boolean } }[];
   previewFile?: string; archiveFile?: string;
 };
 export type StudioEventType = 'queued' | 'phase' | 'plan_ready' | 'code_ready' | 'build_failed' | 'build_passed' | 'ready_for_review' | 'failed' | 'cancelled' | 'test_plan_started' | 'test_plan_ready' | 'test_plan_failed' | 'browser_run_started' | 'browser_check' | 'browser_run_finished';

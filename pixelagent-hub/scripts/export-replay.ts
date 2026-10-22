@@ -10,6 +10,7 @@
  * --browser also runs the Tester's checks in a sandboxed Chromium (needs Playwright's browser or
  * STUDIO_BROWSER_EXECUTABLE), so the replay includes live browser-check events and screenshots.
  */
+import { chromium } from 'playwright';
 import { createServer } from 'node:http';
 import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -130,7 +131,7 @@ const stageUnseen = async () => {
     const idea = ideas.find((item) => item.id === caseId)!;
     const { projectId, saved } = await stageLiveReplay(studioRoot, path, idea.description);
     cases.push({ projectId, kind: 'real-model', group: 'unseen', caseId, run: saved.run, bug, note,
-      title: `${idea.title} · unseen idea`, checks: saved.finalChecks,
+      title: `${idea.title} · unseen idea`, checks: saved.finalChecks, screenshot: undefined as string | undefined,
       outcome: saved.status !== 'ready_for_review' ? 'not-built' : saved.fullPass ? 'passed' : 'checks-failed',
     });
   }
@@ -155,6 +156,25 @@ try {
   const unseen = await stageUnseen();
 
   await rm(out, { recursive: true, force: true });
+  if (browser) {
+    const chromiumBrowser = await chromium.launch({ executablePath: process.env.STUDIO_BROWSER_EXECUTABLE?.trim() || undefined });
+    try {
+      for (const item of unseen) {
+        const page = await chromiumBrowser.newPage({ viewport: { width: 800, height: 600 }, serviceWorkers: 'block' });
+        try {
+          await page.route('**/*', (route) => route.abort());
+          const { html } = await (await call(`/api/studio/projects/${item.projectId}/preview`)).json();
+          await page.setContent(html, { waitUntil: 'load' });
+          item.screenshot = `/screenshots/${item.projectId}.png`;
+          await save(item.screenshot.slice(1), await page.screenshot({ animations: 'disabled' }));
+        } finally {
+          await page.close();
+        }
+      }
+    } finally {
+      await chromiumBrowser.close();
+    }
+  }
   const list = await (await call('/api/studio/projects')).json();
   await save('api/studio/projects.json', JSON.stringify(list));
   for (const { projectId, status } of list.projects as { projectId: string; status: string }[]) {
