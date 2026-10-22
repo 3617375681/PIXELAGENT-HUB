@@ -80,6 +80,8 @@ export default function Studio() {
   const preview = useMemo(() => {
     const nonce = crypto.randomUUID();
     return { nonce, html: prepareStudioPreview(html, nonce) };
+  // qaRun is deliberate: each Quick checks run gets a freshly loaded frame with a new nonce.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [html, qaRun]);
 
   useEffect(() => {
