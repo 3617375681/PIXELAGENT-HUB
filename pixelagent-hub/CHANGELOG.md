@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.8.0] — 2026-10-22
+
 ### Changed
 - PLAY LIVE ships the repaired build only if it passes at least as many checks with no more runtime errors; otherwise it restores and rechecks the earlier build (`repairReverted`). Six recorded runs, including a pet app that a repair broke on every click, would now ship the better build
 - The Tester and review prompts no longer ask for a check `trace`. A [40-pair replication on `gpt-6-luna`](docs/software-studio/benchmark-results/2026-10-21-trace-luna/README.md) found no gain (31/40 vs 32/40) and 21% fewer checks per plan. The optional field still parses.
@@ -9,7 +11,7 @@
 ### Added
 - `npm run checks:replay`: an offline check replay over every saved record, free (742 records, 97% identical verdicts)
 - `npm run codex:chat`: PLAY LIVE benchmarks on a ChatGPT subscription through the Codex CLI (`benchmark-live.ts --base-url`)
-- Each Tester check may carry a `trace`, written before `expected`: the starting state, each action's effect and the arithmetic. A [preliminary interleaved A/B](docs/software-studio/benchmark-results/2026-10-21-trace/README.md) on held-out set I passed 8/10 strict, against 5/10 without traces, and used 18% fewer tokens. The run was cut short when the API key ran out of balance.
+- Tester checks accept an optional `trace` field (at most 300 characters). The prompts no longer ask for it; see Changed
 - `benchmark-live.ts --arms` takes `dist=<built site>` to compare two builds interleaved
 
 ## [2.7.0] — 2026-10-21
