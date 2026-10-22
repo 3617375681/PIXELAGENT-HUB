@@ -1,0 +1,586 @@
+{
+  "caseId": "split-bill",
+  "run": 1,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 21190,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 3,
+  "compileFailures": 1,
+  "firstChecks": "3/4",
+  "finalChecks": "3/4",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "3/4",
+    "3/4",
+    "3/4"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 194,
+  "reportedTokens": 161839,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T03:39:35.058Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T03:39:35.058Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T03:39:54.271Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Bill Splitter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T03:39:54.271Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T03:40:39.500Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T03:40:39.500Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T03:40:39.932Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T03:40:39.933Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "676c5d2a-01fb-4057-838c-0b53f61d00f0"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T03:40:57.260Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "676c5d2a-01fb-4057-838c-0b53f61d00f0",
+        "checks": 4
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T03:40:57.260Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "6e76d2c8-b7eb-4b1f-8c92-6acb7a1c64ea",
+        "testPlanId": "676c5d2a-01fb-4057-838c-0b53f61d00f0",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T03:41:00.603Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6e76d2c8-b7eb-4b1f-8c92-6acb7a1c64ea",
+        "name": "Split item among two people with tip",
+        "passed": false,
+        "actual": "Alex Share $3.34 + tip $0.34 $3.68 Blair Share $3.33 + tip $0.33 $3.66 Casey Share $3.33 + tip $0.33 $3.66"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T03:41:00.603Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6e76d2c8-b7eb-4b1f-8c92-6acb7a1c64ea",
+        "name": "Show added item and updated bill total",
+        "passed": true,
+        "actual": "$14.16"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T03:41:00.603Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6e76d2c8-b7eb-4b1f-8c92-6acb7a1c64ea",
+        "name": "Split odd cents and round tip",
+        "passed": true,
+        "actual": "Alex Share $0.03 + tip $0.01 $0.04 Blair Share $0.02 + tip $0.00 $0.02 Casey Share $0.00 + tip $0.00 $0.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T03:41:00.603Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "6e76d2c8-b7eb-4b1f-8c92-6acb7a1c64ea",
+        "name": "Reject item with no selected people",
+        "passed": true,
+        "actual": "Choose at least one person to share this item."
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T03:41:00.603Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "6e76d2c8-b7eb-4b1f-8c92-6acb7a1c64ea",
+        "status": "failed",
+        "passed": 3,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T03:41:00.606Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "676c5d2a-01fb-4057-838c-0b53f61d00f0",
+        "review": true
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T03:41:17.275Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "676c5d2a-01fb-4057-838c-0b53f61d00f0",
+        "checks": 4,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "llmModel": "gpt-6-luna",
+        "verdicts": [
+          {
+            "name": "Split item among two people with tip",
+            "verdict": "check-wrong",
+            "reason": "The check selects Alex and Blair by default, then clicks Casey, so the app correctly splits the $10 item among all three people. The expected result assumes Casey was not selected, contradicting the a"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T03:41:17.275Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d9e55c89-5346-4417-9a0d-3d0347340f6a",
+        "testPlanId": "676c5d2a-01fb-4057-838c-0b53f61d00f0",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-22T03:41:20.598Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9e55c89-5346-4417-9a0d-3d0347340f6a",
+        "name": "Split item among two people with tip",
+        "passed": false,
+        "actual": "Alex Share $5.00 + tip $0.50 $5.50 Blair Share $0.00 + tip $0.00 $0.00 Casey Share $5.00 + tip $0.50 $5.50"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-22T03:41:20.598Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9e55c89-5346-4417-9a0d-3d0347340f6a",
+        "name": "Show added item and updated bill total",
+        "passed": true,
+        "actual": "$14.16"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-22T03:41:20.598Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9e55c89-5346-4417-9a0d-3d0347340f6a",
+        "name": "Split odd cents and round tip",
+        "passed": true,
+        "actual": "Alex Share $0.03 + tip $0.01 $0.04 Blair Share $0.02 + tip $0.00 $0.02 Casey Share $0.00 + tip $0.00 $0.00"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-22T03:41:20.598Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d9e55c89-5346-4417-9a0d-3d0347340f6a",
+        "name": "Reject item with no selected people",
+        "passed": true,
+        "actual": "Choose at least one person to share this item."
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-22T03:41:20.598Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d9e55c89-5346-4417-9a0d-3d0347340f6a",
+        "status": "failed",
+        "passed": 3,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-22T03:41:20.600Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-22T03:42:04.308Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 5
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-22T03:42:04.308Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-22T03:42:04.310Z",
+      "type": "build_failed",
+      "round": 2,
+      "data": {
+        "errors": [
+          "Duplicate source path: README.md"
+        ]
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-22T03:42:04.310Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-22T03:42:42.980Z",
+      "type": "code_ready",
+      "round": 3,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-22T03:42:42.980Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-22T03:42:43.035Z",
+      "type": "build_passed",
+      "round": 3
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-22T03:42:43.037Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "96f3eebe-a44d-4ea6-8a6b-5b245bbce040",
+        "testPlanId": "676c5d2a-01fb-4057-838c-0b53f61d00f0",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-22T03:42:46.365Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96f3eebe-a44d-4ea6-8a6b-5b245bbce040",
+        "name": "Split item among two people with tip",
+        "passed": false,
+        "actual": "Alex Share $5.00 + tip $0.50 $5.50 Blair Share $0.00 + tip $0.00 $0.00 Casey Share $5.00 + tip $0.50 $5.50"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-22T03:42:46.365Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96f3eebe-a44d-4ea6-8a6b-5b245bbce040",
+        "name": "Show added item and updated bill total",
+        "passed": true,
+        "actual": "$14.16"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-22T03:42:46.365Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96f3eebe-a44d-4ea6-8a6b-5b245bbce040",
+        "name": "Split odd cents and round tip",
+        "passed": true,
+        "actual": "Alex Share $0.03 + tip $0.01 $0.04 Blair Share $0.02 + tip $0.00 $0.02 Casey Share $0.00 + tip $0.00 $0.00"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-22T03:42:46.365Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "96f3eebe-a44d-4ea6-8a6b-5b245bbce040",
+        "name": "Reject item with no selected people",
+        "passed": true,
+        "actual": "Choose at least one person to share this item."
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-22T03:42:46.366Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "96f3eebe-a44d-4ea6-8a6b-5b245bbce040",
+        "status": "failed",
+        "passed": 3,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-22T03:42:46.369Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v3/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Split item among two people with tip",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Fries"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "10.00"
+          },
+          {
+            "type": "click",
+            "selector": "input[name='person'][value='2']"
+          },
+          {
+            "type": "click",
+            "selector": "input[name='person'][value='1']"
+          },
+          {
+            "type": "input",
+            "selector": "#tip-percent",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          }
+        ],
+        "selector": "#total-list",
+        "expected": "Alex Share $5.00 + tip $0.50 $5.50 Blair Share $5.00 + tip $0.50 $5.50 Casey Share $0.00 + tip $0.00 $0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Show added item and updated bill total",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Soup"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "12.00"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          }
+        ],
+        "selector": "#grand-total",
+        "expected": "$14.16",
+        "assertion": "text"
+      },
+      {
+        "name": "Split odd cents and round tip",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Snack"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "0.05"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          }
+        ],
+        "selector": ".total-list",
+        "expected": "Alex Share $0.03 + tip $0.01 $0.04 Blair Share $0.02 + tip $0.00 $0.02 Casey Share $0.00 + tip $0.00 $0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Reject item with no selected people",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Tea"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "3.00"
+          },
+          {
+            "type": "click",
+            "selector": "input[name='person'][value='0']"
+          },
+          {
+            "type": "click",
+            "selector": "input[name='person'][value='1']"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          }
+        ],
+        "selector": "#form-error",
+        "expected": "Choose at least one person to share this item.",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [
+      "Visual styling and pixel appearance are not asserted.",
+      "The checks cover representative split and rounding cases; not every price, tip, or participant combination is covered."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 26385,
+      "completion_tokens": 490,
+      "total_tokens": 26875
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "failed",
+      "errors": [
+        "Duplicate source path: README.md"
+      ]
+    },
+    {
+      "round": 3,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <meta name=\"theme-color\" content=\"#19252b\">\n  <title>Pixel Bill Splitter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"board\" aria-labelledby=\"title\">\n    <header class=\"header\">\n      <div class=\"pixel-mark\" aria-hidden=\"true\">$</div>\n      <div>\n        <p class=\"eyebrow\">SPLIT IT FAIR</p>\n        <h1 id=\"title\">Pixel Bill Splitter</h1>\n        <p class=\"subtitle\">Add what you shared. We’ll do the math.</p>\n      </div>\n    </header>\n\n    <section class=\"entry\" aria-labelledby=\"add-heading\">\n      <h2 id=\"add-heading\">Add an item</h2>\n      <form id=\"item-form\">\n        <div class=\"form-row\">\n          <label class=\"field item-field\" for=\"item-name\">Item name\n            <input id=\"item-name\" name=\"name\" type=\"text\" maxlength=\"60\" placeholder=\"e.g. Garlic fries\" required>\n          </label>\n          <label class=\"field price-field\" for=\"item-price\">Price ($)\n            <input id=\"item-price\" name=\"price\" type=\"number\" min=\"0.01\" max=\"999999\" step=\"0.01\" placeholder=\"0.00\" required>\n          </label>\n        </div>\n        <fieldset class=\"people-picker\">\n          <legend>Who shared this item?</legend>\n          <div class=\"check-row\">\n            <label class=\"person-option\"><input type=\"checkbox\" name=\"person\" value=\"0\" checked><span class=\"check-box\" aria-hidden=\"true\"></span><span>Alex</span></label>\n            <label class=\"person-option\"><input type=\"checkbox\" name=\"person\" value=\"1\" checked><span class=\"check-box\" aria-hidden=\"true\"></span><span>Blair</span></label>\n            <label class=\"person-option\"><input type=\"checkbox\" name=\"person\" value=\"2\"><span class=\"check-box\" aria-hidden=\"true\"></span><span>Casey</span></label>\n          </div>\n        </fieldset>\n        <button class=\"button add-button\" type=\"submit\"><span aria-hidden=\"true\">＋</span> Add item</button>\n        <p id=\"form-error\" class=\"error\" role=\"alert\" hidden></p>\n      </form>\n    </section>\n\n    <section class=\"items-section\" aria-labelledby=\"items-heading\">\n      <div class=\"section-heading\">\n        <h2 id=\"items-heading\">Your items</h2>\n        <span id=\"item-count\" class=\"count-badge\">0 items</span>\n      </div>\n      <ul id=\"item-list\" class=\"item-list\" aria-live=\"polite\"></ul>\n      <p id=\"empty-state\" class=\"empty-state\">No items yet. Add the first one above!</p>\n    </section>\n\n    <section class=\"tip-section\" aria-labelledby=\"tip-heading\">\n      <label for=\"tip-percent\" id=\"tip-heading\">Tip</label>\n      <div class=\"tip-control\">\n        <input id=\"tip-percent\" type=\"number\" min=\"0\" max=\"100\" step=\"1\" value=\"18\" aria-label=\"Tip percentage\">\n        <span>%</span>\n      </div>\n      <p>Tip is split in proportion to each person’s item share.</p>\n    </section>\n\n    <section class=\"totals\" aria-labelledby=\"totals-heading\">\n      <div class=\"section-heading totals-heading\">\n        <h2 id=\"totals-heading\">Everyone owes</h2>\n        <span class=\"pixel-spark\" aria-hidden=\"true\">✦</span>\n      </div>\n      <div id=\"total-list\" class=\"total-list\" aria-live=\"polite\"></div>\n      <div class=\"grand-total\"><span>Bill total with tip</span><strong id=\"grand-total\">$0.00</strong></div>\n    </section>\n    <footer>Three friends. One less thing to figure out.</footer>\n  </main>\n</body>\n</html>\n",
+      "description": "Semantic markup for the offline bill splitter, including labeled inputs and accessible participant checkboxes."
+    },
+    {
+      "path": "styles.css",
+      "content": "* { box-sizing: border-box; }\n:root { color-scheme: dark; --ink: #19252b; --panel: #24343b; --panel-light: #2d4149; --cream: #f5efdc; --muted: #b5c5bb; --mint: #a8d5a2; --orange: #f0a36b; --line: #43565c; }\nbody { margin: 0; min-height: 100vh; padding: 32px 16px; display: grid; place-items: start center; background-color: var(--ink); background-image: radial-gradient(#35464b 1px, transparent 1px); background-size: 18px 18px; color: var(--cream); font: 16px/1.5 system-ui, sans-serif; }\n.board { width: min(100%, 560px); padding: 28px; background: var(--panel); border: 2px solid #52665e; border-radius: 8px; box-shadow: 8px 8px 0 #10191d; }\n.header { display: flex; gap: 16px; align-items: center; margin-bottom: 26px; }\n.pixel-mark { width: 54px; height: 54px; display: grid; place-items: center; flex: 0 0 auto; color: var(--ink); background: var(--mint); border: 3px solid var(--cream); box-shadow: 4px 4px 0 var(--orange); font-size: 30px; font-weight: 900; }\n.eyebrow { margin: 0; color: var(--mint); font-size: 13px; font-weight: 800; letter-spacing: .16em; }\nh1 { margin: 0; font-size: clamp(23px, 6vw, 31px); line-height: 1.18; }\n.subtitle { margin: 4px 0 0; color: var(--muted); }\nh2 { margin: 0; font-size: 19px; }\n.entry, .items-section, .tip-section { padding: 18px 0; border-top: 1px solid var(--line); }\n.entry h2 { margin-bottom: 14px; }\n.form-row { display: flex; gap: 12px; }\n.field { display: grid; gap: 7px; color: var(--muted); font-size: 14px; font-weight: 700; }\n.item-field { flex: 1; min-width: 0; }\n.price-field { width: 128px; flex: 0 0 auto; }\ninput[type=\"text\"], input[type=\"number\"] { width: 100%; min-height: 46px; padding: 10px 12px; border: 2px solid var(--line); border-radius: 4px; outline: none; background: var(--ink); color: var(--cream); font: inherit; }\ninput::placeholder { color: #84978f; }\ninput:focus-visible, button:focus-visible, .person-option:focus-within { outline: 3px solid var(--orange); outline-offset: 3px; }\n.people-picker { min-width: 0; margin: 17px 0 14px; padding: 0; border: 0; }\n.people-picker legend { margin-bottom: 9px; color: var(--muted); font-size: 14px; font-weight: 700; }\n.check-row { display: flex; gap: 10px; flex-wrap: wrap; }\n.person-option { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 4px; cursor: pointer; }\n.person-option:hover { background: var(--panel-light); }\n.person-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }\n.check-box { width: 18px; height: 18px; display: grid; place-items: center; border: 2px solid var(--muted); border-radius: 3px; }\n.person-option input:checked + .check-box { background: var(--mint); border-color: var(--mint); }\n.person-option input:checked + .check-box::after { content: \"✓\"; color: var(--ink); font-size: 14px; font-weight: 900; line-height: 1; }\n.button { min-height: 46px; padding: 9px 16px; border: 2px solid var(--mint); border-radius: 4px; background: var(--mint); color: var(--ink); font: inherit; font-weight: 800; cursor: pointer; transition: transform .08s, background .12s; }\n.button:hover { background: #bee5b7; }\n.button:active { transform: translate(2px, 2px); }\n.add-button span { font-size: 21px; vertical-align: -1px; }\n.error { margin: 10px 0 0; color: #ffb28d; font-size: 14px; }\n[hidden] { display: none !important; }\n.section-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }\n.count-badge { padding: 3px 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font-size: 13px; }\n.item-list { list-style: none; padding: 0; margin: 12px 0 0; }\n.item-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--line); }\n.item-info { min-width: 0; flex: 1; }\n.item-name { display: block; overflow-wrap: anywhere; font-weight: 700; }\n.item-people { display: block; color: var(--muted); font-size: 13px; }\n.item-price { font-variant-numeric: tabular-nums; font-weight: 700; }\n.remove-button { width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--muted); font: inherit; font-size: 20px; cursor: pointer; }\n.remove-button:hover { border-color: var(--orange); color: var(--orange); background: #3b3c38; }\n.remove-button:active { transform: scale(.94); }\n.empty-state { margin: 14px 0 0; color: var(--muted); }\n.tip-section { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 10px; }\n.tip-section > label { font-weight: 800; }\n.tip-control { display: flex; align-items: center; gap: 6px; }\n.tip-control input { width: 80px; min-height: 42px; padding: 6px 8px; }\n.tip-section p { margin: 0; color: var(--muted); font-size: 13px; }\n.totals { padding: 18px; border: 1px solid #52665e; border-radius: 5px; background: var(--ink); }\n.pixel-spark { color: var(--orange); font-size: 23px; }\n.total-list { margin-top: 10px; }\n.total-row { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid #33434a; }\n.total-person { font-weight: 700; }\n.total-detail { display: block; color: var(--muted); font-size: 13px; font-weight: 400; }\n.total-amount { color: var(--mint); font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; }\n.grand-total { display: flex; justify-content: space-between; gap: 12px; padding-top: 14px; color: var(--muted); }\n.grand-total strong { color: var(--cream); font-size: 20px; font-variant-numeric: tabular-nums; }\nfooter { margin-top: 18px; color: var(--muted); text-align: center; font-size: 13px; }\n@media (max-width: 420px) { body { padding: 16px 10px; } .board { padding: 20px 16px; } .form-row { gap: 8px; } .price-field { width: 110px; } .tip-section { grid-template-columns: auto auto; } .tip-section p { grid-column: 1 / -1; } }\n@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }\n",
+      "description": "Responsive pixel-inspired styling with a cohesive dark, mint, cream, and orange palette and visible interaction states."
+    },
+    {
+      "path": "app.js",
+      "content": "(() => {\n  const people = ['Alex', 'Blair', 'Casey'];\n  const form = document.querySelector('#item-form');\n  const nameInput = document.querySelector('#item-name');\n  const priceInput = document.querySelector('#item-price');\n  const tipInput = document.querySelector('#tip-percent');\n  const list = document.querySelector('#item-list');\n  const error = document.querySelector('#form-error');\n  const items = [];\n  const cents = value => Math.round(value * 100);\n  const money = value => `$${(value / 100).toFixed(2)}`;\n\n  function render() {\n    list.replaceChildren();\n    document.querySelector('#empty-state').hidden = items.length > 0;\n    document.querySelector('#item-count').textContent = `${items.length} ${items.length === 1 ? 'item' : 'items'}`;\n\n    items.forEach((item, index) => {\n      const row = document.createElement('li');\n      row.className = 'item-row';\n      const info = document.createElement('div');\n      info.className = 'item-info';\n      const name = document.createElement('span');\n      name.className = 'item-name';\n      name.textContent = item.name;\n      const shared = document.createElement('span');\n      shared.className = 'item-people';\n      shared.textContent = `Shared by ${item.people.map(i => people[i]).join(', ')}`;\n      info.append(name, shared);\n      const price = document.createElement('span');\n      price.className = 'item-price';\n      price.textContent = money(item.price);\n      const remove = document.createElement('button');\n      remove.className = 'remove-button';\n      remove.type = 'button';\n      remove.setAttribute('aria-label', `Remove ${item.name}`);\n      remove.textContent = '×';\n      remove.addEventListener('click', () => { items.splice(index, 1); render(); });\n      row.append(info, price, remove);\n      list.append(row);\n    });\n\n    const shares = [0, 0, 0];\n    for (const item of items) {\n      const base = Math.floor(item.price / item.people.length);\n      let remainder = item.price - base * item.people.length;\n      item.people.forEach(person => { shares[person] += base + (remainder-- > 0 ? 1 : 0); });\n    }\n    const tipPercent = Number(tipInput.value) || 0;\n    const subtotal = shares.reduce((sum, amount) => sum + amount, 0);\n    const tipTotal = Math.round(subtotal * tipPercent / 100);\n    const tips = [0, 0, 0];\n    if (subtotal > 0) {\n      let remainingTip = tipTotal;\n      shares.forEach((share, index) => {\n        tips[index] = Math.floor(tipTotal * share / subtotal);\n        remainingTip -= tips[index];\n      });\n      for (let i = 0; remainingTip > 0; i = (i + 1) % 3) {\n        if (shares[i] > 0) { tips[i]++; remainingTip--; }\n      }\n    }\n    const totalList = document.querySelector('#total-list');\n    totalList.replaceChildren();\n    people.forEach((person, index) => {\n      const row = document.createElement('div');\n      row.className = 'total-row';\n      const label = document.createElement('span');\n      label.className = 'total-person';\n      label.append(document.createTextNode(person));\n      const detail = document.createElement('span');\n      detail.className = 'total-detail';\n      detail.textContent = `Share ${money(shares[index])} + tip ${money(tips[index])}`;\n      label.append(detail);\n      const amount = document.createElement('span');\n      amount.className = 'total-amount';\n      amount.textContent = money(shares[index] + tips[index]);\n      row.append(label, amount);\n      totalList.append(row);\n    });\n    document.querySelector('#grand-total').textContent = money(subtotal + tipTotal);\n  }\n\n  form.addEventListener('submit', event => {\n    event.preventDefault();\n    error.hidden = true;\n    const selected = [...form.querySelectorAll('input[name=\"person\"]:checked')].map(input => Number(input.value));\n    const price = Number(priceInput.value);\n    if (!selected.length) {\n      error.textContent = 'Choose at least one person to share this item.';\n      error.hidden = false;\n      form.querySelector('input[name=\"person\"]').focus();\n      return;\n    }\n    if (!Number.isFinite(price) || price <= 0 || price > 999999) {\n      error.textContent = 'Enter a price greater than $0.00.';\n      error.hidden = false;\n      priceInput.focus();\n      return;\n    }\n    items.push({ name: nameInput.value.trim(), price: cents(price), people: selected });\n    form.reset();\n    render();\n    nameInput.focus();\n  });\n  tipInput.addEventListener('input', () => {\n    const value = Number(tipInput.value);\n    if (tipInput.value === '' || !Number.isFinite(value) || value < 0 || value > 100) return;\n    render();\n  });\n  render();\n})();\n",
+      "description": "Plain JavaScript item management, equal per-item splits, proportional tip allocation, and cent-rounded totals."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Bill Splitter\n\nA small offline browser app for splitting shared items among Alex, Blair, and Casey. Each item can be assigned to one or more people; its price is divided evenly in cents, with any leftover cent assigned in participant order (Alex, Blair, Casey). A single tip percentage is applied to the combined item shares. The tip total is rounded to the nearest cent, then allocated proportionally to each person’s subtotal; leftover tip cents go in participant order among people with a share. All displayed amounts use two decimal places.\n\n## Run\n\nOpen `index.html` directly in a modern browser. The app uses only local HTML, CSS, and JavaScript; it makes no network requests and needs no server or installation.\n\n## Build evidence\n\n- Root entry point: `index.html`; styles and behavior are in `styles.css` and `app.js`.\n- Keyboard-accessible labels, checkboxes, buttons, and visible focus indicators are included.\n- The layout adapts down to 360px wide.\n- Calculation rule: item shares are rounded in cents per item, and the rounded bill tip is distributed proportionally so displayed person totals add up to the bill total.\n",
+      "description": "Offline run instructions and explicit split and rounding rules."
+    }
+  ]
+}

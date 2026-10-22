@@ -1,0 +1,707 @@
+{
+  "caseId": "stack-calc",
+  "run": 1,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 21084,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "6/7",
+  "finalChecks": "6/7",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "6/7",
+    "6/7",
+    "6/7"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 127,
+  "reportedTokens": 122401,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T04:26:09.179Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T04:26:09.180Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T04:26:27.322Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Reverse-Polish Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T04:26:27.322Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T04:27:00.021Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T04:27:00.021Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T04:27:00.463Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T04:27:00.463Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8267812f-a930-4830-a147-eb57c4cf8c4c"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T04:27:18.240Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8267812f-a930-4830-a147-eb57c4cf8c4c",
+        "checks": 7
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T04:27:18.241Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "testPlanId": "8267812f-a930-4830-a147-eb57c4cf8c4c",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Push two numbers",
+        "passed": false,
+        "actual": "2 TOP · 3"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Add top values",
+        "passed": true,
+        "actual": "TOP · 5"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Subtract in RPN order",
+        "passed": true,
+        "actual": "TOP · 5"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Multiply top values",
+        "passed": true,
+        "actual": "TOP · 12"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Divide in RPN order",
+        "passed": true,
+        "actual": "TOP · 4"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Insufficient values error",
+        "passed": true,
+        "actual": "Need two values to run that operation."
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "name": "Clear stack",
+        "passed": true,
+        "actual": "Your stack is empty"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T04:27:22.575Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "e2e7cf1a-26ed-41ef-ad35-5abd5b767023",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-22T04:27:22.579Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "8267812f-a930-4830-a147-eb57c4cf8c4c",
+        "review": true
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-22T04:27:38.291Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "8267812f-a930-4830-a147-eb57c4cf8c4c",
+        "checks": 7,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "llmModel": "gpt-6-luna",
+        "verdicts": [
+          {
+            "name": "Push two numbers",
+            "verdict": "check-wrong",
+            "reason": "The check compares the whole stack text to `2`, while the requirements say number keys and Enter push numbers onto a visible stack; after these actions the stack should contain both 2 and 3. The exact"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-22T04:27:38.292Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "testPlanId": "8267812f-a930-4830-a147-eb57c4cf8c4c",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Push two numbers",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Add top values",
+        "passed": true,
+        "actual": "TOP · 5"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Subtract in RPN order",
+        "passed": true,
+        "actual": "TOP · 5"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Multiply top values",
+        "passed": true,
+        "actual": "TOP · 12"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Divide in RPN order",
+        "passed": true,
+        "actual": "TOP · 4"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Insufficient values error",
+        "passed": true,
+        "actual": "Need two values to run that operation."
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "name": "Clear stack",
+        "passed": true,
+        "actual": "Your stack is empty"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-22T04:27:40.516Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "21d58bc4-5295-4fbd-a779-474fe5532c9f",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-22T04:27:40.517Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-22T04:28:12.140Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-22T04:28:12.140Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-22T04:28:12.166Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-22T04:28:12.167Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "testPlanId": "8267812f-a930-4830-a147-eb57c4cf8c4c",
+        "checks": 7,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Push two numbers",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Add top values",
+        "passed": true,
+        "actual": "TOP · 5"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Subtract in RPN order",
+        "passed": true,
+        "actual": "TOP · 5"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Multiply top values",
+        "passed": true,
+        "actual": "TOP · 12"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Divide in RPN order",
+        "passed": true,
+        "actual": "TOP · 4"
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Insufficient values error",
+        "passed": true,
+        "actual": "Need two values to run that operation."
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "name": "Clear stack",
+        "passed": true,
+        "actual": "Your stack is empty"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-22T04:28:14.438Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d280dc6e-bb56-45a5-a54e-a4fa95bf66b1",
+        "status": "failed",
+        "passed": 6,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 43,
+      "at": "2026-10-22T04:28:14.443Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Push two numbers",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-number=\"3\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          }
+        ],
+        "selector": "#stack li",
+        "expected": "2"
+      },
+      {
+        "name": "Add top values",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-number=\"3\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-operation=\"+\"]"
+          }
+        ],
+        "selector": "#stack",
+        "expected": "TOP · 5"
+      },
+      {
+        "name": "Subtract in RPN order",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"9\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-number=\"4\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-operation=\"-\"]"
+          }
+        ],
+        "selector": "#stack",
+        "expected": "TOP · 5"
+      },
+      {
+        "name": "Multiply top values",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"3\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-number=\"4\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-operation=\"*\"]"
+          }
+        ],
+        "selector": "#stack",
+        "expected": "TOP · 12"
+      },
+      {
+        "name": "Divide in RPN order",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"8\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-number=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-operation=\"/\"]"
+          }
+        ],
+        "selector": "#stack",
+        "expected": "TOP · 4"
+      },
+      {
+        "name": "Insufficient values error",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"7\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-operation=\"+\"]"
+          }
+        ],
+        "selector": "#message",
+        "expected": "Need two values to run that operation."
+      },
+      {
+        "name": "Clear stack",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[data-number=\"2\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "[data-number=\"3\"]"
+          },
+          {
+            "type": "click",
+            "selector": "#enter"
+          },
+          {
+            "type": "click",
+            "selector": "#clear"
+          }
+        ],
+        "selector": "#stack",
+        "expected": "Your stack is empty"
+      }
+    ],
+    "limitations": [
+      "Display check confirms rendered stack content; separate count-label wording is not checked."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24799,
+      "completion_tokens": 552,
+      "total_tokens": 25351
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel RPN Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"calculator\" aria-labelledby=\"title\">\n    <header class=\"heading\">\n      <span class=\"eyebrow\">POCKET TOOL · 01</span>\n      <h1 id=\"title\">Pixel RPN</h1>\n      <p>Push numbers. Work from the stack.</p>\n    </header>\n\n    <section class=\"stack-panel\" aria-labelledby=\"stack-title\">\n      <div class=\"section-heading\">\n        <h2 id=\"stack-title\">Stack</h2>\n        <span id=\"stack-count\" class=\"stack-count\">0 values</span>\n      </div>\n      <ol id=\"stack\" class=\"stack\" aria-live=\"polite\" aria-relevant=\"additions removals text\">\n        <li class=\"empty-state\">Your stack is empty</li>\n      </ol>\n      <p id=\"message\" class=\"message\" role=\"status\" aria-live=\"polite\"></p>\n    </section>\n\n    <section class=\"keypad\" aria-label=\"Calculator controls\">\n      <div class=\"number-keys\" aria-label=\"Number keys\">\n        <button type=\"button\" data-number=\"7\">7</button>\n        <button type=\"button\" data-number=\"8\">8</button>\n        <button type=\"button\" data-number=\"9\">9</button>\n        <button type=\"button\" data-number=\"4\">4</button>\n        <button type=\"button\" data-number=\"5\">5</button>\n        <button type=\"button\" data-number=\"6\">6</button>\n        <button type=\"button\" data-number=\"1\">1</button>\n        <button type=\"button\" data-number=\"2\">2</button>\n        <button type=\"button\" data-number=\"3\">3</button>\n        <button type=\"button\" data-number=\"0\" class=\"zero\">0</button>\n        <button type=\"button\" data-number=\".\" aria-label=\"Decimal point\">.</button>\n      </div>\n      <div class=\"action-keys\" aria-label=\"Operations\">\n        <button type=\"button\" data-operation=\"+\" aria-label=\"Add\">+</button>\n        <button type=\"button\" data-operation=\"-\" aria-label=\"Subtract\">−</button>\n        <button type=\"button\" data-operation=\"*\" aria-label=\"Multiply\">×</button>\n        <button type=\"button\" data-operation=\"/\" aria-label=\"Divide\">÷</button>\n      </div>\n    </section>\n\n    <div class=\"footer-actions\">\n      <button type=\"button\" id=\"enter\" class=\"enter-button\">Enter <span aria-hidden=\"true\">↵</span></button>\n      <button type=\"button\" id=\"clear\" class=\"clear-button\">Clear stack</button>\n    </div>\n    <p class=\"hint\">Keyboard: type a number, press Enter, or use + − * /</p>\n  </main>\n</body>\n</html>\n",
+      "description": "Calculator page with labeled stack, keypad, and controls."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  color-scheme: light;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  font-size: 16px;\n  color: #183b36;\n  background: #dce9d7;\n  font-synthesis: none;\n}\n\n* { box-sizing: border-box; }\n\nbody {\n  min-width: 360px;\n  min-height: 100vh;\n  margin: 0;\n  padding: 32px 16px;\n  display: grid;\n  place-items: center;\n  background-color: #dce9d7;\n  background-image: radial-gradient(#bfd2bd 1px, transparent 1px);\n  background-size: 18px 18px;\n}\n\nbutton { font: inherit; }\n\n.calculator {\n  width: min(100%, 440px);\n  padding: 30px;\n  border: 3px solid #183b36;\n  border-radius: 18px;\n  background: #f8f5e9;\n  box-shadow: 8px 8px 0 #183b36;\n}\n\n.heading { margin-bottom: 24px; }\n.eyebrow { color: #688d68; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.13em; }\nh1 { margin: 5px 0 2px; font-size: 2rem; line-height: 1.2; }\n.heading p { margin: 0; color: #55726a; }\n\n.stack-panel {\n  min-height: 150px;\n  padding: 16px;\n  border: 2px solid #183b36;\n  border-radius: 12px;\n  background: #e9f1df;\n}\n.section-heading { display: flex; align-items: baseline; justify-content: space-between; }\nh2 { margin: 0; font-size: 1rem; }\n.stack-count { color: #55726a; font-size: 0.875rem; }\n.stack { display: flex; flex-direction: column-reverse; gap: 6px; max-height: 156px; overflow-y: auto; margin: 12px 0 0; padding: 0; list-style: none; }\n.stack li { padding: 8px 10px; border-radius: 6px; background: #fffdf5; font-variant-numeric: tabular-nums; font-weight: 700; }\n.stack li:first-child { border: 1px solid #91af8d; }\n.stack .empty-state { border: 0; background: transparent; color: #71877a; font-weight: 400; text-align: center; }\n.message { min-height: 1.25em; margin: 8px 0 0; color: #a44735; font-size: 0.9rem; }\n\n.keypad { display: grid; grid-template-columns: 1fr 70px; gap: 10px; margin-top: 18px; }\n.number-keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }\n.action-keys { display: grid; grid-template-rows: repeat(4, 1fr); gap: 8px; }\n.keypad button, .footer-actions button { min-height: 52px; border: 2px solid #183b36; border-radius: 9px; color: #183b36; font-weight: 750; cursor: pointer; transition: transform 100ms ease, box-shadow 100ms ease, background 100ms ease; }\n.number-keys button { background: #fffdf5; font-size: 1.15rem; }\n.number-keys .zero { grid-column: span 2; }\n.action-keys button { background: #f2c66d; font-size: 1.35rem; }\n.footer-actions { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 10px; }\n.footer-actions .enter-button { background: #183b36; color: #f8f5e9; }\n.enter-button span { margin-left: 6px; }\n.footer-actions .clear-button { padding: 0 15px; background: #f8f5e9; }\nbutton:hover { transform: translateY(-2px); box-shadow: 0 3px 0 #183b36; }\nbutton:active { transform: translateY(1px); box-shadow: none; }\nbutton:focus-visible { outline: 3px solid #c06b45; outline-offset: 3px; }\n.hint { margin: 16px 0 0; color: #55726a; font-size: 0.85rem; text-align: center; }\n\n[hidden] { display: none !important; }\n\n@media (max-width: 420px) {\n  body { padding: 20px 14px; }\n  .calculator { padding: 22px 18px; box-shadow: 5px 5px 0 #183b36; }\n  .keypad { grid-template-columns: 1fr 60px; }\n}\n",
+      "description": "Responsive themed styling with visible focus, hover, and pressed states."
+    },
+    {
+      "path": "app.js",
+      "content": "const stack = [];\nconst stackList = document.querySelector(\"#stack\");\nconst countLabel = document.querySelector(\"#stack-count\");\nconst message = document.querySelector(\"#message\");\nlet entry = \"\";\n\nfunction render() {\n  stackList.replaceChildren();\n  if (stack.length === 0) {\n    const empty = document.createElement(\"li\");\n    empty.className = \"empty-state\";\n    empty.textContent = \"Your stack is empty\";\n    stackList.append(empty);\n  } else {\n    stack.forEach((value, index) => {\n      const item = document.createElement(\"li\");\n      item.textContent = `${index === stack.length - 1 ? \"TOP · \" : \"\"}${value}`;\n      stackList.append(item);\n    });\n  }\n  countLabel.textContent = `${stack.length} ${stack.length === 1 ? \"value\" : \"values\"}`;\n}\n\nfunction pushEntry() {\n  if (!entry || entry === \".\") return;\n  const value = Number(entry);\n  if (Number.isFinite(value)) stack.push(value);\n  entry = \"\";\n  render();\n}\n\nfunction operate(operator) {\n  pushEntry();\n  message.textContent = \"\";\n  if (stack.length < 2) {\n    message.textContent = \"Need two values to run that operation.\";\n    return;\n  }\n  const right = stack.pop();\n  const left = stack.pop();\n  let result;\n  if (operator === \"+\") result = left + right;\n  if (operator === \"-\") result = left - right;\n  if (operator === \"*\") result = left * right;\n  if (operator === \"/\") result = left / right;\n  if (!Number.isFinite(result)) {\n    message.textContent = \"That operation has no finite result.\";\n    stack.push(left, right);\n    render();\n    return;\n  }\n  stack.push(Number(result.toPrecision(12)));\n  render();\n}\n\nfunction addDigit(digit) {\n  message.textContent = \"\";\n  if (digit === \".\") {\n    if (!entry) entry = \"0\";\n    if (entry.includes(\".\")) return;\n  }\n  entry += digit;\n}\n\ndocument.querySelectorAll(\"[data-number]\").forEach(button => {\n  button.addEventListener(\"click\", () => addDigit(button.dataset.number));\n});\ndocument.querySelectorAll(\"[data-operation]\").forEach(button => {\n  button.addEventListener(\"click\", () => operate(button.dataset.operation));\n});\ndocument.querySelector(\"#enter\").addEventListener(\"click\", () => {\n  message.textContent = \"\";\n  if (!entry) {\n    message.textContent = \"Enter a number first.\";\n    return;\n  }\n  pushEntry();\n});\ndocument.querySelector(\"#clear\").addEventListener(\"click\", () => {\n  stack.length = 0;\n  entry = \"\";\n  message.textContent = \"\";\n  render();\n});\n\ndocument.addEventListener(\"keydown\", event => {\n  if (/^[0-9.]$/.test(event.key)) {\n    addDigit(event.key);\n  } else if (event.key === \"Enter\") {\n    event.preventDefault();\n    document.querySelector(\"#enter\").click();\n  } else if ([\"+\", \"-\", \"*\", \"/\"].includes(event.key)) {\n    event.preventDefault();\n    operate(event.key);\n  } else if (event.key === \"Escape\" || event.key.toLowerCase() === \"c\") {\n    document.querySelector(\"#clear\").click();\n  }\n});\n\nrender();\n",
+      "description": "Plain JavaScript keypad and keyboard handling for stack operations."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel RPN Calculator\n\nAn offline reverse-Polish notation calculator built with HTML, CSS, and plain JavaScript.\n\n## Run it\n\nOpen `index.html` in any modern browser. No server, installation, or network connection is needed.\n\n## Use it\n\n- Click number keys or type digits to enter a number, then press **Enter** to push it onto the stack.\n- Choose `+`, `−`, `×`, or `÷` to combine the top two stack values. The second value is the right operand for subtraction and division.\n- **Clear stack** empties the stack. Keyboard shortcuts are `Escape` or `C` to clear.\n- If an operation has fewer than two values, an error appears and the stack is preserved.\n",
+      "description": "Instructions to run and use the offline calculator."
+    }
+  ]
+}

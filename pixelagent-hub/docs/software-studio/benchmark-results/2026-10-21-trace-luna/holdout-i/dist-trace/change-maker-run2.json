@@ -1,0 +1,658 @@
+{
+  "caseId": "change-maker",
+  "run": 2,
+  "arm": "dist-trace",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\trace",
+  "managerTokens": 20973,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 3,
+  "compileFailures": 1,
+  "firstChecks": "5/6",
+  "finalChecks": "5/6",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": true,
+  "checkRuns": [
+    "5/6",
+    "5/6",
+    "5/6"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 158,
+  "reportedTokens": 145096,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T04:17:01.968Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T04:17:01.969Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T04:17:19.236Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Change Calculator"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T04:17:19.236Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T04:17:48.130Z",
+      "type": "build_failed",
+      "round": 1,
+      "data": {
+        "errors": [
+          "Your previous reply could not be used: Expected ',' or ']' after array element in JSON at position 7059 (line 1 column 7060) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" string"
+        ]
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T04:17:48.130Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T04:18:19.596Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T04:18:19.596Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T04:18:20.072Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T04:18:20.073Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T04:18:40.609Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d",
+        "checks": 6
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T04:18:40.609Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "testPlanId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T04:18:44.592Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "name": "Mixed denominations",
+        "passed": true,
+        "actual": "$34.60"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T04:18:44.593Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "name": "Fewest pieces breakdown",
+        "passed": false,
+        "actual": "6 pieces"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T04:18:44.593Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "name": "Smallest coin",
+        "passed": true,
+        "actual": "5¢ coin × 1"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T04:18:44.593Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "name": "Exact payment",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T04:18:44.593Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "name": "Reject payment below price",
+        "passed": true,
+        "actual": "The amount paid must be at least the price."
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T04:18:44.593Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "name": "Reject non-5¢ amount",
+        "passed": true,
+        "actual": "Enter valid amounts in 5¢ increments."
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-22T04:18:44.593Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "5e6edaa0-3779-4955-8cd8-ec36349054e9",
+        "status": "failed",
+        "passed": 5,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-22T04:18:44.595Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d",
+        "review": true
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-22T04:19:00.244Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d",
+        "checks": 6,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "llmModel": "gpt-6-luna",
+        "verdicts": [
+          {
+            "name": "Fewest pieces breakdown",
+            "verdict": "check-wrong",
+            "reason": "The check says the greedy breakdown uses a $20, $10, $2, two $1s, 50¢, and 10¢, which totals 7 pieces. But $37.85 − $3.25 = $34.60, whose fewest pieces are $20, $10, $2, two $1s, and 50¢: 6 pieces. Th"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-22T04:19:00.245Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "testPlanId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "name": "Mixed denominations",
+        "passed": true,
+        "actual": "$34.60"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "name": "Fewest pieces breakdown",
+        "passed": false,
+        "actual": "6 pieces"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "name": "Smallest coin",
+        "passed": true,
+        "actual": "5¢ coin × 1"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "name": "Exact payment",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "name": "Reject payment below price",
+        "passed": true,
+        "actual": "The amount paid must be at least the price."
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "name": "Reject non-5¢ amount",
+        "passed": true,
+        "actual": "Enter valid amounts in 5¢ increments."
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-22T04:19:04.136Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "9e7578a0-a0ee-486c-9828-1a3927a3fa14",
+        "status": "failed",
+        "passed": 5,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-22T04:19:04.140Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-22T04:19:33.304Z",
+      "type": "code_ready",
+      "round": 3,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-22T04:19:33.304Z",
+      "type": "phase",
+      "round": 3,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-22T04:19:33.332Z",
+      "type": "build_passed",
+      "round": 3
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-22T04:19:33.332Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "testPlanId": "fd53f3e1-5673-4ca2-a278-30cefbd1934d",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "name": "Mixed denominations",
+        "passed": true,
+        "actual": "$34.60"
+      }
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "name": "Fewest pieces breakdown",
+        "passed": false,
+        "actual": "6 pieces"
+      }
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "name": "Smallest coin",
+        "passed": true,
+        "actual": "5¢ coin × 1"
+      }
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "name": "Exact payment",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 39,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "name": "Reject payment below price",
+        "passed": true,
+        "actual": "The amount paid must be at least the price."
+      }
+    },
+    {
+      "seq": 40,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "name": "Reject non-5¢ amount",
+        "passed": true,
+        "actual": "Enter valid amounts in 5¢ increments."
+      }
+    },
+    {
+      "seq": 41,
+      "at": "2026-10-22T04:19:37.293Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "9ec276e9-8628-420c-821d-9c53933548e5",
+        "status": "failed",
+        "passed": 5,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 42,
+      "at": "2026-10-22T04:19:37.296Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v3/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Mixed denominations",
+        "trace": "Initial result hidden. Set price 3.25 and paid 37.85; submit. Change = 34.60 = 1×20 + 1×10 + 1×2 + 2×1 + 1×0.50 + 1×0.10; 7 pieces.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3.25"
+          },
+          {
+            "type": "input",
+            "selector": "#paid",
+            "value": "37.85"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#change-total",
+        "expected": "$34.60"
+      },
+      {
+        "name": "Fewest pieces breakdown",
+        "trace": "Initial result hidden. Set price 3.25 and paid 37.85; submit. Change is 37.85 − 3.25 = 34.60; 20 + 10 + 2 + 1 + 1 + 0.50 = 34.50, then 0.10: 7 pieces.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "3.25"
+          },
+          {
+            "type": "input",
+            "selector": "#paid",
+            "value": "37.85"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#piece-count",
+        "expected": "7 pieces"
+      },
+      {
+        "name": "Smallest coin",
+        "trace": "Initial result hidden. Set price 0.00 and paid 0.05; submit. 5¢ − 0¢ = 5¢, represented by one 5¢ coin.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "0.00"
+          },
+          {
+            "type": "input",
+            "selector": "#paid",
+            "value": "0.05"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#breakdown li",
+        "expected": "5¢ coin × 1"
+      },
+      {
+        "name": "Exact payment",
+        "trace": "Initial result hidden. Set price and paid to 10.00; submit. 10.00 − 10.00 = 0.00, so 0 pieces and exact payment message.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "10.00"
+          },
+          {
+            "type": "input",
+            "selector": "#paid",
+            "value": "10.00"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#no-change",
+        "expected": "true",
+        "assertion": "visible"
+      },
+      {
+        "name": "Reject payment below price",
+        "trace": "Initial result hidden. Set price 5.00 and paid 4.95; submit. 4.95 < 5.00, so an error appears and no result is shown.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "5.00"
+          },
+          {
+            "type": "input",
+            "selector": "#paid",
+            "value": "4.95"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#error",
+        "expected": "The amount paid must be at least the price."
+      },
+      {
+        "name": "Reject non-5¢ amount",
+        "trace": "Initial result hidden. Set price 1.01 and paid 2.00; submit. 1.01 is not a 5¢ increment, so validation error appears.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#price",
+            "value": "1.01"
+          },
+          {
+            "type": "input",
+            "selector": "#paid",
+            "value": "2.00"
+          },
+          {
+            "type": "click",
+            "selector": "button[type=\"submit\"]"
+          }
+        ],
+        "selector": "#error",
+        "expected": "Enter valid amounts in 5¢ increments."
+      }
+    ],
+    "limitations": [
+      "Breakdown correctness for all nine denominations is not fully covered; the mixed case checks 20, 10, 2, 1, 50¢, and 10¢, while 5¢ is checked separately.",
+      "No direct check covers 5¢ coin counts greater than one, zero change breakdown, or malformed and negative values."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24802,
+      "completion_tokens": 771,
+      "total_tokens": 25573
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "failed",
+      "errors": [
+        "Your previous reply could not be used: Expected ',' or ']' after array element in JSON at position 7059 (line 1 column 7060) Reply with exactly one JSON object {language, files:[{path, content, description}], explanation, dependencies}; escape quotes, backslashes and newlines inside \"content\" strings."
+      ]
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 3,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <meta name=\"theme-color\" content=\"#182c2a\">\n  <title>Pixel Change Calculator</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"card\">\n    <header class=\"header\">\n      <span class=\"eyebrow\">CASH DESK · QUICK TOOL</span>\n      <h1>Pixel Change</h1>\n      <p>Enter the price and payment to find the change, down to the smallest coin.</p>\n    </header>\n\n    <form id=\"change-form\" novalidate>\n      <div class=\"fields\">\n        <label class=\"field\" for=\"price\">\n          <span>Price</span>\n          <span class=\"input-wrap\"><span aria-hidden=\"true\">$</span><input id=\"price\" name=\"price\" type=\"number\" min=\"0\" step=\"0.05\" inputmode=\"decimal\" placeholder=\"0.00\" required></span>\n        </label>\n        <label class=\"field\" for=\"paid\">\n          <span>Amount paid</span>\n          <span class=\"input-wrap\"><span aria-hidden=\"true\">$</span><input id=\"paid\" name=\"paid\" type=\"number\" min=\"0\" step=\"0.05\" inputmode=\"decimal\" placeholder=\"0.00\" required></span>\n        </label>\n      </div>\n      <p class=\"hint\">Amounts must be in 5¢ increments.</p>\n      <p id=\"error\" class=\"error\" role=\"alert\" hidden></p>\n      <button type=\"submit\">Calculate change <span aria-hidden=\"true\">→</span></button>\n    </form>\n\n    <section id=\"result\" class=\"result\" aria-live=\"polite\" aria-atomic=\"true\" hidden>\n      <div class=\"change-total\"><span>Change due</span><strong id=\"change-total\">$0.00</strong></div>\n      <div class=\"breakdown-heading\"><h2>Fewest pieces</h2><span id=\"piece-count\">0 pieces</span></div>\n      <ul id=\"breakdown\" class=\"breakdown\"></ul>\n      <p id=\"no-change\" class=\"no-change\" hidden>Exact payment — no change needed.</p>\n    </section>\n    <footer>Denominations: $20, $10, $5, $2, $1, 50¢, 20¢, 10¢, 5¢</footer>\n  </main>\n</body>\n</html>\n",
+      "description": "Semantic calculator page with labeled input fields and accessible result output."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  color-scheme: light;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  font-size: 16px;\n  color: #182c2a;\n  background: #e9eee7;\n}\n\n* { box-sizing: border-box; }\n[hidden] { display: none !important; }\n\nbody {\n  min-width: 360px;\n  min-height: 100vh;\n  margin: 0;\n  padding: 32px 18px;\n  display: grid;\n  place-items: center;\n  background: radial-gradient(ellipse at 50% 0%, #f8f6ed 0, #e9eee7 65%);\n}\n\n.card {\n  width: min(100%, 520px);\n  padding: clamp(24px, 6vw, 42px);\n  border: 1px solid #d3ddd3;\n  border-radius: 24px;\n  background: #fffefa;\n  box-shadow: 0 20px 60px #243c3018;\n}\n\n.header { margin-bottom: 30px; }\n.eyebrow { color: #60806d; font-size: .78rem; font-weight: 750; letter-spacing: .12em; }\nh1 { margin: 10px 0 8px; font-size: clamp(2rem, 8vw, 2.7rem); line-height: 1.05; letter-spacing: -.05em; }\n.header p { max-width: 390px; margin: 0; color: #62716a; line-height: 1.55; }\n\n.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }\n.field { display: grid; gap: 8px; font-weight: 650; }\n.input-wrap { display: flex; align-items: center; gap: 8px; padding: 0 14px; border: 1px solid #cbd6cc; border-radius: 12px; background: #fff; color: #74827a; }\n.input-wrap:focus-within { border-color: #34745a; box-shadow: 0 0 0 3px #34745a28; }\ninput { width: 100%; min-width: 0; padding: 13px 0; border: 0; outline: 0; background: transparent; color: #182c2a; font: inherit; font-variant-numeric: tabular-nums; }\n.hint { margin: 10px 0 18px; color: #74827a; font-size: .9rem; }\n.error { margin: -6px 0 16px; color: #a33b31; font-weight: 600; }\n\nbutton { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 18px; border: 0; border-radius: 12px; background: #245b46; color: #fffefa; font: inherit; font-weight: 700; cursor: pointer; transition: background .15s ease, transform .15s ease, box-shadow .15s ease; }\nbutton:hover { background: #1b4938; box-shadow: 0 6px 16px #245b4630; }\nbutton:active { transform: translateY(1px) scale(.99); }\nbutton:focus-visible { outline: 3px solid #d09a48; outline-offset: 3px; }\n\n.result { margin-top: 26px; padding-top: 24px; border-top: 1px solid #e1e7df; }\n.change-total { display: flex; justify-content: space-between; align-items: baseline; color: #62716a; }\n.change-total strong { color: #245b46; font-size: 2rem; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }\n.breakdown-heading { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 10px; }\nh2 { margin: 0; font-size: 1.1rem; }\n#piece-count { color: #74827a; font-size: .9rem; }\n.breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; padding: 0; list-style: none; }\n.breakdown li { display: flex; justify-content: space-between; gap: 8px; padding: 11px 12px; border-radius: 10px; background: #f0f4ed; }\n.breakdown li span:last-child { color: #245b46; font-weight: 750; }\n.no-change { margin: 12px 0 0; color: #62716a; }\nfooter { margin-top: 24px; padding-top: 18px; border-top: 1px solid #e1e7df; color: #74827a; font-size: .84rem; line-height: 1.5; }\n\n@media (max-width: 420px) {\n  body { padding: 18px 12px; }\n  .fields { grid-template-columns: 1fr; gap: 12px; }\n}\n",
+      "description": "Responsive styling with a cohesive palette and visible focus, hover, and pressed states."
+    },
+    {
+      "path": "app.js",
+      "content": "const form = document.getElementById('change-form');\nconst priceInput = document.getElementById('price');\nconst paidInput = document.getElementById('paid');\nconst error = document.getElementById('error');\nconst result = document.getElementById('result');\nconst totalOutput = document.getElementById('change-total');\nconst pieceCount = document.getElementById('piece-count');\nconst breakdown = document.getElementById('breakdown');\nconst noChange = document.getElementById('no-change');\n\nconst denominations = [\n  { cents: 2000, label: '$20 note' },\n  { cents: 1000, label: '$10 note' },\n  { cents: 500, label: '$5 note' },\n  { cents: 200, label: '$2 note' },\n  { cents: 100, label: '$1 coin' },\n  { cents: 50, label: '50¢ coin' },\n  { cents: 20, label: '20¢ coin' },\n  { cents: 10, label: '10¢ coin' },\n  { cents: 5, label: '5¢ coin' }\n];\n\nfunction toCents(value) {\n  const amount = Number(value);\n  if (!Number.isFinite(amount) || amount < 0) return null;\n  const cents = Math.round(amount * 100);\n  return Math.abs(amount * 100 - cents) < 0.000001 && cents % 5 === 0 ? cents : null;\n}\n\nfunction formatMoney(cents) {\n  return `$${(cents / 100).toFixed(2)}`;\n}\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  error.hidden = true;\n  result.hidden = true;\n\n  const price = toCents(priceInput.value);\n  const paid = toCents(paidInput.value);\n  if (price === null || paid === null) {\n    error.textContent = 'Enter valid amounts in 5¢ increments.';\n    error.hidden = false;\n    (price === null ? priceInput : paidInput).focus();\n    return;\n  }\n  if (paid < price) {\n    error.textContent = 'The amount paid must be at least the price.';\n    error.hidden = false;\n    paidInput.focus();\n    return;\n  }\n\n  let remaining = paid - price;\n  let pieces = 0;\n  breakdown.replaceChildren();\n  for (const denomination of denominations) {\n    const count = Math.floor(remaining / denomination.cents);\n    if (count === 0) continue;\n    remaining -= count * denomination.cents;\n    pieces += count;\n    const item = document.createElement('li');\n    const label = document.createElement('span');\n    const quantity = document.createElement('span');\n    label.textContent = denomination.label;\n    quantity.textContent = `× ${count}`;\n    item.append(label, quantity);\n    breakdown.append(item);\n  }\n\n  totalOutput.textContent = formatMoney(paid - price);\n  pieceCount.textContent = `${pieces} ${pieces === 1 ? 'piece' : 'pieces'}`;\n  noChange.hidden = pieces !== 0;\n  result.hidden = false;\n});\n",
+      "description": "Validates amounts and calculates change using integer cents and the specified denominations."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Change Calculator\n\nA small offline browser calculator that finds change and breaks it into the fewest available notes and coins: $20, $10, $5, $2, $1, 50¢, 20¢, 10¢, and 5¢.\n\n## Run\n\nOpen `index.html` in any modern browser. No server, packages, or internet connection are needed.\n\nEnter the price and amount paid in 5¢ increments, then choose **Calculate change**. The calculator rejects invalid amounts and payments below the price. Change is calculated using integer cents to avoid floating-point currency errors.\n",
+      "description": "Offline run instructions and supported denominations."
+    }
+  ]
+}

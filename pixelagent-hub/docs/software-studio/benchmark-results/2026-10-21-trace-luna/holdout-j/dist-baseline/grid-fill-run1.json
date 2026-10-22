@@ -1,0 +1,502 @@
+{
+  "caseId": "grid-fill",
+  "run": 1,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 21052,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "1/4",
+  "finalChecks": "4/4",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 3,
+  "coderRepair": true,
+  "checkRuns": [
+    "1/4",
+    "3/4",
+    "4/4"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 141,
+  "reportedTokens": 122588,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-21T15:22:58.286Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-21T15:22:58.286Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-21T15:23:16.534Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Flood-Fill Toy"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-21T15:23:16.534Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-21T15:23:55.587Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-21T15:23:55.587Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-21T15:23:56.065Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-21T15:23:56.065Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-21T15:24:13.405Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a",
+        "checks": 4
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-21T15:24:13.406Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "0c7153a5-512c-423e-954b-6ab69906c03a",
+        "testPlanId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-21T15:24:14.750Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0c7153a5-512c-423e-954b-6ab69906c03a",
+        "name": "Initial 6x6 board has 36 tiles",
+        "passed": true,
+        "actual": "36"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-21T15:24:14.750Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0c7153a5-512c-423e-954b-6ab69906c03a",
+        "name": "Selecting teal and clicking a different tile fills its connected area and counts one move",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-21T15:24:14.750Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0c7153a5-512c-423e-954b-6ab69906c03a",
+        "name": "Clicking a tile already matching the selected color does not count a move",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-21T15:24:14.750Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0c7153a5-512c-423e-954b-6ab69906c03a",
+        "name": "Start over resets the move count",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-21T15:24:14.750Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "0c7153a5-512c-423e-954b-6ab69906c03a",
+        "status": "failed",
+        "passed": 1,
+        "failed": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-21T15:24:14.753Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a",
+        "review": true
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-21T15:24:32.583Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a",
+        "checks": 4,
+        "review": true,
+        "revised": 3,
+        "dropped": 0,
+        "llmModel": "gpt-6-luna",
+        "verdicts": [
+          {
+            "name": "Selecting teal and clicking a different tile fills its connected area and counts one move",
+            "verdict": "check-wrong",
+            "reason": "The check clicks tiles using aria-labels that omit the color, but the app labels each tile with its row, column, and color, so those selectors match nothing. The selector contradicts the app’s require"
+          },
+          {
+            "name": "Clicking a tile already matching the selected color does not count a move",
+            "verdict": "check-wrong",
+            "reason": "The check’s tile selector omits the color included in each tile’s aria-label, so it matches nothing. That selector contradicts the app’s required accessible labels; the expected move count is valid."
+          },
+          {
+            "name": "Start over resets the move count",
+            "verdict": "check-wrong",
+            "reason": "The check’s tile selectors omit the color included in each tile’s aria-label, so the first action matches nothing. That selector contradicts the app’s required accessible labels; the reset assertion i"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-21T15:24:32.584Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "d541b6ee-56e8-4228-af62-51a62e171014",
+        "testPlanId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-21T15:24:35.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d541b6ee-56e8-4228-af62-51a62e171014",
+        "name": "Initial 6x6 board has 36 tiles",
+        "passed": true,
+        "actual": "36"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-21T15:24:35.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d541b6ee-56e8-4228-af62-51a62e171014",
+        "name": "Selecting teal and clicking a different tile fills its connected area and counts one move",
+        "passed": false,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-21T15:24:35.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d541b6ee-56e8-4228-af62-51a62e171014",
+        "name": "Clicking a tile already matching the selected color does not count a move",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-21T15:24:35.881Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "d541b6ee-56e8-4228-af62-51a62e171014",
+        "name": "Start over resets the move count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-21T15:24:35.881Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "d541b6ee-56e8-4228-af62-51a62e171014",
+        "status": "failed",
+        "passed": 3,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-21T15:24:35.883Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-21T15:25:14.824Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-21T15:25:14.824Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-21T15:25:14.880Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-21T15:25:14.881Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "7b1cf206-9eeb-472d-ac58-ff8f1132d6b2",
+        "testPlanId": "dbdb6d19-2bdb-469b-acc0-2f95aa2c880a",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 29,
+      "at": "2026-10-21T15:25:16.229Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b1cf206-9eeb-472d-ac58-ff8f1132d6b2",
+        "name": "Initial 6x6 board has 36 tiles",
+        "passed": true,
+        "actual": "36"
+      }
+    },
+    {
+      "seq": 30,
+      "at": "2026-10-21T15:25:16.229Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b1cf206-9eeb-472d-ac58-ff8f1132d6b2",
+        "name": "Selecting teal and clicking a different tile fills its connected area and counts one move",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 31,
+      "at": "2026-10-21T15:25:16.229Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b1cf206-9eeb-472d-ac58-ff8f1132d6b2",
+        "name": "Clicking a tile already matching the selected color does not count a move",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 32,
+      "at": "2026-10-21T15:25:16.229Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "7b1cf206-9eeb-472d-ac58-ff8f1132d6b2",
+        "name": "Start over resets the move count",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 33,
+      "at": "2026-10-21T15:25:16.229Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "7b1cf206-9eeb-472d-ac58-ff8f1132d6b2",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 34,
+      "at": "2026-10-21T15:25:16.232Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial 6x6 board has 36 tiles",
+        "actions": [],
+        "selector": ".tile",
+        "expected": "36",
+        "assertion": "count"
+      },
+      {
+        "name": "Selecting teal and clicking a different tile fills its connected area and counts one move",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#grid .tile[aria-label='Row 1, column 1, coral']"
+          },
+          {
+            "type": "click",
+            "selector": ".color-button[data-color='teal']"
+          },
+          {
+            "type": "click",
+            "selector": "#grid .tile[aria-label='Row 1, column 3, teal']"
+          }
+        ],
+        "selector": "#move-count",
+        "expected": "1"
+      },
+      {
+        "name": "Clicking a tile already matching the selected color does not count a move",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#grid .tile[aria-label='Row 1, column 1, coral']"
+          }
+        ],
+        "selector": "#move-count",
+        "expected": "0"
+      },
+      {
+        "name": "Start over resets the move count",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#grid .tile[aria-label='Row 1, column 1, coral']"
+          },
+          {
+            "type": "click",
+            "selector": ".color-button[data-color='teal']"
+          },
+          {
+            "type": "click",
+            "selector": "#grid .tile[aria-label='Row 1, column 3, teal']"
+          },
+          {
+            "type": "click",
+            "selector": "#reset"
+          }
+        ],
+        "selector": "#move-count",
+        "expected": "0"
+      }
+    ],
+    "limitations": [
+      "Cannot assert every tile's connected-area color change in one check; tile labels expose colors but only one element can be compared per check.",
+      "The fixed board cannot be completed within 8 actions, so the One color! completion message is not directly covered."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24718,
+      "completion_tokens": 340,
+      "total_tokens": 25058
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <meta name=\"theme-color\" content=\"#f4efe5\">\n  <title>Pixel Flood-Fill Toy</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"game.js\" defer></script>\n</head>\n<body>\n  <main class=\"card\" aria-labelledby=\"title\">\n    <header>\n      <p class=\"eyebrow\">A little color puzzle</p>\n      <h1 id=\"title\">Pixel Flood-Fill</h1>\n      <p class=\"intro\">Choose a color, then click a tile to grow your connected area.</p>\n    </header>\n\n    <section class=\"game\" aria-label=\"Game\">\n      <div class=\"status-row\">\n        <p class=\"moves\">Moves <span id=\"move-count\" aria-live=\"polite\">0</span></p>\n        <p id=\"message\" class=\"message\" aria-live=\"polite\">Pick a color to begin.</p>\n      </div>\n      <div id=\"grid\" class=\"grid\" role=\"group\" aria-label=\"6 by 6 color grid\"></div>\n      <fieldset class=\"palette\">\n        <legend>Choose a color</legend>\n        <div class=\"color-options\">\n          <button class=\"color-button\" type=\"button\" data-color=\"coral\" aria-label=\"Choose coral\" aria-pressed=\"true\"><span class=\"swatch coral\"></span>Coral</button>\n          <button class=\"color-button\" type=\"button\" data-color=\"teal\" aria-label=\"Choose teal\" aria-pressed=\"false\"><span class=\"swatch teal\"></span>Teal</button>\n          <button class=\"color-button\" type=\"button\" data-color=\"gold\" aria-label=\"Choose gold\" aria-pressed=\"false\"><span class=\"swatch gold\"></span>Gold</button>\n        </div>\n      </fieldset>\n      <button id=\"reset\" class=\"reset-button\" type=\"button\">Start over</button>\n    </section>\n    <p class=\"hint\">Tiles connect up, down, left, and right.</p>\n  </main>\n</body>\n</html>\n",
+      "description": "Offline game document and accessible controls."
+    },
+    {
+      "path": "styles.css",
+      "content": ":root {\n  color-scheme: light;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  font-size: 16px;\n  color: #253b3a;\n  background: #f4efe5;\n  font-synthesis: none;\n  text-rendering: optimizeLegibility;\n  --coral: #e87962;\n  --teal: #43a89b;\n  --gold: #efc45f;\n}\n\n* { box-sizing: border-box; }\nbody {\n  min-width: 320px;\n  min-height: 100vh;\n  margin: 0;\n  padding: 28px 16px;\n  display: grid;\n  place-items: center;\n  background: radial-gradient(ellipse at top, #fffaf0 0, #f4efe5 68%);\n}\n.card {\n  width: min(100%, 500px);\n  padding: clamp(24px, 6vw, 40px);\n  border: 1px solid #e7dece;\n  border-radius: 28px;\n  background: #fffdf8;\n  box-shadow: 0 18px 55px #354b3d17;\n  text-align: center;\n}\n.eyebrow {\n  margin: 0 0 8px;\n  color: #66817a;\n  font-size: .82rem;\n  font-weight: 750;\n  letter-spacing: .12em;\n  text-transform: uppercase;\n}\nh1 { margin: 0; font-size: clamp(1.8rem, 7vw, 2.4rem); line-height: 1.12; }\n.intro { max-width: 340px; margin: 14px auto 26px; color: #60716d; line-height: 1.55; }\n.game { max-width: 380px; margin: 0 auto; }\n.status-row { min-height: 42px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; }\n.moves { margin: 0; color: #60716d; font-weight: 650; }\n.moves span { display: inline-grid; min-width: 30px; height: 30px; margin-left: 5px; place-items: center; border-radius: 10px; background: #edf3ed; color: #253b3a; }\n.message { margin: 0; color: #51776f; font-weight: 700; text-align: right; }\n.grid {\n  display: grid;\n  grid-template-columns: repeat(6, minmax(0, 1fr));\n  gap: 7px;\n  width: 100%;\n  margin: 12px auto 24px;\n  padding: 10px;\n  border-radius: 18px;\n  background: #eff1e8;\n}\n.tile {\n  aspect-ratio: 1;\n  min-width: 0;\n  padding: 0;\n  border: 0;\n  border-radius: 8px;\n  cursor: pointer;\n  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;\n}\n.tile.coral, .swatch.coral { background: var(--coral); }\n.tile.teal, .swatch.teal { background: var(--teal); }\n.tile.gold, .swatch.gold { background: var(--gold); }\n.tile:hover { transform: scale(1.07); filter: brightness(1.06); }\n.tile:active { transform: scale(.94); }\n.tile:focus-visible { outline: 3px solid #253b3a; outline-offset: 2px; z-index: 1; }\n.palette { margin: 0; padding: 0; border: 0; }\n.palette legend { width: 100%; margin-bottom: 12px; color: #60716d; font-weight: 650; }\n.color-options { display: flex; justify-content: center; gap: 10px; }\n.color-button, .reset-button {\n  min-height: 48px;\n  border: 1px solid #d9e0d7;\n  border-radius: 14px;\n  background: #fffdf8;\n  color: #253b3a;\n  font: inherit;\n  font-weight: 650;\n  cursor: pointer;\n  transition: background 120ms ease, transform 120ms ease, border-color 120ms ease;\n}\n.color-button { display: inline-flex; align-items: center; gap: 8px; padding: 0 13px; }\n.swatch { width: 18px; height: 18px; border-radius: 6px; }\n.color-button:hover, .reset-button:hover { background: #f1f5ee; border-color: #a9bdb0; }\n.color-button:active, .reset-button:active { transform: translateY(1px) scale(.98); }\n.color-button[aria-pressed=\"true\"] { border: 2px solid #42645c; background: #edf4ed; }\n.color-button:focus-visible, .reset-button:focus-visible { outline: 3px solid #42645c; outline-offset: 3px; }\n.reset-button { width: 100%; margin-top: 16px; }\n.hint { margin: 22px 0 0; color: #77847a; font-size: .92rem; }\n[hidden] { display: none !important; }\n@media (max-width: 390px) {\n  body { padding: 18px 12px; }\n  .grid { gap: 5px; padding: 8px; }\n  .color-options { gap: 7px; }\n  .color-button { gap: 6px; padding: 0 9px; }\n}\n@media (prefers-reduced-motion: reduce) {\n  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }\n}\n",
+      "description": "Responsive styling for the game card, board, and interactive states."
+    },
+    {
+      "path": "game.js",
+      "content": "const initialBoard = [\n  ['coral', 'coral', 'teal', 'teal', 'gold', 'gold'],\n  ['coral', 'teal', 'teal', 'gold', 'gold', 'coral'],\n  ['coral', 'coral', 'gold', 'gold', 'teal', 'coral'],\n  ['teal', 'coral', 'gold', 'teal', 'teal', 'coral'],\n  ['teal', 'teal', 'gold', 'gold', 'coral', 'coral'],\n  ['gold', 'teal', 'teal', 'coral', 'coral', 'gold']\n];\nconst grid = document.querySelector('#grid');\nconst moveCount = document.querySelector('#move-count');\nconst message = document.querySelector('#message');\nconst colorButtons = [...document.querySelectorAll('.color-button')];\nlet board;\nlet moves;\nlet selectedColor = 'coral';\n\nfunction isUniform() {\n  return board.every(row => row.every(color => color === board[0][0]));\n}\n\nfunction render() {\n  grid.replaceChildren();\n  board.forEach((row, r) => row.forEach((color, c) => {\n    const tile = document.createElement('button');\n    tile.type = 'button';\n    tile.className = `tile ${color}`;\n    tile.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}, ${color}`);\n    tile.addEventListener('click', () => play(r, c));\n    grid.append(tile);\n  }));\n  moveCount.textContent = String(moves);\n  message.textContent = isUniform() ? 'One color!' : 'Pick a color to begin.';\n}\n\nfunction play(row, col) {\n  if (isUniform()) return;\n  const target = board[row][col];\n  if (target === selectedColor && board[0][0] === selectedColor) {\n    message.textContent = 'Choose a different color.';\n    return;\n  }\n\n  const connected = new Set();\n  const queue = [];\n  for (let r = 0; r < 6; r++) {\n    for (let c = 0; c < 6; c++) {\n      if (board[r][c] === board[0][0]) {\n        const index = r * 6 + c;\n        connected.add(index);\n        queue.push([r, c]);\n      }\n    }\n  }\n  for (let i = 0; i < queue.length; i++) {\n    const [r, c] = queue[i];\n    for (const [nr, nc] of [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]]) {\n      const index = nr * 6 + nc;\n      if (nr >= 0 && nr < 6 && nc >= 0 && nc < 6 && !connected.has(index) && board[nr][nc] === target) {\n        connected.add(index);\n        queue.push([nr, nc]);\n      }\n    }\n  }\n  for (const index of connected) board[Math.floor(index / 6)][index % 6] = selectedColor;\n  moves++;\n  render();\n  if (!isUniform()) message.textContent = `Area filled with ${selectedColor}.`;\n}\n\ncolorButtons.forEach(button => button.addEventListener('click', () => {\n  selectedColor = button.dataset.color;\n  colorButtons.forEach(option => option.setAttribute('aria-pressed', String(option === button)));\n  if (!isUniform()) message.textContent = `Selected ${selectedColor}. Click a tile.`;\n}));\n\ndocument.querySelector('#reset').addEventListener('click', () => {\n  board = initialBoard.map(row => [...row]);\n  moves = 0;\n  render();\n});\n\nboard = initialBoard.map(row => [...row]);\nmoves = 0;\nrender();\n",
+      "description": "Flood-fill game logic; clicking a tile expands the current area through adjacent cells of that tile's color."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Flood-Fill Toy\n\nAn offline color puzzle built with HTML, CSS, and plain JavaScript. No build step, packages, server, or network connection are needed.\n\n## Run\n\nOpen `index.html` in a modern browser. Use the color buttons to choose a color, then select any tile. The tile's orthogonally connected same-color area changes to your selected color. Each valid move counts once; choosing the current area color does not count. Complete the board to see **One color!** Select **Start over** to reset.\n\n## Controls\n\nAll tiles and controls are keyboard accessible. Tab to a control and use Enter or Space to activate it. The grid connects up, down, left, and right; diagonal tiles are not connected.\n",
+      "description": "Local run instructions and controls."
+    }
+  ]
+}

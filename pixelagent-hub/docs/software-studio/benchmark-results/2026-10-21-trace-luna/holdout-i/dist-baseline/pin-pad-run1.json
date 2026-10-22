@@ -1,0 +1,256 @@
+{
+  "caseId": "pin-pad",
+  "run": 1,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 21094,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "3/3",
+  "finalChecks": "3/3",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "3/3"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 69,
+  "reportedTokens": 68878,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T04:02:14.340Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T04:02:14.340Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T04:02:33.395Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Combination Lock"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T04:02:33.395Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T04:03:01.462Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T04:03:01.462Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T04:03:01.897Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T04:03:01.900Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "ff4a1dae-12d8-4e97-82c5-9f9b752c097f"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T04:03:19.958Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "ff4a1dae-12d8-4e97-82c5-9f9b752c097f",
+        "checks": 3
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T04:03:19.958Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "b4930ae7-861c-4ac6-bd6a-1d65c2a886ff",
+        "testPlanId": "ff4a1dae-12d8-4e97-82c5-9f9b752c097f",
+        "checks": 3,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T04:03:20.932Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b4930ae7-861c-4ac6-bd6a-1d65c2a886ff",
+        "name": "Dial up wraps from 9 to 0",
+        "passed": true,
+        "actual": "0"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T04:03:20.932Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b4930ae7-861c-4ac6-bd6a-1d65c2a886ff",
+        "name": "Dial down wraps from 0 to 9",
+        "passed": true,
+        "actual": "9"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T04:03:20.932Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b4930ae7-861c-4ac6-bd6a-1d65c2a886ff",
+        "name": "Incorrect code increments failed attempts",
+        "passed": true,
+        "actual": "1"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T04:03:20.932Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "b4930ae7-861c-4ac6-bd6a-1d65c2a886ff",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T04:03:20.933Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Dial up wraps from 9 to 0",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-dial=\"0\"] [data-step=\"-1\"]"
+          },
+          {
+            "type": "click",
+            "selector": ".dial[data-dial=\"0\"] [data-step=\"1\"]",
+            "nth": 0
+          }
+        ],
+        "selector": ".dial[data-dial=\"0\"] .digit",
+        "expected": "0"
+      },
+      {
+        "name": "Dial down wraps from 0 to 9",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".dial[data-dial=\"0\"] [data-step=\"-1\"]"
+          }
+        ],
+        "selector": ".dial[data-dial=\"0\"] .digit",
+        "expected": "9"
+      },
+      {
+        "name": "Incorrect code increments failed attempts",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#open-button"
+          }
+        ],
+        "selector": "#attempt-count",
+        "expected": "1"
+      }
+    ],
+    "limitations": [
+      "1 planned check(s) were dropped because they did not match the check format.",
+      "The 8 action limit prevents setting all dials to 3-7-2 and opening in one check from the initial 0-0-0 state."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24021,
+      "completion_tokens": 495,
+      "total_tokens": 24516
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <meta name=\"theme-color\" content=\"#111827\">\n  <title>Pixel Combination Lock</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n  <script src=\"script.js\" defer></script>\n</head>\n<body>\n  <main class=\"lock-card\" aria-labelledby=\"title\">\n    <div class=\"pixel-mark\" aria-hidden=\"true\"><span></span><span></span><span></span><span></span></div>\n    <p class=\"eyebrow\">PIXEL VAULT · ACCESS PANEL</p>\n    <h1 id=\"title\">Combination lock</h1>\n    <p class=\"intro\">Set the three dials, then enter your combination.</p>\n\n    <section class=\"dials\" aria-label=\"Combination dials\">\n      <div class=\"dial\" data-dial=\"0\">\n        <button class=\"step-button\" type=\"button\" data-step=\"1\" aria-label=\"Increase first dial\">▲</button>\n        <output class=\"digit\" aria-label=\"First dial value\" aria-live=\"polite\">0</output>\n        <button class=\"step-button\" type=\"button\" data-step=\"-1\" aria-label=\"Decrease first dial\">▼</button>\n        <span class=\"dial-label\">FIRST</span>\n      </div>\n      <div class=\"dial\" data-dial=\"1\">\n        <button class=\"step-button\" type=\"button\" data-step=\"1\" aria-label=\"Increase second dial\">▲</button>\n        <output class=\"digit\" aria-label=\"Second dial value\" aria-live=\"polite\">0</output>\n        <button class=\"step-button\" type=\"button\" data-step=\"-1\" aria-label=\"Decrease second dial\">▼</button>\n        <span class=\"dial-label\">SECOND</span>\n      </div>\n      <div class=\"dial\" data-dial=\"2\">\n        <button class=\"step-button\" type=\"button\" data-step=\"1\" aria-label=\"Increase third dial\">▲</button>\n        <output class=\"digit\" aria-label=\"Third dial value\" aria-live=\"polite\">0</output>\n        <button class=\"step-button\" type=\"button\" data-step=\"-1\" aria-label=\"Decrease third dial\">▼</button>\n        <span class=\"dial-label\">THIRD</span>\n      </div>\n    </section>\n\n    <button class=\"open-button\" id=\"open-button\" type=\"button\">OPEN VAULT <span aria-hidden=\"true\">↗</span></button>\n    <p class=\"status\" id=\"status\" role=\"status\" aria-live=\"polite\">Vault is locked. Find the code.</p>\n    <div class=\"attempts\">FAILED ATTEMPTS <strong id=\"attempt-count\" aria-live=\"polite\">0</strong></div>\n  </main>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "style.css",
+      "content": "* { box-sizing: border-box; }\n:root { color-scheme: dark; font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; background: #111827; color: #f3f4f6; }\nbody { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px 16px; background: radial-gradient(ellipse at 50% 0%, #26334d 0, #111827 58%); }\n.lock-card { width: min(100%, 440px); padding: 36px 32px 28px; text-align: center; border: 1px solid #39465d; border-radius: 18px; background: #1b2537; box-shadow: 0 24px 70px #080d18aa; }\n.pixel-mark { width: 40px; height: 40px; margin: 0 auto 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; transform: rotate(-5deg); }\n.pixel-mark span { background: #55e6b5; border-radius: 3px; }\n.pixel-mark span:nth-child(2), .pixel-mark span:nth-child(3) { opacity: .55; }\n.eyebrow { margin: 0 0 10px; color: #55e6b5; font-size: 12px; font-weight: 800; letter-spacing: .16em; }\nh1 { margin: 0; font-size: clamp(25px, 7vw, 32px); line-height: 1.2; }\n.intro { margin: 12px 0 26px; color: #b7c2d3; font-size: 16px; line-height: 1.5; }\n.dials { display: flex; justify-content: center; gap: clamp(12px, 5vw, 24px); margin: 0 auto 28px; }\n.dial { width: 94px; display: grid; justify-items: center; gap: 8px; }\n.step-button { width: 48px; height: 40px; border: 1px solid #43516a; border-radius: 10px; background: #26334a; color: #d6e2f2; font: inherit; font-size: 17px; cursor: pointer; transition: background .15s, transform .15s, border-color .15s; }\n.step-button:hover { background: #34445f; border-color: #55e6b5; }\n.step-button:active { transform: translateY(2px); background: #43516a; }\n.digit { width: 74px; padding: 8px 0 10px; border: 1px solid #43516a; border-radius: 12px; background: #101827; color: #55e6b5; font: 700 38px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; box-shadow: inset 0 2px 8px #060a11; }\n.dial-label { margin-top: 2px; color: #9aa9bf; font-size: 11px; font-weight: 800; letter-spacing: .12em; }\n.open-button { width: 100%; min-height: 54px; padding: 12px 18px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 11px; background: #55e6b5; color: #10251f; font: 800 16px/1 system-ui, sans-serif; letter-spacing: .06em; cursor: pointer; transition: background .15s, transform .15s, box-shadow .15s; }\n.open-button:hover { background: #78f0c8; box-shadow: 0 6px 22px #55e6b544; }\n.open-button:active { transform: translateY(2px); background: #39c99a; }\nbutton:focus-visible { outline: 3px solid #f3f4f6; outline-offset: 3px; }\n.status { min-height: 24px; margin: 18px 0 20px; color: #c7d2e2; font-size: 15px; }\n.status.success { color: #55e6b5; font-weight: 700; }\n.status.error { color: #ff9b91; }\n.attempts { padding-top: 18px; border-top: 1px solid #39465d; color: #9aa9bf; font-size: 12px; font-weight: 800; letter-spacing: .12em; }\n.attempts strong { margin-left: 8px; color: #f3f4f6; font-size: 16px; letter-spacing: 0; }\n@media (max-width: 380px) { .lock-card { padding: 28px 18px 24px; } .dial { width: 82px; } .dials { gap: 10px; } }\n",
+      "description": ""
+    },
+    {
+      "path": "script.js",
+      "content": "const dials = [...document.querySelectorAll('.dial')];\nconst status = document.querySelector('#status');\nconst attemptCount = document.querySelector('#attempt-count');\nlet attempts = 0;\n\ndials.forEach((dial) => {\n  const output = dial.querySelector('.digit');\n  dial.querySelectorAll('[data-step]').forEach((button) => {\n    button.addEventListener('click', () => {\n      const current = Number(output.value);\n      const step = Number(button.dataset.step);\n      output.value = String((current + step + 10) % 10);\n    });\n  });\n});\n\ndocument.querySelector('#open-button').addEventListener('click', () => {\n  const combination = dials.map((dial) => dial.querySelector('.digit').value).join('');\n  if (combination === '372') {\n    status.textContent = 'Access granted. The vault is open!';\n    status.className = 'status success';\n    return;\n  }\n  attempts += 1;\n  attemptCount.textContent = String(attempts);\n  status.textContent = 'Access denied. Try another combination.';\n  status.className = 'status error';\n});\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Combination Lock\n\nAn offline combination lock game built with HTML, CSS, and plain JavaScript.\n\n## Run\n\nOpen `index.html` in a modern browser. No server, installation, or network connection is needed.\n\n## Play\n\nUse the up and down buttons to set each dial. Values wrap between 0 and 9. Select **Open Vault** to check the code: `3-7-2` opens the vault. Each incorrect attempt increments the failed-attempt counter.\n\nAll controls are native buttons and can be operated with a keyboard. The dial values and status are announced to assistive technology.\n",
+      "description": ""
+    }
+  ]
+}
