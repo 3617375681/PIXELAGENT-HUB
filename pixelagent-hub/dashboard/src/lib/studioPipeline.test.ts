@@ -6,6 +6,12 @@ let seq = 0;
 const ev = (type: StudioEventType, round?: number, data?: Record<string, unknown>): StudioEvent => ({ seq: ++seq, at: '2026-10-14T00:00:00.000Z', type, round, data });
 const states = (events: StudioEvent[]) => reducePipeline(events).stages.map((stage) => `${stage.id}:${stage.state}`);
 
+it('describes a reverted repair without changing the event', () => {
+  const event = Object.freeze({ ...ev('ready_for_review', undefined, Object.freeze({ repairReverted: true })) });
+  expect(describeEvent(event)).toBe('Repair made it worse; kept the earlier build');
+  expect(describeEvent(ev('ready_for_review'))).toBe('Built. Ready to play');
+});
+
 const repairRun = [
   ev('queued'), ev('phase', undefined, { phase: 'planning' }), ev('plan_ready', undefined, { projectName: 'Counter' }),
   ev('phase', 1, { phase: 'coding' }), ev('code_ready', 1, { files: 4 }), ev('phase', 1, { phase: 'building' }),

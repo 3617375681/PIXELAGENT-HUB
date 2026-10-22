@@ -80,7 +80,7 @@ try {
     await page.locator('#live-tester-model').fill(arm.testerModel);
     await page.getByRole('button', { name: /SAVE & BUILD/ }).click();
     await page.waitForURL(/studio\/live-/, { timeout: 15_000 });
-    await page.waitForFunction(() => /Built\. Ready to play|Run failed|Run cancelled/.test(document.body.innerText), null, { timeout: 1_800_000, polling: 1000 });
+    await page.waitForFunction(() => /Built\. Ready to play|Repair made it worse; kept the earlier build|Run failed|Run cancelled/.test(document.body.innerText), null, { timeout: 1_800_000, polling: 1000 });
     const record = await page.evaluate(async () => {
       const db = await new Promise<IDBDatabase>((done) => { const request = indexedDB.open('pixelagent-live', 1); request.onsuccess = () => done(request.result); });
       const all = await new Promise<any[]>((done) => { const request = db.transaction('projects').objectStore('projects').getAll(); request.onsuccess = () => done(request.result); });
@@ -102,6 +102,7 @@ try {
       coderRepair: record.project.rounds.length > 1 + compileFailures,
       checkRuns: browserRuns.map((run) => `${run.passed}/${run.passed + run.failed}`),
       repairTriggered: browserRuns.length > 1,
+      repairReverted: events.some((event) => event.type === 'ready_for_review' && event.data?.repairReverted === true),
       fullPass: record.project.status === 'ready_for_review' && browserRuns.at(-1)?.status === 'passed',
       rescuedByRepair: browserRuns.length > 1 && browserRuns.at(-1)?.status === 'passed',
       elapsedSeconds: Math.round((Date.now() - started) / 1000), reportedTokens: tokens,
