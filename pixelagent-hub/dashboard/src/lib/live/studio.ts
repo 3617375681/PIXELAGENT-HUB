@@ -186,6 +186,7 @@ async function codeUntilBuilt(entry: Entry, signal: AbortSignal, phase: (name: s
 async function generate(entry: Entry, signal: AbortSignal) {
   const { project } = entry;
   const description = project.description;
+  let repairReverted = false;
   const phase = (name: string, round?: number) => {
     project.phase = name; project.status = 'running';
     emit(entry, 'phase', { phase: name }, round);
@@ -212,21 +213,27 @@ async function generate(entry: Entry, signal: AbortSignal) {
         }
       }
       if (outcome.failed && project.rounds.length < LIVE_MAX_ROUNDS) {
+        const beforeRepair = outcome;
         const good = { html: entry.html, files: entry.files, previewFile: project.previewFile };
         const notes = [REPAIR_INSTRUCTIONS, ...browserFailureNotes(plan, outcome.results, outcome.errors)];
         try {
           await codeUntilBuilt(entry, signal, phase, { previousFiles: files, revisionNotes: notes, maxRounds: 2 });
-          await runChecks(entry, plan, signal);
+          outcome = await runChecks(entry, plan, signal);
+          repairReverted = outcome.passed < beforeRepair.passed || outcome.errors.length > beforeRepair.errors.length;
         } catch (error) {
           if (signal.aborted) throw error;
-          // The repair did not build: keep the last working app rather than failing the run.
+          repairReverted = true;
+        }
+        if (repairReverted) {
+          // Keep the repair rounds as history, but serve and recheck the earlier build.
           Object.assign(entry, { html: good.html, files: good.files }); project.previewFile = good.previewFile;
+          await runChecks(entry, plan, signal);
         }
       }
     }
     project.status = 'ready_for_review'; project.phase = 'ready_for_review'; project.archiveFile = 'source.zip'; project.finishedAt = now();
     project.generationMetrics = metrics(entry);
-    emit(entry, 'ready_for_review', { previewFile: project.previewFile });
+    emit(entry, 'ready_for_review', { previewFile: project.previewFile, ...(repairReverted ? { repairReverted: true } : {}) });
   } catch (error) {
     const cancelled = signal.aborted;
     finishFailed(entry, cancelled ? 'Cancelled by you' : error instanceof Error ? error.message : String(error), cancelled ? 'cancelled' : 'failed');
@@ -320,7 +327,7 @@ async function runChecks(entry: Entry, checks: BrowserCheck[], signal: AbortSign
   const failed = passed !== results.length || errors.length > 0;
   entry.diagnostics.unshift({ id: runId, savedAt: now(), source: 'browser-client', previewFile: project.previewFile!, loaded: true, errors, testPlanId: entry.plan?.id, checks: results });
   emit(entry, 'browser_run_finished', { runId, status: failed ? 'failed' : 'passed', passed, failed: results.length - passed, source: 'in-page', ...(errors.length ? { error: errors[0].slice(0, 300) } : {}) });
-  return { failed, results, errors };
+  return { passed, failed, results, errors };
 }
 
 const providerLabel = (credentials: { provider: string; baseUrl?: string }) => {

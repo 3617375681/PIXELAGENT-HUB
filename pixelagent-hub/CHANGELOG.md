@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Changed
+- PLAY LIVE ships the repaired build only if it passes at least as many checks with no more runtime errors; otherwise it restores and rechecks the earlier build (`repairReverted`). Six recorded runs, including a pet app that a repair broke on every click, would now ship the better build
 - The Tester and review prompts no longer ask for a check `trace`. A [40-pair replication on `gpt-6-luna`](docs/software-studio/benchmark-results/2026-10-21-trace-luna/README.md) found no gain (31/40 vs 32/40) and 21% fewer checks per plan. The optional field still parses.
 
 ### Added

@@ -216,6 +216,51 @@ it('a failed in-page check goes back to the Coder once, then the same checks run
   expect(checks).toHaveBeenCalledTimes(2);
 });
 
+it.each([
+  { name: 'fixes one of two failures', before: 1, after: 2, errors: [], buildFails: false, reverted: false },
+  { name: 'keeps equal outcomes', before: 2, after: 2, errors: [], buildFails: false, reverted: false },
+  { name: 'loses a passing check', before: 2, after: 1, errors: [], buildFails: false, reverted: true },
+  { name: 'adds a runtime error with the same pass count', before: 2, after: 2, errors: ['Click handler threw'], buildFails: false, reverted: true },
+  { name: 'fails to build', before: 2, after: 0, errors: [], buildFails: true, reverted: true },
+])('browser repair $name', async ({ before, after, errors, buildFails, reverted }) => {
+  const repairCode = { ...code, files: [{ ...code.files[0], content: '<button>Repaired</button>' }] };
+  const repairPlan = { checks: Array.from({ length: 3 }, (_, i) => ({ ...testPlan.checks[0], name: `Check ${i}` })), limitations: [] };
+  let coderCalls = 0;
+  fetchMock.mockImplementation(async (_url: string, init: RequestInit) => {
+    const system: string = JSON.parse(String(init.body)).messages[0].content;
+    if (system.includes('project manager')) return sse(plan);
+    if (system.includes('You review failing browser checks')) return sse({ verdicts: repairPlan.checks.slice(before).map(({ name }) => ({ name, correctAppPasses: true, reason: 'The app is wrong.' })) });
+    if (system.includes('test planner')) return sse(repairPlan);
+    return sse(coderCalls++ === 0 ? code : repairCode);
+  });
+  build.mockResolvedValueOnce({ status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html>Original</html>' })
+    .mockResolvedValue(buildFails
+      ? { status: 'failed', errors: ['Syntax error'], checkedFiles: [] }
+      : { status: 'passed', errors: [], checkedFiles: ['index.html'], html: '<html>Repaired</html>' });
+  const results = (passed: number) => repairPlan.checks.map(({ name }, i) => ({ name, status: i < passed ? 'passed' : 'failed', actual: '0' }));
+  checks.mockResolvedValue({ results: results(before), errors: [] });
+  if (!buildFails) checks.mockResolvedValueOnce({ results: results(before), errors: [] }).mockResolvedValueOnce({ results: results(after), errors });
+
+  const { projectId } = await live.liveRequest('POST', '/api/studio/projects', JSON.stringify({ description: 'A counter' })) as { projectId: string };
+  const events = await runToEnd(projectId);
+  const { project } = await live.liveRequest('GET', `/api/studio/projects/${projectId}`) as { project: StudioProject };
+  expect(project).toMatchObject({ status: 'ready_for_review', previewFile: reverted ? 'v1/dist/index.html' : 'v2/dist/index.html' });
+  expect(project.rounds).toHaveLength(buildFails ? 3 : 2);
+  expect(project.rounds[1].code.output?.files).toEqual(repairCode.files);
+  expect(await live.liveRequest('GET', `/api/studio/projects/${projectId}/preview`)).toEqual({ html: reverted ? '<html>Original</html>' : '<html>Repaired</html>' });
+  const { unzipSync, strFromU8 } = await import('fflate');
+  const archive = unzipSync(new Uint8Array(await (await live.liveArchive(projectId)).arrayBuffer()));
+  expect(strFromU8(archive['source/index.html'])).toBe((reverted ? code : repairCode).files[0].content);
+  expect(checks).toHaveBeenCalledTimes(buildFails ? 2 : reverted ? 3 : 2);
+  expect(checks.mock.calls.at(-1)![0]).toBe(reverted ? '<html>Original</html>' : '<html>Repaired</html>');
+  for (const call of checks.mock.calls) expect(call[1]).toEqual(checks.mock.calls[0][1]);
+  expect(events.filter((event) => event.type === 'browser_run_finished').at(-1)?.data).toMatchObject({ passed: reverted ? before : after, failed: 3 - (reverted ? before : after) });
+  expect(events.at(-1)?.type).toBe('ready_for_review');
+  if (reverted) expect(events.at(-1)?.data?.repairReverted).toBe(true);
+  else expect(events.at(-1)?.data).not.toHaveProperty('repairReverted');
+  expect(fetchMock).toHaveBeenCalledTimes(buildFails ? 6 : 5);
+});
+
 it('custom endpoints: https anywhere, http only on localhost, and no key means no Authorization header', async () => {
   const { customEndpoint, streamChat } = await import('./llm');
   expect(customEndpoint('http://localhost:11434/v1')).toBe('http://localhost:11434/v1/chat/completions');

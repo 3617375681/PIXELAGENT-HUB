@@ -130,7 +130,7 @@ export function describeEvent(event: StudioEvent): string {
     case 'code_ready': return `${r}${Number(d.files) || 0} files written`;
     case 'build_failed': return `${r}Build failed: ${firstLine(text((d.errors as unknown[] | undefined)?.[0]) || 'unknown error', 200)}`;
     case 'build_passed': return `${r}Build passed`;
-    case 'ready_for_review': return 'Built. Ready to play';
+    case 'ready_for_review': return d.repairReverted === true ? 'Repair made it worse; kept the earlier build' : 'Built. Ready to play';
     case 'failed': return `Run failed${text(d.error) ? `: ${firstLine(text(d.error), 200)}` : ''}`;
     case 'cancelled': return 'Run cancelled';
     case 'test_plan_started': return d.review ? 'Tester is re-examining its failing checks' : 'Tester is writing checks';
