@@ -1,0 +1,319 @@
+{
+  "caseId": "inventory",
+  "run": 2,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 20873,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "6/6",
+  "finalChecks": "6/6",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "6/6"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 69,
+  "reportedTokens": 68452,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T04:45:32.102Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T04:45:32.102Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T04:45:49.732Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Shop Inventory"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T04:45:49.732Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T04:46:18.540Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T04:46:18.540Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T04:46:18.918Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T04:46:18.919Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "2a1d17be-19ed-4f53-ad0d-fe003649a990"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T04:46:35.702Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "2a1d17be-19ed-4f53-ad0d-fe003649a990",
+        "checks": 6
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T04:46:35.703Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "testPlanId": "2a1d17be-19ed-4f53-ad0d-fe003649a990",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "name": "Five built-in items render",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "name": "Sell reduces stock and adds price",
+        "passed": true,
+        "actual": "$18.00 · 3 in stock"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "name": "Restock adds ten to stock",
+        "passed": true,
+        "actual": "$12.00 · 16 in stock"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "name": "Selling updates today's sales total",
+        "passed": true,
+        "actual": "$15.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "name": "Sold out item cannot be sold",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "name": "Sold out status is shown",
+        "passed": true,
+        "actual": "$24.00 · Sold out"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T04:46:37.660Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "b0c61b66-116b-45eb-90fc-8e40b46ce082",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T04:46:37.661Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Five built-in items render",
+        "actions": [],
+        "selector": ".item",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Sell reduces stock and adds price",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[aria-label='Sell Mushroom Lamp']"
+          }
+        ],
+        "selector": "#item-list .item:nth-child(1) .item-meta",
+        "expected": "$18.00 · 3 in stock"
+      },
+      {
+        "name": "Restock adds ten to stock",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[aria-label='Restock Tiny Cactus by 10']"
+          }
+        ],
+        "selector": "#item-list .item:nth-child(2) .item-meta",
+        "expected": "$12.00 · 16 in stock"
+      },
+      {
+        "name": "Selling updates today's sales total",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[aria-label='Sell Moon Mug']"
+          }
+        ],
+        "selector": "#sales-total",
+        "expected": "$15.00"
+      },
+      {
+        "name": "Sold out item cannot be sold",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[aria-label='Sell Star Plush']"
+          },
+          {
+            "type": "click",
+            "selector": "[aria-label='Sell Star Plush']"
+          }
+        ],
+        "selector": "[aria-label='Sell Star Plush']",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Sold out status is shown",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "[aria-label='Sell Star Plush']"
+          },
+          {
+            "type": "click",
+            "selector": "[aria-label='Sell Star Plush']"
+          }
+        ],
+        "selector": "#item-list .item:nth-child(4) .item-meta",
+        "expected": "$24.00 · Sold out"
+      }
+    ],
+    "limitations": [],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24029,
+      "completion_tokens": 330,
+      "total_tokens": 24359
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel Shop Inventory</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"shop\" aria-labelledby=\"shop-title\">\n    <header class=\"shop-header\">\n      <div class=\"shop-mark\" aria-hidden=\"true\">▦</div>\n      <p class=\"eyebrow\">DAILY INVENTORY</p>\n      <h1 id=\"shop-title\">Pixel Shop</h1>\n      <p class=\"intro\">A little shelf of pixel-perfect finds.</p>\n    </header>\n\n    <section class=\"sales-panel\" aria-label=\"Today's sales\">\n      <span>Today's sales</span>\n      <strong id=\"sales-total\" aria-live=\"polite\">$0.00</strong>\n    </section>\n\n    <section class=\"inventory\" aria-labelledby=\"inventory-title\">\n      <h2 id=\"inventory-title\">Shop inventory <span>5 items</span></h2>\n      <div id=\"item-list\" class=\"item-list\"></div>\n    </section>\n    <footer>Restock any item to add 10 to the shelf.</footer>\n  </main>\n</body>\n</html>\n",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": "[hidden] { display: none !important; }\n:root { color-scheme: light; --ink: #24352e; --muted: #65756c; --paper: #fffdf7; --green: #245c49; --mint: #e5f1e9; --gold: #e7b85c; }\n* { box-sizing: border-box; }\nbody { min-height: 100vh; margin: 0; padding: 32px 16px; display: grid; place-items: center; background-color: #dce9df; background-image: radial-gradient(#b9d0bd 1.5px, transparent 1.5px); background-size: 22px 22px; color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }\n.shop { width: min(100%, 560px); padding: 32px; border: 2px solid var(--ink); border-radius: 18px; background: var(--paper); box-shadow: 8px 8px 0 var(--ink); }\n.shop-header { text-align: center; }\n.shop-mark { width: 54px; height: 54px; margin: 0 auto 10px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 12px; background: var(--gold); font-size: 30px; }\n.eyebrow { margin: 0; color: var(--green); font-size: 13px; font-weight: 800; letter-spacing: .12em; }\nh1 { margin: 2px 0 0; font-size: clamp(32px, 8vw, 42px); line-height: 1.2; letter-spacing: -.04em; }\n.intro { margin: 8px 0 22px; color: var(--muted); }\n.sales-panel { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border: 2px solid var(--ink); border-radius: 12px; background: var(--mint); font-weight: 700; }\n.sales-panel strong { color: var(--green); font-size: 25px; font-variant-numeric: tabular-nums; }\n.inventory { margin-top: 25px; }\nh2 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0 0 12px; font-size: 20px; }\nh2 span { color: var(--muted); font-size: 14px; font-weight: 600; }\n.item-list { display: grid; gap: 10px; }\n.item { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 12px; border: 1.5px solid #d3ddd4; border-radius: 12px; background: #fff; }\n.item-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 10px; background: var(--mint); font-size: 25px; }\n.item-name { display: block; font-weight: 750; }\n.item-meta { display: block; color: var(--muted); font-size: 14px; }\n.item-meta.sold { color: #9a573c; font-weight: 750; }\n.actions { display: flex; gap: 7px; }\nbutton { min-height: 42px; padding: 8px 12px; border: 2px solid var(--ink); border-radius: 9px; background: var(--green); color: white; font: inherit; font-weight: 750; cursor: pointer; transition: transform .12s, background-color .12s, box-shadow .12s; }\nbutton:hover:not(:disabled) { background: #174333; box-shadow: 0 3px 0 var(--ink); transform: translateY(-1px); }\nbutton:active:not(:disabled) { box-shadow: none; transform: translateY(1px); }\nbutton:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }\nbutton:disabled { border-color: #cbd3cc; background: #e6eae6; color: #737d75; cursor: not-allowed; }\nbutton.restock { background: var(--paper); color: var(--ink); }\nbutton.restock:hover { background: var(--mint); }\nfooter { margin-top: 20px; color: var(--muted); text-align: center; font-size: 14px; }\n@media (max-width: 440px) { body { padding: 18px 12px; } .shop { padding: 22px 16px; box-shadow: 5px 5px 0 var(--ink); } .item { grid-template-columns: 40px minmax(0, 1fr); gap: 10px; } .item-icon { width: 40px; height: 40px; } .actions { grid-column: 1 / -1; justify-content: stretch; } .actions button { flex: 1; } }\n",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const items = [\n  { name: 'Mushroom Lamp', icon: '🍄', price: 18, stock: 4 },\n  { name: 'Tiny Cactus', icon: '🌵', price: 12, stock: 6 },\n  { name: 'Moon Mug', icon: '🌙', price: 15, stock: 3 },\n  { name: 'Star Plush', icon: '⭐', price: 24, stock: 2 },\n  { name: 'Berry Jam', icon: '🫐', price: 9, stock: 5 }\n];\nlet sales = 0;\nconst itemList = document.querySelector('#item-list');\nconst salesTotal = document.querySelector('#sales-total');\nconst money = amount => `$${amount.toFixed(2)}`;\n\nfunction render() {\n  itemList.replaceChildren();\n  items.forEach((item, index) => {\n    const row = document.createElement('article');\n    row.className = 'item';\n    const icon = document.createElement('span');\n    icon.className = 'item-icon';\n    icon.setAttribute('aria-hidden', 'true');\n    icon.textContent = item.icon;\n    const details = document.createElement('div');\n    const name = document.createElement('span');\n    name.className = 'item-name';\n    name.textContent = item.name;\n    const meta = document.createElement('span');\n    meta.className = `item-meta${item.stock === 0 ? ' sold' : ''}`;\n    meta.textContent = item.stock === 0 ? `${money(item.price)} · Sold out` : `${money(item.price)} · ${item.stock} in stock`;\n    details.append(name, meta);\n    const actions = document.createElement('div');\n    actions.className = 'actions';\n    const sell = document.createElement('button');\n    sell.type = 'button';\n    sell.textContent = 'Sell';\n    sell.setAttribute('aria-label', `Sell ${item.name}`);\n    sell.disabled = item.stock === 0;\n    sell.addEventListener('click', () => {\n      if (item.stock > 0) { item.stock--; sales += item.price; render(); }\n    });\n    const restock = document.createElement('button');\n    restock.type = 'button';\n    restock.className = 'restock';\n    restock.textContent = 'Restock +10';\n    restock.setAttribute('aria-label', `Restock ${item.name} by 10`);\n    restock.addEventListener('click', () => { item.stock += 10; render(); });\n    actions.append(sell, restock);\n    row.append(icon, details, actions);\n    itemList.append(row);\n  });\n  salesTotal.textContent = money(sales);\n}\n\nrender();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Shop Inventory\n\nA small offline inventory app built with HTML, CSS, and plain JavaScript. Open `index.html` in a browser; no server, packages, or network connection are needed.\n\nThe five sample items have chosen starting stock and prices. Use **Sell** to remove one item and add its price to today's sales, or **Restock +10** to add ten items. Sell is disabled when an item is sold out.\n",
+      "description": ""
+    }
+  ]
+}

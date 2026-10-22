@@ -1,5 +1,7 @@
 # Does a written trace make the Tester more accurate? — 2026-10-21 (preliminary)
 
+> **Update:** a [full replication on `gpt-6-luna`](../2026-10-21-trace-luna/README.md) (40 pairs) found no gain: 31/40 with traces against 32/40 without, with 21% fewer checks per plan. The trace instruction has been removed from the prompts.
+
 **Question.** The [held-out rounds](../2026-10-21-holdout/README.md) left mostly the Tester's own reasoning errors:
 - miscounted clicks;
 - a maze traced wrongly;

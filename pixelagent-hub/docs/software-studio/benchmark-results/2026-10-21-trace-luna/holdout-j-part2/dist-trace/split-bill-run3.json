@@ -1,0 +1,464 @@
+{
+  "caseId": "split-bill",
+  "run": 3,
+  "arm": "dist-trace",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\trace",
+  "managerTokens": 21062,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 2,
+  "compileFailures": 0,
+  "firstChecks": "3/4",
+  "finalChecks": "3/4",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": true,
+  "checkRuns": [
+    "3/4",
+    "3/4"
+  ],
+  "repairTriggered": true,
+  "fullPass": false,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 154,
+  "reportedTokens": 152204,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T03:48:13.403Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T03:48:13.403Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T03:48:31.133Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "A Pixel Bill Splitter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T03:48:31.134Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T03:49:09.216Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T03:49:09.216Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T03:49:09.771Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T03:49:09.773Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "84c2e07c-5a82-43e8-b6c0-f3e8332b58bc"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T03:49:30.038Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "84c2e07c-5a82-43e8-b6c0-f3e8332b58bc",
+        "checks": 4
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T03:49:30.038Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "e89152f5-0016-4f91-9c76-00178341d764",
+        "testPlanId": "84c2e07c-5a82-43e8-b6c0-f3e8332b58bc",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T03:49:33.397Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e89152f5-0016-4f91-9c76-00178341d764",
+        "name": "Default bill",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T03:49:33.397Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e89152f5-0016-4f91-9c76-00178341d764",
+        "name": "Split item with tip",
+        "passed": true,
+        "actual": "$4.40"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T03:49:33.397Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e89152f5-0016-4f91-9c76-00178341d764",
+        "name": "Change shared people",
+        "passed": true,
+        "actual": "$10.00"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T03:49:33.397Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "e89152f5-0016-4f91-9c76-00178341d764",
+        "name": "Tip rounding",
+        "passed": false,
+        "actual": "$3.83"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T03:49:33.397Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "e89152f5-0016-4f91-9c76-00178341d764",
+        "status": "failed",
+        "passed": 3,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T03:49:33.399Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "84c2e07c-5a82-43e8-b6c0-f3e8332b58bc",
+        "review": true
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T03:50:07.016Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "84c2e07c-5a82-43e8-b6c0-f3e8332b58bc",
+        "checks": 4,
+        "review": true,
+        "revised": 0,
+        "dropped": 0,
+        "error": "Unexpected non-whitespace character after JSON at position 907 (line 1 column 908)"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T03:50:07.017Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-22T03:50:41.599Z",
+      "type": "code_ready",
+      "round": 2,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-22T03:50:41.599Z",
+      "type": "phase",
+      "round": 2,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-22T03:50:41.636Z",
+      "type": "build_passed",
+      "round": 2
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-22T03:50:41.637Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "0fb7bc68-bedb-4c79-9f0b-1d00fea13418",
+        "testPlanId": "84c2e07c-5a82-43e8-b6c0-f3e8332b58bc",
+        "checks": 4,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-22T03:50:44.996Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0fb7bc68-bedb-4c79-9f0b-1d00fea13418",
+        "name": "Default bill",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-22T03:50:44.996Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0fb7bc68-bedb-4c79-9f0b-1d00fea13418",
+        "name": "Split item with tip",
+        "passed": true,
+        "actual": "$4.40"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-22T03:50:44.996Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0fb7bc68-bedb-4c79-9f0b-1d00fea13418",
+        "name": "Change shared people",
+        "passed": true,
+        "actual": "$10.00"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-22T03:50:44.996Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "0fb7bc68-bedb-4c79-9f0b-1d00fea13418",
+        "name": "Tip rounding",
+        "passed": false,
+        "actual": "$3.83"
+      }
+    },
+    {
+      "seq": 27,
+      "at": "2026-10-22T03:50:44.996Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "0fb7bc68-bedb-4c79-9f0b-1d00fea13418",
+        "status": "failed",
+        "passed": 3,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 28,
+      "at": "2026-10-22T03:50:45.001Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v2/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Default bill",
+        "trace": "Fresh load shows no items and tip 18%; each person starts $0.00 and grand total $0.00.",
+        "actions": [],
+        "selector": "#grand-total",
+        "expected": "$0.00"
+      },
+      {
+        "name": "Split item with tip",
+        "trace": "Fresh load; set tip 10%, add $12.00 shared by all 3. Each owes $4.00 + $0.40 tip = $4.40; total $13.20.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "10"
+          },
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Tacos"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "12"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          }
+        ],
+        "selector": "#person-0",
+        "expected": "$4.40"
+      },
+      {
+        "name": "Change shared people",
+        "trace": "Fresh load; set tip 0%, add $10.00 shared by 3, then unshare Ava and Bea. Cal alone owes $10.00; grand total $10.00.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "0"
+          },
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Pizza"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          },
+          {
+            "type": "click",
+            "selector": ".sharer",
+            "nth": 0
+          },
+          {
+            "type": "click",
+            "selector": ".sharer",
+            "nth": 1
+          }
+        ],
+        "selector": "#person-2",
+        "expected": "$10.00"
+      },
+      {
+        "name": "Tip rounding",
+        "trace": "Fresh load; set tip 15%, add $10.00 shared by Ava only. Ava owes $10.00 + $1.50 = $11.50; grand total $11.50.",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "15"
+          },
+          {
+            "type": "input",
+            "selector": "#item-name",
+            "value": "Soup"
+          },
+          {
+            "type": "input",
+            "selector": "#item-price",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": ".add-button"
+          },
+          {
+            "type": "click",
+            "selector": ".sharer",
+            "nth": 1
+          },
+          {
+            "type": "click",
+            "selector": ".sharer",
+            "nth": 1
+          }
+        ],
+        "selector": "#person-0",
+        "expected": "$11.50"
+      }
+    ],
+    "limitations": [
+      "Cannot verify visual styling or cents-leftover allocation from these checks."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 25794,
+      "completion_tokens": 492,
+      "total_tokens": 26286
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    },
+    {
+      "round": 2,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel Split — Bill Splitter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"board\">\n    <header class=\"header\">\n      <div class=\"pixel-mark\" aria-hidden=\"true\">÷</div>\n      <div>\n        <p class=\"eyebrow\">THE FRIENDLY CHECKOUT</p>\n        <h1>Pixel Split</h1>\n        <p class=\"subtitle\">Split the bill, keep the good vibes.</p>\n      </div>\n    </header>\n\n    <section class=\"settings\" aria-label=\"Bill settings\">\n      <label for=\"tip\">Tip for everyone</label>\n      <div class=\"tip-control\"><input id=\"tip\" type=\"number\" min=\"0\" max=\"100\" step=\"1\" value=\"18\"><span>%</span></div>\n    </section>\n\n    <section class=\"items-section\" aria-labelledby=\"items-title\">\n      <div class=\"section-heading\"><h2 id=\"items-title\">What did we order?</h2><span id=\"item-count\">0 items</span></div>\n      <form id=\"item-form\" class=\"item-form\">\n        <label class=\"sr-only\" for=\"item-name\">Item name</label>\n        <input id=\"item-name\" type=\"text\" maxlength=\"40\" placeholder=\"e.g. Garlic fries\" required>\n        <label class=\"sr-only\" for=\"item-price\">Item price in dollars</label>\n        <div class=\"price-input\"><span>$</span><input id=\"item-price\" type=\"number\" min=\"0.01\" step=\"0.01\" placeholder=\"0.00\" required></div>\n        <button class=\"add-button\" type=\"submit\" aria-label=\"Add item\">+</button>\n      </form>\n      <p class=\"hint\">Choose who shared each item. Equal split, no math stress.</p>\n      <ul id=\"item-list\" class=\"item-list\" aria-live=\"polite\"></ul>\n      <p id=\"empty-state\" class=\"empty-state\">Your table is empty. Add the first bite!</p>\n    </section>\n\n    <section class=\"totals-section\" aria-labelledby=\"totals-title\">\n      <div class=\"section-heading\"><h2 id=\"totals-title\">Who owes what?</h2><span class=\"pixel-heart\" aria-hidden=\"true\">♥</span></div>\n      <div id=\"people-totals\" class=\"people-totals\"></div>\n      <div class=\"bill-total\"><span>Bill total with tip</span><strong id=\"grand-total\">$0.00</strong></div>\n    </section>\n    <footer>Good food. Fair split. <span aria-hidden=\"true\">✦</span></footer>\n  </main>\n</body>\n</html>",
+      "description": ""
+    },
+    {
+      "path": "styles.css",
+      "content": "* { box-sizing: border-box; }\n:root { color-scheme: light; --ink: #24343a; --muted: #687a7c; --paper: #fffdf5; --mint: #bfe8d5; --coral: #ef866e; --yellow: #f7d978; }\nbody { margin: 0; min-height: 100vh; padding: 32px 16px; display: grid; place-items: center; background-color: #dff1e8; background-image: radial-gradient(#a8d8c2 1.5px, transparent 1.5px); background-size: 22px 22px; color: var(--ink); font: 17px/1.45 system-ui, sans-serif; }\n.board { width: min(100%, 620px); padding: clamp(22px, 5vw, 40px); background: var(--paper); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 8px 8px 0 var(--ink); }\n.header { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }\n.pixel-mark { flex: 0 0 58px; height: 58px; display: grid; place-items: center; border: 3px solid var(--ink); border-radius: 12px; background: var(--yellow); font-size: 36px; font-weight: 900; }\n.eyebrow { margin: 0 0 2px; color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .12em; }\nh1 { margin: 0; font-size: clamp(30px, 8vw, 42px); line-height: 1.1; letter-spacing: -.04em; }\n.subtitle { margin: 5px 0 0; color: var(--muted); }\n.settings { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; margin-bottom: 28px; border: 2px dashed #9bb6a8; border-radius: 12px; }\n.settings label { font-weight: 750; }\n.tip-control { display: flex; align-items: center; gap: 6px; font-weight: 800; }\n.tip-control input { width: 68px; padding: 8px; text-align: right; }\ninput { min-width: 0; min-height: 46px; padding: 10px 12px; border: 2px solid #b4c4bc; border-radius: 9px; background: white; color: var(--ink); font: inherit; }\ninput:focus-visible, button:focus-visible { outline: 3px solid #db684f; outline-offset: 3px; }\n.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }\nh2 { margin: 0; font-size: 21px; }\n#item-count { color: var(--muted); font-size: 15px; }\n.item-form { display: grid; grid-template-columns: minmax(0, 1fr) 125px 48px; gap: 9px; margin-top: 14px; }\n.price-input { position: relative; }\n.price-input span { position: absolute; top: 10px; left: 11px; color: var(--muted); }\n.price-input input { width: 100%; padding-left: 27px; }\nbutton { border: 2px solid var(--ink); border-radius: 9px; color: var(--ink); font: inherit; font-weight: 850; cursor: pointer; transition: transform .12s, box-shadow .12s, background-color .12s; }\nbutton:hover { transform: translateY(-2px); box-shadow: 0 3px 0 var(--ink); }\nbutton:active { transform: translateY(1px); box-shadow: none; }\n.add-button { background: var(--coral); font-size: 27px; line-height: 1; }\n.hint { margin: 9px 0 12px; color: var(--muted); font-size: 14px; }\n.item-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }\n.item-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px; border: 2px solid #e2e9df; border-radius: 11px; background: #fff; }\n.item-info { min-width: 0; }\n.item-name { overflow-wrap: anywhere; font-weight: 750; }\n.item-price { color: var(--muted); font-size: 15px; }\n.sharers { display: flex; gap: 5px; align-items: center; }\n.sharer { width: 38px; height: 38px; padding: 0; border-color: #c3d1ca; background: #f5f8f4; font-size: 14px; }\n.sharer[aria-pressed=\"true\"] { background: var(--mint); border-color: var(--ink); box-shadow: inset 0 -3px 0 #8fbea7; }\n.remove-button { width: 34px; height: 34px; margin-left: 5px; border: 0; background: transparent; color: var(--muted); font-size: 20px; }\n.empty-state { margin: 14px 0 0; padding: 18px; border-radius: 10px; background: #f1f6ef; color: var(--muted); text-align: center; }\n.totals-section { margin-top: 30px; padding-top: 22px; border-top: 2px dashed #cad8ce; }\n.pixel-heart { color: var(--coral); font-size: 22px; }\n.people-totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }\n.person-card { padding: 13px 10px; border: 2px solid var(--ink); border-radius: 11px; background: var(--mint); text-align: center; }\n.person-card:nth-child(2) { background: #ffe5bb; }\n.person-card:nth-child(3) { background: #f7d9d2; }\n.person-name { display: block; color: var(--muted); font-size: 14px; font-weight: 700; }\n.person-amount { display: block; margin-top: 3px; font-size: 22px; font-weight: 850; }\n.bill-total { display: flex; align-items: center; justify-content: space-between; margin-top: 17px; padding: 15px 0 0; border-top: 1px solid #dce4dc; font-weight: 750; }\n.bill-total strong { font-size: 23px; }\nfooter { margin-top: 25px; color: var(--muted); text-align: center; font-size: 14px; }\nfooter span { color: var(--coral); }\n.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }\n@media (max-width: 430px) { body { padding: 18px 12px; } .item-form { grid-template-columns: minmax(0, 1fr) 95px 44px; gap: 6px; } .item-row { grid-template-columns: 1fr; } .sharers { justify-content: flex-start; } .remove-button { margin-left: auto; } .person-card { padding: 11px 5px; } .person-amount { font-size: 19px; } }\n",
+      "description": ""
+    },
+    {
+      "path": "app.js",
+      "content": "const people = ['Ava', 'Bea', 'Cal'];\nconst items = [];\nconst itemForm = document.querySelector('#item-form');\nconst itemList = document.querySelector('#item-list');\nconst emptyState = document.querySelector('#empty-state');\nconst tipInput = document.querySelector('#tip');\nconst cents = value => Math.round((value + Number.EPSILON) * 100);\nconst money = value => `$${(value / 100).toFixed(2)}`;\n\nfunction render() {\n  itemList.replaceChildren();\n  items.forEach((item, index) => {\n    const row = document.createElement('li');\n    row.className = 'item-row';\n    const info = document.createElement('div');\n    info.className = 'item-info';\n    const name = document.createElement('div');\n    name.className = 'item-name';\n    name.textContent = item.name;\n    const price = document.createElement('div');\n    price.className = 'item-price';\n    price.textContent = money(item.price);\n    info.append(name, price);\n    const controls = document.createElement('div');\n    controls.className = 'sharers';\n    controls.setAttribute('role', 'group');\n    controls.setAttribute('aria-label', `Who shared ${item.name}?`);\n    people.forEach((person, personIndex) => {\n      const button = document.createElement('button');\n      button.type = 'button';\n      button.className = 'sharer';\n      button.textContent = person;\n      button.setAttribute('aria-pressed', String(item.shared.includes(personIndex)));\n      button.setAttribute('aria-label', `${person} shared ${item.name}`);\n      button.addEventListener('click', () => {\n        const position = item.shared.indexOf(personIndex);\n        if (position === -1) item.shared.push(personIndex);\n        else item.shared.splice(position, 1);\n        render();\n      });\n      controls.append(button);\n    });\n    const remove = document.createElement('button');\n    remove.type = 'button';\n    remove.className = 'remove-button';\n    remove.textContent = '×';\n    remove.setAttribute('aria-label', `Remove ${item.name}`);\n    remove.addEventListener('click', () => { items.splice(index, 1); render(); });\n    controls.append(remove);\n    row.append(info, controls);\n    itemList.append(row);\n  });\n  document.querySelector('#item-count').textContent = `${items.length} ${items.length === 1 ? 'item' : 'items'}`;\n  emptyState.hidden = items.length > 0;\n  const tipRate = Math.max(0, Number(tipInput.value) || 0) / 100;\n  const totals = people.map((_, personIndex) => {\n    let shareCents = 0;\n    for (const item of items) {\n      if (item.shared.includes(personIndex)) shareCents += Math.round(item.price / item.shared.length);\n    }\n    return Math.round(shareCents * (1 + tipRate));\n  });\n  totals.forEach((total, index) => {\n    document.querySelector(`#person-${index}`).textContent = money(total);\n  });\n  document.querySelector('#grand-total').textContent = money(totals.reduce((sum, total) => sum + total, 0));\n}\n\npeople.forEach((person, index) => {\n  const card = document.createElement('div');\n  card.className = 'person-card';\n  const label = document.createElement('span');\n  label.className = 'person-name';\n  label.textContent = person;\n  const amount = document.createElement('strong');\n  amount.className = 'person-amount';\n  amount.id = `person-${index}`;\n  amount.textContent = '$0.00';\n  card.append(label, amount);\n  document.querySelector('#people-totals').append(card);\n});\n\nitemForm.addEventListener('submit', event => {\n  event.preventDefault();\n  const name = document.querySelector('#item-name').value.trim();\n  const price = cents(Number(document.querySelector('#item-price').value));\n  if (!name || !Number.isFinite(price) || price < 1) return;\n  items.push({ name, price, shared: [0, 1, 2] });\n  itemForm.reset();\n  document.querySelector('#item-name').focus();\n  render();\n});\ntipInput.addEventListener('input', render);\nrender();\n",
+      "description": ""
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Split\n\nA small offline bill splitter built with HTML, CSS, and plain JavaScript. Open `index.html` in a browser; no server, packages, or network connection are needed.\n\n## Use\n\n1. Enter an item name and price, then choose **+** or press Enter.\n2. Each new item starts shared by Ava, Bea, and Cal. Toggle a person's button to change who shared it. An item with no selected people is not charged to anyone.\n3. Change the tip percentage to update each person's total.\n\nEach item's price is divided evenly in cents among its selected people, with any leftover cent assigned to the first selected person. The tip is applied to each person's accumulated share and rounded to cents. The bill total is the sum of the displayed person totals.\n\n## Files\n\n- `index.html` — app structure\n- `styles.css` — responsive visual design\n- `app.js` — item handling and calculations\n",
+      "description": ""
+    }
+  ]
+}

@@ -1,0 +1,415 @@
+{
+  "caseId": "inventory",
+  "run": 1,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 20858,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "4/5",
+  "finalChecks": "5/5",
+  "reviewTriggered": true,
+  "checksDropped": 0,
+  "checksRevised": 1,
+  "coderRepair": false,
+  "checkRuns": [
+    "4/5",
+    "5/5"
+  ],
+  "repairTriggered": true,
+  "fullPass": true,
+  "rescuedByRepair": true,
+  "elapsedSeconds": 87,
+  "reportedTokens": 93286,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T04:41:48.657Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T04:41:48.657Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T04:42:05.714Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Shop Inventory"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T04:42:05.714Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T04:42:38.185Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T04:42:38.185Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T04:42:38.613Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T04:42:38.614Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "3a312d23-0d83-4a63-b114-77218d27abea"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T04:42:55.384Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "3a312d23-0d83-4a63-b114-77218d27abea",
+        "checks": 5
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T04:42:55.385Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "testPlanId": "3a312d23-0d83-4a63-b114-77218d27abea",
+        "checks": 5,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T04:42:57.026Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "name": "Shows five inventory items",
+        "passed": false,
+        "actual": ""
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T04:42:57.026Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "name": "Selling updates stock and sales",
+        "passed": true,
+        "actual": "$4.50"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T04:42:57.026Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "name": "Restock adds ten units",
+        "passed": true,
+        "actual": "In stock: 18"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T04:42:57.026Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "name": "Selling to zero shows sold out and disables Sell",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T04:42:57.026Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "name": "Zero stock displays Sold out",
+        "passed": true,
+        "actual": "Sold out"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T04:42:57.026Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "910b4761-1475-4bb9-9f16-f47976d4e389",
+        "status": "failed",
+        "passed": 4,
+        "failed": 1,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T04:42:57.029Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "3a312d23-0d83-4a63-b114-77218d27abea",
+        "review": true
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T04:43:11.153Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "3a312d23-0d83-4a63-b114-77218d27abea",
+        "checks": 5,
+        "review": true,
+        "revised": 1,
+        "dropped": 0,
+        "llmModel": "gpt-6-luna",
+        "verdicts": [
+          {
+            "name": "Shows five inventory items",
+            "verdict": "check-wrong",
+            "reason": "The check reads text from `#item-list .item`, which matches five elements, so the selector is invalid for this text assertion. The requirement calls for five built-in items, so a count assertion is ap"
+          }
+        ]
+      }
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-22T04:43:11.154Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "testPlanId": "3a312d23-0d83-4a63-b114-77218d27abea",
+        "checks": 5,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-22T04:43:12.747Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "name": "Shows five inventory items",
+        "passed": true,
+        "actual": "5"
+      }
+    },
+    {
+      "seq": 21,
+      "at": "2026-10-22T04:43:12.747Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "name": "Selling updates stock and sales",
+        "passed": true,
+        "actual": "$4.50"
+      }
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-22T04:43:12.747Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "name": "Restock adds ten units",
+        "passed": true,
+        "actual": "In stock: 18"
+      }
+    },
+    {
+      "seq": 23,
+      "at": "2026-10-22T04:43:12.747Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "name": "Selling to zero shows sold out and disables Sell",
+        "passed": true,
+        "actual": "true"
+      }
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-22T04:43:12.747Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "name": "Zero stock displays Sold out",
+        "passed": true,
+        "actual": "Sold out"
+      }
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-22T04:43:12.747Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "747b3297-d4dd-46cc-9a15-61a8af9fe18c",
+        "status": "passed",
+        "passed": 5,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-22T04:43:12.750Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Shows five inventory items",
+        "actions": [],
+        "selector": "#item-list .item",
+        "expected": "5",
+        "assertion": "count"
+      },
+      {
+        "name": "Selling updates stock and sales",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".item:nth-child(1) button[aria-label^='Sell']"
+          }
+        ],
+        "selector": "#sales-total",
+        "expected": "$4.50"
+      },
+      {
+        "name": "Restock adds ten units",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".item:nth-child(1) button[aria-label^='Restock']"
+          }
+        ],
+        "selector": ".item:nth-child(1) .stock",
+        "expected": "In stock: 18"
+      },
+      {
+        "name": "Selling to zero shows sold out and disables Sell",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".item:nth-child(3) button[aria-label^='Sell']"
+          },
+          {
+            "type": "click",
+            "selector": ".item:nth-child(3) button[aria-label^='Sell']"
+          },
+          {
+            "type": "click",
+            "selector": ".item:nth-child(3) button[aria-label^='Sell']"
+          }
+        ],
+        "selector": ".item:nth-child(3) button[aria-label^='Sell']",
+        "expected": "true",
+        "assertion": "disabled"
+      },
+      {
+        "name": "Zero stock displays Sold out",
+        "actions": [
+          {
+            "type": "click",
+            "selector": ".item:nth-child(3) button[aria-label^='Sell']"
+          },
+          {
+            "type": "click",
+            "selector": ".item:nth-child(3) button[aria-label^='Sell']"
+          },
+          {
+            "type": "click",
+            "selector": ".item:nth-child(3) button[aria-label^='Sell']"
+          }
+        ],
+        "selector": ".item:nth-child(3) .stock",
+        "expected": "Sold out"
+      }
+    ],
+    "limitations": [
+      "Cannot verify that a disabled Sell click leaves stock and sales unchanged."
+    ],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24416,
+      "completion_tokens": 359,
+      "total_tokens": 24775
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <meta name=\"theme-color\" content=\"#182321\">\n  <title>Pixel Shop Inventory</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"shop\" aria-labelledby=\"shop-title\">\n    <header class=\"shop-header\">\n      <div>\n        <p class=\"eyebrow\">DAILY REGISTER</p>\n        <h1 id=\"shop-title\">Pixel Shop</h1>\n        <p class=\"subtitle\">A little inventory, a lot of charm.</p>\n      </div>\n      <div class=\"sales-card\" aria-live=\"polite\">\n        <span class=\"sales-label\">TODAY'S SALES</span>\n        <strong id=\"sales-total\">$0.00</strong>\n      </div>\n    </header>\n    <section class=\"inventory\" aria-labelledby=\"inventory-title\">\n      <div class=\"section-heading\">\n        <h2 id=\"inventory-title\">Store shelf</h2>\n        <span class=\"stock-note\">Sell one · restock +10</span>\n      </div>\n      <div id=\"item-list\" class=\"item-list\"></div>\n    </section>\n    <footer>Thanks for keeping the shop running <span aria-hidden=\"true\">✦</span></footer>\n  </main>\n</body>\n</html>\n",
+      "description": "Offline app page and accessible inventory container."
+    },
+    {
+      "path": "styles.css",
+      "content": "* { box-sizing: border-box; }\n:root { color-scheme: dark; font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; font-size: 16px; background: #182321; color: #f4f0dc; }\nbody { min-height: 100vh; margin: 0; padding: 32px 16px; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 0%, #29433b 0, #182321 68%); }\n.shop { width: min(100%, 720px); padding: clamp(22px, 5vw, 40px); border: 1px solid #496454; border-radius: 20px; background: #202d29; box-shadow: 0 24px 70px #101917aa; }\n.shop-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 28px; border-bottom: 1px solid #3a4d43; }\n.eyebrow, .sales-label { margin: 0; color: #b9d27a; font-size: .78rem; font-weight: 800; letter-spacing: .12em; }\nh1 { margin: 6px 0 2px; font-size: clamp(2rem, 7vw, 3rem); line-height: 1.08; letter-spacing: -.04em; }\n.subtitle { margin: 8px 0 0; color: #b9c5b7; }\n.sales-card { min-width: 145px; padding: 14px 17px; border: 1px solid #52694d; border-radius: 12px; background: #29392f; text-align: right; }\n.sales-card strong { display: block; margin-top: 4px; color: #e4f29e; font-size: 1.7rem; font-variant-numeric: tabular-nums; }\n.section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 26px 0 14px; }\nh2 { margin: 0; font-size: 1.2rem; }\n.stock-note { color: #b9c5b7; font-size: .9rem; }\n.item-list { display: grid; gap: 10px; }\n.item { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 13px; border: 1px solid #3e5147; border-radius: 13px; background: #26342f; }\n.item-icon { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 11px; background: #35473a; font-size: 1.75rem; }\n.item-info { min-width: 0; }\n.item-name { margin: 0; font-size: 1.05rem; font-weight: 750; }\n.item-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; color: #c2cebd; font-size: .92rem; }\n.stock { color: #e4f29e; font-weight: 700; }\n.stock.out { color: #f0a58d; }\n.item-actions { display: flex; gap: 8px; }\nbutton { min-height: 42px; padding: 8px 12px; border: 1px solid #b9d27a; border-radius: 9px; background: #b9d27a; color: #1b2821; font: inherit; font-size: .94rem; font-weight: 750; cursor: pointer; transition: transform .12s, background .12s, border-color .12s; }\nbutton.restock { border-color: #637969; background: #34463c; color: #f4f0dc; }\nbutton:hover:not(:disabled) { transform: translateY(-1px); background: #d3e69a; }\nbutton.restock:hover:not(:disabled) { background: #43594a; border-color: #b9d27a; }\nbutton:active:not(:disabled) { transform: translateY(1px); }\nbutton:focus-visible { outline: 3px solid #f4f0dc; outline-offset: 3px; }\nbutton:disabled { border-color: #59625a; background: #414a43; color: #c1c6b9; cursor: not-allowed; }\nfooter { margin-top: 23px; color: #9eae9f; text-align: center; font-size: .9rem; }\nfooter span { color: #b9d27a; }\n@media (max-width: 520px) {\n  body { padding: 16px 12px; }\n  .shop { padding: 22px 16px; }\n  .shop-header { align-items: flex-start; flex-direction: column; }\n  .sales-card { width: 100%; display: flex; justify-content: space-between; align-items: center; text-align: left; }\n  .sales-card strong { margin: 0; }\n  .item { grid-template-columns: 46px minmax(0, 1fr); gap: 11px; padding: 11px; }\n  .item-icon { width: 44px; height: 44px; }\n  .item-actions { grid-column: 1 / -1; justify-content: stretch; }\n  .item-actions button { flex: 1; }\n  .section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }\n}\n",
+      "description": "Responsive themed styling with clear focus and button states."
+    },
+    {
+      "path": "app.js",
+      "content": "const items = [\n  { id: \"mushroom\", name: \"Mooncap Mushroom\", icon: \"🍄\", price: 4.5, stock: 8 },\n  { id: \"potion\", name: \"Healing Potion\", icon: \"🧪\", price: 12, stock: 5 },\n  { id: \"crystal\", name: \"Star Crystal\", icon: \"💎\", price: 25, stock: 3 },\n  { id: \"cookie\", name: \"Pixel Cookie\", icon: \"🍪\", price: 3, stock: 10 },\n  { id: \"plant\", name: \"Tiny Sprout\", icon: \"🌱\", price: 8, stock: 4 }\n];\n\nlet sales = 0;\nconst itemList = document.querySelector(\"#item-list\");\nconst salesTotal = document.querySelector(\"#sales-total\");\nconst money = amount => `$${amount.toFixed(2)}`;\n\nfunction renderItems() {\n  itemList.replaceChildren();\n  for (const item of items) {\n    const soldOut = item.stock === 0;\n    const row = document.createElement(\"article\");\n    row.className = \"item\";\n\n    const icon = document.createElement(\"div\");\n    icon.className = \"item-icon\";\n    icon.setAttribute(\"aria-hidden\", \"true\");\n    icon.textContent = item.icon;\n\n    const info = document.createElement(\"div\");\n    info.className = \"item-info\";\n    const name = document.createElement(\"h3\");\n    name.className = \"item-name\";\n    name.textContent = item.name;\n    const meta = document.createElement(\"div\");\n    meta.className = \"item-meta\";\n    const price = document.createElement(\"span\");\n    price.textContent = money(item.price);\n    const stock = document.createElement(\"span\");\n    stock.className = soldOut ? \"stock out\" : \"stock\";\n    stock.textContent = soldOut ? \"Sold out\" : `In stock: ${item.stock}`;\n    meta.append(price, stock);\n    info.append(name, meta);\n\n    const actions = document.createElement(\"div\");\n    actions.className = \"item-actions\";\n    const sell = document.createElement(\"button\");\n    sell.type = \"button\";\n    sell.textContent = \"Sell\";\n    sell.setAttribute(\"aria-label\", `Sell ${item.name} for ${money(item.price)}`);\n    sell.disabled = soldOut;\n    sell.addEventListener(\"click\", () => {\n      if (item.stock === 0) return;\n      item.stock -= 1;\n      sales += item.price;\n      salesTotal.textContent = money(sales);\n      renderItems();\n    });\n    const restock = document.createElement(\"button\");\n    restock.type = \"button\";\n    restock.className = \"restock\";\n    restock.textContent = \"Restock +10\";\n    restock.setAttribute(\"aria-label\", `Restock ${item.name} by 10`);\n    restock.addEventListener(\"click\", () => {\n      item.stock += 10;\n      renderItems();\n    });\n    actions.append(sell, restock);\n    row.append(icon, info, actions);\n    itemList.append(row);\n  }\n}\n\nrenderItems();\n",
+      "description": "Five built-in products and sell, restock, and daily sales behavior."
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Shop Inventory\n\nA small offline inventory app built with plain HTML, CSS, and JavaScript. It has five built-in products, per-item stock counts, and a sales total for the current page session.\n\n## Run\n\nOpen `index.html` in a modern browser. No server, install, or internet connection is required.\n\n## Use\n\n- Select **Sell** to decrease an item's stock by one and add its price to today's sales.\n- At zero stock, the item shows **Sold out** and its Sell button is disabled.\n- Select **Restock +10** to add ten units to that item's stock.\n\nStock and sales start fresh whenever the page is reloaded.\n",
+      "description": "Offline launch and usage instructions."
+    }
+  ]
+}

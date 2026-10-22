@@ -1,0 +1,390 @@
+{
+  "caseId": "split-bill",
+  "run": 3,
+  "arm": "dist-baseline",
+  "strategy": "manager-coder",
+  "dist": "D:\\Temp\\claude\\D--Projects-PIXELAGENT-HUB--claude-worktrees-codex-quota-integration-2a76fa\\19dfc165-150d-47a4-b92b-c6f1c982c8e9\\scratchpad\\ab\\baseline",
+  "managerTokens": 21042,
+  "model": "gpt-6-luna",
+  "testerModel": "gpt-6-luna",
+  "status": "ready_for_review",
+  "coderRounds": 1,
+  "compileFailures": 0,
+  "firstChecks": "6/6",
+  "finalChecks": "6/6",
+  "reviewTriggered": false,
+  "checksDropped": 0,
+  "checksRevised": 0,
+  "coderRepair": false,
+  "checkRuns": [
+    "6/6"
+  ],
+  "repairTriggered": false,
+  "fullPass": true,
+  "rescuedByRepair": false,
+  "elapsedSeconds": 79,
+  "reportedTokens": 70583,
+  "events": [
+    {
+      "seq": 1,
+      "at": "2026-10-22T03:46:53.491Z",
+      "type": "queued",
+      "data": {
+        "strategy": "manager-coder",
+        "repair": false,
+        "revision": false,
+        "retry": false,
+        "source": "browser",
+        "provider": "localhost:8787",
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-22T03:46:53.492Z",
+      "type": "phase",
+      "data": {
+        "phase": "planning"
+      }
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-22T03:47:13.933Z",
+      "type": "plan_ready",
+      "data": {
+        "projectName": "Pixel Bill Splitter"
+      }
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-22T03:47:13.933Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "coding"
+      }
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-22T03:47:48.388Z",
+      "type": "code_ready",
+      "round": 1,
+      "data": {
+        "files": 4
+      }
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-22T03:47:48.388Z",
+      "type": "phase",
+      "round": 1,
+      "data": {
+        "phase": "building"
+      }
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-22T03:47:48.929Z",
+      "type": "build_passed",
+      "round": 1
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-22T03:47:48.930Z",
+      "type": "test_plan_started",
+      "data": {
+        "planId": "0c77850b-7bf1-4bea-abdf-c09eca2afe71"
+      }
+    },
+    {
+      "seq": 9,
+      "at": "2026-10-22T03:48:08.777Z",
+      "type": "test_plan_ready",
+      "data": {
+        "planId": "0c77850b-7bf1-4bea-abdf-c09eca2afe71",
+        "checks": 6
+      }
+    },
+    {
+      "seq": 10,
+      "at": "2026-10-22T03:48:08.778Z",
+      "type": "browser_run_started",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "testPlanId": "0c77850b-7bf1-4bea-abdf-c09eca2afe71",
+        "checks": 6,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "name": "Initial totals",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "name": "Add item and split with tip",
+        "passed": true,
+        "actual": "$6.60"
+      }
+    },
+    {
+      "seq": 13,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "name": "Second person's tipped share",
+        "passed": true,
+        "actual": "$6.60"
+      }
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "name": "Unselected person owes zero",
+        "passed": true,
+        "actual": "$0.00"
+      }
+    },
+    {
+      "seq": 15,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "name": "Group total includes tip",
+        "passed": true,
+        "actual": "$13.20"
+      }
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_check",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "name": "Item count updates",
+        "passed": true,
+        "actual": "1 item"
+      }
+    },
+    {
+      "seq": 17,
+      "at": "2026-10-22T03:48:10.735Z",
+      "type": "browser_run_finished",
+      "data": {
+        "runId": "38bc95de-485d-4ec8-9162-fdd9500c23a4",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "source": "in-page"
+      }
+    },
+    {
+      "seq": 18,
+      "at": "2026-10-22T03:48:10.737Z",
+      "type": "ready_for_review",
+      "data": {
+        "previewFile": "v1/dist/index.html"
+      }
+    }
+  ],
+  "plan": {
+    "checks": [
+      {
+        "name": "Initial totals",
+        "actions": [],
+        "selector": "#grand-total",
+        "expected": "$0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Add item and split with tip",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-item"
+          },
+          {
+            "type": "input",
+            "selector": "[data-price]",
+            "value": "12.00"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"0\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"1\"]"
+          }
+        ],
+        "selector": "#people .person-total strong",
+        "nth": 0,
+        "expected": "$6.60",
+        "assertion": "text"
+      },
+      {
+        "name": "Second person's tipped share",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-item"
+          },
+          {
+            "type": "input",
+            "selector": "[data-price]",
+            "value": "12.00"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"0\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"1\"]"
+          }
+        ],
+        "selector": "#people .person-total strong",
+        "nth": 1,
+        "expected": "$6.60",
+        "assertion": "text"
+      },
+      {
+        "name": "Unselected person owes zero",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-item"
+          },
+          {
+            "type": "input",
+            "selector": "[data-price]",
+            "value": "12.00"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"0\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"1\"]"
+          }
+        ],
+        "selector": "#people .person-total strong",
+        "nth": 2,
+        "expected": "$0.00",
+        "assertion": "text"
+      },
+      {
+        "name": "Group total includes tip",
+        "actions": [
+          {
+            "type": "input",
+            "selector": "#tip",
+            "value": "10"
+          },
+          {
+            "type": "click",
+            "selector": "#add-item"
+          },
+          {
+            "type": "input",
+            "selector": "[data-price]",
+            "value": "12.00"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"0\"]"
+          },
+          {
+            "type": "click",
+            "selector": "[data-person=\"1\"]"
+          }
+        ],
+        "selector": "#grand-total",
+        "expected": "$13.20",
+        "assertion": "text"
+      },
+      {
+        "name": "Item count updates",
+        "actions": [
+          {
+            "type": "click",
+            "selector": "#add-item"
+          }
+        ],
+        "selector": "#item-count",
+        "expected": "1 item",
+        "assertion": "text"
+      }
+    ],
+    "limitations": [],
+    "isolation": "fresh",
+    "llmUsage": {
+      "prompt_tokens": 24876,
+      "completion_tokens": 483,
+      "total_tokens": 25359
+    },
+    "llmModel": "gpt-6-luna",
+    "llmProvider": "custom"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "build": "passed",
+      "errors": []
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "content": "<!doctype html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Pixel Bill Splitter</title>\n  <link rel=\"stylesheet\" href=\"styles.css\">\n  <script src=\"app.js\" defer></script>\n</head>\n<body>\n  <main class=\"card\">\n    <header class=\"header\">\n      <div class=\"pixel-icon\" aria-hidden=\"true\">¢</div>\n      <div>\n        <p class=\"eyebrow\">SHARED TAB · PIXEL PERFECT</p>\n        <h1>Bill splitter</h1>\n        <p class=\"subtitle\">Add what you shared. We’ll do the math.</p>\n      </div>\n    </header>\n\n    <section class=\"tip-panel\" aria-label=\"Tip settings\">\n      <label for=\"tip\">Tip</label>\n      <div class=\"tip-input\"><input id=\"tip\" type=\"number\" min=\"0\" max=\"100\" step=\"0.5\" value=\"15\" inputmode=\"decimal\"><span>%</span></div>\n    </section>\n\n    <section class=\"items-section\" aria-labelledby=\"items-title\">\n      <div class=\"section-heading\"><h2 id=\"items-title\">Items</h2><span id=\"item-count\">0 items</span></div>\n      <div class=\"table-head\" aria-hidden=\"true\"><span>ITEM</span><span>PRICE</span><span>SHARED BY</span><span></span></div>\n      <div id=\"items\" class=\"items\"></div>\n      <button id=\"add-item\" class=\"add-button\" type=\"button\"><span aria-hidden=\"true\">＋</span> Add an item</button>\n    </section>\n\n    <section class=\"totals\" aria-labelledby=\"totals-title\">\n      <div class=\"totals-heading\"><h2 id=\"totals-title\">Everyone’s share</h2><span>WITH TIP</span></div>\n      <div id=\"people\" class=\"people\"></div>\n      <div class=\"grand-total\"><span>Group total</span><strong id=\"grand-total\">$0.00</strong></div>\n    </section>\n    <p class=\"note\">Each item is split evenly between the people checked.</p>\n  </main>\n</body>\n</html>",
+      "description": "Offline bill splitter interface"
+    },
+    {
+      "path": "styles.css",
+      "content": ":root{font-family:system-ui,-apple-system,\"Segoe UI\",sans-serif;color:#202b4a;background:#f4f1e9;font-size:16px;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:32px 16px;display:grid;place-items:center;background-color:#f4f1e9;background-image:radial-gradient(#d9d2c3 1px,transparent 1px);background-size:18px 18px}.card{width:min(100%,620px);padding:32px;background:#fffefa;border:2px solid #202b4a;box-shadow:8px 8px 0 #202b4a}.header{display:flex;align-items:center;gap:18px;margin-bottom:28px}.pixel-icon{width:58px;height:58px;display:grid;place-items:center;background:#ffcf5c;border:2px solid #202b4a;box-shadow:4px 4px 0 #202b4a;font-size:32px;font-weight:900}.eyebrow{margin:0 0 4px;color:#61708c;font-size:12px;font-weight:800;letter-spacing:.12em}h1,h2,p{margin-top:0}h1{margin-bottom:3px;font-size:30px;line-height:1.15}.subtitle{margin:0;color:#61708c}.tip-panel{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin-bottom:28px;background:#eaf5f2;border:2px solid #b6d9d1;font-weight:750}.tip-input{display:flex;align-items:center;gap:8px}.tip-input input{width:76px;padding:7px 8px;border:2px solid #202b4a;background:#fffefa;border-radius:3px;font:inherit;text-align:right}.section-heading,.totals-heading{display:flex;align-items:center;justify-content:space-between}h2{margin-bottom:12px;font-size:19px}.section-heading span,.totals-heading>span{color:#61708c;font-size:13px;font-weight:700}.table-head,.item-row{display:grid;grid-template-columns:minmax(100px,1fr) 92px minmax(145px,1.1fr) 34px;gap:10px;align-items:center}.table-head{padding:0 8px 8px;color:#61708c;font-size:11px;font-weight:800;letter-spacing:.08em}.items{display:grid;gap:9px}.item-row{padding:9px 8px;background:#f8f6ef;border:1px solid #e3dfd3}.item-row input[type=text],.item-row input[type=number]{width:100%;min-width:0;padding:8px;border:1.5px solid #b9bdc8;border-radius:3px;background:#fffefa;color:#202b4a;font:inherit}.item-row input[type=number]{text-align:right}.checks{display:flex;flex-wrap:wrap;gap:8px}.person-check{display:flex;align-items:center;gap:4px;font-size:14px;white-space:nowrap}.person-check input{width:17px;height:17px;accent-color:#177a69}.remove{width:32px;height:32px;border:1.5px solid #d6a7a2;border-radius:3px;background:#fff4f1;color:#9f4238;font:inherit;font-weight:800;cursor:pointer}.add-button{width:100%;margin-top:12px;padding:11px;border:2px dashed #8aa69f;border-radius:3px;background:#f4faf7;color:#176b5c;font:inherit;font-weight:750;cursor:pointer}.add-button span{font-size:20px;vertical-align:-1px}.totals{margin-top:30px;padding:18px;background:#202b4a;color:#fffefa}.totals-heading h2{margin-bottom:14px}.totals-heading>span{color:#ffcf5c;letter-spacing:.1em}.people{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.person-total{padding:12px 10px;background:#2d3959;border:1px solid #55617d}.person-total span{display:block;color:#c5ccda;font-size:14px}.person-total strong{display:block;margin-top:5px;font-size:21px}.grand-total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid #55617d;font-weight:700}.grand-total strong{color:#ffcf5c;font-size:25px}.note{margin:13px 0 0;color:#718099;text-align:center;font-size:14px}button:hover{filter:brightness(.96);transform:translateY(-1px)}button:active{transform:translateY(1px)}:focus-visible{outline:3px solid #e08b37;outline-offset:3px}input:focus-visible{outline:3px solid #e08b37;outline-offset:1px}@media(max-width:520px){body{padding:18px 12px;place-items:start center}.card{padding:22px 16px;box-shadow:5px 5px 0 #202b4a}.header{gap:13px}.pixel-icon{width:50px;height:50px}h1{font-size:26px}.table-head,.item-row{grid-template-columns:minmax(80px,1fr) 75px minmax(116px,1.1fr) 30px;gap:6px}.table-head{font-size:10px}.item-row{padding:7px 5px}.item-row input[type=text],.item-row input[type=number]{padding:7px 5px;font-size:14px}.checks{gap:3px}.person-check{gap:2px;font-size:12px}.person-check input{width:15px;height:15px}.people{gap:6px}.person-total{padding:10px 7px}.person-total strong{font-size:18px}}",
+      "description": "Responsive pixel-inspired styling"
+    },
+    {
+      "path": "app.js",
+      "content": "const people = ['Alex', 'Blair', 'Casey'];\nconst itemsElement = document.querySelector('#items');\nconst tipInput = document.querySelector('#tip');\nconst itemCount = document.querySelector('#item-count');\nconst totalsElement = document.querySelector('#people');\nconst grandTotalElement = document.querySelector('#grand-total');\nconst money = cents => `$${(cents / 100).toFixed(2)}`;\n\nfunction updateTotals() {\n  const owed = people.map(() => 0);\n  let count = 0;\n\n  for (const row of itemsElement.querySelectorAll('.item-row')) {\n    count++;\n    const price = Math.max(0, Math.round((Number(row.querySelector('[data-price]').value) || 0) * 100));\n    const selected = [...row.querySelectorAll('[data-person]:checked')].map(input => Number(input.dataset.person));\n    if (selected.length) {\n      const base = Math.floor(price / selected.length);\n      let remainder = price - base * selected.length;\n      for (const index of selected) owed[index] += base + (remainder-- > 0 ? 1 : 0);\n    }\n  }\n\n  const tip = Math.max(0, Number(tipInput.value) || 0);\n  const tipped = owed.map(cents => Math.round(cents * (1 + tip / 100)));\n  totalsElement.replaceChildren(...people.map((name, index) => {\n    const card = document.createElement('div');\n    card.className = 'person-total';\n    const label = document.createElement('span');\n    label.textContent = name;\n    const amount = document.createElement('strong');\n    amount.textContent = money(tipped[index]);\n    card.append(label, amount);\n    return card;\n  }));\n  grandTotalElement.textContent = money(tipped.reduce((sum, amount) => sum + amount, 0));\n  itemCount.textContent = `${count} ${count === 1 ? 'item' : 'items'}`;\n}\n\nfunction addItem() {\n  const row = document.createElement('div');\n  row.className = 'item-row';\n  const name = document.createElement('input');\n  name.type = 'text';\n  name.placeholder = 'Item name';\n  name.setAttribute('aria-label', 'Item name');\n  const price = document.createElement('input');\n  price.type = 'number';\n  price.min = '0';\n  price.step = '0.01';\n  price.placeholder = '0.00';\n  price.inputMode = 'decimal';\n  price.dataset.price = '';\n  price.setAttribute('aria-label', 'Item price in dollars');\n  const checks = document.createElement('div');\n  checks.className = 'checks';\n  checks.setAttribute('role', 'group');\n  checks.setAttribute('aria-label', 'People sharing this item');\n\n  people.forEach((person, index) => {\n    const label = document.createElement('label');\n    label.className = 'person-check';\n    const checkbox = document.createElement('input');\n    checkbox.type = 'checkbox';\n    checkbox.dataset.person = String(index);\n    checkbox.setAttribute('aria-label', `${person} shares item`);\n    const text = document.createElement('span');\n    text.textContent = person;\n    label.append(checkbox, text);\n    checks.append(label);\n  });\n\n  const remove = document.createElement('button');\n  remove.type = 'button';\n  remove.className = 'remove';\n  remove.textContent = '×';\n  remove.setAttribute('aria-label', 'Remove item');\n  row.append(name, price, checks, remove);\n  itemsElement.append(row);\n  name.focus();\n}\n\ndocument.querySelector('#add-item').addEventListener('click', addItem);\ntipInput.addEventListener('input', updateTotals);\nitemsElement.addEventListener('input', updateTotals);\nitemsElement.addEventListener('change', updateTotals);\nitemsElement.addEventListener('click', event => {\n  const button = event.target.closest('.remove');\n  if (button) {\n    const row = button.closest('.item-row');\n    const nextFocus = row.nextElementSibling?.querySelector('input') || row.previousElementSibling?.querySelector('input') || document.querySelector('#add-item');\n    row.remove();\n    updateTotals();\n    nextFocus.focus();\n  }\n});\ndocument.querySelector('#add-item').addEventListener('click', updateTotals);\nupdateTotals();",
+      "description": "Item entry, participant selection, tip calculation, and live totals"
+    },
+    {
+      "path": "README.md",
+      "content": "# Pixel Bill Splitter\n\nA small offline browser app for splitting item costs among Alex, Blair, and Casey.\n\n## Run\n\nOpen `index.html` in a modern browser. No installation, server, network access, or external assets are needed.\n\n## Use\n\nAdd an item, enter its price, and check everyone sharing it. Set the tip percentage to update each person's amount and the group total. Unchecked items are not assigned to anyone. Prices are rounded to cents; when an item's cents cannot divide evenly, leftover cents go to the selected people in displayed order. Tip is calculated on each person's accumulated share and rounded to cents.",
+      "description": "Offline usage and calculation notes"
+    }
+  ]
+}
