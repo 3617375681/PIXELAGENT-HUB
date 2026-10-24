@@ -9,7 +9,7 @@
 
 Making the review write its reason before its verdict ended its self-contradictions. Does the same help the plan?
 
-**Change.** Commit `f1c1d6e` adds an optional `trace` to each check (at most 300 characters), placed right after `name`. The Tester is told to write it first: the starting state read from the source, each action's effect in order, and the arithmetic that gives `expected`. Then it writes the actions and an `expected` that match. The review sees the traces; the Coder never does.
+**Change.** Commit `ab2b430` adds an optional `trace` to each check (at most 300 characters), placed right after `name`. The Tester is told to write it first: the starting state read from the source, each action's effect in order, and the arithmetic that gives `expected`. Then it writes the actions and an `expected` that match. The review sees the traces; the Coder never does.
 
 **Setup.**
 - Two builds: [baseline](holdout-i/dist-baseline/) (`main` at `d91d1cf`) and [trace](holdout-i/dist-trace/).
